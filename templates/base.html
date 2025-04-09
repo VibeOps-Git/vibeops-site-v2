@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="VibeOps — AI-powered automation, engineering, and web solutions for startups, businesses, and niche projects." />
+    <meta name="keywords" content="AI automation, workflow optimization, web development, engineering consulting, CRM integration" />
+    <meta name="author" content="VibeOps" />
+    <title>VibeOps — {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a href="/" class="nav-logo-link">
+                <img src="/static/Logo-wht.png" alt="VibeOps Logo" class="nav-logo">
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation menu">
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/case-studies">Case Studies</a></li>
+                <li><a href="/booking">Contact</a></li>
+                <li><a href="/booking" class="btn primary">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer" data-aos="fade-in" data-aos-duration="1000">
+        <img src="/static/Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100">
+        <p data-aos="fade-up" data-aos-delay="200">© 2025 VibeOps — AI Automation & Web Solutions. All rights reserved.</p>
+        <div class="socials" data-aos="fade-up" data-aos-delay="300">
+            <a href="mailto:vibeops.info@gmail.com?subject=Let’s%20Vibe&body=Hey%20VibeOps%2C%0A%0AI’ve%20got%20a%20project%20in%20mind:%20[details].%20Let’s%20connect!%0A%0A[Your%20Name]">Email: vibeops.info@gmail.com</a> |
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-back',
+            once: true,
+            mirror: false,
+            offset: 100
+        });
+
+        // Mobile nav toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+        });
+    </script>
+</body>
+</html>

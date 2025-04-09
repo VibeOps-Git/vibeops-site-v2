@@ -58,7 +58,12 @@ class ProjectExplorerApp(QMainWindow):
             "site-v1/static/Logo.png",
             "site-v1/static/styles.css",
             "site-v1/templates",
+            "site-v1/templates/about.html",
+            "site-v1/templates/base.html",
+            "site-v1/templates/booking.html",
+            "site-v1/templates/case_studies.html",
             "site-v1/templates/index.html",
+            "site-v1/templates/services.html",
             "site-v1/app.py"
         ]
         self.display_project_tree()
