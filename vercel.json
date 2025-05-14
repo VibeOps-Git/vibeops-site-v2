@@ -4,12 +4,13 @@
     {
       "src": "app.py",
       "use": "@vercel/python"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
     }
   ],
+  "functions": {
+    "app.py": {
+      "excludeFiles": "{public/**,__pycache__/**,*.cache/**}"
+    }
+  },
   "routes": [
     {
       "src": "/videos/(.*)",
@@ -19,10 +20,5 @@
       "src": "/(.*)",
       "dest": "app.py"
     }
-  ],
-  "functions": {
-    "api/**": {
-      "excludeFiles": "public/**"
-    }
-  }
+  ]
 }
