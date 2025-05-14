@@ -1,10 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/**": {
-      "excludeFiles": "public/**"
-    }
-  },
   "builds": [
     {
       "src": "app.py",
@@ -18,11 +13,16 @@
   "routes": [
     {
       "src": "/videos/(.*)",
-      "dest": "/public/videos/"
+      "dest": "/public/videos/$1"
     },
     {
       "src": "/(.*)",
       "dest": "app.py"
     }
-  ]
+  ],
+  "functions": {
+    "api/**": {
+      "excludeFiles": "public/**"
+    }
+  }
 }
