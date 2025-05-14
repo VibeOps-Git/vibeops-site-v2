@@ -6,16 +6,7 @@
       "use": "@vercel/python"
     }
   ],
-  "functions": {
-    "app.py": {
-      "excludeFiles": "{public/**,__pycache__/**,*.cache/**}"
-    }
-  },
   "routes": [
-    {
-      "src": "/videos/(.*)",
-      "dest": "/public/videos/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "app.py"
