@@ -385,6 +385,7 @@ cite {
 
     .nav-menu.active {
         display: flex;
+        margin-top: 50px;
     }
 
     .nav-menu li {
@@ -431,3 +432,111 @@ cite {
         gap: 10px;
     }
 }
+
+/* ─── VIDEO BOX ───────────────────────────────────────────────── */
+.video-box {
+    background: #1e1e1e;           /* same as your card bg */
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 40px auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  }
+  .video-box video {
+    width: 100%;
+    border-radius: 6px;
+    display: block;
+    max-height: 500px;
+  }
+  
+  /* ─── HAMBURGER / MOBILE NAV ─────────────────────────────── */
+  .nav-toggle {
+    display: none;                /* shown via media query */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 200;
+  }
+  .hamburger,
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #f2f2f2;
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .hamburger::before {
+    top: -8px;
+  }
+  .hamburger::after {
+    top: 5px;
+  }
+  .nav-toggle.active .hamburger {
+    background: transparent;
+  }
+  .nav-toggle.active .hamburger::before {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .nav-toggle.active .hamburger::after {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+  
+  /* ─── MOBILE LAYOUT ADJUSTMENTS ──────────────────────────── */
+  @media (max-width: 768px) {
+    /* pin header and push content below it */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    main {
+      padding-top: 70px;          /* adjust if your header is taller */
+    }
+  
+    /* show hamburger button */
+    .nav-toggle {
+      display: block;
+    }
+  
+    /* slide-down menu */
+    .nav-menu {
+      position: fixed;
+      top: 60px;                  /* just under your header */
+      left: 0;
+      right: 0;
+      background: #111;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px 20px;
+      align-items: center;
+  
+      display: flex;
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 150;
+    }
+    .nav-menu.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  
+    .nav-menu li {
+      width: 100%;
+      text-align: center;
+    }
+    .nav-menu a {
+      display: block;
+      width: 100%;
+      padding: 15px 0;
+      font-size: 1.2rem;
+    }
+  }

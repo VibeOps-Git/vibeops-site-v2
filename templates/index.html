@@ -4,66 +4,36 @@
     <!-- Hero Section -->
     <section class="hero" id="hero" data-aos="fade-in" data-aos-duration="1000">
         <div class="hero-content">
-            <h1 data-aos="fade-up" data-aos-delay="300">Automate hard.<br><span>Vibe easy.</span></h1>
-            <p data-aos="fade-up" data-aos-delay="400">AI-powered workflows, engineering muscle, and websites that slap—built fast for teams who’d rather chill than grind.</p>
+            <h1 data-aos="fade-up" data-aos-delay="300">Automate Hard.<br><span>Vibe Easy.</span></h1>
+            <p data-aos="fade-up" data-aos-delay="400">Boost your business with AI-powered solutions and sleek websites—built fast for local heroes like you.</p>
             <div class="cta-buttons" data-aos="fade-up" data-aos-delay="500">
-                <a href="/booking" class="btn primary">Free Workflow Audit</a>
-                <a href="/services" class="btn secondary">Scope Our Services</a>
+                <a href="/booking" class="btn primary">Get a Free Demo</a>
+                <a href="/services" class="btn secondary">See Our Work</a>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">We turn chaos into <span>chill</span></h2>
-        <p data-aos="fade-up" data-aos-delay="200">Custom solutions for scrappy startups and big dreamers.</p>
+    <!-- Behind-the-Scenes Section -->
+    <section class="case-studies" id="dev-demo" data-aos="fade-in" data-aos-duration="1000">
+        <h2 data-aos="fade-up" data-aos-delay="100">How We Built This Site</h2>
+        <p data-aos="fade-up" data-aos-delay="200">A behind-the-scenes look at our workflow setting up and testing your site.</p>
         <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card">📧 Gmail + Calendar Syncs<br><em>Never miss a beat</em></div>
-            <div class="card">✍️ AI Follow-Ups<br><em>Human-like, zero effort</em></div>
-            <div class="card">📊 CRM Lead Magic<br><em>Score and nurture</em></div>
-            <div class="card">🛠️ Custom Dashboards<br><em>Your data, your way</em></div>
-            <div class="card">🔧 On-Demand Engineering<br><em>Contracting for special gigs</em></div>
-            <div class="card">🌐 Small Biz Websites<br><em>Built fast, vibe heavy</em></div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">Packages That Don’t Suck</h2>
-        <p data-aos="fade-up" data-aos-delay="200">Pick your flavor. We’ll deliver the goods.</p>
-        <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card"><strong>Inbox Hero</strong><br>$800–$1,200<br><em>Gmail + Calendar + Leads</em></div>
-            <div class="card"><strong>CRM Flow-Up</strong><br>$1,200–$2,500<br><em>CRM + Smart Emails</em></div>
-            <div class="card"><strong>Full Stack Ops</strong><br>$3,000–$6,000<br><em>All-In + Tools</em></div>
-            <div class="card"><strong>Retainer Vibes</strong><br>$750–$2,000/mo<br><em>Ongoing Automation</em></div>
-            <div class="card"><strong>Engineering Flex</strong><br>$100–$200/hr<br><em>Consulting + Contracting</em></div>
-            <div class="card"><strong>Website Quickie</strong><br>$1,500–$3,000<br><em>Small Biz Sites</em></div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">The Streets Are Talking</h2>
-        <div class="grid" data-aos="fade-up" data-aos-delay="200">
-            <blockquote>“Full system in a weekend. Absolute game-changer.”<br><cite>– SaaS Solo Founder</cite></blockquote>
-            <blockquote>“AI dev team vibes without the payroll.”<br><cite>– Growth Consultant</cite></blockquote>
-        </div>
-    </section>
-
-    <!-- Why Us Section -->
-    <section class="why-us" id="why-us" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">Why VibeOps?</h2>
-        <div class="grid" data-aos="fade-up" data-aos-delay="200">
-            <div class="card"><strong>AI-Native</strong><br>Smart tech, core-built.</div>
-            <div class="card"><strong>Human Vibes</strong><br>Feels good to use.</div>
-            <div class="card"><strong>Lean Crew</strong><br>No bloat, all chill.</div>
+            <div class="card">
+                <strong>Dev Setup</strong><br>
+                <div class="video-box">
+                    <video controls width="100%">
+                        <source src="{{ url_for('static', filename='demo-vid.mp4') }}" type="video/mp4">                    Your browser does not support the video tag.
+                    </video>
+                    <em>Live Python build in action</em>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- CTA Section -->
     <section class="cta" id="audit" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">Your Workflow Needs a Vibe Check</h2>
-        <p data-aos="fade-up" data-aos-delay="200">Show us your inbox, CRM, or project mess. We’ll audit it free and flex the glow-up.</p>
-        <a href="/booking" class="btn primary" data-aos="zoom-in" data-aos-delay="300">Book My Audit</a>
+        <h2 data-aos="fade-up" data-aos-delay="100">Your Business Deserves This Vibe</h2>
+        <p data-aos="fade-up" data-aos-delay="200">Local? Small biz? Let’s craft your standout website—fast and affordable.</p>
+        <a href="/booking" class="btn primary" data-aos="zoom-in" data-aos-delay="300">Book Now</a>
     </section>
 {% endblock %}

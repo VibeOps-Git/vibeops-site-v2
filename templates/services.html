@@ -3,19 +3,35 @@
 {% block content %}
     <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000">
         <h2 data-aos="fade-up" data-aos-delay="100">Our Services</h2>
-        <p data-aos="fade-up" data-aos-delay="200">From local barbershops to global ops, we’ve got you covered.</p>
+        <p data-aos="fade-up" data-aos-delay="200">Custom solutions for every business—big or small.</p>
         <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card">📧 Email & Calendar Syncs<br><em>Stay on top, effortlessly</em></div>
-            <div class="card">✍️ AI-Powered Follow-Ups<br><em>Smart, scalable outreach</em></div>
-            <div class="card">📊 CRM Optimization<br><em>Leads that convert</em></div>
-            <div class="card">🛠️ Custom Dashboards<br><em>Data at your fingertips</em></div>
-            <div class="card">🔧 On-Demand Engineering<br><em>Expertise for niche projects</em></div>
-            <div class="card">🌐 Websites for All<br><em>Barbershops to big biz</em></div>
+            <div class="card">📧 Automation<br><em>Email, Calendar, CRM</em></div>
+            <div class="card">🛠️ Engineering<br><em>Custom projects</em></div>
+            <div class="card">🌐 Web Design<br><em>Sites that shine</em></div>
         </div>
         <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
             <h3>Not Seeing Your Fit?</h3>
-            <p>Need a custom solution—like a biomechanical study for neurosurgery pins? We’ll craft a plan that vibes with your goals.</p>
+            <p>Need a custom solution? We’ll craft a plan that vibes with your goals.</p>
             <a href="/booking" class="btn primary">Get a Custom Quote</a>
         </div>
+    </section>
+
+    <!-- Work Sample Section -->
+    <section class="case-studies" id="mobile-sample" data-aos="fade-in" data-aos-duration="1000">
+        <h2 data-aos="fade-up" data-aos-delay="100">Mobile-Optimized Design</h2>
+        <p data-aos="fade-up" data-aos-delay="200">A demo of our mobile-friendly websites—smooth and responsive.</p>
+        <div class="grid" data-aos="fade-up" data-aos-delay="300">
+            <div class="card">
+                <strong>Mobile Demo</strong><br>
+                <div class="video-box">
+                    <video controls width="100%">
+                        <source src="{{ url_for('static', filename='castaway-mobile.mp4') }}" type="video/mp4">                    Your browser does not support the video tag.
+                        Your browser does not support the video tag.
+                    </video>
+                    <em>Smooth on any device</em>
+                </div>
+            </div>
+        </div>
+        <a href="/booking" class="btn primary" data-aos="fade-up" data-aos-delay="400">Book Your Site</a>
     </section>
 {% endblock %}
