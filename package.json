@@ -1,0 +1,5 @@
+{
+    "scripts": {
+      "build": "echo 'No build step needed for Python app'"
+    }
+}
