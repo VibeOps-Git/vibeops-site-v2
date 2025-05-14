@@ -9,13 +9,20 @@
     {
       "src": "app.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/videos/(.*)",
+      "dest": "/public/videos/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "app.py"
     }
   ]
 }
-
