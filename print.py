@@ -65,6 +65,11 @@ class ProjectExplorerApp(QMainWindow):
             "site-v1/templates/index.html",
             "site-v1/templates/services.html",
             "site-v1/app.py"
+            "site-v1/auth.py"
+            "site-v1/config.py"
+            "site-v1/pipeline.py"
+            "site-v1/tracker.py"
+            "site-v1/utils.py"
         ]
         self.display_project_tree()
         self.display_file_contents()

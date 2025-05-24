@@ -1,2 +1,9 @@
 flask
 pyqt6
+supabase
+pandas
+python-dotenv
+flask-oauthlib
+openai
+authlib
+python-dotenv

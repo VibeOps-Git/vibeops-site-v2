@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Pipeline Cost Estimator - VibeOps{% endblock %}
+{% block content %}
+    <section class="contact" data-aos="fade-in" data-aos-duration="1000">
+        <h2 data-aos="fade-up" data-aos-delay="100">Pipeline Cost Estimator Tool</h2>
+        <p data-aos="fade-up" data-aos-delay="200" class="text-center text-gray-600">Enter pipeline details to get an estimated Bill of Materials and cost.</p>
+        
+        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+            <form id="estimationForm" class="space-y-6">
+                <div>
+                    <label for="length" class="block text-sm font-medium text-gray-700">Pipeline Length (e.g., km or miles)</label>
+                    <input type="number" name="length" id="length" step="any" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                </div>
+                
+                <div>
+                    <label for="diameter" class="block text-sm font-medium text-gray-700">Pipeline Diameter (e.g., inches or mm)</label>
+                    <input type="number" name="diameter" id="diameter" step="any" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                </div>
+                
+                <div>
+                    <label for="terrain" class="block text-sm font-medium text-gray-700">Terrain Type</label>
+                    <select id="terrain" name="terrain" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                        <option value="">Select Terrain</option>
+                        <option value="flat">Flat</option>
+                        <option value="hilly">Hilly</option>
+                        <option value="mountainous">Mountainous</option>
+                        <option value="swampy">Swampy</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <button type="submit" class="btn primary w-full flex justify-center">
+                        Get Estimate
+                    </button>
+                </div>
+            </form>
+            
+            <div id="results" class="mt-8 hidden">
+                <h3 class="text-xl font-semibold mb-4">Estimation Results</h3>
+                <div id="bom" class="mb-4 p-4 bg-gray-50 rounded-md"></div>
+                <div id="cost" class="p-4 bg-gray-50 rounded-md"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('estimationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            console.log('Form submitted with data:', data);
+            
+            // Show results section and loading messages
+            const resultsDiv = document.getElementById('results');
+            const bomDiv = document.getElementById('bom');
+            const costDiv = document.getElementById('cost');
+
+            resultsDiv.classList.remove('hidden');
+            bomDiv.innerHTML = 'Calculating BOM...';
+            costDiv.innerHTML = 'Estimating cost...';
+
+            // Send data to backend Flask route
+            fetch('/pipeline-estimator', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Backend response:', result);
+                if (result.bom) {
+                    bomDiv.innerHTML = '<h4 class="font-semibold">Bill of Materials:</h4>' + 
+                        Object.entries(result.bom).map(([key, value]) => `${key}: ${value}`).join('<br>');
+                } else {
+                    bomDiv.innerHTML = '<h4 class="font-semibold">Bill of Materials:</h4> Calculation failed.';
+                }
+
+                if (result.cost) {
+                    costDiv.innerHTML = '<h4 class="font-semibold">Estimated Cost Breakdown:</h4>' +
+                        `Total Cost: $${result.cost.total_cost.toLocaleString()}<br>` +
+                        `Material Cost: $${result.cost.material_cost.toLocaleString()}<br>` +
+                        `Labor Cost: $${result.cost.labor_cost.toLocaleString()}<br>` +
+                        `Right-of-Way Cost: $${result.cost.row_cost.toLocaleString()}<br>` +
+                        `Miscellaneous Cost: $${result.cost.misc_cost.toLocaleString()}`;
+                } else {
+                    costDiv.innerHTML = '<h4 class="font-semibold">Estimated Cost:</h4> Estimation failed.';
+                }
+            })
+            .catch(error => {
+                console.error('Error during fetch:', error);
+                bomDiv.innerHTML = '<h4 class="font-semibold">Error:</h4> Failed to get estimation.';
+                costDiv.innerHTML = '';
+            });
+        });
+    </script>
+{% endblock %}
