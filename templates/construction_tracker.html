@@ -1,77 +1,474 @@
 {% extends "base.html" %}
 {% block title %}Construction Tracker - VibeOps{% endblock %}
+
+{% block extra_head %}
+    <script src="https://cdn.plot.ly/plotly-2.18.1.min.js"></script> {# Include Plotly library #}
+    {# Add MathJax if you plan to display formulas in metrics #}
+    {# <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> #}
+{% endblock %}
+
 {% block content %}
-    <section class="contact" data-aos="fade-in" data-aos-duration="1000">
+    <section class="construction-tracker-page"> {# Use a unique class for this page #}
         <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Construction Tracker">Construction Tracker</h2>
-        <p data-aos="fade-up" data-aos-delay="200" class="text-center text-gray-600">Upload project data to track progress and unravel performance mysteries.</p>
+        <p data-aos="fade-up" data-aos-delay="200" class="text-center">Define project tasks, track progress, and visualize performance with Gantt charts and S-curves.</p>
         
-        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-            <form id="trackerForm" class="space-y-6" enctype="multipart/form-data">
+        <div class="input-section" data-aos="fade-up" data-aos-delay="300"> {# Use input-section class #}
                 <div>
-                    <label for="project_name" class="block text-sm font-medium text-gray-700">Project Name</label>
-                    <input type="text" name="project_name" id="project_name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                <label for="project_name">Project Name</label>
+                <input type="text" name="project_name" id="project_name" required placeholder="e.g., Office Building Renovation"> {# Added placeholder #}
                 </div>
                 
-                <div>
-                    <label for="data_file" class="block text-sm font-medium text-gray-700">Upload Data File (CSV or Excel)</label>
-                    <input type="file" name="data_file" id="data_file" accept=".csv,.xls,.xlsx" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            <div id="task-list" class="space-y-6 mt-4">
+                <h3 class="text-xl font-semibold" style="color: #00ffcc;">Define Project Tasks</h3> {# Themed heading #}
+                <div id="tasks-container">
+                    {# Task input rows will be added here by JavaScript #}
+                </div>
+                <button type="button" id="add-task" class="btn secondary w-full flex justify-center">Add Task</button> {# Themed button #}
+            </div>
+
+            <div class="mt-4">
+                <button type="button" id="generate-gantt" class="btn primary w-full flex justify-center">Generate Plan (Gantt Chart)</button> {# Themed button #}
+                 <div id="task-form-error-message" class="text-center" style="color: red; margin-top: 1rem;"></div> {# Area for displaying task input errors #}
+            </div>
+        </div>
+
+        <!-- Gantt Chart Display -->
+        <div id="gantt-results" class="output-section mt-8 hidden"> {# Use output-section and hidden #}
+            <h2>Project Gantt Chart</h2> {# Use h2 #}
+            <div id="gantt-chart" class="box"> {# Use box #}
+                 {# Gantt chart will be plotted here by Plotly #}
+            </div>
                 </div>
                 
-                <div>
-                    <button type="submit" class="btn primary w-full flex justify-center">
-                        Analyze the Abyss
-                    </button>
+        <!-- Progress Rating Interface -->
+        <div id="progress-section" class="input-section mt-8 hidden"> {# Use input-section and hidden #}
+            <h3 class="text-xl font-semibold mb-4" style="color: #00ffcc;">Report Progress & Costs</h3> {# Themed heading #}
+             <div id="progress-form-error-message" class="text-center" style="color: red; margin-bottom: 1rem;"></div> {# Area for displaying progress input errors #}
+            <div id="progress-list" class="space-y-4">
+                {# Progress input rows will be populated here by JavaScript #}
+            </div>
+            <button type="button" id="submit-progress" class="btn primary w-full flex justify-center mt-4">Analyze Progress (S-Curves)</button> {# Themed button #}
                 </div>
-            </form>
-            
-            <div id="results" class="mt-8 hidden">
-                <h3 class="text-xl font-semibold mb-4">Analysis Results</h3>
-                <div id="analysis" class="mb-4 p-4 bg-gray-50 rounded-md"></div>
+
+        <!-- S-Curve and Analysis Results -->
+        <div id="analysis-results" class="output-section mt-8 hidden"> {# Use output-section and hidden #}
+            <h2>Performance Analysis</h2> {# Use h2 #}
+            <div id="s-curve-chart" class="box mb-4"> {# Use box #}
+                {# S-curve chart will be plotted here by Plotly #}
+            </div>
+            <div id="metrics" class="box"> {# Use box #}
+                {# Performance metrics will be displayed here #}
             </div>
         </div>
     </section>
 
+{% endblock %}
+
+{% block extra_scripts %} {# Use extra_scripts block #}
     <script>
-        document.getElementById('trackerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const form = event.target;
-            const formData = new FormData(form);
-            
-            console.log('Form submitted');
-            
-            const resultsDiv = document.getElementById('results');
-            const analysisDiv = document.getElementById('analysis');
+        // Task Input Management
+        let taskCount = 0;
+        const tasksContainer = document.getElementById('tasks-container');
+        const addTaskButton = document.getElementById('add-task');
+        let taskList = []; // Store tasks globally after Gantt generation
 
-            resultsDiv.classList.remove('hidden');
-            analysisDiv.innerHTML = 'Processing data...';
+        // Function to add a task input row
+        function addTaskRow(task = {}) {
+            taskCount++;
+            const taskRow = document.createElement('div');
+            taskRow.className = 'task-row'; // Use flex for layout, defined in CSS
+            taskRow.id = `task-${taskCount}`;
+            taskRow.innerHTML = `
+                <input type="text" placeholder="Task Name" class="task-name" value="${task.activityName || ''}" required>
+                <input type="date" placeholder="Start Date" class="task-start" value="${task.start || ''}" required>
+                <input type="number" placeholder="Duration (days)" class="task-duration" value="${task.duration || ''}" min="1" required>
+                <input type="text" placeholder="Predecessors (comma-separated task names)" class="task-predecessors" value="${(task.immediatePredecessor || []).join(', ')}">
+                <button type="button" class="remove-task btn secondary">Remove</button> {# Themed button #}
+            `;
+            tasksContainer.appendChild(taskRow);
 
+            // Add event listener to the remove button
+            taskRow.querySelector('.remove-task').addEventListener('click', () => {
+                tasksContainer.removeChild(taskRow);
+            });
+        }
+
+        // Add initial task row on page load
+        document.addEventListener('DOMContentLoaded', () => {
+             addTaskRow(); // Add one row to start with
+        });
+
+
+        // Event listener for "Add Task" button
+        addTaskButton.addEventListener('click', () => {
+            addTaskRow();
+        });
+
+        // Generate Gantt Chart
+        document.getElementById('generate-gantt').addEventListener('click', () => {
+            const projectName = document.getElementById('project_name').value.trim();
+            const taskFormErrorMessageDiv = document.getElementById('task-form-error-message');
+            taskFormErrorMessageDiv.textContent = ''; // Clear previous errors
+
+
+            if (!projectName) {
+                taskFormErrorMessageDiv.textContent = 'Please enter a project name.';
+                // Add a highlight to the input
+                document.getElementById('project_name').style.borderColor = 'red';
+                return;
+            } else {
+                 document.getElementById('project_name').style.borderColor = ''; // Remove highlight
+            }
+
+
+            const taskRows = tasksContainer.querySelectorAll('.task-row');
+            taskList = []; // Reset taskList
+
+            let formIsValid = true;
+            taskRows.forEach(row => {
+                const nameInput = row.querySelector('.task-name');
+                const startInput = row.querySelector('.task-start');
+                const durationInput = row.querySelector('.task-duration');
+                const predecessorsInput = row.querySelector('.task-predecessors'); // This is optional input
+
+                const name = nameInput.value.trim();
+                const start = startInput.value; // Keep date format as is
+                const duration = parseInt(durationInput.value);
+                // Split predecessors string into a list, filter empty strings
+                const predecessors = predecessorsInput.value.split(',').map(p => p.trim()).filter(p => p !== '');
+
+
+                // Basic validation for required fields
+                if (!name || !start || isNaN(duration) || duration <= 0) {
+                    formIsValid = false;
+                    // Highlight invalid fields
+                     nameInput.style.borderColor = name ? '' : 'red';
+                     startInput.style.borderColor = start ? '' : 'red';
+                     durationInput.style.borderColor = (!isNaN(duration) && duration > 0) ? '' : 'red';
+                } else {
+                     // Reset borders if valid
+                     nameInput.style.borderColor = '';
+                     startInput.style.borderColor = '';
+                     durationInput.style.borderColor = '';
+
+                    // Add valid task to list
+                    taskList.push({
+                        activityName: name,
+                        start: start,
+                        duration: duration,
+                        immediatePredecessor: predecessors // Send as array of strings
+                    });
+                }
+            });
+
+            if (!formIsValid) {
+                taskFormErrorMessageDiv.textContent = 'Please fill in all required task details correctly.';
+                return;
+            }
+
+            if (taskList.length === 0) {
+                taskFormErrorMessageDiv.textContent = 'Please add at least one task.';
+                return;
+            }
+
+             // Basic check for predecessors existing in the task list
+             const taskNames = taskList.map(task => task.activityName);
+             for (const task of taskList) {
+                 for (const pred of task.immediatePredecessor) {
+                     if (!taskNames.includes(pred)) {
+                         taskFormErrorMessageDiv.textContent = `Predecessor "${pred}" not found in task list for task "${task.activityName}". Please check predecessor names.`;
+                         // Optionally highlight the predecessor input field
+                         // tasksContainer.querySelector(`#task-${taskList.indexOf(task) + 1} .task-predecessors`).style.borderColor = 'red';
+                         return; // Stop and show error
+                     }
+                 }
+             }
+             // Reset predecessor borders if check passes (if you added highlighting above)
+             // taskRows.forEach(row => row.querySelector('.task-predecessors').style.borderColor = '');
+
+
+            // Show loading indicator for Gantt chart
+             const ganttChartDiv = document.getElementById('gantt-chart');
+             const ganttResultsDiv = document.getElementById('gantt-results');
+             ganttResultsDiv.classList.remove('hidden'); // Show the section
+             ganttChartDiv.innerHTML = '<div style="color: #00ffcc; text-align: center;">Generating Gantt chart...</div>'; // Themed loading
+
+
+            // Send tasks to backend to generate Gantt
             fetch('/construction-tracker', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    project_name: projectName,
+                    tasks: taskList
+                })
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                 if (!response.ok) {
+                    // Read the error message from the backend response body
+                    return response.json().then(data => {
+                        // If backend returns JSON with an 'error' key, use that message
+                        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                    }).catch(() => {
+                         // If backend response is not JSON or doesn't have 'error', use generic status
+                         throw new Error(`HTTP error! status: ${response.status}`);
+                    });
                 }
                 return response.json();
             })
             .then(result => {
-                console.log('Backend response:', result);
-                if (result.analysis_results) {
-                    analysisDiv.innerHTML = '<h4 class="font-semibold">Analysis Summary:</h4>' +
-                        `Project: ${result.project_name}<br>` +
-                        `Cost Variance: ${result.analysis_results.cost_variance?.toLocaleString() || 'N/A'}<br>` +
-                        `Schedule Variance: ${result.analysis_results.schedule_variance?.toLocaleString() || 'N/A'}<br>` +
-                        `Critical Path Updates: ${result.analysis_results.critical_path_updates || 'N/A'}`;
+                console.log('Gantt Backend response:', result);
+                if (result.gantt_data) {
+                    // Clear loading
+                     ganttChartDiv.innerHTML = '';
+                    Plotly.newPlot('gantt-chart', result.gantt_data.data, result.gantt_data.layout, { responsive: true });
+
+                    // Store the processed tasks with CPM results from the backend
+                    taskList = result.processed_tasks; // Update global taskList for progress step
+
+                    // Populate progress rating interface based on generated taskList
+                    populateProgressSection();
+
                 } else {
-                    analysisDiv.innerHTML = '<h4 class="font-semibold">Analysis:</h4> Processing failed.';
+                     ganttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Failed to generate Gantt chart. No data received.</div>';
                 }
             })
             .catch(error => {
-                console.error('Error during fetch:', error);
-                analysisDiv.innerHTML = '<h4 class="font-semibold">Error:</h4> Failed to process data.';
+                console.error('Error generating Gantt:', error);
+                 // Display the error message received from the backend or the fetch error
+                 ganttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Error generating Gantt chart: ' + error.message + '</div>';
+                 // Hide progress section if Gantt fails
+                 document.getElementById('progress-section').classList.add('hidden');
+                 document.getElementById('analysis-results').classList.add('hidden');
             });
         });
+
+        // Function to populate the progress rating section
+        function populateProgressSection() {
+             const progressSectionDiv = document.getElementById('progress-section');
+             const progressListDiv = document.getElementById('progress-list');
+             progressListDiv.innerHTML = ''; // Clear previous entries
+
+             if (taskList.length > 0) {
+                taskList.forEach((task, index) => {
+                    const progressRow = document.createElement('div');
+                    progressRow.className = 'progress-row'; // Use flex for layout
+                    progressRow.innerHTML = `
+                        <label>${task.activityName}</label>
+                        <input type="number" placeholder="% Complete" min="0" max="100" class="progress-percent" data-task-index="${index}" value="0"> {# Default to 0% #}
+                        <input type="number" placeholder="Actual Cost ($)" min="0" class="actual-cost" data-task-index="${index}" value="0"> {# Default to 0 #}
+                    `;
+                    progressListDiv.appendChild(progressRow);
+                });
+                progressSectionDiv.classList.remove('hidden'); // Show the progress section
+             } else {
+                 progressSectionDiv.classList.add('hidden'); // Hide if no tasks
+             }
+        }
+
+
+        // Submit Progress and Generate S-Curves and Metrics
+        document.getElementById('submit-progress').addEventListener('click', () => {
+            const progressFormErrorMessageDiv = document.getElementById('progress-form-error-message');
+            progressFormErrorMessageDiv.textContent = ''; // Clear previous errors
+
+            const progressData = [];
+            const progressRows = document.querySelectorAll('#progress-list .progress-row'); // Select within progress-list
+            let progressFormIsValid = true;
+
+            progressRows.forEach(row => {
+                const percentInput = row.querySelector('.progress-percent');
+                const costInput = row.querySelector('.actual-cost');
+
+                const index = parseInt(percentInput.dataset.taskIndex);
+                const percentComplete = parseFloat(percentInput.value);
+                const actualCost = parseFloat(costInput.value);
+
+                 if (isNaN(percentComplete) || percentComplete < 0 || percentComplete > 100 || isNaN(actualCost) || actualCost < 0) {
+                    progressFormIsValid = false;
+                     percentInput.style.borderColor = (!isNaN(percentComplete) && percentComplete >= 0 && percentComplete <= 100) ? '' : 'red';
+                     costInput.style.borderColor = (!isNaN(actualCost) && actualCost >= 0) ? '' : 'red';
+                 } else {
+                     percentInput.style.borderColor = '';
+                     costInput.style.borderColor = '';
+                     progressData.push({
+                         taskIndex: index,
+                         percentComplete: percentComplete,
+                         actualCost: actualCost
+                     });
+                 }
+            });
+
+             if (!progressFormIsValid) {
+                progressFormErrorMessageDiv.textContent = 'Please enter valid progress percentages (0-100) and non-negative actual costs.';
+                return;
+            }
+
+
+            // Show loading indicator for analysis results
+             const sCurveChartDiv = document.getElementById('s-curve-chart');
+             const metricsDiv = document.getElementById('metrics');
+             const analysisResultsDiv = document.getElementById('analysis-results');
+             analysisResultsDiv.classList.remove('hidden'); // Show the section
+             sCurveChartDiv.innerHTML = 'Analyzing progress...';
+             metricsDiv.innerHTML = 'Calculating metrics...';
+
+
+            // Send tasks and progress to backend for S-curve and metrics
+            fetch('/construction-tracker-progress', { // New route for progress analysis
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    tasks: taskList, // Send the original task list
+                    progress: progressData,
+                    report_date: new Date().toISOString().split('T')[0] // Send the current date for analysis point
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                    }).catch(() => {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Analysis Backend response:', result);
+
+                // Clear loading
+                sCurveChartDiv.innerHTML = '';
+                metricsDiv.innerHTML = '';
+
+                if (result.s_curve_data) {
+                    Plotly.newPlot('s-curve-chart', result.s_curve_data.data, result.s_curve_data.layout, { responsive: true });
+                } else {
+                    sCurveChartDiv.innerHTML = '<div style="color: red;">Failed to generate S-curves.</div>';
+                }
+
+                if (result.metrics) {
+                    metricsDiv.innerHTML = `
+                        <h4 class="font-semibold" style="color: #00ffcc;">Performance Metrics:</h4>
+                        <p><strong>Schedule Variance (SV):</strong> ${result.metrics.schedule_variance ? '$' + result.metrics.schedule_variance.toLocaleString() : 'N/A'}</p>
+                        <p><strong>Cost Variance (CV):</strong> ${result.metrics.cost_variance ? '$' + result.metrics.cost_variance.toLocaleString() : 'N/A'}</p>
+                        <p><strong>Critical Path:</strong> ${result.metrics.critical_path ? result.metrics.critical_path : 'N/A'}</p>
+                        ${result.metrics.critical_path_updates ? `<p><strong>Critical Path Updates:</strong> ${result.metrics.critical_path_updates}</p>` : ''}
+                        ${result.metrics.analysis_notes ? `<p style="color: yellow;"><strong>Notes:</strong> ${result.metrics.analysis_notes}</p>` : ''}
+                    `;
+                } else {
+                    metricsDiv.innerHTML = '<div style="color: red;">Failed to calculate metrics.</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error generating analysis:', error);
+                 sCurveChartDiv.innerHTML = '<div style="color: red;">Error generating analysis: ' + error.message + '</div>';
+                 metricsDiv.innerHTML = ''; // Clear metrics area on error
+            });
+        });
+
+        // Example data for Bridge Footings project
+        const exampleTasks = [
+            { activityName: 'start',            start: '2025-05-12', duration: 6, immediatePredecessor: [] },
+            { activityName: 'Remove rebar',    start: '2025-05-18', duration: 2, immediatePredecessor: ['start'] },
+            { activityName: 'Remove concrete', start: '2025-05-21', duration: 3, immediatePredecessor: ['start','Remove rebar'] },
+            { activityName: 'Remove siding',   start: '2025-05-24', duration: 2, immediatePredecessor: ['Remove concrete'] }
+        ];
+
+        // Helper to append a styled bot-message
+        function appendBotMessage(html) {
+            const msgs = document.getElementById('chatbot-messages');
+            if (!msgs) return; // Exit if chat window doesn't exist
+            
+            const div = document.createElement('div');
+            div.classList.add('message', 'bot-message', 'chat-modal');
+            div.innerHTML = html;
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        // On page load: open chat & prompt
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatWin = document.querySelector('.chatbot-window');
+            const chatToggle = document.querySelector('.chatbot-toggle');
+            
+            if (chatWin && !chatWin.classList.contains('active')) {
+                chatWin.classList.add('active');
+                chatToggle.setAttribute('aria-expanded', 'true');
+            }
+
+            // Show example prompt after a short delay
+            setTimeout(() => {
+                appendBotMessage(`
+                    <p><strong>President:</strong> Want me to drop in an example schedule to get you started?</p>
+                    <button id="modal-yes" class="btn primary">Yes, please!</button>
+                    <button id="modal-no" class="btn secondary">No, thanks</button>
+                `);
+            }, 300);
+        });
+
+        // Handle Yes/No clicks
+        document.body.addEventListener('click', e => {
+            if (e.target.id === 'modal-no') {
+                const modal = e.target.closest('.chat-modal');
+                if (modal) modal.remove();
+            }
+
+            if (e.target.id === 'modal-yes') {
+                const modal = e.target.closest('.chat-modal');
+                if (modal) {
+                    modal.remove();
+                    // Clear existing tasks and populate example
+                    document.getElementById('tasks-container').innerHTML = '';
+                    document.getElementById('project_name').value = 'Bridge Footings';
+                    exampleTasks.forEach(task => addTaskRow(task));
+                    
+                    // Show example data in chat
+                    appendBotMessage(`
+                        <p>✅ Here's a sample Bridge Footings schedule you can tweak:</p>
+                        <pre>Task Name,Start Date,Duration (days),Predecessors
+start,05/12/2025,6,
+Remove rebar,05/18/2025,2,start
+Remove concrete,05/21/2025,3,"start,Remove rebar"
+Remove siding,05/24/2025,2,Remove concrete</pre>
+                    `);
+                }
+            }
+        });
     </script>
+
+    <style>
+        /* Chat modal styling */
+        #chatbot-messages .chat-modal {
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: .5rem 0;
+            text-align: center;
+        }
+        #chatbot-messages .chat-modal p {
+            margin-bottom: .75rem;
+            color: #f2f2f2;
+        }
+        #chatbot-messages .chat-modal button {
+            margin: 0 .25rem;
+            padding: .5rem 1rem;
+            font-size: .9rem;
+        }
+        #chatbot-messages pre {
+            background: rgba(255,255,255,0.1);
+            padding: .75rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: .9rem;
+            white-space: pre-wrap;
+            text-align: left;
+            margin-top: .5rem;
+        }
+    </style>
 {% endblock %}

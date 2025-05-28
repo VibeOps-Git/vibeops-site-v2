@@ -31,3 +31,14 @@ create table settings (
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
 );
+
+-- Create s_curves table to store S-curve data
+CREATE TABLE s_curves (
+    id BIGSERIAL PRIMARY KEY,
+    project_id BIGINT REFERENCES projects(id),
+    data JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Create index for faster queries
+CREATE INDEX idx_s_curves_project_id ON s_curves(project_id);

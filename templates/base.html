@@ -11,6 +11,7 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header>
@@ -25,10 +26,10 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/services">Services</a></li>
-                {% if session.google_id %}
+                <li><a href="/team">Team</a></li>
                 <li><a href="/pipeline-estimator">Pipeline Estimator</a></li>
                 <li><a href="/construction-tracker">Construction Tracker</a></li>
-                {% endif %}
+                <li><a href="/struct-wise">Struct-wise</a></li>
                 {% if session.google_id %}
                 <li><a href="/logout">Logout</a></li>
                 {% else %}
@@ -50,12 +51,12 @@
         </button>
         <div class="chatbot-window">
             <div class="chatbot-header">
-                <h3>VibeOpsPresident</h3>
+                <h3>VibeOps: President</h3>
                 <button class="chatbot-close" aria-label="Close chatbot">✖</button>
             </div>
             <div class="chatbot-messages" id="chatbot-messages">
                 <div class="message bot-message">
-                    Hey there! I’m President, your VibeOps AI. What’s the vibe today—need a workflow fix or a slick site?
+                    Hey there! I'm President, your VibeOps AI. What's the vibe today—need a workflow fix or a slick site?
                 </div>
             </div>
             <div class="chatbot-input">
@@ -69,7 +70,7 @@
         <img src="/static/Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100">
         <p data-aos="fade-up" data-aos-delay="200">© 2025 VibeOps — AI Automation & Web Solutions. All rights reserved.</p>
         <div class="socials" data-aos="fade-up" data-aos-delay="300">
-            <a href="mailto:vibeops.info@gmail.com?subject=Let’s%20Vibe&body=Hey%20VibeOps%2C%0A%0AI’ve%20got%20a%20project%20in%20mind:%20[details].%20Let’s%20connect!%0A%0A[Your%20Name]">Email: vibeops.info@gmail.com</a>
+            <a href="mailto:vibeops.info@gmail.com?subject=Let's%20Vibe&body=Hey%20VibeOps%2C%0A%0AI've%20got%20a%20project%20in%20mind:%20[details].%20Let's%20connect!%0A%0A[Your%20Name]">Email: vibeops.info@gmail.com</a>
         </div>
     </footer>
 
@@ -102,15 +103,52 @@
         // Toggle chatbot window
         chatbotToggle.addEventListener('click', () => {
             chatbotWindow.classList.toggle('active');
-            chatbotToggle.setAttribute('aria-expanded', chatbotWindow.classList.contains('active'));
+            const isActive = chatbotWindow.classList.contains('active');
+            chatbotToggle.setAttribute('aria-expanded', isActive);
+            // Store state in sessionStorage
+            sessionStorage.setItem('chatOpen', isActive);
         });
 
         chatbotClose.addEventListener('click', () => {
             chatbotWindow.classList.remove('active');
             chatbotToggle.setAttribute('aria-expanded', 'false');
+            // Update sessionStorage
+            sessionStorage.setItem('chatOpen', 'false');
         });
 
-        // Send message on button click or Enter key
+        // Load chat history when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/get-chat-history')
+                .then(response => response.json())
+                .then(messages => {
+                    // Clear initial welcome message
+                    chatbotMessages.innerHTML = '';
+                    
+                    // Add all messages from history
+                    messages.forEach(msg => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.classList.add('message');
+                        messageDiv.classList.add(msg.role === 'user' ? 'user-message' : 'bot-message');
+                        messageDiv.textContent = msg.content;
+                        chatbotMessages.appendChild(messageDiv);
+                    });
+                    
+                    // Scroll to bottom
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                })
+                .catch(error => console.error('Error loading chat history:', error));
+
+            // Check if chat was open in previous page
+            const wasChatOpen = sessionStorage.getItem('chatOpen') === 'true';
+            if (wasChatOpen) {
+                const chatbotWindow = document.querySelector('.chatbot-window');
+                const chatbotToggle = document.querySelector('.chatbot-toggle');
+                chatbotWindow.classList.add('active');
+                chatbotToggle.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // Update the sendMessage function to store messages in the UI
         function sendMessage() {
             const message = chatbotInput.value.trim();
             if (!message) return;
@@ -139,7 +177,14 @@
                 },
                 body: JSON.stringify({ message }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Something went wrong');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 // Remove loading message
                 loadingMessage.remove();
@@ -147,7 +192,7 @@
                 // Add bot response
                 const botMessage = document.createElement('div');
                 botMessage.classList.add('message', 'bot-message');
-                botMessage.textContent = data.response || 'Something broke. Let’s try that again.';
+                botMessage.textContent = data.response || "Something broke. Let's try that again.";
                 chatbotMessages.appendChild(botMessage);
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             })
@@ -156,7 +201,7 @@
                 loadingMessage.remove();
                 const errorMessage = document.createElement('div');
                 errorMessage.classList.add('message', 'bot-message');
-                errorMessage.textContent = 'Oops, something broke. Try again?';
+                errorMessage.textContent = error.message || 'Oops, something broke. Try again?';
                 chatbotMessages.appendChild(errorMessage);
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             });
@@ -167,6 +212,7 @@
             if (e.key === 'Enter') sendMessage();
         });
     </script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>
 

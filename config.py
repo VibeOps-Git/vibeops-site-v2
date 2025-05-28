@@ -1,13 +1,23 @@
 import os
 from dotenv import load_dotenv
-from supabase import create_client
+from supabase import create_client, Client
 
+# Load environment variables
 load_dotenv()
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+# Get Supabase credentials
+SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
+SUPABASE_KEY = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
+# Validate credentials
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise ValueError("Supabase credentials not found")
+    raise ValueError("Supabase credentials not found in environment variables")
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+# Initialize Supabase client
+try:
+    supabase: Client = create_client(
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
+except Exception as e:
+    raise ValueError(f"Failed to initialize Supabase client: {str(e)}")

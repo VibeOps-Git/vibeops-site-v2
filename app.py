@@ -1,9 +1,8 @@
 from flask import Flask, send_from_directory, render_template, request, jsonify, session, redirect, url_for
 from authlib.integrations.flask_client import OAuth
-from config import supabase
-from auth import verify_supabase_jwt
 from pipeline import handle_pipeline_post
 from tracker import handle_tracker_post
+from config import supabase
 import os
 import json
 import pandas as pd
@@ -11,6 +10,9 @@ import io
 from dotenv import load_dotenv
 from functools import wraps
 import logging
+from openai import OpenAI
+import time
+from datetime import timedelta
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -21,6 +23,11 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)  # Session lasts for 1 day
+app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Authlib OAuth setup
 oauth = OAuth(app)
@@ -31,6 +38,9 @@ google = oauth.register(
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs={'scope': 'openid email'},
 )
+
+# Initialize OpenAI client
+client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
 # Login required decorator
 def login_required(f):
@@ -127,19 +137,28 @@ def booking():
     return render_template('booking.html')
 
 @app.route('/pipeline-estimator', methods=['GET', 'POST'])
-@login_required
+# @login_required  # Commented out for development
 def pipeline_estimator():
     if request.method == 'POST':
         return handle_pipeline_post()
     return render_template('pipeline_estimator.html')
 
 @app.route('/construction-tracker', methods=['GET', 'POST'])
-@login_required
 def construction_tracker():
-    return handle_tracker_post()
+    if request.method == 'POST':
+        return handle_tracker_post()
+    else:  # GET request
+        return render_template('construction_tracker.html')
+
+@app.route('/struct-wise', methods=['GET', 'POST'])
+# @login_required  # Commented out for development
+def struct_wise():
+    if request.method == 'POST':
+        # Handle file upload and analysis here
+        return jsonify({"message": "Analysis completed"})
+    return render_template('struct_wise.html')
 
 @app.route('/chatbot', methods=['POST'])
-@login_required
 def chatbot():
     try:
         data = request.json
@@ -147,26 +166,87 @@ def chatbot():
         if not message:
             return jsonify({"error": "Missing message"}), 400
 
-        # Placeholder response (replace with actual AI logic, e.g., OpenAI API)
-        response = f"Echo: {message}"
+        # Create a thread if it doesn't exist in the session
+        if 'thread_id' not in session:
+            thread = client.beta.threads.create()
+            session['thread_id'] = thread.id
 
-        # Store in Supabase
-        try:
-            supabase.table('chatbot_logs').insert({
-                'user_id': session['google_id'],
-                'email': session['email'],
-                'message': message,
-                'response': response,
-                'timestamp': pd.to_datetime('now').isoformat()
-            }).execute()
-        except Exception as e:
-            logger.error(f"Error storing chatbot message in Supabase: {e}")
-            return jsonify({"error": "Failed to log message"}), 500
+        # Add the message to the thread
+        client.beta.threads.messages.create(
+            thread_id=session['thread_id'],
+            role="user",
+            content=message
+        )
+
+        # Run the assistant
+        run = client.beta.threads.runs.create(
+            thread_id=session['thread_id'],
+            assistant_id=os.environ.get('OPENAI_ASSISTANT_ID')
+        )
+
+        # Wait for the run to complete
+        while True:
+            run_status = client.beta.threads.runs.retrieve(
+                thread_id=session['thread_id'],
+                run_id=run.id
+            )
+            if run_status.status == 'completed':
+                break
+            elif run_status.status in ['failed', 'cancelled', 'expired']:
+                raise Exception(f"Run failed with status: {run_status.status}")
+            time.sleep(1)
+
+        # Get the assistant's response
+        messages = client.beta.threads.messages.list(
+            thread_id=session['thread_id']
+        )
+        
+        # Get the latest assistant message
+        assistant_messages = [msg for msg in messages.data if msg.role == "assistant"]
+        if not assistant_messages:
+            raise Exception("No response from assistant")
+        
+        response = assistant_messages[0].content[0].text.value
+
+        # Store messages in session
+        if 'chat_messages' not in session:
+            session['chat_messages'] = []
+        
+        session['chat_messages'].append({
+            'role': 'user',
+            'content': message
+        })
+        session['chat_messages'].append({
+            'role': 'assistant',
+            'content': response
+        })
+        session.modified = True
+
+        # Store in Supabase (only if user is logged in)
+        if 'google_id' in session:
+            try:
+                supabase.table('chatbot_logs').insert({
+                    'user_id': session['google_id'],
+                    'email': session['email'],
+                    'message': message,
+                    'response': response,
+                    'timestamp': pd.to_datetime('now').isoformat()
+                }).execute()
+            except Exception as e:
+                logger.error(f"Error storing chatbot message in Supabase: {e}")
 
         return jsonify({"response": response}), 200
     except Exception as e:
         logger.error(f"Chatbot error: {e}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get-chat-history')
+def get_chat_history():
+    return jsonify(session.get('chat_messages', []))
+
+@app.route('/team')
+def team():
+    return render_template('team.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5006)
