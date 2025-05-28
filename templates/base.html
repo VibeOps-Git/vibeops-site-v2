@@ -11,6 +11,49 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* Chat modal styling */
+        #chatbot-messages .chat-modal {
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: .5rem 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #chatbot-messages .chat-modal p {
+            margin-bottom: .5rem;
+            color: #f2f2f2;
+        }
+
+        #chatbot-messages .chat-modal .btn {
+            margin: .5rem .25rem;
+            font-size: 1rem;
+            padding: .5rem 1rem;
+        }
+
+        /* Typing indicator styles */
+        .typing-indicator span {
+            animation: blink 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -24,17 +67,11 @@
             </button>
             <ul class="nav-menu">
                 <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/services">Services</a></li>
                 <li><a href="/team">Team</a></li>
                 <li><a href="/pipeline-estimator">Pipeline Estimator</a></li>
                 <li><a href="/construction-tracker">Construction Tracker</a></li>
-                <li><a href="/struct-wise">Struct-wise</a></li>
-                {% if session.google_id %}
-                <li><a href="/logout">Logout</a></li>
-                {% else %}
-                <li><a href="/login">Login</a></li>
-                {% endif %}
+                <li><a href="/services">Services</a></li>
+                <li><a href="/struct-wise">Struct-wise Demo</a></li>
                 <li><a href="/booking" class="btn primary">Book Now</a></li>
             </ul>
         </nav>
@@ -52,6 +89,7 @@
         <div class="chatbot-window">
             <div class="chatbot-header">
                 <h3>VibeOps: President</h3>
+                <button id="clear-chat-button" aria-label="Clear chat history">Clear Chat</button>
                 <button class="chatbot-close" aria-label="Close chatbot">✖</button>
             </div>
             <div class="chatbot-messages" id="chatbot-messages">
@@ -70,7 +108,7 @@
         <img src="/static/Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100">
         <p data-aos="fade-up" data-aos-delay="200">© 2025 VibeOps — AI Automation & Web Solutions. All rights reserved.</p>
         <div class="socials" data-aos="fade-up" data-aos-delay="300">
-            <a href="mailto:vibeops.info@gmail.com?subject=Let's%20Vibe&body=Hey%20VibeOps%2C%0A%0AI've%20got%20a%20project%20in%20mind:%20[details].%20Let's%20connect!%0A%0A[Your%20Name]">Email: vibeops.info@gmail.com</a>
+            <a href="mailto:vibeops.info@gmail.com?subject=Let's%20Build:%20_________&body=Hey%20VibeOps%2C%0A%0AI've%20got%20a%20project%20in%20mind:%20[details].%20Let%20s%20connect!%0A%0A[Your%20Name]" class="footer-email-btn">Email Us!</a>
         </div>
     </footer>
 
@@ -88,8 +126,9 @@
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
         navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            navToggle.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+            const isActive = navMenu.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isActive);
+            document.body.classList.toggle('nav-menu-active', isActive); // Toggle class on body
         });
 
         // Chatbot functionality
@@ -99,111 +138,290 @@
         const chatbotMessages = document.getElementById('chatbot-messages');
         const chatbotInput = document.getElementById('chatbot-input');
         const chatbotSend = document.getElementById('chatbot-send');
+        const clearChatButton = document.getElementById('clear-chat-button');
 
-        // Toggle chatbot window
+        // Toggle chatbot window with morphing effect
         chatbotToggle.addEventListener('click', () => {
+            if (!document.body.classList.contains('nav-menu-active')) { // Only toggle if nav is not active
+                const isActive = !chatbotWindow.classList.contains('active');
             chatbotWindow.classList.toggle('active');
-            const isActive = chatbotWindow.classList.contains('active');
-            chatbotToggle.setAttribute('aria-expanded', isActive);
-            // Store state in sessionStorage
-            sessionStorage.setItem('chatOpen', isActive);
+                chatbotToggle.classList.toggle('chatbot-hidden', isActive);
+                chatbotToggle.setAttribute('aria-expanded', isActive);
+                sessionStorage.setItem('chatOpen', isActive);
+
+                 // Use a small delay to allow opacity transition before changing display
+                 if (isActive) {
+                     chatbotWindow.style.display = 'flex'; // Make visible when activating
+                 } else {
+                     // Delay hiding the window until after the fade out transition
+                      setTimeout(() => {
+                          chatbotWindow.style.display = 'none';
+                      }, 300); // Match this delay to your CSS transition duration
+                 }
+
+            }
         });
 
         chatbotClose.addEventListener('click', () => {
             chatbotWindow.classList.remove('active');
+            chatbotToggle.classList.remove('chatbot-hidden');
             chatbotToggle.setAttribute('aria-expanded', 'false');
-            // Update sessionStorage
             sessionStorage.setItem('chatOpen', 'false');
+
+             // Delay hiding the window until after the fade out transition
+             setTimeout(() => {
+                 chatbotWindow.style.display = 'none';
+             }, 300); // Match this delay to your CSS transition duration
         });
 
         // Load chat history when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/get-chat-history')
-                .then(response => response.json())
-                .then(messages => {
-                    // Clear initial welcome message
-                    chatbotMessages.innerHTML = '';
-                    
-                    // Add all messages from history
-                    messages.forEach(msg => {
-                        const messageDiv = document.createElement('div');
-                        messageDiv.classList.add('message');
-                        messageDiv.classList.add(msg.role === 'user' ? 'user-message' : 'bot-message');
-                        messageDiv.textContent = msg.content;
-                        chatbotMessages.appendChild(messageDiv);
-                    });
-                    
-                    // Scroll to bottom
-                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                })
-                .catch(error => console.error('Error loading chat history:', error));
+            // Use sessionStorage for history that clears on hard reload/tab close
+            const savedChatHistory = sessionStorage.getItem('chatHistory');
+            const chatbotMessages = document.getElementById('chatbot-messages');
 
-            // Check if chat was open in previous page
+            if (savedChatHistory) {
+                // Load history from sessionStorage
+                const messages = JSON.parse(savedChatHistory);
+                chatbotMessages.innerHTML = ''; // Clear existing content
+                messages.forEach(msg => {
+                    appendMessage(msg.role, msg.content);
+                });
+                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to bottom
+            } else {
+                // If no history in sessionStorage, fetch from server (optional, or start fresh)
+                // Note: Server-side session might also have cleared on hard reload,
+                // so fetching might return empty history or an error.
+                fetch('/get-chat-history')
+                    .then(response => response.json())
+                    .then(messages => {
+                        // Clear initial welcome message if server sends history
+                        chatbotMessages.innerHTML = '';
+                        
+                        // Add all messages from history
+                        messages.forEach(msg => {
+                            appendMessage(msg.role, msg.content);
+                        });
+                        
+                        // Scroll to bottom and save initial history
+                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                        // Only save if there's actual history fetched, otherwise session storage remains empty and welcome message appears
+                        if (messages.length > 0) {
+                             saveChatHistory(); // Save the initial history fetched from server
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading chat history:', error);
+                        // If server fetch fails and no sessionStorage, ensure initial welcome message is there
+                         if (!sessionStorage.getItem('chatHistory') || chatbotMessages.children.length === 0) {
+                             // Add initial welcome message if starting fresh or fetch failed
+                              appendMessage('bot', "Hey there! I'm President, your VibeOps AI. How can I assist you today?");
+                         }
+                    });
+            }
+
+            // Check if chat was open in previous page using sessionStorage
             const wasChatOpen = sessionStorage.getItem('chatOpen') === 'true';
-            if (wasChatOpen) {
-                const chatbotWindow = document.querySelector('.chatbot-window');
-                const chatbotToggle = document.querySelector('.chatbot-toggle');
+            if (wasChatOpen && !document.body.classList.contains('nav-menu-active')) {
                 chatbotWindow.classList.add('active');
+                chatbotToggle.classList.add('chatbot-hidden');
                 chatbotToggle.setAttribute('aria-expanded', 'true');
+                 chatbotWindow.style.display = 'flex'; // Ensure display is flex if opened on load
             }
         });
 
-        // Update the sendMessage function to store messages in the UI
+        // Helper function to append messages
+        function appendMessage(role, content) {
+            const chatbotMessages = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(role === 'user' ? 'user-message' : 'bot-message');
+            
+            // Check for button data in content
+            try {
+                const data = JSON.parse(content);
+                if (data.type === 'prompt' && data.text && data.buttons && Array.isArray(data.buttons)) {
+                    // This is a structured prompt message with buttons
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = data.text;
+                    messageDiv.appendChild(textSpan);
+
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.style.display = 'flex'; // Use flexbox for layout
+                    buttonContainer.style.gap = '10px'; // Space between buttons
+                    buttonContainer.style.marginTop = '10px'; // Space above buttons
+
+                    data.buttons.forEach(button => {
+                        const buttonElement = document.createElement('button');
+                        buttonElement.classList.add('btn'); // Add base button class
+                        // Add primary or secondary class based on button type, defaulting to secondary
+                         buttonElement.classList.add(button.type === 'primary' ? 'primary' : 'secondary');
+                        buttonElement.textContent = button.text;
+                        // Store the value to be sent on click
+                        buttonElement.dataset.value = button.value;
+
+                        buttonElement.addEventListener('click', function() {
+                            // Handle button click - send the value as a user message
+                             const valueToSend = this.dataset.value;
+                            chatbotInput.value = valueToSend; // Populate input with the value
+                            sendMessage(); // Send the message
+                        });
+
+                        buttonContainer.appendChild(buttonElement);
+                    });
+                    messageDiv.appendChild(buttonContainer);
+
+                } else {
+                    // Regular text message
+                    messageDiv.textContent = content;
+                }
+            } catch (e) {
+                // Content is not JSON or not a prompt message, treat as plain text
+                messageDiv.textContent = content;
+            }
+
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to bottom after adding message
+            // Save history after adding any message
+            saveChatHistory();
+        }
+
+        // Helper function to save current chat history to sessionStorage
+        function saveChatHistory() {
+            const chatbotMessages = document.getElementById('chatbot-messages');
+            const messages = [];
+            chatbotMessages.querySelectorAll('.message').forEach(msgDiv => {
+                const role = msgDiv.classList.contains('user-message') ? 'user' : 'bot';
+                 let content;
+                 // If the message has a button container, try to reconstruct the original structured data
+                 // Note: This part might need refinement depending on how structured prompts are sent from the server.
+                 // For simplicity and ensuring basic history persistence, we are saving the visible text content for now.
+                 // A more robust solution might involve storing the original JSON if available.
+                 content = msgDiv.textContent; // Save the text content visible
+                messages.push({ role, content });
+            });
+            sessionStorage.setItem('chatHistory', JSON.stringify(messages));
+        }
+
+        // Function to clear chat history and reset UI
+        function clearChat() {
+            sessionStorage.removeItem('chatHistory');
+            sessionStorage.removeItem('thread_id'); // Clear thread_id too
+            chatbotMessages.innerHTML = ''; // Clear visible messages
+
+            // Add the initial welcome message after clearing
+            appendMessage('bot', "Hey there! I'm President, your VibeOps AI. How can I assist you today?");
+
+            console.log("Chat history and thread ID cleared.");
+        }
+
+        // Add event listener to the clear chat button
+        clearChatButton.addEventListener('click', clearChat);
+
+        // Update the sendMessage function to store messages in the UI *and* save history
         function sendMessage() {
             const message = chatbotInput.value.trim();
             if (!message) return;
 
-            // Add user message to chat
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('message', 'user-message');
-            userMessage.textContent = message;
-            chatbotMessages.appendChild(userMessage);
-
-            // Clear input
+            // Add user message to chat and save history
+            appendMessage('user', message);
             chatbotInput.value = '';
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 
             // Show loading message
             const loadingMessage = document.createElement('div');
             loadingMessage.classList.add('message', 'bot-message');
             loadingMessage.textContent = 'President is thinking...';
             chatbotMessages.appendChild(loadingMessage);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 
-            // Call the Flask endpoint to interact with chatbot
+            // Prepare payload with thread_id as a separate field
+            const payload = { message };
+            const threadId = sessionStorage.getItem('thread_id'); // Corrected variable name to match session storage
+            if (threadId) {
+                payload.thread_id = threadId;
+                console.log('Sending thread_id:', threadId);
+            } else {
+                console.log('No thread_id found, expecting backend to create new thread');
+            }
+            console.log('Payload:', JSON.stringify(payload));
+
+            // Call the Flask endpoint
             fetch('/chatbot', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message }),
+                body: JSON.stringify(payload),
             })
             .then(response => {
                 if (!response.ok) {
+                    // Attempt to parse JSON even on non-OK responses
                     return response.json().then(data => {
-                        throw new Error(data.error || 'Something went wrong');
+                        // Check if the error message specifically indicates "No thread found"
+                        if (data.error && typeof data.error === 'object' && data.error.message && data.error.message.includes("No thread found")) {
+                            console.warn("Thread not found error received.");
+                            // This specific error is handled in the catch block below for UI reset
+                            // Just throw the error to be caught
+                             throw new Error(data.error.message);
+                        } else {
+                            // For other non-OK responses, throw a generic error with available info
+                            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                        }
+                    }).catch(parseError => {
+                         // If parsing JSON response fails (e.g., non-JSON error from server)
+                        console.error('Error parsing JSON from error response:', parseError);
+                         throw new Error(`HTTP error! status: ${response.status} - Could not parse error response.`);
                     });
                 }
                 return response.json();
             })
             .then(data => {
-                // Remove loading message
                 loadingMessage.remove();
 
-                // Add bot response
-                const botMessage = document.createElement('div');
-                botMessage.classList.add('message', 'bot-message');
-                botMessage.textContent = data.response || "Something broke. Let's try that again.";
-                chatbotMessages.appendChild(botMessage);
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                // Add bot response and save history
+                if (typeof data.response === 'object' && data.response !== null) {
+                     // Pass the original JSON object if it's structured
+                     appendMessage('bot', JSON.stringify(data.response));
+                } else {
+                    // Otherwise, treat as plain text
+                    appendMessage('bot', data.response || "Something broke. Let's try that again.");
+                }
+
+                // Store the new or existing thread_id if provided in the response
+                if (data.thread_id) {
+                    sessionStorage.setItem('thread_id', data.thread_id); // Corrected variable name to match session storage
+                    console.log('Stored thread_id:', data.thread_id);
+                } else {
+                     // If no thread_id is returned, ensure frontend also doesn't hold onto one
+                     sessionStorage.removeItem('thread_id'); // Corrected variable name
+                     console.log('No thread_id received, cleared frontend thread_id.');
+                }
+
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Fetch error:', error.message);
                 loadingMessage.remove();
-                const errorMessage = document.createElement('div');
-                errorMessage.classList.add('message', 'bot-message');
-                errorMessage.textContent = error.message || 'Oops, something broke. Try again?';
-                chatbotMessages.appendChild(errorMessage);
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+                // Check if the error is specifically the "No thread found" message
+                 if (error.message && error.message.includes("No thread found")) {
+                     // This error indicates the backend session was reset, so clear frontend state
+                     sessionStorage.removeItem('chatHistory');
+                     sessionStorage.removeItem('thread_id'); // Clear thread_id
+                     console.warn("Handled 'No thread found' error: Cleared frontend state.");
+
+                     // Clear visible messages and display a reset message
+                     chatbotMessages.innerHTML = '';
+                     appendMessage('bot', "It looks like the conversation session was reset. Let's start a new chat!");
+                      // After showing the reset message, add the initial welcome message
+                      setTimeout(() => {
+                          chatbotMessages.innerHTML = ''; // Clear again just in case
+                          appendMessage('bot', "Hey there! I'm President, your VibeOps AI. How can I assist you today?");
+                      }, 1500); // Small delay before adding the welcome message
+
+                 } else {
+                    // For other errors, add a generic error message to chat
+                    appendMessage('bot', error.message || 'Oops, something broke. Try again?');
+                 }
             });
         }
 
@@ -215,704 +433,3 @@
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
-
-<!-- Updated styles.css -->
-<style>
-/* Reset & Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: #0e0e0e;
-    color: #f2f2f2;
-    line-height: 1.6;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* Typography */
-h1, h2, h3 {
-    font-family: 'Orbitron', sans-serif;
-    margin-bottom: 20px;
-}
-
-h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 1.1;
-    text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
-}
-
-h2 {
-    font-size: clamp(2rem, 4vw, 2.8rem);
-}
-
-h3 {
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
-}
-
-p {
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    margin: 20px 0;
-}
-
-/* Layout */
-section {
-    padding: 80px 20px;
-    text-align: center;
-    min-height: 60vh;
-}
-
-main {
-    margin-bottom: 80px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Navigation */
-header {
-    background: #111;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo-link {
-    display: flex;
-    align-items: center;
-}
-
-.nav-logo {
-    max-width: 150px;
-}
-
-.nav-menu {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-menu li {
-    display: flex;
-    align-items: center;
-}
-
-.nav-menu a {
-    color: #f2f2f2;
-    text-decoration: none;
-    font-weight: 700;
-    transition: color 0.3s ease;
-}
-
-.nav-menu a:hover {
-    color: #00ffcc;
-}
-
-.nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.hamburger {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background: #f2f2f2;
-    position: relative;
-}
-
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    position: absolute;
-    width: 25px;
-    height: 3px;
-    background: #f2f2f2;
-    left: 0;
-    transition: all 0.3s ease;
-}
-
-.hamburger::before {
-    top: -8px;
-}
-
-.hamburger::after {
-    top: 8px;
-}
-
-/* Hero Section */
-.hero {
-    background: radial-gradient(circle at center, #8e2de2 0%, #4a00e0 70%, #0e0e0e 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero-content {
-    max-width: 900px;
-    padding: 20px;
-}
-
-.hero span {
-    color: #00ffcc;
-    font-style: italic;
-}
-
-.cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: 14px 32px;
-    margin: 10px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 700;
-    transition: all 0.3s ease;
-}
-
-.btn.primary {
-    background: #00ffcc;
-    color: #0e0e0e;
-}
-
-.btn.primary:hover {
-    animation: pulse 1.5s infinite;
-}
-
-.btn.secondary {
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-}
-
-.btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.7);
-    animation: wiggle 0.3s ease;
-}
-
-/* Grid & Cards */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.card {
-    background: #1e1e1e;
-    border: 1px solid #444;
-    border-radius: 12px;
-    padding: 30px;
-    transition: all 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-10px) rotate(1deg);
-    box-shadow: 0 15px 35px rgba(0, 255, 204, 0.3);
-    border-image: linear-gradient(to right, #8e2de2, #00ffcc) 1;
-}
-
-.card .price {
-    font-size: 1.5rem;
-    color: #00ffcc;
-    font-weight: 700;
-    margin: 10px 0;
-}
-
-/* Services */
-.services span {
-    color: #00ffcc;
-}
-
-.custom-plan {
-    margin-top: 40px;
-}
-
-.custom-plan h3 {
-    color: #00ffcc;
-}
-
-/* Pricing */
-.pricing {
-    background: #0e0e0e;
-}
-
-/* Testimonials */
-.testimonials {
-    background: #111;
-}
-
-.testimonials .grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-}
-
-blockquote {
-    font-style: italic;
-    margin: 20px 0;
-    padding: 25px;
-    background: #1e1e1e;
-    border-left: 4px solid #00ffcc;
-}
-
-cite {
-    display: block;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #ccc;
-}
-
-/* Why Us */
-.why-us {
-    background: #0e0e0e;
-}
-
-/* CTA */
-.cta {
-    background: #111;
-}
-
-.cta span {
-    color: #00ffcc;
-}
-
-/* Contact */
-.contact {
-    background: #0e0e0e;
-}
-
-/* Calendly Integration */
-.calendly-wrapper {
-    max-width: 800px;
-    margin: 40px auto;
-    background: #1e1e1e;
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px solid #444;
-}
-
-.calendly-inline-widget {
-    border-radius: 8px;
-    width: 100%;
-}
-
-/* Footer */
-.footer {
-    background: #111;
-    padding: 50px 20px;
-    color: #ccc;
-}
-
-.footer-logo {
-    max-width: 150px;
-    margin-bottom: 20px;
-}
-
-.socials {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.socials a {
-    color: #00ffcc;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.socials a:hover {
-    text-decoration: underline;
-    color: #fff;
-}
-
-/* Chatbot Styles */
-.chatbot-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.chatbot-toggle {
-    background: #00ffcc;
-    color: #0e0e0e;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-    transition: transform 0.3s ease;
-}
-
-.chatbot-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
-}
-
-.chatbot-window {
-    display: none;
-    width: 350px;
-    height: 500px;
-    background: #1e1e1e;
-    border: 1px solid #444;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    flex-direction: column;
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-}
-
-.chatbot-window.active {
-    display: flex;
-}
-
-.chatbot-header {
-    background: #111;
-    padding: 15px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chatbot-header h3 {
-    font-size: 1.2rem;
-    color: #00ffcc;
-}
-
-.chatbot-close {
-    background: none;
-    border: none;
-    color: #f2f2f2;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.chatbot-messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    border-bottom: 1px solid #444;
-}
-
-.message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 80%;
-}
-
-.user-message {
-    background: #00ffcc;
-    color: #0e0e0e;
-    margin-left: auto;
-    text-align: right;
-}
-
-.bot-message {
-    background: #2e2e2e;
-    color: #f2f2f2;
-    margin-right: auto;
-}
-
-.chatbot-input {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid #444;
-}
-
-.chatbot-input input {
-    flex: 1;
-    padding: 10px;
-    background: #2e2e2e;
-    border: 1px solid #444;
-    border-radius: 8px 0 0 8px;
-    color: #f2f2f2;
-    font-size: 1rem;
-}
-
-.chatbot-input button {
-    background: #00ffcc;
-    color: #0e0e0e;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 0 8px 8px 0;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s ease;
-}
-
-.chatbot-input button:hover {
-    background: #00ccaa;
-}
-
-/* Animations */
-@keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-2deg); }
-    75% { transform: rotate(2deg); }
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(0, 255, 204, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-
-    .card {
-        padding: 20px;
-    }
-
-    .testimonials .grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 2rem; }
-    h3 { font-size: 1.5rem; }
-    p { font-size: 1rem; }
-
-    .nav-toggle {
-        display: block;
-    }
-
-    .nav-menu {
-        display: none;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: #111;
-        flex-direction: column;
-        padding: 20px;
-        gap: 15px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-menu.active {
-        display: flex;
-        margin-top: 50px;
-    }
-
-    .nav-menu li {
-        justify-content: center;
-    }
-
-    .nav-menu a {
-        font-size: 1.2rem;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .card .price {
-        font-size: 1.2rem;
-    }
-
-    .calendly-wrapper {
-        padding: 15px;
-    }
-
-    .chatbot-window {
-        width: 300px;
-        height: 400px;
-    }
-}
-
-@media (max-width: 480px) {
-    section {
-        padding: 60px 15px;
-    }
-
-    .btn {
-        padding: 12px 24px;
-        font-size: 0.9rem;
-    }
-
-    .nav-logo {
-        max-width: 120px;
-    }
-
-    .footer {
-        padding: 40px 15px;
-    }
-
-    .socials {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .chatbot-window {
-        width: 280px;
-        height: 350px;
-    }
-
-    .chatbot-toggle {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-}
-
-/* ─── VIDEO BOX ───────────────────────────────────────────────── */
-.video-box {
-    background: #1e1e1e;
-    padding: 16px;
-    border-radius: 12px;
-    max-width: 900px;
-    margin: 40px auto;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.video-box iframe {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    height: auto;
-    border: none;
-    border-radius: 6px;
-    display: block;
-}
-
-/* ─── HAMBURGER / MOBILE NAV ─────────────────────────────── */
-.nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 200;
-}
-
-.hamburger,
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    display: block;
-    width: 25px;
-    height: 3px;
-    background: #f2f2f2;
-    border-radius: 2px;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.hamburger::before {
-    top: -8px;
-}
-
-.hamburger::after {
-    top: 5px;
-}
-
-.nav-toggle.active .hamburger {
-    background: transparent;
-}
-
-.nav-toggle.active .hamburger::before {
-    transform: translateY(8px) rotate(45deg);
-}
-
-.nav-toggle.active .hamburger::after {
-    transform: translateY(-5px) rotate(-45deg);
-}
-
-/* ─── MOBILE LAYOUT ADJUSTMENTS ──────────────────────────── */
-@media (max-width: 768px) {
-    header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-    }
-
-    main {
-        padding-top: 70px;
-    }
-
-    .nav-toggle {
-        display: block;
-    }
-
-    .nav-menu {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background: #111;
-        flex-direction: column;
-        gap: 20px;
-        padding: 30px 20px;
-        align-items: center;
-        display: flex;
-        transform: translateY(-100%);
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        z-index: 150;
-    }
-
-    .nav-menu.active {
-        transform: translateY(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .nav-menu li {
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-menu a {
-        display: block;
-        width: 100%;
-        padding: 15px 0;
-        font-size: 1.2rem;
-    }
-}
-</style>

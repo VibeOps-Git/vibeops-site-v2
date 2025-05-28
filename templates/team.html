@@ -15,7 +15,7 @@
                     </div>
                     <h4>Zander</h4>
                     <p class="role">CEO (Exec)</p>
-                    <p class="bio">Visionary leader driving VibeOps' mission to revolutionize automation and web solutions.</p>
+                    <p class="bio">Driving VibeOps' mission to revolutionize automation and web solutions.</p>
                 </div>
                 <div class="team-card">
                     <div class="team-image">
@@ -130,4 +130,33 @@
             </div>
         </div>
     </section>
+    <section class="about" data-aos="fade-in" data-aos-duration="1000">
+        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Who We Are">Who We Are</h2>
+        <p data-aos="fade-up" data-aos-delay="200">VibeOps is a lean, AI-fueled crew twisting chaos into cosmic calm. We automate flows, forge stunning sites, and conquer niche engineering quests—swift and wild.</p>
+        <div class="grid" data-aos="fade-up" data-aos-delay="300">
+            <div class="card"><strong>Mission</strong><br>Expand every automation realm, one ethereal solution at a time.</div>
+            <div class="card"><strong>Expertise</strong><br>Apps Script, OpenAI, CRM fusions, and full-stack sorcery.</div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.team-image {
+  width: 160px;               /* or whatever diameter you like */
+  height: 160px;
+  margin: 0 auto 1rem;        /* center container + bottom spacing */
+  border-radius: 50%;         /* make it a circle */
+  overflow: hidden;           /* clip the image to the circle */
+  background: #222;           /* optional: background color if image has transparent areas */
+}
+
+.team-image img {
+  display: block;             /* remove inline whitespace */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* scale & crop to fill */
+  object-position: center;    /* always center the subject */
+}
+</style>
 {% endblock %}

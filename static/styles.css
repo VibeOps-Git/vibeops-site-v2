@@ -57,6 +57,24 @@ main {
     padding: 0 20px;
 }
 
+/* Utility Classes for spacing and visibility */
+.mt-4 {
+    margin-top: 1rem; /* 16px */
+}
+
+.mt-8 {
+    margin-top: 2rem; /* 32px */
+}
+
+.mb-4 {
+    margin-bottom: 1rem; /* 16px */
+}
+
+.hidden {
+    display: none !important; /* Ensure element is hidden, overriding other styles */
+}
+
+
 /* Navigation */
 header {
     background: #111;
@@ -86,7 +104,7 @@ header {
     gap: 20px;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 10px;
 }
 
 .nav-menu li {
@@ -103,32 +121,55 @@ header {
 
 .nav-menu a:hover {
     color: #00ffcc;
+    background: #000000;
+    box-shadow: 0 0 16px rgba(0, 255, 204, 0.4);
+    border-radius: 10px;
+    padding: 10px;
 }
 
+/* Style for navigation buttons */
+.nav-button {
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer;
+    color: #f2f2f2;
+    text-decoration: none; /* Remove default button text decoration */
+    font-weight: 700;
+    font-family: 'Inter', sans-serif; /* Match body font */
+    font-size: 1rem; /* Match body font size */
+    padding: 0; /* Remove default button padding */
+    transition: color 0.3s ease, box-shadow 0.3s ease; /* Add box-shadow to transition */
+}
+
+.nav-button:hover {
+    color: #00ffcc;
+    background-color: #00ffcc1a; /* A slightly visible background */
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); /* Add a glow effect */
+    border-radius: 4px; /* Optional: slight rounded corners on hover */
+    padding: 0 4px; /* Optional: slight padding for visual separation without layout shift */
+    margin: 0 -4px; /* Counteract padding to prevent layout shift */
+}
+
+/* Hamburger / Mobile Nav Toggle (Initially Hidden on Desktop) */
 .nav-toggle {
-    display: none;
+    display: none; /* Hidden by default on desktop */
     background: none;
     border: none;
     cursor: pointer;
     padding: 10px;
+    z-index: 200; /* Above navigation menu when active */
 }
 
-.hamburger {
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    content: '';
     display: block;
     width: 25px;
     height: 3px;
     background: #f2f2f2;
+    border-radius: 2px;
     position: relative;
-}
-
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    position: absolute;
-    width: 25px;
-    height: 3px;
-    background: #f2f2f2;
-    left: 0;
     transition: all 0.3s ease;
 }
 
@@ -137,26 +178,58 @@ header {
 }
 
 .hamburger::after {
-    top: 8px;
+    top: 5px;
+}
+
+.nav-toggle.active .hamburger {
+    background: transparent;
+}
+
+.nav-toggle.active .hamburger::before {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle.active .hamburger::after {
+    transform: translateY(-5px) rotate(-45deg);
 }
 
 /* Hero Section */
 .hero {
-    background: radial-gradient(circle at center, #8e2de2 0%, #4a00e0 70%, #0e0e0e 100%);
+    background-image: url('/static/banner.png');
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 0;
 }
 
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 2%,rgba(0, 0, 0, 0.7) 25%, rgb(18, 18, 18) 100%);
+    z-index: 1;
+}
+
+/* Ensure hero content is above the pseudo-element */
 .hero-content {
+    z-index: 2;
     max-width: 900px;
     padding: 20px;
 }
 
+
 .hero span {
     color: #00ffcc;
     font-style: italic;
+    /* Consider adding text-shadow here if needed for stronger contrast */
 }
 
 .cta-buttons {
@@ -180,16 +253,26 @@ header {
 .btn.primary {
     background: #00ffcc;
     color: #0e0e0e;
+    border: 2px solid #ffffff;
 }
 
 .btn.primary:hover {
+    box-shadow: 0 0 16px rgba(0, 255, 204, 0.4);
     animation: pulse 1.5s infinite;
+    border: 2px solid #00ffcc;
 }
 
 .btn.secondary {
     border: 2px solid #00ffcc;
     color: #00ffcc;
+    background: none; /* Ensure secondary button has transparent background */
 }
+
+.btn.secondary:hover {
+    background: rgba(0, 255, 204, 0.1); /* Subtle background on hover */
+    color: #00ffcc; /* Keep color on hover */
+}
+
 
 .btn:hover {
     transform: scale(1.1);
@@ -332,6 +415,63 @@ cite {
     color: #fff;
 }
 
+/* Footer Email Button */
+.footer-email-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #f2f2f2;
+    background: linear-gradient(to bottom right, #8e2de2, #4a00e0);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+}
+
+.footer-email-btn:hover {
+    background: linear-gradient(to top left, #8e2de2, #4a00e0);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* Ensure existing footer link styles don't interfere */
+.footer .socials a.footer-email-btn {
+    color: #f2f2f2; /* Keep text color white for button */
+}
+
+/* Adjust existing footer social link spacing if necessary */
+.footer .socials a:not(.footer-email-btn) {
+   /* Add specific styles for other links if they need to be different from the button */
+   color: #00ffcc; /* Example: keep original link color */
+}
+
+/* Add styling for the Process button on Struct-wise page */
+.processBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px auto; /* Center button if it's a block element */
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #f2f2f2;
+    background: linear-gradient(to bottom right, #8e2de2, #4a00e0);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+}
+
+.processBtn:hover {
+    background: linear-gradient(to top left, #8e2de2, #4a00e0);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
 /* Animations */
 @keyframes wiggle {
     0%, 100% { transform: rotate(0deg); }
@@ -345,56 +485,626 @@ cite {
     100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
 
-    .card {
-        padding: 20px;
-    }
-
-    .testimonials .grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
+/* ─── VIDEO BOX ───────────────────────────────────────────────── */
+.video-box {
+    background: #1e1e1e;
+    padding: 16px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 40px auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-@media (max-width: 768px) {
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 2rem; }
-    h3 { font-size: 1.5rem; }
-    p { font-size: 1rem; }
+.video-box iframe {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: none;
+    border-radius: 6px;
+    display: block;
+}
 
+/* ─── TEAM PAGE STYLES ───────────────────────────────────────────────── */
+.team {
+    padding: 80px 20px;
+    background: #0e0e0e;
+}
+
+.team-section {
+    margin: 60px 0;
+}
+
+.team-section h3 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #00ffcc;
+}
+
+.team-grid {
+    display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.team-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #444;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 10px 10px 30px rgba(0, 255, 204, 0.2); /* Adjusted shadow for better lift effect */
+    border-color: #00ffcc;
+}
+
+.team-image {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #222;
+  }
+
+.team-image img {
+        display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.team-card h4 {
+    color: #00ffcc;
+    margin: 10px 0;
+    font-size: 1.4rem;
+}
+
+.team-card .role {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.team-card .bio {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+
+/* ─── STRUCT-WISE / BEAM SELECTION STYLES ─────────────────────────────── */
+/* Styles based on provided scaffold for Beam Selection Assistant */
+
+.struct-wise-page h2,
+.struct-wise-page p {
+      text-align: center;
+    }
+
+.struct-wise-page h2 {
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.struct-wise-page p {
+    margin-bottom: 40px;
+}
+
+/* Input & Output Sections (Specific to Struct-wise and Construction Tracker) */
+.input-section,
+.output-section {
+    background: #1e1e1e; /* Darker background for sections */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Subtle shadow */
+    padding: 1.5rem; /* Padding inside the section */
+    margin-bottom: 30px; /* Space below the section */
+    max-width: 800px; /* Max width for content */
+    margin-left: auto; /* Center the block */
+    margin-right: auto; /* Center the block */
+    border: 1px solid #444; /* Border color */
+}
+
+.input-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: #f2f2f2; /* Light color for labels */
+}
+
+.input-section textarea {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    resize: vertical;
+    background-color: #3e3e3e; /* Input background */
+    color: #f2f2f2; /* Text color */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-section textarea::placeholder {
+    color: #bbb;
+}
+
+.input-section textarea:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+/* Add/Update styles for inputs and selects within input-section for consistency */
+.input-section input[type="text"],
+.input-section input[type="number"],
+.input-section input[type="date"],
+.input-section select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3e3e3e;
+    color: #f2f2f2;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px; /* Add some space below inputs */
+    /* Ensure dropdown arrow is visible against dark background */
+    -webkit-appearance: none; /* Remove default styling */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23f2f2f2%22%20d%3D%22M287%2C197.938L146.2%2C57.138L5.4%2C197.938h281.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px auto;
+    padding-right: 30px; /* Make space for the arrow */
+}
+
+.input-section input::placeholder,
+.input-section select::placeholder { /* Select does not directly support placeholder, but include for consistency */
+    color: #bbb;
+}
+
+.input-section input:focus,
+.input-section select:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+/* Adjust margin for the last input in a series if needed, though margin-bottom on each is often sufficient */
+.input-section > div:last-child input, 
+.input-section > div:last-child select, 
+.input-section > div:last-child textarea {
+    margin-bottom: 0; /* Remove bottom margin for the very last input before the button */
+}
+
+/* ─── CONSTRUCTION TRACKER STYLES ─────────────────────────────── */
+
+/* Style for the Project Name input */
+.input-section .project_name { /* Targeting the project_name input within input-section */
+    width: 100%; /* Ensure input takes full width */
+    padding: 10px; /* Padding inside input */
+    border: 1px solid #444; /* Border color */
+    border-radius: 6px; /* Rounded corners */
+    background-color: #3e3e3e; /* Input background */
+    color: #f2f2f2; /* Text color */
+    font-size: 1rem; /* Font size */
+    outline: none; /* Remove default outline */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
+    margin-bottom: 15px; /* Add some space below the project name input */
+}
+
+.input-section .project_name::placeholder {
+    color: #bbb; /* Placeholder text color */
+}
+
+.input-section .project_name:focus {
+    border-color: #00ffcc; /* Highlight border on focus */
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); /* Add glow on focus */
+}
+
+
+/* Style for individual task input rows */
+.task-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid for inputs */
+    gap: 15px; /* Space between inputs */
+    align-items: center;
+    padding: 15px; /* Padding around each task row */
+    border: 1px solid #333; /* Subtle border for separation */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #282828; /* Slightly lighter background for rows */
+    margin-bottom: 15px; /* Space between task rows */
+}
+
+/* Style for input fields within task and progress rows */
+.task-row input[type="text"],
+.task-row input[type="date"],
+.task-row input[type="number"],
+.progress-row input[type="number"],
+.progress-row input[type="text"],
+.task-row textarea { /* Added textarea here */
+    width: 100%; /* Ensure inputs and textareas take full width of grid cell or flex item */
+    padding: 10px; /* Padding inside */
+    border: 1px solid #444; /* Border color */
+    border-radius: 6px; /* Rounded corners */
+    background-color: #3e3e3e; /* Background */
+    color: #f2f2f2; /* Text color */
+    font-size: 1rem; /* Font size */
+    outline: none; /* Remove default outline */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
+    resize: vertical; /* Allow vertical resizing for textareas */
+    min-height: 40px; /* Ensure a minimum height */
+}
+
+.task-row input::placeholder,
+.progress-row input::placeholder,
+.task-row textarea::placeholder { /* Added textarea here */
+    color: #bbb; /* Placeholder text color */
+}
+
+.task-row input:focus,
+.progress-row input:focus,
+.task-row textarea:focus { /* Added textarea here */
+    border-color: #00ffcc; /* Highlight border on focus */
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); /* Add glow on focus */
+}
+
+/* Style for the remove task button */
+.task-row .remove-task {
+    /* Inherits some styles from .btn.secondary, but refine positioning */
+    padding: 8px 12px;
+        font-size: 0.9rem;
+    width: auto; /* Prevent stretching */
+    justify-self: end; /* Align to the end of the grid cell */
+    align-self: center; /* Center vertically in the grid cell */
+}
+
+/* Style for the progress rating section rows */
+.progress-row {
+    display: flex; /* Use flexbox for progress rows */
+    align-items: center;
+    gap: 15px; /* Space between items in the row */
+    padding: 10px;
+    border-bottom: 1px solid #333; /* Separator between rows */
+}
+
+.progress-row:last-child {
+    border-bottom: none; /* No border for the last row */
+}
+
+.progress-row label {
+    flex-grow: 1; /* Allow label to take available space */
+    font-weight: normal; /* Less bold than section labels */
+    color: #ccc; /* Slightly muted color */
+}
+
+/* Style for Gantt and S-Curve chart containers and metrics box */
+.box {
+    background: #282828; /* Background matching task rows */
+    border: 1px solid #333; /* Border matching task rows */
+    border-radius: 8px; /* Rounded corners matching task rows */
+    padding: 20px; /* Padding inside the box */
+    margin-top: 20px; /* Space above the box */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Inner shadow for depth */
+}
+
+.box h4 {
+    color: #00ffcc; /* Highlight color for metric headings */
+    margin-bottom: 10px;
+}
+
+.box p {
+    margin: 5px 0; /* Smaller margin for paragraphs in the box */
+    font-size: 1rem;
+    color: #ccc; /* Muted text color */
+}
+
+/* Ensure content within boxes and output sections wraps */
+.output-section pre,
+.output-section code,
+.box pre,
+.box code,
+.output-section p,
+.box p {
+    word-wrap: break-word; /* Deprecated but widely supported */
+    overflow-wrap: break-word; /* Standard property */
+    word-break: break-word; /* Ensure long words break */
+}
+
+
+/* ─── CHATBOT STYLES ───────────────────────────────────────────────── */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001; /* Above page content, below nav menu */
+}
+
+.chatbot-toggle {
+    background: #00ffcc;
+    color: #0e0e0e;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 1; /* Default state is visible */
+}
+
+.chatbot-toggle:hover {
+    box-shadow: 0 6px 20px rgba(0, 255, 204, 0.9);
+    transform: scale(1.1);
+}
+
+.chatbot-toggle.chatbot-hidden {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none; /* Keep: Disable interaction when hidden visually */
+}
+
+.chatbot-window {
+    position: absolute; /* Position relative to .chatbot-container initially */
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 12px;
+    box-shadow: 0 75px 150px rgba(0, 0, 0, 1.0); /* Shadow for desktop window */
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000; /* Below nav menu, above other content */
+    transition: all 0.3s ease;
+    opacity: 0;
+    display: none; /* Initially hidden */
+}
+
+.chatbot-window.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Enable pointer events on the container when the window is active */
+.chatbot-container .chatbot-window.active {
+    pointer-events: auto;
+}
+
+.chatbot-header {
+    background: #111;
+    padding: 15px;
+    border-bottom: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.chatbot-header h3 {
+    font-size: 1.2rem;
+    color: #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+    margin-right: 10px;
+    min-width: 0;
+}
+
+#clear-chat-button {
+    background: none;
+    border: 1px solid #444;
+    color: #f2f2f2;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  
+#clear-chat-button:hover {
+    background-color: rgba(242, 242, 242, 0.1);
+    color: #00ffcc;
+    border-color: #00ffcc;
+}
+  
+.chatbot-close {
+    background: none;
+    border: none;
+    color: #f2f2f2;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.chatbot-close:hover {
+    color: #00ffcc;
+    background-color: rgba(0, 255, 204, 0.1);
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #1e1e1e;
+}
+
+#chatbot-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chatbot-messages::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+#chatbot-messages::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+    border: 2px solid #1e1e1e;
+}
+
+.message {
+    padding: 10px 12px;
+    border-radius: 18px;
+    max-width: 75%;
+    word-wrap: break-word;
+    display: flex; /* Use flex to align content */
+    align-items: center; /* Vertically center content if needed */
+}
+
+.user-message {
+    background: #00ffcc;
+    color: #0e0e0e;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    margin-left: auto; /* Push user message to the right */
+}
+
+.bot-message {
+    background: #2e2e2e;
+    color: #f2f2f2;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    margin-right: auto; /* Push bot message to the left */
+}
+
+.chatbot-input {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #444;
+    flex-shrink: 0;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 10px;
+    background: #2e2e2e;
+    border: 1px solid #444;
+    border-radius: 8px 0 0 8px;
+    color: #f2f2f2;
+    font-size: 1rem;
+    border-right: none;
+    outline: none;
+}
+
+.chatbot-input input::placeholder {
+    color: #888;
+}
+
+.chatbot-input button {
+    background: #00ffcc;
+    color: #0e0e0e;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-input button:hover {
+    background: #00ccaa;
+}
+
+
+/* Mobile Chatbot Adjustments and General Mobile Responsiveness (Combined) */
+@media (max-width: 768px) {
+    /* Mobile navigation menu (re-positioned for fixed header) */
+    .nav-menu {
+      position: fixed;
+        top: 100px; /* Height of fixed header */
+      left: 0;
+      right: 0;
+      background: #111;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px 20px;
+      align-items: center;
+        display: flex; /* Keep display flex even when hidden for transition */
+        transform: translateY(-100%); /* Start hidden above the viewport */
+      opacity: 0;
+        pointer-events: none; /* Disable interaction when hidden */
+      transition: transform 0.3s ease, opacity 0.3s ease;
+        z-index: 150; /* Above chatbot window */
+    }
+    /* Active state for mobile menu */
+    .nav-menu.active {
+        transform: translateY(0); /* Slide down into view */
+      opacity: 1;
+        pointer-events: auto; /* Enable interaction when active */
+    }
+  
+    .nav-menu li {
+      width: 100%;
+      text-align: center;
+    }
+    .nav-menu a {
+      display: block;
+      width: 100%;
+      padding: 15px 0;
+      font-size: 1.2rem;
+    }
+
+    .nav-menu a:hover { /* Apply hover styles here for mobile */
+         background: #000000; /* Match the desktop hover background */
+         box-shadow: 0 0 16px rgba(0, 255, 204, 0.4); /* Match desktop glow */
+         border-radius: 10px; /* Match desktop border-radius */
+         padding: 10px; /* Keep the padding */
+         margin: -10px; /* Counteract the padding to prevent layout shift */
+     }
+
+    /* Adjust main content padding to account for fixed header */
+     main {
+        padding-top: 70px; /* Add padding to main content */
+    }
+
+    /* Show hamburger button on mobile */
     .nav-toggle {
         display: block;
     }
 
-    .nav-menu {
-        display: none;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: #111;
-        flex-direction: column;
-        padding: 20px;
-        gap: 15px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-menu.active {
-        display: flex;
-        margin-top: 50px;
-    }
-
-    .nav-menu li {
-        justify-content: center;
-    }
-
-    .nav-menu a {
-        font-size: 1.2rem;
-    }
+    /* Other general mobile adjustments */
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    p { font-size: 1rem; }
 
     .grid {
         grid-template-columns: 1fr;
@@ -407,7 +1117,321 @@ cite {
     .calendly-wrapper {
         padding: 15px;
     }
+
+    /* Team page adjustments */
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .team-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    /* Chatbot Mobile Specific Styles */
+    .chatbot-container {
+        position: fixed;
+        bottom: 10px; /* Distance from the bottom */
+        right: 10px; /* Distance from the right */
+        left: auto; /* Unset left */
+        top: auto; /* Unset top */
+        z-index: 1001; /* High z-index */
+        /* Transition on position might not be needed here, handled by window transform */
+    }
+
+    .chatbot-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .chatbot-window {
+        position: fixed; /* Fixed to viewport */
+        left: 0; /* Anchor to left edge */
+        right: 0; /* Anchor to right edge */
+        bottom: 0; /* Anchor to bottom edge */
+        width: 100%; /* Full width */
+        height: 60vh; /* Initial height */
+        max-height: 80vh; /* Max height allowing scroll */
+        border-radius: 16px 16px 0 0; /* Rounded top corners */
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.7); /* Shadow at the top */
+        transform: translateY(100%); /* Start hidden below the viewport */
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        z-index: 1000; /* Below nav menu */
+        display: none; /* Initially hidden */
+        opacity: 0;
+        flex-direction: column; /* Stack contents vertically */
+        overflow: hidden; /* Hide content outside rounded corners */
+        background: #1e1e1e; /* Darker background */
+        border: 1px solid #444; /* Border */
+    }
+
+    .chatbot-window.active {
+        transform: translateY(0); /* Slide up into view */
+        display: flex; /* Show as flexbox */
+        opacity: 1; /* Make visible */
+        /* Ensure these properties are not overridden by centering styles */
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 60vh; /* Maintain initial height */
+        max-height: 80vh; /* Maintain max height */
+    }
+
+    /* Ensure chat window hides and is non-interactive when nav is active */
+    body.nav-menu-active .chatbot-window.active {
+        display: none;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .chatbot-header {
+        padding: 10px;
+        flex-shrink: 0; /* Prevent header from shrinking */
+        background: #111; /* Darker header background */
+        border-bottom: 1px solid #444; /* Separator */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chatbot-header h3 {
+         font-size: 1rem; /* Smaller title on mobile */
+         margin: 0;
+         color: #00ffcc; /* Themed color */
+         text-shadow: 0 0 5px rgba(0, 255, 204, 0.4);
+         flex-grow: 1;
+         min-width: 0; /* Allow text to shrink */
+         text-align: left;
+         margin-right: 10px;
+    }
+
+    #clear-chat-button {
+         background: none;
+         border: 1px solid #444;
+         color: #f2f2f2;
+         font-size: 0.7rem; /* Smaller font */
+         padding: 3px 6px; /* Smaller padding */
+         border-radius: 4px; /* Smaller border-radius */
+         cursor: pointer;
+         transition: all 0.3s ease;
+         margin-right: 8px;
+         flex-shrink: 0;
+    }
+
+    #clear-chat-button:hover {
+         background-color: rgba(242, 242, 242, 0.1);
+         color: #00ffcc;
+         border-color: #00ffcc;
+    }
+
+    .chatbot-close {
+        background: none;
+        border: none;
+        color: #f2f2f2;
+        font-size: 16px; /* Smaller icon */
+        cursor: pointer;
+        padding: 4px; /* Smaller padding */
+        transition: color 0.2s ease;
+        border-radius: 50%;
+        width: 24px; /* Smaller size */
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
+        flex-shrink: 0;
+    }
+
+    .chatbot-close:hover {
+         color: #00ffcc;
+         background-color: rgba(0, 255, 204, 0.1);
+         box-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
+    }
+
+    #chatbot-messages {
+        flex: 1; /* Allow messages to take available space */
+        padding: 8px;
+        overflow-y: auto; /* Enable scrolling for messages */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: #888 #1e1e1e;
+    }
+
+     /* Custom scrollbar for Webkit browsers */
+     #chatbot-messages::-webkit-scrollbar {
+         width: 8px;
+     }
+
+     #chatbot-messages::-webkit-scrollbar-track {
+         background: #1e1e1e;
+     }
+
+     #chatbot-messages::-webkit-scrollbar-thumb {
+         background-color: #888;
+         border-radius: 4px;
+         border: 2px solid #1e1e1e;
+     }
+
+    .message {
+        padding: 8px 10px; /* Smaller padding */
+        border-radius: 16px; /* Slightly smaller border-radius */
+        max-width: 80%; /* Allow messages to be a bit wider on mobile */
+        word-wrap: break-word; /* Deprecated but widely supported */
+        overflow-wrap: break-word; /* Standard property */
+        display: flex;
+        align-items: center;
+    }
+
+     .user-message {
+         background: #00ffcc;
+         color: #0e0e0e;
+         align-self: flex-end;
+         border-bottom-right-radius: 4px;
+         margin-left: auto; /* Push user message to the right */
+     }
+
+     .bot-message {
+         background: #2e2e2e;
+         color: #f2f2f2;
+         align-self: flex-start;
+         border-bottom-left-radius: 4px;
+         margin-right: auto; /* Push bot message to the left */
+     }
+
+    .chatbot-input {
+        display: flex;
+        padding: 8px; /* Smaller padding */
+        border-top: 1px solid #444;
+        flex-shrink: 0; /* Prevent input area from shrinking */
+    }
+
+    .chatbot-input input {
+        flex: 1;
+        padding: 8px; /* Smaller padding */
+        background: #2e2e2e;
+        border: 1px solid #444;
+        border-radius: 8px 0 0 8px;
+        color: #f2f2f2;
+        font-size: 0.9rem;
+        border-right: none;
+        outline: none;
+    }
+
+     .chatbot-input input::placeholder {
+         color: #888;
+     }
+
+    .chatbot-input button {
+        background: #00ffcc;
+        color: #0e0e0e;
+        border: none;
+        padding: 8px 12px; /* Smaller padding */
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chatbot-input button:hover {
+        background: #00ccaa;
+    }
+
+    /* Add mobile responsiveness for Construction Tracker */
+    /* These are the styles specifically for the Construction Tracker page elements on mobile */
+    .construction-tracker-page .input-section,
+    .construction-tracker-page .output-section {
+        padding: 1rem; /* Reduce padding on mobile */
+    }
+
+    .task-row {
+        grid-template-columns: 1fr; /* Stack inputs on mobile */
+        gap: 10px; /* Reduce gap */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .task-row input[type="text"],
+    .task-row input[type="date"],
+    .task-row input[type="number"],
+    .progress-row input[type="number"],
+    .progress-row input[type="text"] { /* Added text type for potential future use in progress */
+        font-size: 0.9rem; /* Slightly smaller font */
+        padding: 8px; /* Reduce padding */
+        margin-bottom: 0; /* Remove margin between stacked inputs in a row */
+    }
+
+    .task-row .remove-task {
+        width: 100%; /* Full width button */
+        justify-self: stretch; /* Stretch across */
+    }
+
+    .progress-row {
+        flex-direction: column; /* Stack label and inputs */
+        gap: 10px; /* Reduce gap */
+        padding: 8px; /* Reduce padding */
+        align-items: stretch; /* Stretch items */
+    }
+
+     .progress-row label {
+         margin-bottom: 0; /* Remove margin below stacked label */
+         display: none; /* Hide labels on mobile */
+     }
+
+    .box h4 {
+        font-size: 1.1rem; /* Adjust heading size */
+    }
+
+    .box p {
+        font-size: 0.9rem; /* Adjust paragraph size */
+    }
+
+    /* Ensure Plotly charts are responsive within their containers */
+    #gantt-chart,
+    #s-curve-chart {
+        width: 100% !important; /* Ensure containers take full width */
+        height: auto !important; /* Allow height to adjust */
+         /* Mobile specific styles for Gantt chart */
+         margin-left: 0 !important; /* Remove left margin that might cause cutoff */
+         margin-right: 0 !important;
+         padding: 0 !important;
+    }
+
+    /* Further adjustments for Plotly elements within the chart */
+    #gantt-chart .plotly .modebar {
+        top: 10px !important; /* Adjust modebar position */
+        right: 10px !important;
+        left: auto !important;
+    }
+
+    #gantt-chart .plotly .ytick {
+        white-space: nowrap; /* Prevent task labels from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    }
 }
+
+/* Add a class to body when nav is active to control chat visibility */
+body.nav-menu-active {
+    overflow: hidden; /* Prevent scrolling behind nav */
+}
+
+/* Hide the chat toggle button when the nav menu is active */
+body.nav-menu-active .chatbot-toggle {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none; /* Disable interaction when hidden */
+}
+
+
+/* ─── RESPONSIVE DESIGN (General) ──────────────────────────── */
+/* These are existing responsive rules, ensure they are correctly placed */
 
 @media (max-width: 480px) {
     section {
@@ -431,845 +1455,137 @@ cite {
         flex-direction: column;
         gap: 10px;
     }
-}
 
-/* ─── VIDEO BOX ───────────────────────────────────────────────── */
-/* ─── VIDEO BOX ───────────────────────────────────────────────── */
-.video-box {
-    background: #1e1e1e;               /* same as your cards */
-    padding: 16px;                     /* a bit tighter */
-    border-radius: 12px;
-    max-width: 900px;
-    margin: 40px auto;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    
-    /* make child iframe fill this box with correct ratio */
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .video-box iframe {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;              /* enforces 16:9 */
-    height: auto;                      /* maintain ratio */
-    border: none;
-    border-radius: 6px;
-    display: block;
-  }
-  
-  
-  /* ─── HAMBURGER / MOBILE NAV ─────────────────────────────── */
-  .nav-toggle {
-    display: none;                /* shown via media query */
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 200;
-  }
-  .hamburger,
-  .hamburger::before,
-  .hamburger::after {
-    content: '';
-    display: block;
-    width: 25px;
-    height: 3px;
-    background: #f2f2f2;
-    border-radius: 2px;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  .hamburger::before {
-    top: -8px;
-  }
-  .hamburger::after {
-    top: 5px;
-  }
-  .nav-toggle.active .hamburger {
-    background: transparent;
-  }
-  .nav-toggle.active .hamburger::before {
-    transform: translateY(8px) rotate(45deg);
-  }
-  .nav-toggle.active .hamburger::after {
-    transform: translateY(-5px) rotate(-45deg);
-  }
-  
-  /* ─── MOBILE LAYOUT ADJUSTMENTS ──────────────────────────── */
-  @media (max-width: 768px) {
-    /* pin header and push content below it */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-    }
-    main {
-      padding-top: 70px;          /* adjust if your header is taller */
-    }
-  
-    /* show hamburger button */
-    .nav-toggle {
-      display: block;
-    }
-  
-    /* slide-down menu */
-    .nav-menu {
-      position: fixed;
-      top: 60px;                  /* just under your header */
-      left: 0;
-      right: 0;
-      background: #111;
-      flex-direction: column;
-      gap: 20px;
-      padding: 30px 20px;
-      align-items: center;
-  
-      display: flex;
-      transform: translateY(-100%);
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      z-index: 150;
-    }
-    .nav-menu.active {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-  
-    .nav-menu li {
-      width: 100%;
-      text-align: center;
-    }
-    .nav-menu a {
-      display: block;
-      width: 100%;
-      padding: 15px 0;
-      font-size: 1.2rem;
-    }
-  }
-
-/* Team Page Styles */
-.team {
-    padding: 80px 20px;
-    background: #0e0e0e;
-}
-
-.team-section {
-    margin: 60px 0;
-}
-
-.team-section h3 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #00ffcc;
-}
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.team-card {
-    background: #1e1e1e;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #444;
-}
-
-.team-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
-    border-color: #00ffcc;
-}
-
-.team-image {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid #00ffcc;
-}
-
-.team-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.team-card h4 {
-    color: #00ffcc;
-    margin: 10px 0;
-    font-size: 1.4rem;
-}
-
-.team-card .role {
-    color: #888;
-    font-size: 1rem;
-    margin-bottom: 15px;
-}
-
-.team-card .bio {
-    color: #ccc;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-    .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-    
-    .team-image {
-        width: 150px;
-        height: 150px;
-    }
-}
-
-/* Chatbot Styles */
-.chatbot-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.chatbot-toggle {
-    background: #00ffcc;
-    color: #0e0e0e;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-    transition: transform 0.3s ease;
-}
-
-.chatbot-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
-}
-
-.chatbot-window {
-    display: none; /* Initially hidden */
-    width: 350px;
-    height: 500px; /* Adjust height as needed */
-    background: #1e1e1e; /* Darker background */
-    border: 1px solid #444;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    flex-direction: column;
-    position: absolute;
-    bottom: 80px; /* Position above the toggle */
-    right: 0;
-    overflow: hidden; /* Ensures rounded corners */
-}
-
-.chatbot-window.active {
-    display: flex; /* Show when active */
-}
-
-.chatbot-header {
-    background: #111; /* Even darker header */
-    padding: 15px;
-    border-bottom: 1px solid #444; /* Separator */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0; /* Prevent header from shrinking */
-}
-
-.chatbot-header h3 {
-    font-size: 1.2rem;
-    color: #00ffcc;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
-    margin: 0; /* Remove default margin */
-}
-
-.chatbot-close {
-    background: none;
-    border: none;
-    color: #f2f2f2;
-    font-size: 18px; /* Slightly larger close button */
-    cursor: pointer;
-    padding: 5px; /* Add padding for easier clicking */
-    transition: color 0.2s ease;
-}
-
-.chatbot-close:hover {
-    color: #00ffcc;
-}
-
-.chatbot-messages {
-    flex: 1; /* Takes up remaining space */
-    padding: 15px; /* Slightly reduced padding */
-    overflow-y: auto; /* Enable vertical scrolling */
-    display: flex;
-    flex-direction: column; /* Stack messages vertically */
-    gap: 10px; /* Space between messages */
-    /* Scrollbar Styling (optional, may vary by browser) */
-    scrollbar-width: thin;
-    scrollbar-color: #888 #1e1e1e;
-}
-
-.chatbot-messages::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chatbot-messages::-webkit-scrollbar-track {
-    background: #1e1e1e;
-}
-
-.chatbot-messages::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 4px;
-    border: 2px solid #1e1e1e;
-}
-
-
-.message {
-    padding: 10px 12px; /* Adjusted padding */
-    border-radius: 18px; /* Increased border-radius for rounder corners */
-    max-width: 85%; /* Slightly increased max-width */
-    word-wrap: break-word; /* Break long words */
-    /* Use flex properties for dynamic width */
-    display: flex;
-    align-self: flex-start; /* Default alignment for bot messages */
-}
-
-.user-message {
-    background: #00ffcc;
-    color: #0e0e0e;
-    /* Align user messages to the right */
-    align-self: flex-end;
-    border-bottom-right-radius: 4px; /* Pointy corner on the bottom right */
-}
-
-.bot-message {
-    background: #2e2e2e;
-    color: #f2f2f2;
-    /* Align bot messages to the left (default due to flex-start) */
-    border-bottom-left-radius: 4px; /* Pointy corner on the bottom left */
-}
-
-
-.chatbot-input {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid #444;
-    flex-shrink: 0; /* Prevent input area from shrinking */
-}
-
-.chatbot-input input {
-    flex: 1;
-    padding: 10px;
-    background: #2e2e2e;
-    border: 1px solid #444;
-    border-radius: 8px 0 0 8px;
-    color: #f2f2f2;
-    font-size: 1rem;
-    border-right: none; /* Remove right border to blend with button */
-    outline: none; /* Remove outline on focus */
-}
-
-.chatbot-input input::placeholder {
-    color: #888; /* Placeholder color */
-}
-
-.chatbot-input button {
-    background: #00ffcc;
-    color: #0e0e0e;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 0 8px 8px 0;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s ease;
-    display: flex; /* Use flex to center icon */
-    align-items: center;
-    justify-content: center;
-}
-
-.chatbot-input button:hover {
-    background: #00ccaa;
-}
-
-/* Animations */
-@keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-2deg); }
-    75% { transform: rotate(2deg); }
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(0, 255, 204, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-    /* ... existing responsive styles ... */
-
-    .chatbot-window {
-        width: calc(100% - 40px); /* Full width minus padding on smaller screens */
-        right: 20px;
-        left: 20px;
-        bottom: 80px;
-        height: 350px;
+    /* Further reduce chatbot size on very small screens if necessary */
+     .chatbot-window {
+        width: 95%; /* Even narrower on very small screens */
+        max-height: 70vh; /* Adjust max height */
+        height: auto; /* Allow height to fit content up to max-height */
+         bottom: 10px; /* Adjust position */
+         left: 2.5%; /* Center by left/right */
+         right: 2.5%;
     }
 
     .chatbot-toggle {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-    
-    .message {
-        max-width: 90%; /* Allow messages to take more width on small screens */
+        width: 45px; /* Slightly smaller toggle */
+        height: 45px;
+        font-size: 18px;
     }
 }
 
-/* ─── STRUCT-WISE / BEAM SELECTION STYLES ─────────────────────────────── */
-/* Styles based on provided scaffold for Beam Selection Assistant */
-
-.struct-wise-page h2,
-.struct-wise-page p {
-    text-align: center;
-}
-
-.struct-wise-page h2 {
-    margin-top: 40px;
-    margin-bottom: 10px;
-}
-
-.struct-wise-page p {
-    margin-bottom: 40px;
-}
-
-/* INPUT & OUTPUT SECTIONS */
-.input-section,
-.output-section {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 1.5rem;
-    margin-bottom: 30px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #444;
-}
-
-.input-section label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.75rem;
-    color: #333;
-}
-
-.input-section textarea {
-    width: 100%;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    resize: vertical;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-.input-section button {
-    margin-top: 1rem;
-    padding: 0.75rem 2rem;
-    font-size: 1rem;
-    background: #00ffcc;
-    color: #0e0e0e;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.input-section button:hover {
-    background: #00ccaa;
-    transform: translateY(-2px);
-}
-
-/* OUTPUT BOXES */
-.output-section h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    color: #00a886;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 0.5rem;
-}
-
-.box {
-    min-height: 6rem;
-    padding: 1rem;
-    background-color: #2e2e2e;
-    color: #f2f2f2;
-    border-radius: 6px;
-    white-space: pre-wrap;
-    overflow-x: auto;
-}
-
-.parsed-section-item {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px dashed #555;
-}
-
-.parsed-section-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
-/* Style for paragraphs within the box (used for calculations now) */
-.box p {
-    margin: 0.5em 0; /* Add vertical space around calculation lines */
-    color: #f2f2f2; /* Ensure paragraph text is light */
-}
-
-/* Style for MathJax rendered equations within paragraphs */
-/* Targeting .MathJax class generated by MathJax inside a p tag */
-.box p .MathJax {
-    color: #00ffcc !important; /* Ensure MathJax is VibeOps green */
-}
-
-
-/* Beam Table within the box */
-.box table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    background-color: #1e1e1e;
-    color: #f2f2f2;
-}
-
-.box th,
-.box td {
-    padding: 12px;
-    border: 1px solid #444;
-    text-align: left;
-}
-
-.box th {
-    background: #00ffcc;
-    color: #0e0e0e;
-    font-weight: bold;
-}
-
-.box tr:nth-child(even) {
-    background-color: #222;
-}
-
-.box tr:hover {
-    background-color: #333;
-}
-
-.box tr[style*="font-weight:bold"] {
-    background-color: #005040 !important;
-    color: #fff;
-}
-
-/* RESPONSIVE */
-@media (max-width: 600px) {
-    .input-section button {
-        width: 100%;
+/* Add mobile responsiveness for Construction Tracker */
+@media (max-width: 768px) {
+    .construction-tracker-page .input-section,
+    .construction-tracker-page .output-section {
+        padding: 1rem; /* Reduce padding on mobile */
     }
-    .input-section, .output-section {
-        padding: 1rem;
+
+    .task-row {
+        grid-template-columns: 1fr; /* Stack inputs on mobile */
+        gap: 10px; /* Reduce gap */
+        padding: 10px; /* Reduce padding */
     }
-    .box th, .box td {
-        padding: 8px;
+
+    .task-row input[type="text"],
+    .task-row input[type="date"],
+    .task-row input[type="number"],
+    .progress-row input[type="number"],
+    .progress-row input[type="text"] {
+        font-size: 0.9rem; /* Slightly smaller font */
+        padding: 8px; /* Reduce padding */
+        margin-bottom: 0; /* Remove margin between stacked inputs in a row */
     }
-}
 
-/* ─── PIPELINE ESTIMATOR STYLES ─────────────────────────────── */
-
-/* Leverage existing styles for section titles and layout */
-.pipeline-estimator-page h2,
-.pipeline-estimator-page p {
-    text-align: center;
-}
-
-.pipeline-estimator-page h2 {
-    margin-top: 40px; /* Space above the main heading */
-    margin-bottom: 10px;
-}
-
-.pipeline-estimator-page p {
-     margin-bottom: 40px; /* Space below the description */
-}
-
-
-/* Input section styling (inherits from .input-section, add specifics if needed) */
-.pipeline-estimator-page .input-section {
-    /* Add or override styles if this page needs unique input styling */
-     max-width: 600px; /* Slightly narrower input section */
-}
-
-/* Input group styling for labels and inputs */
-.pipeline-estimator-page .input-section div { /* Target the div containing label/input pairs */
-     margin-bottom: 1rem; /* Space between input groups */
-}
-
-.pipeline-estimator-page label {
-    display: block; /* Ensure label is on its own line */
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #00a886; /* Light color for labels on dark background (assuming main section background is dark) */
-}
-
-.pipeline-estimator-page input[type="number"],
-.pipeline-estimator-page select {
-    width: 100%; /* Full width inputs */
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #444; /* Darker border */
-    border-radius: 6px;
-    background-color: #1e1e1e; /* Dark background */
-    color: #00ffcc; /* VibeOps green text */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); /* Subtle inner shadow */
-}
-
-.pipeline-estimator-page input[type="number"]::placeholder,
-.pipeline-estimator-page select option[value=""] {
-    color: #888; /* Placeholder text color */
-}
-
-.pipeline-estimator-page select {
-     /* Adjust arrow color if needed, browser dependent */
-     -webkit-appearance: none;
-     -moz-appearance: none;
-     appearance: none;
-     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%2300ffcc%22%20d%3D%22M287.9.9L146.2 142.6 4.5.9A14.4 14.4 0 000 10.3v271.8a14.4 14.4 0 0024.9 10.1l121.3-121.2L267.5 292.2a14.4 14.4 0 0024.9-10.1V10.3a14.4 14.4 0 00-4.5-9.4z%22%2F%3E%3C%2Fsvg%3E');
-     background-repeat: no-repeat;
-     background-position: right 10px top 50%;
-     background-size: 12px auto;
-     padding-right: 30px; /* Make space for the custom arrow */
-}
-
-
-/* Styling for lists within the box (BOM and Cost breakdown) */
-.pipeline-estimator-page .box ul {
-    list-style: none; /* Remove default list bullets */
-    padding: 0;
-    margin: 0;
-}
-
-.pipeline-estimator-page .box ul li {
-    margin-bottom: 8px; /* Space between list items */
-    padding-left: 1.2em; /* Space for custom bullet */
-    position: relative; /* Needed for custom bullet positioning */
-}
-
-.pipeline-estimator-page .box ul li:before {
-    content: '•'; /* Custom bullet character */
-    color: #00ffcc; /* VibeOps green bullet */
-    font-weight: bold;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-/* Styling for the error message div */
-.pipeline-estimator-page #form-error-message {
-    color: #ff4d4d; /* Red color for errors */
-    font-weight: bold;
-    margin-top: 1rem;
-}
-
-
-/* Responsive adjustments */
-@media (max-width: 600px) { /* Adjusted breakpoint */
-  .pipeline-estimator-page .input-section {
-      max-width: 100%; /* Allow full width on small screens */
-  }
-  /* Input group flex layout might need adjustment if not already handled by base.css */
-}
-
-/* ─── CONSTRUCTION TRACKER STYLES ─────────────────────────────── */
-
-.construction-tracker-page h2,
-.construction-tracker-page p {
-    text-align: center;
-}
-
-.construction-tracker-page h2 {
-    margin-top: 40px; /* Space above the main heading */
-    margin-bottom: 10px;
-}
-
-.construction-tracker-page p {
-     margin-bottom: 40px; /* Space below the description */
-}
-
-
-/* Input section styling (inherits from .input-section, add specifics if needed) */
-.construction-tracker-page .input-section {
-     max-width: 800px; /* Allow wider input section for tasks */
-}
-
-/* Task and Progress row flex layout */
-.task-row, .progress-row {
-    display: flex;
-    gap: 1rem; /* Space between columns */
-    margin-bottom: 1rem;
-    align-items: center; /* Vertically align items */
-    flex-wrap: wrap; /* Allow items to wrap on small screens */
-}
-
-/* Apply consistent styling to all relevant input types and select */
-.construction-tracker-page input[type="text"], /* Added rule for text input */
-.construction-tracker-page input[type="date"],
-.construction-tracker-page input[type="number"],
-.construction-tracker-page select {
-    flex: 1; /* Allow inputs/selects to grow and shrink */
-    min-width: 120px; /* Ensure minimum width */
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #444; /* Darker border */
-    border-radius: 6px;
-    background-color: #1e1e1e; /* Dark background */
-    color: #00ffcc; /* VibeOps green text */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); /* Subtle inner shadow */
-}
-
-.construction-tracker-page input[type="text"]::placeholder,
-.construction-tracker-page input[type="number"]::placeholder,
-.construction-tracker-page select option[value=""] {
-    color: #888; /* Placeholder text color */
-}
-
-.construction-tracker-page select {
-     /* Adjust arrow color if needed, browser dependent */
-     -webkit-appearance: none;
-     -moz-appearance: none;
-     appearance: none;
-     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%2300ffcc%22%20d%3D%22M287.9.9L146.2 142.6 4.5.9A14.4 14.4 0 000 10.3v271.8a14.4 14.4 0 0024.9 10.1l121.3-121.2L267.5 292.2a14.4 14.4 0 0024.9-10.1V10.3a14.4 14.4 0 00-4.5-9.4z%22%2F%3E%3C%2Fsvg%3E');
-     background-repeat: no-repeat;
-     background-position: right 10px top 50%;
-     background-size: 12px auto;
-     padding-right: 30px; /* Make space for the custom arrow */
-}
-
-
-/* Button styling for Add Task and Remove buttons */
-/* Add Task button uses .btn.secondary */
-.construction-tracker-page .btn.secondary {
-    border: 2px solid #00ffcc; /* VibeOps green outline */
-    color: #00ffcc; /* VibeOps green text */
-    background: none; /* No background */
-}
-
-.construction-tracker-page .btn.secondary:hover {
-     background: #00ffcc; /* Green background on hover */
-     color: #0e0e0e; /* Dark text on hover */
-     transform: scale(1.1); /* Keep scale effect */
-     box-shadow: 0 0 20px rgba(0, 255, 204, 0.7); /* Keep shadow effect */
-     animation: wiggle 0.3s ease; /* Keep wiggle effect */
-}
-
-/* Remove button uses .remove-task */
-.task-row .remove-task { /* Target specifically within task-row */
-    flex-shrink: 0; /* Prevent button from shrinking */
-    padding: 0.5rem 1rem; /* Button padding */
-    background-color: #ff4d4d; /* Red background for remove */
-    color: #0e0e0e; /* Dark text */
-    border: none; /* Remove border */
-    border-radius: 6px; /* Match other buttons */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.task-row .remove-task:hover {
-     background-color: #cc0000; /* Darker red on hover */
-     transform: scale(1.05); /* Subtle scale on hover */
-     /* Remove other hover effects if they inherit from .btn:hover */
-     box-shadow: none;
-     animation: none;
-}
-
-
-.progress-row label {
-    flex-basis: 150px; /* Give labels a fixed width */
-    flex-shrink: 0;
-    font-weight: bold;
-    color: #444444; /* Light color */
-}
-
-.progress-row input[type="number"] {
-    max-width: 100px; /* Limit width for number inputs */
-    flex-grow: 0; /* Prevent them from taking full width */
-}
-
-
-/* Output section styling (inherits from .output-section) */
-.construction-tracker-page .output-section {
-    max-width: 1000px; /* Allow wider output section for charts */
-}
-
-/* Plotly chart container styling */
-.construction-tracker-page .box #gantt-chart,
-.construction-tracker-page .box #s-curve-chart {
-    /* Plotly manages its own size, but you can add padding/margins if needed */
-    padding: 10px;
-}
-
-.construction-tracker-page #metrics p {
-    margin-bottom: 8px; /* Space between metric lines */
-    color: #f2f2f2; /* Light text */
-    text-align: left; /* Align text left */
-}
-
-.construction-tracker-page #metrics p strong {
-     color: #00ffcc; /* Highlight metric names */
-}
-
-
-/* Error message styling */
-.construction-tracker-page #task-form-error-message,
-.construction-tracker-page #progress-form-error-message {
-    color: #ff4d4d; /* Red color */
-    font-weight: bold;
-    margin-top: 1rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) { /* Adjusted breakpoint for responsiveness */
-    .task-row, .progress-row {
-        flex-direction: column; /* Stack items vertically */
-        gap: 0.5rem;
+    .task-row .remove-task {
+        width: 100%; /* Full width button */
+        justify-self: stretch; /* Stretch across */
     }
-    .task-row input,
-    .progress-row input,
-    .task-row select,
-    .task-row button,
+
+    .progress-row {
+        flex-direction: column; /* Stack label and inputs */
+        gap: 10px; /* Reduce gap */
+        padding: 8px; /* Reduce padding */
+        align-items: stretch; /* Stretch items */
+    }
+
      .progress-row label {
-        width: 100%; /* Full width when stacked */
-        min-width: unset;
-        flex-basis: unset;
-    }
-     .progress-row input[type="number"] {
-        max-width: 100%; /* Allow number inputs to be full width */
+         margin-bottom: 0; /* Remove margin below stacked label */
+         display: none; /* Hide labels on mobile */
      }
+
+    .box h4 {
+        font-size: 1.1rem; /* Adjust heading size */
+    }
+
+    .box p {
+        font-size: 0.9rem; /* Adjust paragraph size */
+    }
+
+    /* Ensure Plotly charts are responsive within their containers */
+    #gantt-chart,
+    #s-curve-chart {
+        width: 100% !important; /* Ensure containers take full width */
+        height: auto !important; /* Allow height to adjust */
+         /* Mobile specific styles for Gantt chart */
+         margin-left: 0 !important; /* Remove left margin that might cause cutoff */
+         margin-right: 0 !important;
+         padding: 0 !important;
+    }
+
+    /* Further adjustments for Plotly elements within the chart */
+    #gantt-chart .plotly .modebar {
+        top: 10px !important; /* Adjust modebar position */
+        right: 10px !important;
+        left: auto !important;
+    }
+
+    #gantt-chart .plotly .ytick {
+        white-space: nowrap; /* Prevent task labels from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    }
+}
+
+/* Add custom scrollbar styles for task textareas */
+.task-row textarea::-webkit-scrollbar {
+    width: 8px; /* Same width as chatbot scrollbar */
+}
+
+.task-row textarea::-webkit-scrollbar-track {
+    background: #282828; /* Match task row background */
+}
+
+.task-row textarea::-webkit-scrollbar-thumb {
+    background-color: #00ccaa; /* A themed color */
+    border-radius: 4px;
+    border: 2px solid #282828; /* Match track background */
+}
+
+/* Firefox scrollbar styles */
+.task-row textarea {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: #00ccaa #282828; /* thumb track */
+}
+
+#gantt-chart {
+    width: 100% !important;
+    overflow-x: auto;
+    margin: 0 auto;
+}
+
+#gantt-chart .plotly .main-svg {
+    background: #1e1e1e !important;
+}
+
+#gantt-chart .plotly .gtitle {
+    fill: #00ffcc !important;
+}
+
+#gantt-chart .plotly .ytick text {
+    fill: #ccc !important;
+    font-size: 12px !important;
+    font-family: 'Inter', sans-serif !important;
+    white-space: normal !important;
+    max-width: 130px;
+    word-wrap: break-word;
 }

@@ -1,21 +1,15 @@
 from flask import request, jsonify, render_template
 import pandas as pd
-import os, io, json
+import json
 import plotly.graph_objects as go
 from plotly.utils import PlotlyJSONEncoder
 from datetime import datetime, timedelta
 import logging
-from supabase import create_client
+from config import supabase  # Import the pre-initialized client
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
-
-# Initialize Supabase client
-supabase = create_client(
-    os.getenv('SUPABASE_URL'),
-    os.getenv('SUPABASE_KEY')
-)
 
 logger = logging.getLogger(__name__)
 

@@ -4,11 +4,17 @@
 
 {% block extra_head %}
     <!-- MathJax for rendering equations -->
-    <script
-      id="MathJax-script"
-      async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
     </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +30,7 @@
       <label for="problemInput">1. Full Problem Text:</label>
       <textarea id="problemInput" rows="8"
         placeholder="e.g. Background: 7.5×7.5 grid… Loads: Dead 4.2 kPa… Question 1a: Factored moment for B1…"></textarea>
-      <button id="processBtn">Process</button>
+      <button id="processBtn" class="processBtn">Process</button>
     </section>
 
     <!-- PARSED PROBLEM -->

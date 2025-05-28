@@ -4,15 +4,16 @@ from pipeline import handle_pipeline_post
 from tracker import handle_tracker_post
 from config import supabase
 import os
-import json
 import pandas as pd
-import io
 from dotenv import load_dotenv
 from functools import wraps
 import logging
-from openai import OpenAI
-import time
+# Removed OpenAI client initialization from app.py
+# import time
 from datetime import timedelta
+
+# Import the chatbot blueprint
+from chatbot import chat_bp
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -39,8 +40,8 @@ google = oauth.register(
     client_kwargs={'scope': 'openid email'},
 )
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+# Initialize OpenAI client is now in chatbot.py
+# client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
 # Login required decorator
 def login_required(f):
@@ -55,7 +56,7 @@ def login_required(f):
 def login():
     session['init'] = True
     redirect_uri = url_for('authorized', _external=True)
-    if '127.0.0.1' in redirect_uri:
+    if '127.0.0.0.1' in redirect_uri:
         redirect_uri = redirect_uri.replace('127.0.0.1', 'localhost')
     logger.info(f"Redirect URI: {redirect_uri}")
     logger.info(f"Session before redirect: {session}")
@@ -110,15 +111,12 @@ def serve_video(filename):
 def home():
     return render_template('index.html')
 
-@app.route('/<path:path>')
-def catch_all(path):
-    if path and not path.endswith('.mp4'):
-        return app.send_static_file(path) or "Page not found", 404
-    return "Not a static file", 404
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
+# Removed catch_all route that interfered with blueprints
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     if path and not path.endswith('.mp4'):
+#         return app.send_static_file(path) or "Page not found", 404
+#     return "Not a static file", 404
 
 @app.route('/services')
 def services():
@@ -158,95 +156,21 @@ def struct_wise():
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
 
-@app.route('/chatbot', methods=['POST'])
-def chatbot():
-    try:
-        data = request.json
-        message = data.get('message')
-        if not message:
-            return jsonify({"error": "Missing message"}), 400
+# Removed chatbot routes from app.py
+# @app.route('/chatbot', methods=['POST'])
+# def chatbot():
+#     ...
 
-        # Create a thread if it doesn't exist in the session
-        if 'thread_id' not in session:
-            thread = client.beta.threads.create()
-            session['thread_id'] = thread.id
-
-        # Add the message to the thread
-        client.beta.threads.messages.create(
-            thread_id=session['thread_id'],
-            role="user",
-            content=message
-        )
-
-        # Run the assistant
-        run = client.beta.threads.runs.create(
-            thread_id=session['thread_id'],
-            assistant_id=os.environ.get('OPENAI_ASSISTANT_ID')
-        )
-
-        # Wait for the run to complete
-        while True:
-            run_status = client.beta.threads.runs.retrieve(
-                thread_id=session['thread_id'],
-                run_id=run.id
-            )
-            if run_status.status == 'completed':
-                break
-            elif run_status.status in ['failed', 'cancelled', 'expired']:
-                raise Exception(f"Run failed with status: {run_status.status}")
-            time.sleep(1)
-
-        # Get the assistant's response
-        messages = client.beta.threads.messages.list(
-            thread_id=session['thread_id']
-        )
-        
-        # Get the latest assistant message
-        assistant_messages = [msg for msg in messages.data if msg.role == "assistant"]
-        if not assistant_messages:
-            raise Exception("No response from assistant")
-        
-        response = assistant_messages[0].content[0].text.value
-
-        # Store messages in session
-        if 'chat_messages' not in session:
-            session['chat_messages'] = []
-        
-        session['chat_messages'].append({
-            'role': 'user',
-            'content': message
-        })
-        session['chat_messages'].append({
-            'role': 'assistant',
-            'content': response
-        })
-        session.modified = True
-
-        # Store in Supabase (only if user is logged in)
-        if 'google_id' in session:
-            try:
-                supabase.table('chatbot_logs').insert({
-                    'user_id': session['google_id'],
-                    'email': session['email'],
-                    'message': message,
-                    'response': response,
-                    'timestamp': pd.to_datetime('now').isoformat()
-                }).execute()
-            except Exception as e:
-                logger.error(f"Error storing chatbot message in Supabase: {e}")
-
-        return jsonify({"response": response}), 200
-    except Exception as e:
-        logger.error(f"Chatbot error: {e}")
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/get-chat-history')
-def get_chat_history():
-    return jsonify(session.get('chat_messages', []))
+# @app.route('/get-chat-history')
+# def get_chat_history():
+#     ...
 
 @app.route('/team')
 def team():
     return render_template('team.html')
+
+# Register the chatbot blueprint
+app.register_blueprint(chat_bp)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5006)

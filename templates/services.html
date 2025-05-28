@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 {% block title %}Services{% endblock %}
 {% block content %}
+
+    <section class="case-studies" id="desktop-sample" data-aos="fade-in" data-aos-duration="1000">
+        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Our Web Design Work">Our Web Design Work</h2>
+        <p data-aos="fade-up" data-aos-delay="200">A glimpse of our desktop-optimized sites—modern and enchanted to convert.</p>
+        <div class="grid" data-aos="fade-up" data-aos-delay="300">
+            <div class="card">
+                <strong>Desktop Demo</strong><br>
+                <div class="video-box">
+                    <iframe
+                    src="https://www.youtube.com/embed/trIZD2Lwe4s?si=wIkpTjN2aVDXjxPC"
+                    title="Desktop Design Demo"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                    </iframe>
+                    <em>Bold design, built to mesmerize</em>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000">
         <h2 data-aos="fade-up" data-aos-delay="100">Our Services</h2>
         <p data-aos="fade-up" data-aos-delay="200">Custom solutions for every business—big or small.</p>
@@ -8,11 +29,6 @@
             <div class="card">📧 Automation<br><em>Email, Calendar, CRM</em></div>
             <div class="card">🛠️ Engineering<br><em>Custom projects</em></div>
             <div class="card">🌐 Web Design<br><em>Sites that shine</em></div>
-        </div>
-        <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
-            <h3>Not Seeing Your Fit?</h3>
-            <p>Need a custom solution? We’ll craft a plan that vibes with your goals.</p>
-            <a href="/booking" class="btn primary">Get a Custom Quote</a>
         </div>
     </section>
 
@@ -35,6 +51,10 @@
                 </div>
             </div>
         </div>
-        <a href="/booking" class="btn primary" data-aos="fade-up" data-aos-delay="400">Book Your Site</a>
+        <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
+            <h3>Not Seeing Your Fit?</h3>
+            <p>Need a custom solution? We’ll craft a plan that vibes with your goals.</p>
+            <a href="/booking" class="btn primary">Get a Custom Quote</a>
+        </div>
     </section>
 {% endblock %}

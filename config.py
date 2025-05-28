@@ -6,8 +6,8 @@ from supabase import create_client, Client
 load_dotenv()
 
 # Get Supabase credentials
-SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
-SUPABASE_KEY = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 # Validate credentials
 if not SUPABASE_URL or not SUPABASE_KEY:
@@ -15,9 +15,6 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 
 # Initialize Supabase client
 try:
-    supabase: Client = create_client(
-        supabase_url=SUPABASE_URL,
-        supabase_key=SUPABASE_KEY
-    )
+    supabase: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABASE_KEY)
 except Exception as e:
     raise ValueError(f"Failed to initialize Supabase client: {str(e)}")

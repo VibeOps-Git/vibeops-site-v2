@@ -10,17 +10,17 @@
             <form id="estimationForm" class="space-y-6">
                 <div>
                     <label for="length">Pipeline Length (km)</label>
-                    <input type="number" name="length" id="length" step="any" required placeholder="e.g., 10.5">
+                    <input type="number" name="length" id="length" step="any" class="pipe-length" required placeholder="e.g., 10.5">
                 </div>
 
                 <div>
                     <label for="diameter">Pipeline Diameter (inches)</label>
-                    <input type="number" name="diameter" id="diameter" step="any" required placeholder="e.g., 24">
+                    <input type="number" name="diameter" id="diameter" class="pipe-diameter" step="any" required placeholder="e.g., 24">
                 </div>
 
                 <div>
                     <label for="terrain">Terrain Type</label>
-                    <select id="terrain" name="terrain" required>
+                    <select id="terrain" class="pipe-terrain" name="terrain" required>
                         <option value="">Select Terrain</option>
                         <option value="flat">Flat</option>
                         <option value="hilly">Hilly</option>
