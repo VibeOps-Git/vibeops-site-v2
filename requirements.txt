@@ -1,5 +1,4 @@
 Flask==3.0.2
-pyqt6
 supabase==1.2.0
 pandas==2.2.1
 python-dotenv==1.0.1

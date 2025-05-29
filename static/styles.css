@@ -125,6 +125,7 @@ header {
     box-shadow: 0 0 16px rgba(0, 255, 204, 0.4);
     border-radius: 10px;
     padding: 10px;
+    gap: 20px;
 }
 
 /* Style for navigation buttons */
