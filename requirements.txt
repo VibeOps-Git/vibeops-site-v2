@@ -1,24 +1,25 @@
-# ULTRA-MINIMAL requirements.txt for Vercel (guaranteed under 250MB)
-# Only essential libraries - remove EVERYTHING else first
-
-# Basic web utilities only
 Flask==3.0.2
-authlib==1.3.0
-Jinja2==3.1.4
-Werkzeug==3.0.3
-itsdangerous==2.2.0
-click==8.1.7
-requests==2.32.3
+supabase==0.7.1
+pandas==2.2.1
 python-dotenv==1.0.1
-supabase==1.2.0
-
-# IF database is absolutely critical, uncomment ONE of these:
-# psycopg2-binary==2.9.9    # PostgreSQL (40MB)
-# sqlite3 is built-in to Python - use this instead if possible
-
-# NO data processing libraries initially
-# NO plotting libraries initially  
-# NO ML/AI libraries initially
-
-# Once this deploys successfully, add ONE library at a time
-# to find which specific library is causing the 250MB breach
+flask-oauthlib
+openai
+authlib
+plotly
+psycopg2-binary==2.9.9
+Werkzeug==3.0.1
+Jinja2==3.1.3
+itsdangerous==2.1.2
+click==8.1.7
+numpy==1.26.4
+python-dateutil==2.8.2
+pytz==2024.1
+six==1.16.0
+tenacity==8.2.3
+typing_extensions>=4.11,<5
+urllib3==2.2.1
+httpx>=0.23.0,<0.24.0
+postgrest==0.10.6
+gotrue==0.5.4
+realtime==0.0.5
+storage3==0.3.5
