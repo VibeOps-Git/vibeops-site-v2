@@ -2,10 +2,14 @@
 # Only essential libraries - remove EVERYTHING else first
 
 # Basic web utilities only
-requests==2.31.0
-python-dotenv==1.0.0
 Flask==3.0.2
-authlib
+authlib==1.3.0
+Jinja2==3.1.4
+Werkzeug==3.0.3
+itsdangerous==2.2.0
+click==8.1.7
+requests==2.32.3
+python-dotenv==1.0.1
 
 # IF database is absolutely critical, uncomment ONE of these:
 # psycopg2-binary==2.9.9    # PostgreSQL (40MB)
