@@ -5,6 +5,7 @@
 requests==2.31.0
 python-dotenv==1.0.0
 Flask==3.0.2
+authlib
 
 # IF database is absolutely critical, uncomment ONE of these:
 # psycopg2-binary==2.9.9    # PostgreSQL (40MB)
