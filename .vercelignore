@@ -1,0 +1,30 @@
+# Ignore Python environments and cache
+**/venv/
+**/__pycache__/
+**/*.pyc
+
+# Ignore database files
+**/*.db
+
+# Ignore backend projects and data directories outside of the deployed site-v1
+# Assuming the site-v1 folder is what you want to deploy
+VibeReels/
+algos/
+data/
+receipts/
+sheets/
+templates/
+
+# Ignore large media files at the root level
+*.mp4
+*.mov
+*.jpeg
+*.png
+*.pdf
+
+# Ignore node_modules in any subdirectory
+**/node_modules/
+
+# Git internals and OS files
+.git/
+.DS_Store 
