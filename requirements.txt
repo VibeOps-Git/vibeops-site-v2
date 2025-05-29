@@ -1,21 +1,56 @@
-Flask==3.0.2
-authlib==1.3.0
-Jinja2==3.1.4
-Werkzeug==3.0.3
-itsdangerous==2.2.0
-click==8.1.7
-requests==2.32.3
-python-dotenv==1.0.1
-supabase==1.2.0
-pandas==2.2.1
-python-dateutil==2.8.2
-pytz==2024.1
-six==1.16.0
-tenacity==8.2.3
-typing_extensions>=4.11,<5
-urllib3==2.2.1
-httpx>=0.23.0,<0.24.0
-postgrest==0.10.6
-gotrue==0.5.4
-realtime==0.0.5
-storage3==0.3.5
+annotated-types    0.7.0
+anyio              4.9.0
+Authlib            1.6.0
+blinker            1.9.0
+cachelib           0.13.0
+certifi            2025.4.26
+cffi               1.17.1
+charset-normalizer 3.4.2
+click              8.1.7
+cryptography       45.0.3
+deprecation        2.1.0
+distro             1.9.0
+Flask              3.0.2
+Flask-OAuthlib     0.9.6
+gotrue             1.3.1
+h11                0.14.0
+httpcore           0.17.3
+httpx              0.24.1
+idna               3.10
+itsdangerous       2.1.2
+Jinja2             3.1.3
+jiter              0.10.0
+MarkupSafe         3.0.2
+narwhals           1.41.0
+numpy              1.26.4
+oauthlib           2.1.0
+openai             1.82.0
+packaging          25.0
+pandas             2.2.1
+pip                25.1.1
+plotly             6.1.2
+postgrest          0.10.8
+psycopg2-binary    2.9.9
+pycparser          2.22
+pydantic           2.11.5
+pydantic_core      2.33.2
+python-dateutil    2.8.2
+python-dotenv      1.0.1
+pytz               2024.1
+realtime           1.0.6
+requests           2.32.3
+requests-oauthlib  1.1.0
+six                1.16.0
+sniffio            1.3.1
+storage3           0.6.1
+StrEnum            0.4.15
+supabase           1.2.0
+supafunc           0.2.3
+tenacity           8.2.3
+tqdm               4.67.1
+typing_extensions  4.13.2
+typing-inspection  0.4.1
+tzdata             2025.2
+urllib3            2.2.1
+websockets         12.0
+Werkzeug           3.0.1
