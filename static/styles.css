@@ -101,6 +101,7 @@ header {
 
 .nav-menu {
     display: flex;
+    justify-content: center;
     gap: 20px;
     list-style: none;
     margin: 0;
@@ -171,15 +172,17 @@ header {
     background: #f2f2f2;
     border-radius: 2px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.7s ease;
 }
 
 .hamburger::before {
     top: -8px;
+    right: 5px;
 }
 
 .hamburger::after {
     top: 5px;
+    right: 4px;
 }
 
 .nav-toggle.active .hamburger {
@@ -396,6 +399,15 @@ cite {
 .footer-logo {
     max-width: 150px;
     margin-bottom: 20px;
+    transition: all 0.3s ease; /* Add transition for smooth effect */
+}
+
+.footer-logo:hover {
+    transform: translateY(-5px); /* Move up slightly on hover */
+    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4); /* Add a blue-ish glow/shadow */
+    margin-bottom: 25px; /* Optional: adjust margin-bottom slightly to compensate for the translation */
+    border-radius: 20px;
+    background: #000;
 }
 
 .socials {
@@ -735,17 +747,30 @@ cite {
 .progress-row input[type="number"],
 .progress-row input[type="text"],
 .task-row textarea { /* Added textarea here */
-    width: 100%; /* Ensure inputs and textareas take full width of grid cell or flex item */
-    padding: 10px; /* Padding inside */
-    border: 1px solid #444; /* Border color */
-    border-radius: 6px; /* Rounded corners */
-    background-color: #3e3e3e; /* Background */
-    color: #f2f2f2; /* Text color */
-    font-size: 1rem; /* Font size */
-    outline: none; /* Remove default outline */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
-    resize: vertical; /* Allow vertical resizing for textareas */
-    min-height: 40px; /* Ensure a minimum height */
+    width: auto; /* Allow flexbox to control width */
+    flex-grow: 1; /* Allow inputs to grow */
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3e3e3e;
+    color: #f2f2f2;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+    min-height: 40px;
+}
+
+/* Specific widths for progress inputs */
+.progress-row input[type="number"],
+.progress-row input[type="text"] { /* Include text type */
+    flex-basis: 100px; /* Base width for number/text inputs */
+    max-width: 120px; /* Maximum width */
+}
+
+.progress-row input[type="date"] {
+    flex-basis: 130px; /* Base width for date inputs */
+    max-width: 150px; /* Maximum width */
 }
 
 .task-row input::placeholder,
@@ -773,9 +798,12 @@ cite {
 
 /* Style for the progress rating section rows */
 .progress-row {
-    display: flex; /* Use flexbox for progress rows */
-    align-items: center;
-    gap: 15px; /* Space between items in the row */
+    display: grid; /* Use grid for progress rows */
+    /* Define grid columns: Task Name, Budgeted Cost, Actual Cost, % Complete, Actual Start, Actual Finish */
+    /* Consistent grid template for both header and data rows */
+    grid-template-columns: 100px repeat(2, 120px) 80px repeat(2, 140px); /* Example: Task Name | BC | AC | % | AS | AF - using fixed/semi-fixed widths */
+    gap: 10px; /* Space between grid items */
+    align-items: center; /* Vertically align items in the grid */
     padding: 10px;
     border-bottom: 1px solid #333; /* Separator between rows */
 }
@@ -784,10 +812,162 @@ cite {
     border-bottom: none; /* No border for the last row */
 }
 
-.progress-row label {
-    flex-grow: 1; /* Allow label to take available space */
-    font-weight: normal; /* Less bold than section labels */
-    color: #ccc; /* Slightly muted color */
+.progress-row.header {
+    font-weight: bold;
+    color: #f2f2f2; /* Header text color */
+    border-bottom: 2px solid #00ffcc; /* Thicker separator for header */
+    padding-bottom: 10px; /* Add padding below header */
+    margin-bottom: 10px; /* Add margin below header */
+    /* Ensure header labels align with grid columns by using the same grid template */
+    display: grid; /* Apply grid to header as well */
+    grid-template-columns: 100px repeat(2, 120px) 80px repeat(2, 140px); /* Match data row grid */
+    gap: 10px; /* Match data row grid gap */
+}
+
+/* Ensure labels and inputs span correctly within the grid */
+.progress-row label,
+.progress-row input[type="number"],
+.progress-row input[type="text"],
+.progress-row input[type="date"] {
+    width: 100%; /* Ensure they take full width of their grid cell */
+}
+
+/* Adjust mobile styles for progress rows to use grid */
+@media (max-width: 768px) {
+    .progress-row {
+        display: grid; /* Keep grid on mobile */
+        /* Adjust grid columns for smaller screens - using flexible units for inputs */
+        grid-template-columns: 50px repeat(5, 1fr); /* Task Label | 5 flexible input columns */
+        gap: 5px; /* Keep smaller gap on mobile */
+        padding: 5px; /* Keep smaller padding on mobile */
+        /* Remove flexbox-specific mobile styles */
+        flex-direction: unset;
+        align-items: center;
+    }
+
+     .progress-row label {
+         font-size: 0.7rem; /* Further smaller font for labels */
+         align-self: center; /* Center label vertically */
+         display: block; /* Ensure labels are displayed on mobile */
+     }
+
+     .progress-row.header {
+        display: grid !important; /* Keep grid on mobile, use !important to override */
+        grid-template-columns: 50px repeat(5, 1fr); /* Match data row grid on mobile */
+        gap: 5px; /* Match data row grid gap on mobile */
+        padding-bottom: 5px; /* Smaller padding below header */
+        margin-bottom: 5px; /* Smaller margin below header */
+     }
+
+     .progress-row.header label {
+        font-size: 0.7rem; /* Further smaller font for header labels */
+        text-align: center; /* Center header text on mobile */
+     }
+
+    .progress-row input[type="number"],
+    .progress-row input[type="text"],
+    .progress-row input[type="date"] {
+        font-size: 0.7rem; /* Further smaller font for inputs */
+        padding: 3px; /* Further Smaller padding for inputs */
+    }
+
+    /* Hide desktop-only elements on mobile */
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* Show mobile-only elements on mobile */
+    .mobile-only {
+        display: block !important; /* Use block or flex as needed for layout */
+    }
+
+    /* Styling for the collapsible progress entries */
+    .progress-entry-container {
+        border: 1px solid #333; /* Subtle border for each entry */
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #282828;
+        overflow: hidden; /* Hide overflow during collapse/expand transition */
+    }
+
+    .progress-entry-header {
+        display: flex; /* Use flex to align task name and icon */
+        justify-content: space-between; /* Space out task name and icon */
+        align-items: center;
+        padding: 10px;
+        background-color: #3e3e3e; /* Slightly different background */
+        cursor: pointer;
+        font-weight: bold;
+        color: #f2f2f2;
+    }
+
+    .progress-entry-header label {
+        margin: 0; /* Remove margin from label inside header */
+        font-size: 1rem; /* Larger font for task name in header */
+    }
+
+    .expand-icon {
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: transform 0.3s ease;
+    }
+
+    .progress-entry-content {
+        padding: 10px;
+        border-top: 1px solid #333; /* Separator between header and content */
+        /* Use grid for inputs within the content */
+        display: grid; /* Use grid for inputs */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive columns for inputs */
+        gap: 10px; /* Gap between input items */
+    }
+
+    .progress-entry-content .mobile-only {
+        font-size: 0.8rem; /* Smaller font for mobile labels */
+        color: #ccc; /* Muted color */
+        margin-bottom: -5px; /* Adjust spacing */
+    }
+
+    /* Hide content on mobile by default */
+    .progress-entry-content.hidden-mobile {
+        display: none; /* Hide content */
+    }
+
+    /* Desktop styles to show original grid and hide mobile-only elements */
+    @media (min-width: 769px) {
+         .progress-row.header.desktop-only,
+         .progress-entry-content {
+             display: grid !important; /* Ensure grid is used on desktop */
+         }
+
+         .progress-entry-container .progress-entry-header.mobile-only {
+             display: none !important; /* Hide mobile header on desktop */
+         }
+         
+         .progress-entry-content.hidden-mobile {
+             display: grid !important; /* Ensure content is visible on desktop even if it has the hidden-mobile class */
+         }
+         
+         /* Ensure labels within the progress-row are handled by the desktop grid */
+          .progress-row label {
+              display: block; /* Ensure labels are block elements for grid */
+          }
+
+          /* Hide mobile-only labels within the progress-entry-content on desktop */
+         .progress-entry-content .mobile-only {
+              display: none !important;
+         }
+
+         /* Show desktop-only labels within the progress-entry-content on desktop */
+          .progress-entry-content .desktop-only {
+               display: block !important;
+          }
+    }
+}
+
+.task-row input::placeholder,
+.progress-row input::placeholder,
+.task-row textarea::placeholder { /* Added textarea here */
+    color: #bbb; /* Placeholder text color */
 }
 
 /* Style for Gantt and S-Curve chart containers and metrics box */
@@ -863,7 +1043,7 @@ cite {
 .chatbot-window {
     position: absolute; /* Position relative to .chatbot-container initially */
     bottom: 80px;
-    right: 0;
+        right: 0;
     width: 350px;
     height: 500px;
     background: #1e1e1e;
@@ -889,7 +1069,7 @@ cite {
 }
 
 .chatbot-header {
-    background: #111;
+        background: #111;
     padding: 15px;
     border-bottom: 1px solid #444;
     display: flex;
@@ -958,7 +1138,7 @@ cite {
     padding: 15px;
     overflow-y: auto;
     display: flex;
-    flex-direction: column;
+        flex-direction: column;
     gap: 10px;
     scrollbar-width: thin;
     scrollbar-color: #888 #1e1e1e;
@@ -1004,7 +1184,7 @@ cite {
 }
 
 .chatbot-input {
-    display: flex;
+        display: flex;
     padding: 15px;
     border-top: 1px solid #444;
     flex-shrink: 0;
@@ -1037,8 +1217,8 @@ cite {
     transition: background 0.3s ease;
     display: flex;
     align-items: center;
-    justify-content: center;
-}
+        justify-content: center;
+    }
 
 .chatbot-input button:hover {
     background: #00ccaa;
@@ -1057,7 +1237,7 @@ cite {
       flex-direction: column;
       gap: 20px;
       padding: 30px 20px;
-      align-items: center;
+      align-items: center; /* Center items vertically in column layout */
         display: flex; /* Keep display flex even when hidden for transition */
         transform: translateY(-100%); /* Start hidden above the viewport */
       opacity: 0;
@@ -1080,7 +1260,7 @@ cite {
       display: block;
       width: 100%;
       padding: 15px 0;
-      font-size: 1.2rem;
+        font-size: 1.2rem;
     }
 
     .nav-menu a:hover { /* Apply hover styles here for mobile */
@@ -1382,7 +1562,7 @@ cite {
 
      .progress-row label {
          margin-bottom: 0; /* Remove margin below stacked label */
-         display: none; /* Hide labels on mobile */
+         display: block; /* Ensure labels are displayed on mobile */
      }
 
     .box h4 {
@@ -1399,9 +1579,6 @@ cite {
         width: 100% !important; /* Ensure containers take full width */
         height: auto !important; /* Allow height to adjust */
          /* Mobile specific styles for Gantt chart */
-         margin-left: 0 !important; /* Remove left margin that might cause cutoff */
-         margin-right: 0 !important;
-         padding: 0 !important;
     }
 
     /* Further adjustments for Plotly elements within the chart */
@@ -1475,75 +1652,99 @@ body.nav-menu-active .chatbot-toggle {
 }
 
 /* Add mobile responsiveness for Construction Tracker */
+/* Existing mobile media query adjustments */
 @media (max-width: 768px) {
-    .construction-tracker-page .input-section,
-    .construction-tracker-page .output-section {
-        padding: 1rem; /* Reduce padding on mobile */
+    .construction-tracker-page .input-section {
+        padding: 1rem;
     }
 
-    .task-row {
-        grid-template-columns: 1fr; /* Stack inputs on mobile */
-        gap: 10px; /* Reduce gap */
-        padding: 10px; /* Reduce padding */
+    .task-entry-container {
+        border: 1px solid #333;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #282828;
+        overflow: hidden;
+        width: 100%; /* Ensure full width */
     }
 
-    .task-row input[type="text"],
-    .task-row input[type="date"],
-    .task-row input[type="number"],
-    .progress-row input[type="number"],
-    .progress-row input[type="text"] {
-        font-size: 0.9rem; /* Slightly smaller font */
-        padding: 8px; /* Reduce padding */
-        margin-bottom: 0; /* Remove margin between stacked inputs in a row */
+    .task-entry-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #3e3e3e;
+        cursor: pointer;
+        font-weight: bold;
+        color: #f2f2f2;
     }
 
-    .task-row .remove-task {
-        width: 100%; /* Full width button */
-        justify-self: stretch; /* Stretch across */
+    .task-entry-header label {
+        margin: 0;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70%; /* Prevent overflow */
     }
 
-    .progress-row {
-        flex-direction: column; /* Stack label and inputs */
-        gap: 10px; /* Reduce gap */
-        padding: 8px; /* Reduce padding */
-        align-items: stretch; /* Stretch items */
+    .task-entry-content {
+        padding: 10px;
+        border-top: 1px solid #333;
+        display: none; /* Hidden by default, shown via JS */
     }
 
-     .progress-row label {
-         margin-bottom: 0; /* Remove margin below stacked label */
-         display: none; /* Hide labels on mobile */
-     }
-
-    .box h4 {
-        font-size: 1.1rem; /* Adjust heading size */
+    .task-entry-content.active {
+        display: grid; /* Show when active */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 10px;
     }
 
-    .box p {
-        font-size: 0.9rem; /* Adjust paragraph size */
+    .task-entry-content label.mobile-only {
+        display: block;
+        font-size: 0.8rem;
+        color: #ccc;
+        margin-bottom: 2px;
     }
 
-    /* Ensure Plotly charts are responsive within their containers */
-    #gantt-chart,
-    #s-curve-chart {
-        width: 100% !important; /* Ensure containers take full width */
-        height: auto !important; /* Allow height to adjust */
-         /* Mobile specific styles for Gantt chart */
-         margin-left: 0 !important; /* Remove left margin that might cause cutoff */
-         margin-right: 0 !important;
-         padding: 0 !important;
+    .task-entry-content input[type="text"],
+    .task-entry-content input[type="date"],
+    .task-entry-content input[type="number"],
+    .task-entry-content textarea {
+        width: 100%;
+        max-width: none;
+        font-size: 0.9rem;
+        padding: 5px;
     }
 
-    /* Further adjustments for Plotly elements within the chart */
-    #gantt-chart .plotly .modebar {
-        top: 10px !important; /* Adjust modebar position */
-        right: 10px !important;
-        left: auto !important;
+    .task-entry-content textarea {
+        grid-column: span 2; /* Span two columns for more space */
     }
 
-    #gantt-chart .plotly .ytick {
-        white-space: nowrap; /* Prevent task labels from wrapping */
-        overflow: hidden; /* Hide overflow text */
-        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    .task-entry-content .remove-task {
+        grid-column: 1 / -1;
+        width: 100%;
+        justify-self: stretch;
+        margin-top: 10px;
+    }
+}
+
+/* Ensure only one dropdown is open at a time */
+.task-entry-container .task-entry-content {
+    transition: all 0.3s ease; /* Smooth transition for opening/closing */
+}
+
+/* Desktop adjustments */
+@media (min-width: 769px) {
+    .task-entry-container .task-entry-header.mobile-only {
+        display: none !important;
+    }
+
+    .task-entry-content {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 0;
+        border-top: none;
     }
 }
 
@@ -1568,27 +1769,67 @@ body.nav-menu-active .chatbot-toggle {
     scrollbar-color: #00ccaa #282828; /* thumb track */
 }
 
-#gantt-chart {
-    width: 100% !important;
-    overflow-x: auto;
-    margin: 0 auto;
+#gantt-chart, #fullscreen-gantt-chart {
+    background-color: #1e1e1e;
+    width: 100%;
+    min-height: 400px;
+    display: block !important;
+    overflow: auto;
 }
 
-#gantt-chart .plotly .main-svg {
-    background: #1e1e1e !important;
+#gantt-results.hidden, #progress-section.hidden, #analysis-results.hidden {
+    display: none;
 }
 
-#gantt-chart .plotly .gtitle {
-    fill: #00ffcc !important;
+#gantt-results, #progress-section, #analysis-results {
+    display: block;
 }
 
-#gantt-chart .plotly .ytick text {
-    fill: #ccc !important;
-    font-size: 12px !important;
-    font-family: 'Inter', sans-serif !important;
-    white-space: normal !important;
-    max-width: 130px;
-    word-wrap: break-word;
+#gantt-modal.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    overflow: auto;
+}
+
+#gantt-modal {
+    display: none;
+}
+
+.modal-content {
+    position: relative;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1200px;
+    background: #1e1e1e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    /* Ensure content fits within max height on smaller screens */
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    color: #f2f2f2;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #ccc;
+    text-decoration: none;
 }
 
 /* Addictive Navigation Menu Styling */
@@ -1607,7 +1848,7 @@ body.nav-menu-active .chatbot-toggle {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+      width: 100%;
     height: 2px;
     background-color: #00f; /* Or an accent color */
     transform: scaleX(0);
@@ -1625,4 +1866,547 @@ body.nav-menu-active .chatbot-toggle {
 .nav-links a:focus::before {
     transform: scaleX(1);
     transform-origin: bottom left;
+}
+
+/* ─── FULLSCREEN MODAL STYLES ────────────────────────────────── */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top (behind nav, above chatbot toggle) */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+.modal.active {
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #1e1e1e; /* Dark background */
+    margin: auto; /* Auto margin centers the modal */
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 12px;
+    width: 90%; /* Adjust width as needed */
+    max-width: 1000px; /* Max width for content */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    position: relative; /* Needed for close button absolute position */
+    /* Ensure content fits within max height on smaller screens */
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-modal {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #f2f2f2;
+    text-decoration: none;
+}
+
+#fullscreen-gantt-chart {
+    width: 100%; /* Ensure chart container fills modal width */
+    height:  calc(90vh - 40px); /* Adjust height to fit within modal content, accounting for padding/close button */
+    min-height: 400px; /* Minimum height */
+}
+
+/* Ensure Plotly chart inside modal is responsive */
+#fullscreen-gantt-chart .plotly {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+        max-height: 95vh;
+    }
+    
+    .close-modal {
+        font-size: 24px;
+        top: 5px;
+        right: 15px;
+    }
+
+    #fullscreen-gantt-chart {
+        height: calc(95vh - 30px); /* Adjust height for smaller padding */
+        min-height: 300px; /* Smaller minimum height */
+    }
+}
+
+/* ─── GANTT CHART CREDIT STYLES ────────────────────────────────── */
+.gantt-credit {
+    margin-bottom: 20px; /* Space below the credit block */
+}
+
+.gantt-credit .credit-title {
+    font-family: 'Orbitron', sans-serif; /* Match headings font */
+    font-size: 1.8rem;
+    color: #f2f2f2; /* Light color */
+    margin-bottom: 5px;
+}
+
+.gantt-credit .credit-group {
+    font-size: 1.2rem;
+    color: #ccc; /* Slightly muted color */
+    margin-bottom: 15px;
+}
+
+.gantt-credit .credit-description,
+.gantt-credit .credit-details {
+    font-size: 1rem;
+    color: #ccc; /* Slightly muted color */
+    margin-bottom: 5px;
+}
+
+.gantt-credit .credit-details {
+    font-style: italic; /* Match image style */
+}
+
+@media (max-width: 768px) {
+    .gantt-credit .credit-title {
+        font-size: 1.5rem;
+    }
+    .gantt-credit .credit-group {
+        font-size: 1rem;
+    }
+    .gantt-credit .credit-description,
+    .gantt-credit .credit-details {
+        font-size: 0.9rem;
+    }
+}
+
+/* ─── STATIC GANTT CHART PAGE STYLES ─────────────────────────────── */
+
+/* Header Styling */
+.static-gantt-header {
+    width: 100%;
+    background-color: rgb(255, 255, 255); /* Assuming white background for this specific header */
+    color: #000; /* Black text */
+    text-align: center;
+    padding: 20px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.static-gantt-header .logo {
+    width: 80px;
+    margin-bottom: 15px;
+}
+
+.static-gantt-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif; /* Use Arial as specified in the provided CSS */
+    color: #333; /* Match body text color as per provided CSS */
+}
+
+.static-gantt-header p {
+    font-size: 1rem;
+    margin: 5px 0;
+    font-family: Arial, sans-serif; /* Use Arial as specified in the provided CSS */
+    color: #333; /* Match body text color as per provided CSS */
+}
+
+/* Chart Container */
+.chart-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%; /* Ensures the container adapts dynamically */
+    max-width: 1200px; /* Prevents it from exceeding a set width */
+    padding: 20px;
+    margin: 20px auto; /* Center the container */
+    overflow: hidden; /* Ensures nothing spills out of the container */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 680px; /* Explicitly set a substantial height */
+}
+
+/* Chart itself */
+/* Specific overrides for the Plotly chart within this container */
+.chart-container #gantt-chart {
+    width: 100% !important;
+    height: 100% !important; /* Allow Plotly to manage height */
+     /* Ensure Plotly's background is handled by its layout config */
+     background-color: #1e1e1e; /* Explicitly set background to ensure visibility */
+     display: block !important; /* Ensure it's always displayed */
+}
+
+/* Footer Styling */
+/* Note: This might conflict with the existing .footer style. Using a more specific selector or a new class is recommended if different footer styles are needed. I will use the existing .footer but make sure the colors are specific if needed. */
+/* Since the provided CSS has a dark blue background for footer, I will add a more specific rule or assume this is intended for this page only. Let's assume it's specific to this page's layout. */
+.static-gantt-page .footer { /* Assuming a parent class for the page */
+    width: 100%;
+    text-align: center;
+    background-color: #003366; /* Dark blue from provided CSS */
+    color: white;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design for this page */
+@media (max-width: 768px) {
+    .static-gantt-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .static-gantt-header p {
+        font-size: 0.9rem;
+    }
+
+    .chart-container {
+        width: 95%;
+        padding: 10px;
+    }
+}
+
+/* ─── FOOTER TAGLINE STYLES ─────────────────────────────── */
+.footer-tagline {
+    color: #00ffcc; /* Highlight color */
+    font-size: 1rem; /* Slightly smaller than main paragraph */
+    margin: 10px 0; /* Space above and below */
+    font-family: 'Inter', sans-serif; /* Match body/other text font */
+}
+
+/* ─── FOOTER CTA TEXT STYLES ─────────────────────────────── */
+.footer-cta-text {
+    color: #f2f2f2; /* Standard text color */
+    font-size: 1rem; /* Match tagline size */
+    margin: 10px 0; /* Space above and below */
+    font-family: 'Inter', sans-serif; /* Match body/other text font */
+}
+
+/* Adjust existing footer paragraph margin if needed */
+.footer p {
+     margin: 5px 0; /* Reduce margin for tighter spacing */
+}
+
+/* Ensure results section visibility is controlled */
+#gantt-results.hidden {
+    display: none;
+}
+
+#gantt-results {
+    display: block; /* Default to block when not hidden */
+}
+
+/* ─── LOADING SPINNER STYLES ────────────────────────────────── */
+.loading-spinner {
+    border: 8px solid #1e1e1e; /* Light grey border */
+    border-top: 8px solid #00ffcc; /* Blue border on top */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto; /* Center the spinner */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ensure the container for the spinner is set up for centering */
+#gantt-chart.box {
+    position: relative; /* Needed for absolute positioning if used, but margin auto works for block */
+    min-height: 100px; /* Ensure there's space for the spinner */
+    display: flex; /* Use flexbox to potentially center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Initially hide the spinner */
+.loading-spinner.hidden {
+    display: none;
+}
+
+/* --- Styling for the collapsible task entries --- */
+@media (max-width: 768px) {
+    .task-entry-container {
+        border: 1px solid #333; /* Subtle border for each entry */
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #282828;
+        overflow: hidden; /* Hide overflow during collapse/expand transition */
+    }
+
+    .task-entry-header {
+        display: flex; /* Use flex to align task name and icon */
+        justify-content: space-between; /* Space out task name and icon */
+        align-items: center;
+        padding: 10px;
+        background-color: #3e3e3e; /* Slightly different background */
+        cursor: pointer;
+        font-weight: bold;
+        color: #f2f2f2;
+    }
+
+    .task-entry-header label {
+        margin: 0; /* Remove margin from label inside header */
+        font-size: 1rem; /* Larger font for task name in header */
+    }
+
+    /* Expand icon style is shared with progress entries */
+
+    .task-entry-content {
+        padding: 10px;
+        border-top: 1px solid #333; /* Separator between header and content */
+        /* The task-row class applied here defines the grid layout for inputs */
+    }
+
+    /* Hide content on mobile by default - handled by JS but good to have a CSS fallback */
+    .task-entry-content.hidden-mobile {
+        display: none; /* Hide content */
+    }
+}
+
+/* Desktop styles to show original grid and hide mobile-only header */
+@media (min-width: 769px) {
+    .task-entry-container .task-entry-header.mobile-only {
+        display: none !important; /* Hide mobile header on desktop */
+    }
+
+    /* Ensure the content (which has the task-row class) is displayed as grid on desktop */
+    .task-entry-content {
+        display: grid !important; /* Ensure grid is used on desktop */
+        padding: 0; /* Remove padding added for mobile collapsible content */
+        border-top: none; /* Remove border */
+    }
+
+     /* Reset task-row styles that were adjusted for mobile collapsible content */
+     .task-entry-content.task-row {
+         border: none; /* Remove border added for the container */
+         background-color: transparent; /* Remove background color */
+         margin-bottom: 0; /* Remove margin bottom */
+         padding: 0; /* Remove padding */
+     }
+}
+
+/* Add specific styles for the progress entry content grid on mobile */
+@media (max-width: 768px) {
+    .progress-entry-content {
+        display: grid; /* Use grid layout */
+        /* Adjust columns to try and fit labels and inputs side-by-side */
+        /* Using auto-fit with a minmax that allows for roughly two columns of label/input pairs */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 15px; /* Increase gap between items */
+        padding: 10px; /* Add padding inside content */
+    }
+
+    .progress-entry-content label.mobile-only {
+        display: block; /* Ensure labels are block elements */
+        font-size: 0.8rem; /* Smaller font size for labels */
+        color: #ccc; /* Muted color */
+        margin-bottom: 2px; /* Reduce space below label */
+        width: 100%; /* Ensure label takes full width of its grid cell */
+        grid-column: span 1; /* Ensure label spans one column */
+    }
+
+    .progress-entry-content input[type="number"],
+    .progress-entry-content input[type="text"],
+    .progress-entry-content input[type="date"] {
+        width: 100%; /* Inputs take full width of their grid cell */
+        max-width: none; /* Remove any max-width restrictions */
+        font-size: 0.9rem; /* Adjust font size for inputs */
+        padding: 5px; /* Adjust padding for inputs */
+        grid-column: span 1; /* Ensure input spans one column */
+    }
+
+    /* Adjust spacing for the data-row within the content if needed, though gap on content should suffice */
+    .progress-entry-content .progress-row.data-row {
+        /* This internal grid might not be necessary anymore if parent is grid */
+        display: contents; /* Make the container itself not generate a box, grid items come from children */
+    }
+
+    .progress-entry-content .progress-row.data-row label.desktop-only {
+         display: none !important; /* Hide desktop label within content on mobile */
+    }
+}
+
+/* Refine grid layout for task inputs within collapsible content on mobile */
+@media (max-width: 768px) {
+    .task-entry-content.task-row {
+        display: grid; /* Use grid layout */
+        /* Using auto-fit with a minmax that allows for roughly two columns of label/input pairs */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive columns for input/label pairs */
+        gap: 15px; /* Space between stacked inputs */
+        padding: 10px; /* Add some padding inside the content area */
+    }
+
+    .task-entry-content.task-row label.mobile-only {
+         display: block; /* Ensure mobile labels are visible */
+         font-size: 0.8rem; /* Adjust font size */
+         color: #ccc; /* Muted color */
+         margin-bottom: 2px; /* Reduce space below label */
+         width: 100%; /* Ensure label takes full width of its grid cell */
+         grid-column: span 1; /* Ensure label spans one column */
+    }
+
+     /* Ensure inputs take full width within the stacked layout */
+    .task-entry-content.task-row input[type="text"],
+    .task-entry-content.task-row input[type="date"],
+    .task-entry-content.task-row input[type="number"],
+    .task-entry-content.task-row textarea {
+         width: 100%; /* Full width */
+         max-width: none; /* Remove max width constraint */
+         font-size: 0.9rem; /* Adjust font size for inputs */
+         padding: 5px; /* Adjust padding for inputs */
+         grid-column: span 1; /* Ensure input spans one column */
+    }
+
+    /* Make textareas span two columns if possible for more space */
+     .task-entry-content.task-row textarea {
+         grid-column: span 2; /* Attempt to span two columns */
+     }
+
+    .task-entry-content.task-row .remove-task {
+        /* Make the remove button span across all available columns */
+        grid-column: 1 / -1; /* Span from the first to the last column */
+        width: 100%; /* Full width button */
+        justify-self: stretch; /* Stretch horizontally */
+        margin-top: 10px; /* Add space above the button */
+    }
+}
+
+/* Add custom scrollbar styles for task textareas */
+.task-row textarea::-webkit-scrollbar {
+    width: 8px; /* Same width as chatbot scrollbar */
+}
+
+.task-row textarea::-webkit-scrollbar-track {
+    background: #282828; /* Match task row background */
+}
+
+.task-row textarea::-webkit-scrollbar-thumb {
+    background-color: #00ccaa; /* A themed color */
+    border-radius: 4px;
+    border: 2px solid #282828; /* Match track background */
+}
+
+/* Firefox scrollbar styles */
+.task-row textarea {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: #00ccaa #282828; /* thumb track */
+}
+
+/* Style for inline editing task rows */
+.task-row-inline {
+    display: flex; /* Or grid, depending on desired desktop layout */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #282828;
+    margin-bottom: 10px;
+    cursor: pointer; /* Indicate clickable */
+}
+
+/* Style for the display state of task rows */
+.task-display {
+     display: flex; /* Arrange display elements horizontally */
+     gap: 10px; /* Space between display elements */
+     flex-grow: 1; /* Allow display area to grow */
+     align-items: center;
+}
+
+/* Style for the edit state of task rows */
+.task-edit {
+     display: grid; /* Use grid for input fields and labels */
+     /* Adjust columns as needed for desktop view */
+     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+     gap: 10px;
+     flex-grow: 1; /* Allow edit area to grow */
+}
+
+/* Style for inline editing progress rows (similar structure) */
+.progress-row-inline {
+    display: flex; /* Or grid */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    cursor: pointer; /* Indicate clickable */
+}
+
+/* Style for the display state of progress rows */
+.progress-display {
+    display: flex; /* Arrange display elements horizontally */
+    gap: 10px;
+    flex-grow: 1;
+    align-items: center;
+}
+
+/* Style for the edit state of progress rows */
+.progress-edit {
+    display: grid; /* Use grid for input fields and labels */
+    /* Adjust columns as needed for desktop view */
+     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    flex-grow: 1;
+}
+
+/* Media query for mobile adjustments */
+@media (max-width: 768px) {
+    .task-row-inline, .progress-row-inline {
+        flex-direction: column; /* Stack display/edit vertically on mobile */
+        align-items: stretch; /* Stretch items */
+    }
+
+    .task-display, .progress-display {
+        flex-direction: column; /* Stack display elements vertically on mobile */
+        align-items: flex-start; /* Align display text to the left */
+    }
+
+    .task-edit, .progress-edit {
+        grid-template-columns: 1fr; /* Stack inputs and labels vertically on mobile */
+        gap: 10px;
+        padding: 10px 0; /* Add padding top/bottom */
+    }
+
+    .task-edit label.mobile-only, .progress-edit label.mobile-only {
+         display: block; /* Show mobile labels */
+         font-size: 0.8rem;
+         color: #ccc;
+         margin-bottom: 2px;
+    }
+
+    .task-edit input, .task-edit textarea,
+    .progress-edit input, .progress-edit textarea {
+         width: 100%; /* Full width inputs on mobile */
+         max-width: none;
+    }
+
+    .task-edit button, .progress-edit button {
+         width: 100%; /* Full width buttons on mobile */
+         margin-top: 10px;
+    }
+
+    /* Hide desktop-only labels within edit state on mobile */
+    .task-edit label.desktop-only, .progress-edit label.desktop-only {
+        display: none !important;
+    }
+}
+
+/* Style for the hidden class */
+.hidden {
+    display: none !important;
 }

@@ -68,9 +68,9 @@
             <ul class="nav-menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/team">Team</a></li>
+                <li><a href="/services">Services</a></li>
                 <li><a href="/pipeline-estimator">Pipeline Estimator</a></li>
                 <li><a href="/construction-tracker">Construction Tracker</a></li>
-                <li><a href="/services">Services</a></li>
                 <li><a href="/struct-wise">Struct-wise Demo</a></li>
                 <li><a href="/booking" class="btn primary">Book Now</a></li>
             </ul>
@@ -106,6 +106,8 @@
 
     <footer class="footer" data-aos="fade-in" data-aos-duration="1000">
         <img src="/static/Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100">
+        <p class="footer-tagline" data-aos="fade-up" data-aos-delay="150"> [VibeOps.ca Engineering Consulting Collective {VECC}]</p>
+        <p class="footer-cta-text" data-aos="fade-up" data-aos-delay="180">Ready to build? Connect with our engineering and AI automation teams.</p>
         <p data-aos="fade-up" data-aos-delay="200">© 2025 VibeOps — AI Automation & Web Solutions. All rights reserved.</p>
         <div class="socials" data-aos="fade-up" data-aos-delay="300">
             <a href="mailto:vibeops.info@gmail.com?subject=Let's%20Build:%20_________&body=Hey%20VibeOps%2C%0A%0AI've%20got%20a%20project%20in%20mind:%20[details].%20Let%20s%20connect!%0A%0A[Your%20Name]" class="footer-email-btn">Email Us!</a>
@@ -126,8 +128,9 @@
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
         navToggle.addEventListener('click', () => {
-            const isActive = navMenu.classList.toggle('active');
-            navToggle.setAttribute('aria-expanded', isActive);
+            const isActive = navToggle.classList.toggle('active'); // Toggle active class on the toggle button
+             navMenu.classList.toggle('active', isActive); // Also toggle active class on the nav menu to show/hide it
+             navToggle.setAttribute('aria-expanded', isActive);
             document.body.classList.toggle('nav-menu-active', isActive); // Toggle class on body
         });
 

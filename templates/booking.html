@@ -1,14 +1,40 @@
 {% extends "base.html" %}
-{% block title %}Contact & Schedule{% endblock %}
+{% block title %}Book a Free Consultation - VibeOps{% endblock %}
+
+{% block extra_head %}
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+{% endblock %}
+
 {% block content %}
-    <section class="contact" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Let’s Connect">Let’s Connect</h2>
-        <a href="mailto:vibeops.info@gmail.com?subject=Let’s%20Vibe&body=Hey%20VibeOps%2C%0A%0AI’ve%20got%20a%20project%20in%20mind:%20[details].%20Let’s%20connect!%0A%0A[Your%20Name]" class="btn secondary" data-aos="fade-up" data-aos-delay="400" style="color: #FF00FF;">Email Us Directly</a>
-        <div class="calendly-wrapper" data-aos="fade-up" data-aos-delay="300">
-            <!-- Calendly inline widget begin -->
-            <div class="calendly-inline-widget" data-url="https://calendly.com/vibeops-info/30min?background_color=1e1e1e&text_color=f2f2f2&primary_color=00ffcc" style="min-width:320px;height:700px;"></div>
-            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-            <!-- Calendly inline widget end -->
+    <section class="booking-page" data-aos="fade-in" data-aos-duration="1000">
+        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Book a Free Consultation">Book a Free Consultation</h2>
+        <p data-aos="fade-up" data-aos-delay="200">
+            Schedule a 30-minute free consultation to elevate your web design project. We'll discuss your website goals, optimize your design timeline with Gantt charts, and explore progress tracking with S-curves using our app. Be ready to share your project challenges and goals. After booking, you'll see a confirmation page with options to schedule another consultation or explore our project tracker.
+        </p>
+        <div class="calendly-container" data-aos="fade-up" data-aos-delay="300">
+            <div id="calendly-widget" class="calendly-inline-widget" 
+                 data-url="{{ calendly_link }}" 
+                 style="min-width:320px;height:700px;">
+            </div>
+        </div>
+        <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
+            <h3>Ready to Start?</h3>
+            <p>After booking, explore our project tracker to create Gantt charts and manage your timeline.</p>
+            <a href="/construction-tracker" class="btn primary">Go to Project Tracker</a>
         </div>
     </section>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Calendly !== 'undefined') {
+                Calendly.initInlineWidget({
+                    url: '{{ calendly_link }}',
+                    parentElement: document.getElementById('calendly-widget')
+                });
+            }
+        });
+    </script>
 {% endblock %}

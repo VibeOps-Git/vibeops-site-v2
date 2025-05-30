@@ -1,4 +1,4 @@
-from flask import request, jsonify, render_template
+from flask import request, jsonify, render_template, session
 import pandas as pd
 import json
 import plotly.graph_objects as go
@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 def handle_tracker_post():
     """Handles POST requests for generating the initial project plan and Gantt chart."""
     try:
-        # Log the raw request data for inspection
         logger.info(f"Received request data for /construction-tracker: {request.data}")
 
         try:
@@ -24,7 +23,6 @@ def handle_tracker_post():
             project_name = data.get('project_name')
             tasks_input = data.get('tasks')
             logger.info(f"Parsed JSON data: project_name={project_name}, tasks={tasks_input}")
-
         except Exception as json_error:
             logger.error(f"Error parsing JSON data: {json_error}")
             return jsonify({"error": f"Invalid JSON data received: {json_error}"}), 400
@@ -39,18 +37,25 @@ def handle_tracker_post():
             logger.error(error_message)
             return jsonify({"error": error_message}), 400
 
-        # Validate tasks
         for task in tasks_input:
-            if not all(key in task for key in ['activityName', 'start', 'duration']):
-                return jsonify({"error": "Each task must have 'activityName', 'start', and 'duration'"}), 400
+            if not all(key in task for key in ['activityName', 'start', 'duration', 'crew', 'personnel', 'equipment']):
+                return jsonify({"error": "Each task must have 'activityName', 'start', 'duration', 'crew', 'personnel', and 'equipment'"}), 400
             if not isinstance(task['duration'], (int, float)) or task['duration'] <= 0:
                 return jsonify({"error": "Duration must be a positive number"}), 400
+            if not isinstance(task['personnel'], (int, float)) or task['personnel'] < 0:
+                return jsonify({"error": "Personnel count must be a non-negative number"}), 400
+            if not isinstance(task['equipment'], (int, float)) or task['equipment'] < 0:
+                return jsonify({"error": "Equipment count must be a non-negative number"}), 400
 
         # Perform CPM analysis
         try:
-            activityList_for_cpm = json.loads(json.dumps(tasks_input))  # Deep clone
+            activityList_for_cpm = json.loads(json.dumps(tasks_input))
             activityList_with_cpm = perform_cpm_analysis(activityList_for_cpm)
             logger.info(f"CPM analysis completed for {len(tasks_input)} tasks.")
+
+            # Store CPM results in session for progress analysis
+            session['activityList_with_cpm'] = activityList_with_cpm
+
         except ValueError as ve:
             logger.error(f"CPM analysis failed due to input data error: {ve}")
             return jsonify({"error": f"Error in task data format or predecessors: {ve}"}), 400
@@ -59,107 +64,113 @@ def handle_tracker_post():
             return jsonify({"error": f"An internal error occurred during planning: {cpm_error}"}), 500
 
         # Prepare Gantt chart data
-        gantt_data_plotly = []
-        if activityList_with_cpm:
-            try:
-                # Get the earliest start date from tasks
-                start_dates = []
-                for task in tasks_input:
-                    try:
-                        # Convert string date to datetime object
-                        start_date = datetime.strptime(task.get('start'), '%Y-%m-%d')
-                        # Ensure date is not too far in the past
-                        if start_date.year < 1970:
-                            start_date = datetime(1970, 1, 1)
-                            logger.warning(f"Adjusted invalid start date {task.get('start')} for task {task.get('activityName')} to 1970-01-01.")
-                        start_dates.append(start_date)
-                    except (ValueError, TypeError) as e:
-                        logger.warning(f"Invalid date format for task {task.get('activityName')}: {e}, using 1970-01-01.")
-                        start_dates.append(datetime(1970, 1, 1))
+        df = pd.DataFrame(tasks_input)
+        df['start'] = pd.to_datetime(df['start'])
+        df['end'] = df.apply(lambda row: row['start'] + timedelta(days=row['duration'] - 1), axis=1)
 
-                if start_dates:
-                    earliest_start_date = min(start_dates)
-                else:
-                    earliest_start_date = datetime.today()
-                    logger.warning("No valid start dates provided in tasks, defaulting project start to today for Gantt.")
+        # Map CPM results
+        cpm_results_map = {task['activityName']: task for task in activityList_with_cpm}
+        df['ES'] = df['activityName'].apply(lambda name: cpm_results_map.get(name, {}).get('ES', 0))
+        df['Critical'] = df['activityName'].apply(lambda name: cpm_results_map.get(name, {}).get('Critical', False))
+        df['HoverText'] = df.apply(lambda row: f"<b>{row['activityName']}</b><br>Start: {row['start'].strftime('%Y-%m-%d')}<br>Finish: {row['end'].strftime('%Y-%m-%d')}<br>Duration: {row['duration']} days<br>ES: {cpm_results_map.get(row['activityName'], {}).get('ES', 'N/A')}, EF: {cpm_results_map.get(row['activityName'], {}).get('EF', 'N/A')}<br>Crew: {row['crew']}<br>Personnel: {row['personnel']}<br>Equipment: {row['equipment']}", axis=1)
+        df['Color'] = df['Critical'].apply(lambda is_critical: '#ff3333' if is_critical else '#00ffcc')
+        
+        # Add critical path indicator to task names
+        df['activityName'] = df.apply(lambda row: f"{row['activityName']} {'(Critical)' if row['Critical'] else ''}", axis=1)
 
-            except Exception as date_error:
-                logger.error(f"Error determining earliest start date: {date_error}")
-                earliest_start_date = datetime.today()
+        # Determine earliest start date for timeline offset
+        earliest_start = df['start'].min()
+        df['ES_offset'] = df['ES'].apply(lambda es: (pd.to_datetime(earliest_start) + timedelta(days=es) - earliest_start).days)
 
-            for task in activityList_with_cpm:
-                task_name = task['activityName']
-                start_date_for_plot = earliest_start_date + timedelta(days=task.get('ES', 0))
-                end_date_for_plot = earliest_start_date + timedelta(days=task.get('EF', 0))
+        # Create Plotly Gantt chart data
+        df = df.sort_values(by=['start', 'duration'], ascending=[True, True])
+        data = [{
+            'type': 'bar',
+            'x': df['duration'].tolist(),
+            'y': df['activityName'].tolist(),
+            'base': df['ES_offset'].tolist(),
+            'orientation': 'h',
+            'marker': {'color': df['Color'].tolist()},
+            'name': 'Tasks',
+            'hoverinfo': 'text',
+            'text': df['HoverText'].tolist()
+        }]
 
-                if start_date_for_plot < earliest_start_date:
-                    start_date_for_plot = earliest_start_date
-                if end_date_for_plot < earliest_start_date:
-                    end_date_for_plot = earliest_start_date + timedelta(days=task.get('duration', 0))
+        # Define Plotly layout
+        layout = {
+            'title': {'text': project_name + ' Gantt Chart', 'font': {'family': 'Orbitron, sans-serif', 'size': 24, 'color': '#00ffcc'}, 'x': 0.5, 'xanchor': 'center', 'xref': 'paper'},
+            'xaxis': {'type': 'linear', 'title': {'text': 'Days from Start', 'font': {'family': 'Inter, sans-serif', 'size': 16, 'color': '#f2f2f2'}}, 'showgrid': True, 'gridcolor': '#444', 'zeroline': False, 'linecolor': '#555', 'linewidth': 1, 'tickfont': {'family': 'Inter, sans-serif', 'size': 12, 'color': '#cccccc'}},
+            'yaxis': {'title': {'text': 'Tasks', 'font': {'family': 'Inter, sans-serif', 'size': 16, 'color': '#f2f2f2'}}, 'autorange': 'reversed', 'categoryorder': 'array', 'categoryarray': df['activityName'].tolist(), 'showgrid': True, 'gridcolor': '#444', 'zeroline': False, 'linecolor': '#555', 'linewidth': 1, 'tickfont': {'family': 'Inter, sans-serif', 'size': 12, 'color': '#cccccc'}, 'ticklen': 5, 'tickwidth': 1, 'tickcolor': '#555'},
+            'showlegend': False,
+            'margin': {'l': 200, 'r': 20, 't': 80, 'b': 80},
+            'paper_bgcolor': '#1e1e1e',
+            'plot_bgcolor': '#1e1e1e',
+            'font': {'color': '#f2f2f2'},
+            'height': max(400, len(df) * 40)
+        }
 
-                color = '#00ffcc' if task.get('Critical', False) else '#0077aa'
-                hover_text = f"<b>{task_name}</b><br>Planned Start: {start_date_for_plot.strftime('%Y-%m-%d')}<br>Planned Finish: {end_date_for_plot.strftime('%Y-%m-%d')}<br>Duration: {task.get('duration', 0)} days"
-                hover_text += f"<br>ES: {task.get('ES', 'N/A')}, EF: {task.get('EF', 'N/A')}, LS: {task.get('LS', 'N/A')}, LF: {task.get('LF', 'N/A')}"
-                hover_text += f"<br>Total Float: {task.get('TF', 'N/A')}, Free Float: {task.get('FF', 'N/A')}"
+        # Generate resource histograms
+        # Create a timeline of days from earliest start to latest finish
+        project_duration = (df['end'].max() - earliest_start).days + 1
+        timeline = [earliest_start + timedelta(days=i) for i in range(project_duration)]
+        
+        # Calculate daily resource usage
+        daily_personnel = [0] * project_duration
+        daily_equipment = [0] * project_duration
+        
+        for _, task in df.iterrows():
+            start_idx = (task['start'] - earliest_start).days
+            end_idx = start_idx + task['duration']
+            for i in range(start_idx, end_idx):
+                if 0 <= i < project_duration:
+                    daily_personnel[i] += task['personnel']
+                    daily_equipment[i] += task['equipment']
 
-                gantt_data_plotly.append({
-                    "Task": task_name,
-                    "Start": start_date_for_plot.strftime('%Y-%m-%d'),
-                    "Finish": end_date_for_plot.strftime('%Y-%m-%d'),
-                    "Duration": task.get('duration', 0),
-                    "Critical": task.get('Critical', False),
-                    "Color": color,
-                    "HoverText": hover_text
-                })
+        # Create resource histogram data
+        resource_data = [
+            # Personnel histogram
+            {
+                'type': 'bar',
+                'x': timeline,
+                'y': daily_personnel,
+                'name': 'Personnel',
+                'marker': {'color': '#00ffcc'},
+                'hovertemplate': 'Date: %{x}<br>Personnel: %{y}<extra></extra>'
+            },
+            # Equipment histogram
+            {
+                'type': 'bar',
+                'x': timeline,
+                'y': daily_equipment,
+                'name': 'Equipment',
+                'marker': {'color': '#ff4444'},
+                'hovertemplate': 'Date: %{x}<br>Equipment: %{y}<extra></extra>'
+            }
+        ]
 
-            # Create DataFrame and sort by start date
-            df_gantt = pd.DataFrame(gantt_data_plotly)
-            df_gantt['Start_Date_Sort'] = pd.to_datetime(df_gantt['Start'], format='%Y-%m-%d')
-            df_gantt = df_gantt.dropna(subset=['Start_Date_Sort'])
-            df_gantt = df_gantt.sort_values(by=['Start_Date_Sort', 'Duration'], ascending=[True, True])
+        # Define resource histogram layout
+        resource_layout = {
+            'title': {'text': 'Resource Usage Over Time', 'font': {'family': 'Orbitron, sans-serif', 'size': 18, 'color': '#00ffcc'}, 'x': 0.5, 'xanchor': 'center', 'xref': 'paper'},
+            'xaxis': {'title': {'text': 'Date', 'font': {'family': 'Inter, sans-serif', 'size': 16, 'color': '#f2f2f2'}}, 'showgrid': True, 'gridcolor': '#444', 'zeroline': False, 'linecolor': '#555', 'linewidth': 1, 'tickfont': {'family': 'Inter, sans-serif', 'size': 12, 'color': '#cccccc'}},
+            'yaxis': {'title': {'text': 'Resource Count', 'font': {'family': 'Inter, sans-serif', 'size': 16, 'color': '#f2f2f2'}}, 'showgrid': True, 'gridcolor': '#444', 'zeroline': False, 'linecolor': '#555', 'linewidth': 1, 'tickfont': {'family': 'Inter, sans-serif', 'size': 12, 'color': '#cccccc'}},
+            'barmode': 'group',
+            'showlegend': True,
+            'legend': {'font': {'family': 'Inter, sans-serif', 'size': 12, 'color': '#f2f2f2'}},
+            'margin': {'l': 120, 'r': 20, 't': 80, 'b': 80},
+            'paper_bgcolor': '#1e1e1e',
+            'plot_bgcolor': '#1e1e1e',
+            'font': {'color': '#f2f2f2'},
+            'height': 400
+        }
 
-            fig_gantt = go.Figure()
-            fig_gantt.add_trace(go.Bar(
-                x=df_gantt['Duration'].tolist(),
-                y=df_gantt['Task'].tolist(),
-                base=df_gantt['Start'].tolist(),
-                orientation='h',
-                marker=dict(color=df_gantt['Color'].tolist()),
-                hovertext=df_gantt['HoverText'].tolist(),
-                hoverinfo='text'
-            ))
+        critical_activities = [task['activityName'] for task in activityList_with_cpm if task.get('Critical', False)]
 
-            fig_gantt.update_layout(
-                title="Project Gantt Chart (Critical Path in VibeOps Green)",
-                xaxis=dict(
-                    title="Timeline",
-                    type="date",
-                    tickformat="%Y-%m-%d",
-                    range=[df_gantt['Start'].min(), df_gantt['Finish'].max()]
-                ),
-                yaxis=dict(
-                    title="Tasks",
-                    autorange="reversed",
-                    categoryorder="array",
-                    categoryarray=df_gantt['Task'].tolist()
-                ),
-                height=max(400, len(df_gantt) * 50 + 100),
-                showlegend=False,
-                margin=dict(l=150, r=20, t=50, b=50),
-                paper_bgcolor='#1e1e1e',
-                plot_bgcolor='#1e1e1e',
-                font=dict(color='#f2f2f2')
-            )
-
-            return jsonify({
-                "gantt_data": fig_gantt.to_dict(),
-                "processed_tasks": activityList_with_cpm
-            }), 200
-
-        else:
-            error_message = "CPM analysis did not produce activity list."
-            logger.error(error_message)
-            return jsonify({"error": error_message}), 500
+        return jsonify({
+            "gantt_data": {"data": data, "layout": layout},
+            "resource_data": {"data": resource_data, "layout": resource_layout},
+            "critical_path_activities": critical_activities,
+            "processed_tasks": activityList_with_cpm
+        }), 200
 
     except Exception as e:
         logger.error(f"Error in handle_tracker_post (Gantt): {e}", exc_info=True)
@@ -170,16 +181,17 @@ def handle_tracker_post():
 
 def addSuccessors(activityList):
     """Adds immediate successors to each activity in the list."""
-    activity_names = [activity["activityName"] for activity in activityList]
-    for i, activity in enumerate(activityList):
+    # Create a dictionary for quick lookup by activity name
+    activity_dict = {activity["activityName"]: activity for activity in activityList}
+
+    for activity in activityList:
         currentName = activity["activityName"]
         successors = []
-        for j, other_activity in enumerate(activityList):
+        for other_activity in activityList:
             # Check all other activities to see if the current one is a predecessor
             if currentName in other_activity.get("immediatePredecessor", []):
-                 # Find the index of the successor task in the list
                 successors.append(other_activity["activityName"])
-        activityList[i]["immediateSuccessor"] = successors
+        activity["immediateSuccessor"] = successors # Assign successors directly to the activity dict
 
 def addCalculationCols(activityList):
     """Adds placeholder columns for CPM calculations."""
@@ -197,6 +209,8 @@ def calculateEarlyDates(activityList):
     # Create a dictionary for quick lookup by activity name
     activity_dict = {activity['activityName']: activity for activity in activityList}
 
+    # Process activities in order (assuming activityList is reasonably ordered or use topological sort)
+    # A true topological sort would be more robust here.
     for activity in activityList:
         duration = activity.get('duration', 0) # Ensure duration exists, default to 0
         predecessorList = activity.get('immediatePredecessor', []) # Ensure predecessors exist
@@ -207,21 +221,17 @@ def calculateEarlyDates(activityList):
             activity['ES'] = 0
         else:
             max_predecessor_ef = 0
-            valid_predecessors = True
             for pred_name in predecessorList:
                  predecessor_activity = activity_dict.get(pred_name)
                  if predecessor_activity:
                      max_predecessor_ef = max(max_predecessor_ef, predecessor_activity.get('EF', 0))
                  else:
-                      # This indicates an invalid predecessor name - handle appropriately
-                      # For now, we'll just log a warning and treat as if predecessor has EF 0
+                      # Log a warning for invalid predecessor names
                       logger.warning(f"Predecessor '{pred_name}' not found for activity '{activity['activityName']}'.")
-                      valid_predecessors = False
 
-            activity['ES'] = max_predecessor_ef
-            ES = max_predecessor_ef # Update local ES variable
+            activity['ES'] = max_predecessor_ef # Early Start is max Early Finish of predecessors
 
-        activity['EF'] = ES + duration # Calculate Early Finish
+        activity['EF'] = activity['ES'] + duration # Calculate Early Finish
 
 
 def getProjectFinish(activityList):
@@ -232,79 +242,73 @@ def getProjectFinish(activityList):
 
 def calculateLateDates(activityList):
     """Calculates Late Finish (LF) and Late Start (LS) dates."""
-    LARGENUMBER = getProjectFinish(activityList) + 100 # Use a value larger than project finish
+    project_finish = getProjectFinish(activityList)
     # Create a dictionary for quick lookup by activity name
     activity_dict = {activity['activityName']: activity for activity in activityList}
 
     # Calculate Late Dates by iterating backward
-    # Need to process activities in topological order reverse or by index if activities are ordered
+    # Need to process activities in reverse topological order or ensure correct successor lookups
     # Assuming activityList is roughly ordered such that successors appear later
-    # A more robust approach would use actual topological sort
     for i in range(len(activityList) - 1, -1, -1):
         activity = activityList[i]
         duration = activity.get('duration', 0)
         successorList = activity.get('immediateSuccessor', [])
 
-        LF = LARGENUMBER # Initialize LF
-
         if not successorList:
             # Activities with no successors finish by the project finish time
-            activity['LF'] = getProjectFinish(activityList)
-            LF = activity['LF']
+            activity['LF'] = project_finish
         else:
-            min_successor_ls = LARGENUMBER
-            valid_successors = True
+            min_successor_ls = float('inf') # Initialize with a very large number
             for succ_name in successorList:
                 successor_activity = activity_dict.get(succ_name)
                 if successor_activity:
-                     min_successor_ls = min(min_successor_ls, successor_activity.get('LS', LARGENUMBER))
+                     min_successor_ls = min(min_successor_ls, successor_activity.get('LS', float('inf')))
                 else:
-                     # This indicates an issue with successor linking, treat as if successor has LS at project end
                      logger.warning(f"Successor '{succ_name}' not found for activity '{activity['activityName']}'.")
-                     valid_successors = False
 
-            activity['LF'] = min_successor_ls
-            LF = min_successor_ls # Update local LF variable
 
-        activity['LS'] = LF - duration # Calculate Late Start
+            activity['LF'] = min_successor_ls # Late Finish is min Late Start of successors
+
+        activity['LS'] = activity['LF'] - duration # Calculate Late Start
 
 def calculateTF(activityList):
     """Calculates Total Float (TF) and identifies Critical Activities."""
     for activity in activityList:
+        # Total Float = Late Finish - Early Finish OR Late Start - Early Start
         activity['TF'] = activity.get('LF', 0) - activity.get('EF', 0) # Ensure LF, EF exist
-        if activity['TF'] == 0:
+        # Alternatively: activity['TF'] = activity.get('LS', 0) - activity.get('ES', 0)
+        if activity['TF'] <= 0: # Use <= 0 to catch potential floating point issues near zero
             activity['Critical'] = True
+            activity['TF'] = 0 # Ensure Critical activities have 0 float
         else:
              activity['Critical'] = False # Explicitly set non-critical
 
 def calculateFF(activityList):
     """Calculates Free Float (FF)."""
-    LARGENUMBER = getProjectFinish(activityList) + 100 # Use a value larger than project finish
+    project_finish = getProjectFinish(activityList)
     # Create a dictionary for quick lookup by activity name
     activity_dict = {activity['activityName']: activity for activity in activityList}
 
-    # Calculate Free Float by iterating backward
-    for i in range(len(activityList) - 1, -1, -1):
-        activity = activityList[i]
+    # Calculate Free Float
+    for activity in activityList:
         successorList = activity.get('immediateSuccessor', [])
         EF = activity.get('EF', 0)
 
         if not successorList:
             # Activities with no successors have Free Float equal to their Total Float
-             activity['FF'] = activity.get('TF', 0) # Or getProjectFinish(activityList) - EF
+             activity['FF'] = activity.get('TF', 0)
+             # Alternatively: activity['FF'] = project_finish - EF
         else:
-            min_successor_es = LARGENUMBER
-            valid_successors = True
+            min_successor_es = float('inf') # Initialize with a very large number
             for succ_name in successorList:
                  successor_activity = activity_dict.get(succ_name)
                  if successor_activity:
-                     min_successor_es = min(min_successor_es, successor_activity.get('ES', LARGENUMBER))
+                     min_successor_es = min(min_successor_es, successor_activity.get('ES', float('inf')))
                  else:
                       logger.warning(f"Successor '{succ_name}' not found when calculating FF for '{activity['activityName']}'.")
-                      valid_successors = False
 
             activity['FF'] = min_successor_es - EF
-            # Free float cannot be negative
+            # Free float cannot be negative due to logic, but adding a check for safety
             if activity['FF'] < 0:
                 activity['FF'] = 0
 
@@ -315,13 +319,9 @@ def perform_cpm_analysis(activityList):
         if 'activityName' not in task or 'duration' not in task or 'immediatePredecessor' not in task:
             raise ValueError("Each task must have 'activityName', 'duration', and 'immediatePredecessor'.")
 
-    # Sort activities to ensure predecessors generally come before successors by index
-    # This is a heuristic and might fail for complex graphs. A proper topological sort is better.
-    # For simplicity and based on the input structure, we'll try sorting by a combination
-    # of lack of predecessors and duration, but relying on the addSuccessors and
-    # date calculations to handle out-of-order inputs as much as possible.
-    # A more robust way: implement topological sort.
-    # Let's assume for now the input list order is somewhat logical or rely on dict lookups.
+    # Note: A proper topological sort should be implemented for guaranteed correctness
+    # with arbitrary task dependencies. The current order-dependent approach might
+    # produce incorrect results if the input list is not in a valid sequence.
 
     addSuccessors(activityList)
     addCalculationCols(activityList)
@@ -345,40 +345,107 @@ def handle_progress_post():
         if not isinstance(tasks, list):
             return jsonify({"error": "Tasks must be a list"}), 400
 
+        # Retrieve CPM results from session
+        activityList_with_cpm = session.get('activityList_with_cpm')
+        if not activityList_with_cpm:
+            logger.error("CPM analysis data not found in session.")
+            return jsonify({"error": "Please generate the Gantt chart first to perform progress analysis."}), 400
+
         # Process each task
         processed_tasks = []
         for task in tasks:
-            if not all(key in task for key in ['activityName', 'percentComplete', 'budgetedCost', 'actualCost']):
-                return jsonify({"error": "Each task must have activityName, percentComplete, budgetedCost, and actualCost"}), 400
+            # Ensure expected keys are present in task data from frontend
+            required_keys = ['activityName', 'percentComplete', 'budgetedCost', 'actualCost', 'actualStart', 'actualFinish']
+            if not all(key in task for key in required_keys):
+                 missing = [key for key in required_keys if key not in task]
+                 logger.error(f"Missing keys in task data: {missing}")
+                 # Provide a more informative error message back to the user
+                 return jsonify({"error": f"Incomplete task progress data received. Missing keys: {', '.join(missing)}"}), 400
+
 
             try:
-                percent_complete = float(task['percentComplete'])
-                budgeted_cost = float(task['budgetedCost'])
-                actual_cost = float(task['actualCost'])
+                percent_complete = float(task.get('percentComplete', 0)) # Use get with default for safety
+                budgeted_cost = float(task.get('budgetedCost', 0))
+                actual_cost = float(task.get('actualCost', 0))
+                actual_start_str = task.get('actualStart')
+                actual_finish_str = task.get('actualFinish')
 
-                # Update task in Supabase
+                # Validate numerical inputs
+                if not (0 <= percent_complete <= 100):
+                     return jsonify({"error": f"Invalid % Complete for task '{task.get('activityName', 'Unknown')}': {percent_complete}. Must be between 0 and 100."}), 400
+                if budgeted_cost < 0 or actual_cost < 0:
+                     return jsonify({"error": f"Invalid cost value for task '{task.get('activityName', 'Unknown')}'. Costs cannot be negative."}), 400
+
+                # Handle date conversions and validation
+                actual_start_date = None
+                actual_finish_date = None
+                if actual_start_str:
+                    try:
+                        actual_start_date = datetime.strptime(actual_start_str, '%Y-%m-%d')
+                    except ValueError:
+                         return jsonify({"error": f"Invalid Actual Start Date format for task '{task.get('activityName', 'Unknown')}': {actual_start_str}. Use YYYY-MM-DD."}), 400
+
+                if actual_finish_str:
+                    try:
+                        actual_finish_date = datetime.strptime(actual_finish_str, '%Y-%m-%d')
+                    except ValueError:
+                         return jsonify({"error": f"Invalid Actual Finish Date format for task '{task.get('activityName', 'Unknown')}': {actual_finish_str}. Use YYYY-MM-DD."}), 400
+
+                # Optional: Validate date logic (e.g., start before finish)
+                if actual_start_date and actual_finish_date and actual_start_date > actual_finish_date:
+                    logger.warning(f"Actual Start Date is after Actual Finish Date for task '{task.get('activityName', 'Unknown')}'.")
+                    # Decide how to handle this: return error, log warning, or ignore. Logging for now.
+
+
+                # Prepare data for Supabase update
                 update_data = {
                     'percent_complete': percent_complete,
                     'budgeted_cost': budgeted_cost,
                     'actual_cost': actual_cost,
-                    'updated_at': datetime.now().isoformat()
+                    'updated_at': datetime.now().isoformat() # Use ISO format for timestamp
                 }
+                # Add dates if they are valid datetime objects
+                if actual_start_date:
+                    update_data['actual_start'] = actual_start_date.isoformat()
+                if actual_finish_date:
+                    update_data['actual_finish'] = actual_finish_date.isoformat()
+
+                logger.info(f"Attempting to update task '{task.get('activityName', 'Unknown')}' in Supabase with data: {update_data}")
                 
                 # Update the task in Supabase
-                supabase.table('tasks').update(update_data).eq('activity_name', task['activityName']).execute()
+                # Assuming 'activity_name' is the unique identifier in your 'tasks' table
+                response = supabase.table('tasks').update(update_data).eq('activity_name', task.get('activityName')).execute()
 
-                # Calculate earned value metrics
+                # Check Supabase response for errors
+                if response.data is None or len(response.data) == 0:
+                     logger.warning(f"Supabase update for task '{task.get('activityName', 'Unknown')}' resulted in no data or error: {response.error}")
+                     # Decide if this is an error condition you want to return to the user
+                     # For now, continue processing but log the issue.
+
+                elif response.error:
+                    logger.error(f"Supabase error updating task '{task.get('activityName', 'Unknown')}': {response.error}", exc_info=True)
+                    # You might want to return an error here if the database update is critical
+                    # return jsonify({"error": f"Database error updating task '{task.get('activityName', 'Unknown')}': {response.error['message']}"}), 500
+
+
+                # Calculate earned value metrics for the response
                 earned_value = budgeted_cost * (percent_complete / 100)
                 cost_variance = earned_value - actual_cost
-                schedule_variance = earned_value - budgeted_cost
-                cost_performance_index = earned_value / actual_cost if actual_cost != 0 else 0
-                schedule_performance_index = earned_value / budgeted_cost if budgeted_cost != 0 else 0
+                schedule_variance = earned_value - budgeted_cost # Note: This is technically Planned Value (PV) based SV if using Budgeted Cost as PV proxy
+                # For accurate SV, you'd need Planned Value at the reporting date, which requires the original schedule.
+                # Using Budgeted Cost here as a simplified proxy for PV.
+
+                cost_performance_index = earned_value / actual_cost if actual_cost != 0 else (float('inf') if earned_value > 0 else 0) # Handle division by zero
+                schedule_performance_index = earned_value / budgeted_cost if budgeted_cost != 0 else (float('inf') if earned_value > 0 else 0) # Handle division by zero
+
 
                 processed_tasks.append({
-                    'activityName': task['activityName'],
+                    'activityName': task.get('activityName'),
                     'percentComplete': percent_complete,
                     'budgetedCost': budgeted_cost,
                     'actualCost': actual_cost,
+                    'actualStart': actual_start_str, # Include actual dates in response
+                    'actualFinish': actual_finish_str,
                     'earnedValue': earned_value,
                     'costVariance': cost_variance,
                     'scheduleVariance': schedule_variance,
@@ -386,67 +453,170 @@ def handle_progress_post():
                     'schedulePerformanceIndex': schedule_performance_index
                 })
 
-            except ValueError:
-                return jsonify({"error": "percentComplete, budgetedCost, and actualCost must be valid numbers"}), 400
+            except ValueError as ve:
+                # Catch errors from float conversion or other value issues during processing
+                 logger.error(f"Data processing error for task '{task.get('activityName', 'Unknown')}': {ve}", exc_info=True)
+                 return jsonify({"error": f"Error processing data for task '{task.get('activityName', 'Unknown')}': {ve}"}), 400
+            except Exception as ex:
+                 # Catch any other unexpected errors during task processing
+                 logger.error(f"Unexpected error processing task '{task.get('activityName', 'Unknown')}': {ex}", exc_info=True)
+                 return jsonify({"error": f"Unexpected error processing task '{task.get('activityName', 'Unknown')}': {ex}"}), 500
+
 
         # Generate S-curve data
         try:
-            # Sort tasks by percent complete
-            sorted_tasks = sorted(processed_tasks, key=lambda x: x['percentComplete'])
-            
-            # Create cumulative progress data
-            cumulative_progress = []
-            cumulative_budget = 0
-            cumulative_actual = 0
-            cumulative_earned = 0
-            
-            for task in sorted_tasks:
-                cumulative_budget += task['budgetedCost']
-                cumulative_actual += task['actualCost']
-                cumulative_earned += task['earnedValue']
-                
-                cumulative_progress.append({
-                    'percentComplete': task['percentComplete'],
-                    'budgetedCost': cumulative_budget,
-                    'actualCost': cumulative_actual,
-                    'earnedValue': cumulative_earned
-                })
+            report_date_str = data.get('report_date')
+            report_date = datetime.strptime(report_date_str, '%Y-%m-%d') if report_date_str else datetime.now()
 
-            # Create S-curve plot
-            fig = go.Figure()
-            
-            # Add budgeted cost line
-            fig.add_trace(go.Scatter(
-                x=[p['percentComplete'] for p in cumulative_progress],
-                y=[p['budgetedCost'] for p in cumulative_progress],
-                mode='lines',
-                name='Budgeted Cost',
-                line=dict(color='#00ffcc', width=2)
+            # Sort tasks by planned finish date to plot S-curve chronologically based on plan
+            # Use the EF calculated during CPM analysis
+            tasks_with_cpm_dict = {task['activityName']: task for task in tasks} # Original input tasks
+            processed_tasks_with_ef = []
+            for task in processed_tasks:
+                 cpm_info = activityList_with_cpm.get(task['activityName'], {}) # Get CPM info from the list used for Gantt
+                 task_with_ef = task.copy()
+                 task_with_ef['EF'] = cpm_info.get('EF', 0) # Add EF for sorting
+                 task_with_ef['start_date'] = datetime.strptime(cpm_info.get('start', report_date.strftime('%Y-%m-%d')), '%Y-%m-%d') # Add original start date
+                 processed_tasks_with_ef.append(task_with_ef)
+
+            # Sort by planned start date, then EF
+            sorted_tasks_for_scurve = sorted(processed_tasks_with_ef, key=lambda x: (x.get('start_date', report_date), x.get('EF', 0)))
+
+            # Create cumulative progress data points over time
+            # We need a timeline. Let's use days from the earliest project start date.
+            earliest_start = min(t.get('start_date', report_date) for t in sorted_tasks_for_scurve) if sorted_tasks_for_scurve else report_date
+            project_duration_days = (report_date - earliest_start).days + 1 # Days from start to report date
+
+            timeline_dates = [earliest_start + timedelta(days=i) for i in range(project_duration_days)]
+            cumulative_budget = [0] * project_duration_days
+            cumulative_actual = [0] * project_duration_days
+            cumulative_earned = [0] * project_duration_days # Earned value at each day
+
+
+            # Calculate cumulative values over the timeline up to the report date
+            for day_index, current_date in enumerate(timeline_dates):
+                 if day_index > 0:
+                      cumulative_budget[day_index] = cumulative_budget[day_index - 1]
+                      cumulative_actual[day_index] = cumulative_actual[day_index - 1]
+                      cumulative_earned[day_index] = cumulative_earned[day_index - 1]
+
+                 for task in sorted_tasks_for_scurve:
+                      # Simplified approach: Add full budgeted cost on planned start day
+                      # A more accurate S-curve distributes cost over the planned duration
+                      planned_start = task.get('start_date', report_date)
+                      planned_end = planned_start + timedelta(days=task.get('duration', 0) - 1) # Assuming duration is from original task data
+
+                      # Add planned value (budgeted cost) accumulation over planned duration
+                      if planned_start <= current_date <= planned_end:
+                           # Distribute budgeted cost linearly over planned duration
+                           days_into_task = (current_date - planned_start).days + 1
+                           task_planned_value = (task['budgetedCost'] / task.get('duration', 1)) * days_into_task if task.get('duration', 1) > 0 else 0
+                           cumulative_budget[day_index] += task_planned_value # This overwrites, should add increment
+
+                 # Recalculate cumulative budgeted cost more accurately: add the planned value for tasks starting or in progress on this day
+                 cumulative_budget[day_index] = sum(
+                      task['budgetedCost'] * min(1.0, max(0.0, (current_date - task.get('start_date', report_date)).days + 1) / task.get('duration', 1)) # Simple linear accumulation
+                      for task in sorted_tasks_for_scurve
+                      if task.get('start_date', report_date) <= current_date
+                 )
+
+
+                 # Add actual cost and earned value accumulation for tasks completed or in progress
+                 for task in processed_tasks:
+                      # Simple approach: Add full actual cost and earned value on actual finish or report date if in progress
+                      # A more accurate S-curve accumulates these over time
+                      actual_finish = None
+                      if task.get('actualFinish'):
+                           try:
+                                actual_finish = datetime.strptime(task['actualFinish'], '%Y-%m-%d')
+                           except ValueError:
+                                pass # Invalid date format handled earlier, but defensive here
+
+                      if actual_finish and actual_finish <= current_date:
+                           cumulative_actual[day_index] += task['actualCost'] # Add actual cost on finish date
+                           cumulative_earned[day_index] += task['earnedValue'] # Add earned value on finish date
+                      elif task.get('actualStart') and datetime.strptime(task['actualStart'], '%Y-%m-%d') <= current_date:
+                           # Task started but not finished by current_date (or report_date)
+                           # Accumulate actual cost and earned value up to current_date
+                           # This requires distributing actual cost and earned value over the actual duration or duration up to report_date
+                           # A simple approach: distribute linearly up to report_date for in-progress tasks
+                           actual_start = datetime.strptime(task['actualStart'], '%Y-%m-%d')
+                           days_in_progress_up_to_date = (current_date - actual_start).days + 1
+                           # Need actual duration or remaining duration for accurate distribution
+                           # For simplicity, let's use the reported percent complete scaled over the planned duration
+                           # This is a significant simplification and won't produce a true S-curve based on actual progress over time
+                           # A proper S-curve needs actual spending/progress data points over time
+                           # Let's return a basic S-curve based on cumulative values at the report date for now
+
+            # Re-calculating cumulative values only at the report date for a single point
+            total_budgeted_cost = sum(task['budgetedCost'] for task in processed_tasks)
+            total_actual_cost = sum(task['actualCost'] for task in processed_tasks)
+            total_earned_value = sum(task['earnedValue'] for task in processed_tasks)
+
+            # For a simple S-curve representation, we can plot points at 0% and the current total % complete
+            # and cumulative values at these points. A proper S-curve requires plotting over time.
+            # Let's plot 3 points: Start (0%), Report Date (current % complete), and Planned Finish (100% Budgeted)
+
+            s_curve_dates = [earliest_start]
+            s_curve_budget_values = [0]
+            s_curve_actual_values = [0]
+            s_curve_earned_values = [0]
+
+            # Add point at the report date
+            s_curve_dates.append(report_date)
+            s_curve_budget_values.append(sum(
+                 task['budgetedCost'] * min(1.0, max(0.0, (report_date - task.get('start_date', report_date)).days + 1) / task.get('duration', 1)) # Planned value at report date
+                 for task in sorted_tasks_for_scurve
+                 if task.get('start_date', report_date) <= report_date
             ))
-            
-            # Add actual cost line
-            fig.add_trace(go.Scatter(
-                x=[p['percentComplete'] for p in cumulative_progress],
-                y=[p['actualCost'] for p in cumulative_progress],
-                mode='lines',
-                name='Actual Cost',
-                line=dict(color='#ff4444', width=2)
-            ))
-            
-            # Add earned value line
-            fig.add_trace(go.Scatter(
-                x=[p['percentComplete'] for p in cumulative_progress],
-                y=[p['earnedValue'] for p in cumulative_progress],
-                mode='lines',
-                name='Earned Value',
-                line=dict(color='#4444ff', width=2)
-            ))
+
+            s_curve_actual_values.append(total_actual_cost)
+            s_curve_earned_values.append(total_earned_value)
+
+            # Add point at planned project finish date (simplified as max EF day from CPM + earliest start)
+            planned_project_finish = earliest_start + timedelta(days=getProjectFinish(activityList_with_cpm)) if activityList_with_cpm else report_date + timedelta(days=1)
+            s_curve_dates.append(planned_project_finish)
+            s_curve_budget_values.append(sum(task['budgetedCost'] for task in processed_tasks)) # Total budgeted cost at planned finish
+            s_curve_actual_values.append(total_actual_cost) # Actual cost is same at planned finish if not updated
+            s_curve_earned_values.append(total_earned_value) # Earned value is same at planned finish if not updated
+
+
+            # Create S-curve plot data
+            s_curve_plot_data = [
+                go.Scatter(
+                    x=s_curve_dates,
+                    y=s_curve_budget_values,
+                    mode='lines+markers',
+                    name='Planned Value (PV)',
+                    line=dict(color='#00ffcc', width=2),
+                    hoverinfo='text',
+                    hovertext=[f'Planned Value: ${y:.2f}' for y in s_curve_budget_values]
+                ),
+                go.Scatter(
+                    x=s_curve_dates,
+                    y=s_curve_actual_values,
+                    mode='lines+markers',
+                    name='Actual Cost (AC)',
+                    line=dict(color='#ff4444', width=2),
+                    hoverinfo='text',
+                    hovertext=[f'Actual Cost: ${y:.2f}' for y in s_curve_actual_values]
+                ),
+                go.Scatter(
+                    x=s_curve_dates,
+                    y=s_curve_earned_values,
+                    mode='lines+markers',
+                    name='Earned Value (EV)',
+                    line=dict(color='#4444ff', width=2),
+                    hoverinfo='text',
+                    hovertext=[f'Earned Value: ${y:.2f}' for y in s_curve_earned_values]
+                )
+            ]
 
             # Update layout
-            fig.update_layout(
-                title='Project S-Curve',
-                xaxis_title='Percent Complete',
-                yaxis_title='Cost',
+            s_curve_layout = go.Layout(
+                title='Project S-Curve (PV, AC, EV)',
+                xaxis=dict(title='Timeline', type='date'),
+                yaxis=dict(title='Cost ($)'),
                 showlegend=True,
                 paper_bgcolor='#1e1e1e',
                 plot_bgcolor='#1e1e1e',
@@ -458,24 +628,34 @@ def handle_progress_post():
                 )
             )
 
-            # Store the S-curve data in Supabase
-            s_curve_data = {
-                'project_id': data.get('project_id'),  # Assuming you pass this in the request
-                'data': fig.to_dict(),
-                'created_at': datetime.now().isoformat()
+
+            # Calculate performance metrics (using total values at report date)
+            schedule_variance = total_earned_value - s_curve_budget_values[1] # EV - PV at report date
+            cost_variance = total_earned_value - total_actual_cost # EV - AC at report date
+            schedule_performance_index = total_earned_value / s_curve_budget_values[1] if s_curve_budget_values[1] != 0 else (float('inf') if total_earned_value > 0 else 0)
+            cost_performance_index = total_earned_value / total_actual_cost if total_actual_cost != 0 else (float('inf') if total_earned_value > 0 else 0)
+
+            metrics = {
+                 'schedule_variance': schedule_variance,
+                 'cost_variance': cost_variance,
+                 'critical_path': 'N/A', # Critical path comes from initial plan
+                 'critical_path_updates': 'Run Gantt Chart generation to see critical path.',
+                 'analysis_notes': 'S-curve and metrics based on reported progress as of ' + report_date.strftime('%Y-%m-%d') + '. PV is estimated based on linear distribution of budgeted cost up to the report date.'
             }
-            
-            supabase.table('s_curves').insert(s_curve_data).execute()
+
 
             return jsonify({
-                'processed_tasks': processed_tasks,
-                's_curve_data': fig.to_dict()
+                's_curve_data': {'data': s_curve_plot_data, 'layout': s_curve_layout},
+                'metrics': metrics,
+                'processed_tasks': processed_tasks # Return processed tasks with calculated values
             }), 200
 
+
         except Exception as e:
-            logger.error(f"Error generating S-curve: {e}", exc_info=True)
-            return jsonify({"error": f"Error generating S-curve: {str(e)}"}), 500
+            logger.error(f"Error generating S-curve or metrics: {e}", exc_info=True)
+            return jsonify({"error": f"Error generating S-curve or metrics: {str(e)}"}), 500
+
 
     except Exception as e:
         logger.error(f"Error in handle_progress_post: {e}", exc_info=True)
-        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+        return jsonify({"error": f"Internal server error in progress handling: {str(e)}"}), 500
