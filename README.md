@@ -1,157 +1,145 @@
-# VibeOps Construction Tracker
+# VibeOps Website
 
-A powerful construction project management tool that helps track project progress, generate Gantt charts, and analyze project performance through S-curves.
+A lean, automation-powered site for founders, consultants, and small businesses who need to move fast, systematize smarter, and launch with swagger.
 
-## Features
+---
 
-- Project planning with Gantt chart visualization
-- Critical Path Method (CPM) analysis
-- Progress tracking with S-curve generation
-- Earned Value Management (EVM) metrics
-- Real-time data persistence with Supabase
-- Modern, responsive UI with dark theme
+## 🌐 What VibeOps Delivers
 
-## Prerequisites
+- 🚀 Rapid web builds (1-week turnaround standard)  
+- 🤖 Built-in automation + AI campaign integrations  
+- 📊 CRM syncs, Google Calendar logic, custom dashboards  
+- 💬 On-site chatbot powered by **VibeOpsPresidentAI** — your automated sales closer  
+- 🔐 Supabase backend for real-time logic and secure data  
+- 📱 Fully responsive, mobile-first dark mode design  
 
-- Python 3.8 or higher
-- pip (Python package installer)
-- Git (optional, for version control)
-- Supabase account (for database)
+---
 
-## Setup Instructions
+## 💰 Pricing Structure
 
-1. **Clone the Repository**
+### 💻 Website Packages
+
+| Tier               | Price                | Includes                                                                 |
+|--------------------|----------------------|--------------------------------------------------------------------------|
+| Base Site          | $250–$500 (one-time) | 5 pages, mobile-friendly, domain/hosting, basic SEO                      |
+| High-Visual Add-ons| +$150                | Animated menus, custom visuals                                          |
+| CRM + Automations  | $800 setup + $30/mo  | Gmail/Calendar sync, follow-ups                                         |
+| AI Email Campaigns | $800 setup + $50/mo  | 3 automated campaigns, analytics                                        |
+
+### 🤝 Retainer Options (Software Team-as-a-Service)
+
+| Tier        | Price/Month  | Includes                                                           |
+|-------------|--------------|--------------------------------------------------------------------|
+| Starter     | $3,000       | 40 hours/mo, 1 dev, coordination                                   |
+| Core        | $6,000       | 80 hours/mo, 2 devs, full-stack                                   |
+| Full Squad  | $12,000      | 160+ hours/mo, 3–4 specialists, product team & project management |
+
+### 📈 Revenue Share Model
+
+- Minimum $500/month retainer  
+- + 20% of net revenue from VibeOps-developed tools  
+- *Net revenue = gross receipts minus refunds, fees, chargebacks*
+
+---
+
+## 🤖 VibeOpsPresidentAI
+
+Your embedded AI sales agent that:
+
+- Matches needs to services in real-time  
+- Responds with dynamic pricing logic  
+- Schedules consults, closes leads  
+- Explains automation like a pro — clear, sharp, human  
+
+👉 Book now: [https://calendly.com/vibeops-info/30min](https://calendly.com/vibeops-info/30min)
+
+---
+
+## 🧠 The Team
+
+| Name     | Role                        |
+|----------|-----------------------------|
+| Zander   | CEO, Client Strategy        |
+| Arian    | Engineering CEO             |
+| Gabe     | CMO, Brand & Growth         |
+| Eric     | CTO, Tech Stack Lead        |
+| Felix    | CSO, Biz Dev & Partnerships |
+| Sarth    | CFO, Finance Ops            |
+| Juan, Johnnie, Hrudai | Programming Team |
+| Nolan, Joshua, Kevin | Vancouver Canvassing |
+| Carter, Elijah | Minneapolis Canvassing |
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend**: HTML, CSS, JavaScript  
+- **Backend**: Flask, Supabase  
+- **Automation**: Google Apps Script, OpenAI API, Make.com  
+- **Integrations**: Airtable, Notion, Webflow, Wix Studio  
+
+---
+
+## 📁 Project Structure
+
+site-v1/
+├── app.py  
+├── static/  
+├── templates/  
+├── requirements.txt  
+└── vercel.json  
+
+---
+
+## 🧪 Setup (Local Dev)
+
+1. **Clone repository and initialize project**
    ```bash
-   git clone <repository-url>
-   cd site-v1
+   git clone https://github.com/ZanderDent/vibeops-testing.git
+   cd vibeops-testing/site-v1
    ```
 
-2. **Create a Virtual Environment**
+2. **Initialize virtual environment**
    ```bash
-   # On macOS/Linux
    python -m venv venv
-   source venv/bin/activate
-
-   # On Windows
-   python -m venv venv
-   .\venv\Scripts\activate
+   source venv/bin/activate  # Use ./venv/Scripts/activate on Windows
    ```
 
-3. **Install Dependencies [[Sometimes have to run twice or upgrade pip :] ]**
+3. **Create `.env` file with the following values:**
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=https://umonmulcfbtanigsmwsz.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-public-key>
+
+   DATABASE_URL="postgresql://postgres:<password>@aws-0-us-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+   DIRECT_URL="postgresql://postgres:<password>@db.umonmulcfbtanigsmwsz.supabase.co:5432/postgres"
+
+   OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   OPENAI_ASSISTANT_ID=asst_k9dUl9nqVgifGntUOdSrEBbN
+
+   FLASK_SECRET_KEY=your-secret-key
+
+   SUPABASE_GOOGLE_CLIENT_ID=your-google-client-id
+   SUPABASE_GOOGLE_CLIENT_SECRET=your-google-client-secret
+   SUPABASE_GOOGLE_CALLBACK_URL=https://umonmulcfbtanigsmwsz.supabase.co/auth/v1/callback
+
+   SUPABASE_URL=https://umonmulcfbtanigsmwsz.supabase.co
+   SUPABASE_KEY=<your-service-role-key>
+   ```
+
+4. **Install dependencies**
    ```bash
-   pip install -r requirements.txt 
+   pip install -r requirements.txt
    ```
 
-4. **Configure Environment Variables**
-   Create a `.env` file in the project root with the following variables:
-   ```
-   SUPABASE_URL="your-supabase-url"
-   SUPABASE_KEY="your-supabase-key"
-   DATABASE_URL="your-database-url"
-   DIRECT_URL="your-direct-url"
-   FLASK_SECRET_KEY="your-secret-key"
-   ```
-
-5. **Initialize Database**
-   Run the following SQL commands in your Supabase SQL editor:
-   ```sql
-   -- Create projects table
-   CREATE TABLE projects (
-       id BIGSERIAL PRIMARY KEY,
-       name TEXT NOT NULL,
-       created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
-   );
-
-   -- Create tasks table
-   CREATE TABLE tasks (
-       id BIGSERIAL PRIMARY KEY,
-       project_id BIGINT REFERENCES projects(id),
-       activity_name TEXT NOT NULL,
-       start_date DATE NOT NULL,
-       duration INTEGER NOT NULL,
-       immediate_predecessor TEXT[],
-       percent_complete FLOAT DEFAULT 0,
-       budgeted_cost FLOAT DEFAULT 0,
-       actual_cost FLOAT DEFAULT 0,
-       created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
-       updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
-   );
-
-   -- Create s_curves table
-   CREATE TABLE s_curves (
-       id BIGSERIAL PRIMARY KEY,
-       project_id BIGINT REFERENCES projects(id),
-       data JSONB NOT NULL,
-       created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
-   );
-
-   -- Create indexes
-   CREATE INDEX idx_tasks_project_id ON tasks(project_id);
-   CREATE INDEX idx_tasks_activity_name ON tasks(activity_name);
-   CREATE INDEX idx_s_curves_project_id ON s_curves(project_id);
-   ```
-
-6. **Run the Application**
+5. **Run the app**
    ```bash
    python app.py
    ```
-   The application will be available at http://127.0.0.1:8800/
 
-## Usage
+   App will be available at: http://127.0.0.1:8800
 
-1. **Create a New Project**
-   - Enter project name
-   - Add tasks with start dates, durations, and dependencies
-   - Click "Generate Gantt" to create the project plan
+---
 
-2. **Track Progress**
-   - Enter progress percentages for each task
-   - Add budgeted and actual costs
-   - Click "Submit Progress" to generate S-curves and metrics
+## 📝 License
 
-3. **View Analysis**
-   - Gantt chart shows task dependencies and critical path
-   - S-curve displays budgeted vs. actual costs
-   - Performance metrics show schedule and cost variances
-
-## Development
-
-### Project Structure
-```
-site-v1/
-├── app.py              # Main Flask application
-├── tracker.py          # Project tracking logic
-├── static/            # Static files (CSS, JS)
-├── templates/         # HTML templates
-├── requirements.txt   # Python dependencies
-└── .env              # Environment variables
-```
-
-### Key Dependencies
-- Flask: Web framework
-- Supabase: Database and authentication
-- Plotly: Data visualization
-- pandas: Data manipulation
-- python-dotenv: Environment variable management
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For support, please open an issue in the GitHub repository or contact the development team.
-
-## Acknowledgments
-
-- VibeOps team for the original concept
-- Supabase for database infrastructure
-- Plotly for visualization capabilities
+MIT — use freely, vibe responsibly.

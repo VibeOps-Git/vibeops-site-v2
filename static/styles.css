@@ -872,8 +872,9 @@ cite {
     }
 
     /* Hide desktop-only elements on mobile */
-    .desktop-only {
-        display: none !important;
+    .task-entry-content.collapsed,
+    .progress-entry-content.collapsed {
+      display: none !important;
     }
 
     /* Show mobile-only elements on mobile */
@@ -1652,99 +1653,72 @@ body.nav-menu-active .chatbot-toggle {
 }
 
 /* Add mobile responsiveness for Construction Tracker */
-/* Existing mobile media query adjustments */
 @media (max-width: 768px) {
-    .construction-tracker-page .input-section {
-        padding: 1rem;
+    .construction-tracker-page .input-section,
+    .construction-tracker-page .output-section {
+        padding: 1rem; /* Reduce padding on mobile */
     }
 
-    .task-entry-container {
-        border: 1px solid #333;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        background-color: #282828;
-        overflow: hidden;
-        width: 100%; /* Ensure full width */
+    .task-row {
+        grid-template-columns: 1fr; /* Stack inputs on mobile */
+        gap: 10px; /* Reduce gap */
+        padding: 10px; /* Reduce padding */
     }
 
-    .task-entry-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background-color: #3e3e3e;
-        cursor: pointer;
-        font-weight: bold;
-        color: #f2f2f2;
+    .task-row input[type="text"],
+    .task-row input[type="date"],
+    .task-row input[type="number"],
+    .progress-row input[type="number"],
+    .progress-row input[type="text"] {
+        font-size: 0.9rem; /* Slightly smaller font */
+        padding: 8px; /* Reduce padding */
+        margin-bottom: 0; /* Remove margin between stacked inputs in a row */
     }
 
-    .task-entry-header label {
-        margin: 0;
-        font-size: 1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 70%; /* Prevent overflow */
+    .task-row .remove-task {
+        width: 100%; /* Full width button */
+        justify-self: stretch; /* Stretch across */
     }
 
-    .task-entry-content {
-        padding: 10px;
-        border-top: 1px solid #333;
-        display: none; /* Hidden by default, shown via JS */
+    .progress-row {
+        flex-direction: column; /* Stack label and inputs */
+        gap: 10px; /* Reduce gap */
+        padding: 8px; /* Reduce padding */
+        align-items: stretch; /* Stretch items */
     }
 
-    .task-entry-content.active {
-        display: grid; /* Show when active */
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 10px;
+     .progress-row label {
+         margin-bottom: 0; /* Remove margin below stacked label */
+         display: block; /* Ensure labels are displayed on mobile */
+     }
+
+    .box h4 {
+        font-size: 1.1rem; /* Adjust heading size */
     }
 
-    .task-entry-content label.mobile-only {
-        display: block;
-        font-size: 0.8rem;
-        color: #ccc;
-        margin-bottom: 2px;
+    .box p {
+        font-size: 0.9rem; /* Adjust paragraph size */
     }
 
-    .task-entry-content input[type="text"],
-    .task-entry-content input[type="date"],
-    .task-entry-content input[type="number"],
-    .task-entry-content textarea {
-        width: 100%;
-        max-width: none;
-        font-size: 0.9rem;
-        padding: 5px;
+    /* Ensure Plotly charts are responsive within their containers */
+    #gantt-chart,
+    #s-curve-chart {
+        width: 100% !important; /* Ensure containers take full width */
+        height: auto !important; /* Allow height to adjust */
+         /* Mobile specific styles for Gantt chart */
     }
 
-    .task-entry-content textarea {
-        grid-column: span 2; /* Span two columns for more space */
+    /* Further adjustments for Plotly elements within the chart */
+    #gantt-chart .plotly .modebar {
+        top: 10px !important; /* Adjust modebar position */
+        right: 10px !important;
+        left: auto !important;
     }
 
-    .task-entry-content .remove-task {
-        grid-column: 1 / -1;
-        width: 100%;
-        justify-self: stretch;
-        margin-top: 10px;
-    }
-}
-
-/* Ensure only one dropdown is open at a time */
-.task-entry-container .task-entry-content {
-    transition: all 0.3s ease; /* Smooth transition for opening/closing */
-}
-
-/* Desktop adjustments */
-@media (min-width: 769px) {
-    .task-entry-container .task-entry-header.mobile-only {
-        display: none !important;
-    }
-
-    .task-entry-content {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-        padding: 0;
-        border-top: none;
+    #gantt-chart .plotly .ytick {
+        white-space: nowrap; /* Prevent task labels from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
     }
 }
 
@@ -2136,9 +2110,7 @@ body.nav-menu-active .chatbot-toggle {
 /* Initially hide the spinner */
 .loading-spinner.hidden {
     display: none;
-}
-
-/* --- Styling for the collapsible task entries --- */
+}/* --- Styling for the collapsible task entries --- */
 @media (max-width: 768px) {
     .task-entry-container {
         border: 1px solid #333; /* Subtle border for each entry */
@@ -2200,213 +2172,3 @@ body.nav-menu-active .chatbot-toggle {
      }
 }
 
-/* Add specific styles for the progress entry content grid on mobile */
-@media (max-width: 768px) {
-    .progress-entry-content {
-        display: grid; /* Use grid layout */
-        /* Adjust columns to try and fit labels and inputs side-by-side */
-        /* Using auto-fit with a minmax that allows for roughly two columns of label/input pairs */
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 15px; /* Increase gap between items */
-        padding: 10px; /* Add padding inside content */
-    }
-
-    .progress-entry-content label.mobile-only {
-        display: block; /* Ensure labels are block elements */
-        font-size: 0.8rem; /* Smaller font size for labels */
-        color: #ccc; /* Muted color */
-        margin-bottom: 2px; /* Reduce space below label */
-        width: 100%; /* Ensure label takes full width of its grid cell */
-        grid-column: span 1; /* Ensure label spans one column */
-    }
-
-    .progress-entry-content input[type="number"],
-    .progress-entry-content input[type="text"],
-    .progress-entry-content input[type="date"] {
-        width: 100%; /* Inputs take full width of their grid cell */
-        max-width: none; /* Remove any max-width restrictions */
-        font-size: 0.9rem; /* Adjust font size for inputs */
-        padding: 5px; /* Adjust padding for inputs */
-        grid-column: span 1; /* Ensure input spans one column */
-    }
-
-    /* Adjust spacing for the data-row within the content if needed, though gap on content should suffice */
-    .progress-entry-content .progress-row.data-row {
-        /* This internal grid might not be necessary anymore if parent is grid */
-        display: contents; /* Make the container itself not generate a box, grid items come from children */
-    }
-
-    .progress-entry-content .progress-row.data-row label.desktop-only {
-         display: none !important; /* Hide desktop label within content on mobile */
-    }
-}
-
-/* Refine grid layout for task inputs within collapsible content on mobile */
-@media (max-width: 768px) {
-    .task-entry-content.task-row {
-        display: grid; /* Use grid layout */
-        /* Using auto-fit with a minmax that allows for roughly two columns of label/input pairs */
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive columns for input/label pairs */
-        gap: 15px; /* Space between stacked inputs */
-        padding: 10px; /* Add some padding inside the content area */
-    }
-
-    .task-entry-content.task-row label.mobile-only {
-         display: block; /* Ensure mobile labels are visible */
-         font-size: 0.8rem; /* Adjust font size */
-         color: #ccc; /* Muted color */
-         margin-bottom: 2px; /* Reduce space below label */
-         width: 100%; /* Ensure label takes full width of its grid cell */
-         grid-column: span 1; /* Ensure label spans one column */
-    }
-
-     /* Ensure inputs take full width within the stacked layout */
-    .task-entry-content.task-row input[type="text"],
-    .task-entry-content.task-row input[type="date"],
-    .task-entry-content.task-row input[type="number"],
-    .task-entry-content.task-row textarea {
-         width: 100%; /* Full width */
-         max-width: none; /* Remove max width constraint */
-         font-size: 0.9rem; /* Adjust font size for inputs */
-         padding: 5px; /* Adjust padding for inputs */
-         grid-column: span 1; /* Ensure input spans one column */
-    }
-
-    /* Make textareas span two columns if possible for more space */
-     .task-entry-content.task-row textarea {
-         grid-column: span 2; /* Attempt to span two columns */
-     }
-
-    .task-entry-content.task-row .remove-task {
-        /* Make the remove button span across all available columns */
-        grid-column: 1 / -1; /* Span from the first to the last column */
-        width: 100%; /* Full width button */
-        justify-self: stretch; /* Stretch horizontally */
-        margin-top: 10px; /* Add space above the button */
-    }
-}
-
-/* Add custom scrollbar styles for task textareas */
-.task-row textarea::-webkit-scrollbar {
-    width: 8px; /* Same width as chatbot scrollbar */
-}
-
-.task-row textarea::-webkit-scrollbar-track {
-    background: #282828; /* Match task row background */
-}
-
-.task-row textarea::-webkit-scrollbar-thumb {
-    background-color: #00ccaa; /* A themed color */
-    border-radius: 4px;
-    border: 2px solid #282828; /* Match track background */
-}
-
-/* Firefox scrollbar styles */
-.task-row textarea {
-    scrollbar-width: thin; /* "auto" or "thin" */
-    scrollbar-color: #00ccaa #282828; /* thumb track */
-}
-
-/* Style for inline editing task rows */
-.task-row-inline {
-    display: flex; /* Or grid, depending on desired desktop layout */
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #333;
-    border-radius: 8px;
-    background-color: #282828;
-    margin-bottom: 10px;
-    cursor: pointer; /* Indicate clickable */
-}
-
-/* Style for the display state of task rows */
-.task-display {
-     display: flex; /* Arrange display elements horizontally */
-     gap: 10px; /* Space between display elements */
-     flex-grow: 1; /* Allow display area to grow */
-     align-items: center;
-}
-
-/* Style for the edit state of task rows */
-.task-edit {
-     display: grid; /* Use grid for input fields and labels */
-     /* Adjust columns as needed for desktop view */
-     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-     gap: 10px;
-     flex-grow: 1; /* Allow edit area to grow */
-}
-
-/* Style for inline editing progress rows (similar structure) */
-.progress-row-inline {
-    display: flex; /* Or grid */
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #333;
-    cursor: pointer; /* Indicate clickable */
-}
-
-/* Style for the display state of progress rows */
-.progress-display {
-    display: flex; /* Arrange display elements horizontally */
-    gap: 10px;
-    flex-grow: 1;
-    align-items: center;
-}
-
-/* Style for the edit state of progress rows */
-.progress-edit {
-    display: grid; /* Use grid for input fields and labels */
-    /* Adjust columns as needed for desktop view */
-     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-    flex-grow: 1;
-}
-
-/* Media query for mobile adjustments */
-@media (max-width: 768px) {
-    .task-row-inline, .progress-row-inline {
-        flex-direction: column; /* Stack display/edit vertically on mobile */
-        align-items: stretch; /* Stretch items */
-    }
-
-    .task-display, .progress-display {
-        flex-direction: column; /* Stack display elements vertically on mobile */
-        align-items: flex-start; /* Align display text to the left */
-    }
-
-    .task-edit, .progress-edit {
-        grid-template-columns: 1fr; /* Stack inputs and labels vertically on mobile */
-        gap: 10px;
-        padding: 10px 0; /* Add padding top/bottom */
-    }
-
-    .task-edit label.mobile-only, .progress-edit label.mobile-only {
-         display: block; /* Show mobile labels */
-         font-size: 0.8rem;
-         color: #ccc;
-         margin-bottom: 2px;
-    }
-
-    .task-edit input, .task-edit textarea,
-    .progress-edit input, .progress-edit textarea {
-         width: 100%; /* Full width inputs on mobile */
-         max-width: none;
-    }
-
-    .task-edit button, .progress-edit button {
-         width: 100%; /* Full width buttons on mobile */
-         margin-top: 10px;
-    }
-
-    /* Hide desktop-only labels within edit state on mobile */
-    .task-edit label.desktop-only, .progress-edit label.desktop-only {
-        display: none !important;
-    }
-}
-
-/* Style for the hidden class */
-.hidden {
-    display: none !important;
-}

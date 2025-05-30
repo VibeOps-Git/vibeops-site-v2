@@ -83,9 +83,9 @@
     </section>
 
     <!-- Fullscreen Gantt Chart Modal -->
-    <div id="gantt-modal" class="construction-tracker-modal hidden">
-        <div class="construction-tracker-modal-content">
-            <span class="construction-tracker-close-modal">×</span>
+    <div id="gantt-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
             <div id="fullscreen-gantt-chart"></div>
         </div>
     </div>
@@ -748,18 +748,12 @@
                    const entryContent = document.createElement('div');
                    entryContent.className = 'progress-entry-content'; // Content for inputs
                    entryContent.innerHTML = `
-                       <div class="construction-tracker-progress-row data-row"> // Reuse progress-row class for grid, add data-row
-                           <label class="mobile-only">Task:</label> // Add mobile label
-                           <label class="desktop-only">${task.activityName}</label> // Keep desktop label
-                           <label class="mobile-only">Budgeted Cost ($):</label>
+                       <div class="progress-row data-row">
+                           <label class="desktop-only">${task.activityName}</label> 
                            <input type="number" placeholder="Budgeted Cost ($)" min="0" class="budgeted-cost" data-task-index="${index}" value="0">
-                           <label class="mobile-only">Actual Cost ($):</label>
                            <input type="number" placeholder="Actual Cost ($)" min="0" class="actual-cost" data-task-index="${index}" value="0">
-                           <label class="mobile-only">% Complete:</label>
                            <input type="number" placeholder="% Complete" min="0" max="100" class="progress-percent" data-task-index="${index}" value="0">
-                           <label class="mobile-only">Actual Start:</label>
                            <input type="date" placeholder="Actual Start Date" class="actual-start" data-task-index="${index}">
-                           <label class="mobile-only">Actual Finish:</label>
                            <input type="date" placeholder="Actual Finish Date" class="actual-finish" data-task-index="${index}">
                        </div>
                    `;
@@ -1145,258 +1139,48 @@
             }, 0);
         });
     </script>
+
     <style>
-        :root {
-          --bg:    #1e1e1e;
-          --fg:    #f2f2f2;
-          --accent:#00ffcc;
-          --card:  #282828;
-          --input: #3e3e3e;
-          --border:#444;
-          --gap:   1rem;
-        }
-        body {
-          margin: 0; padding: 0;
-          background: var(--bg);
-          color: var(--fg);
-          font-family: sans-serif;
-        }
-    
-        .construction-tracker-page {
-          max-width: 1200px;
-          margin: auto;
-          padding: 2rem;
-        }
-    
-        /* ─── GRID ON DESKTOP ───────────────────────────────── */
-        .task-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: var(--gap);
-        }
-    
-        .task-row {
-          background: var(--card);
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          overflow: hidden;
-          transition: box-shadow .2s;
-        }
-        .task-row:hover {
-          box-shadow: 0 4px 12px rgba(0,255,204,.3);
-        }
-    
-        /* ─── PREVIEW BAR ───────────────────────────────────── */
-        .task-preview {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: .75rem 1rem;
-          cursor: pointer;
-          user-select: none;
-          background: #222;
-        }
-        .task-name {
-          font-weight: bold;
-          font-size: 1rem;
-        }
-        .float-badge {
-          background: var(--accent);
-          color: var(--bg);
-          font-size: .9rem;
-          padding: .2rem .5rem;
-          border-radius: 4px;
-          margin: 0 .5rem;
-          flex-shrink: 0;
-        }
-        .toggle-btn {
-          background: none;
-          border: none;
-          color: var(--fg);
-          font-size: 1.2rem;
-          transition: transform .2s;
-        }
-        .task-row.open .toggle-btn {
-          transform: rotate(180deg);
-        }
-    
-        /* ─── FULL DETAILS (hidden by default) ──────────────── */
-        .task-details {
-          display: none;
-          padding: 1rem;
-          border-top: 1px solid var(--border);
-          background: var(--card);
-          grid-gap: var(--gap);
-        }
-        .task-row.open .task-details {
-          display: grid;
-        }
-    
-        .task-details label {
-          display: flex;
-          flex-direction: column;
-          font-size: .9rem;
-        }
-        .task-details input,
-        .task-details textarea {
-          margin-top: .25rem;
-          padding: .5rem;
-          background: var(--input);
-          color: var(--fg);
-          border: 1px solid var(--border);
-          border-radius: 4px;
-          font-size: .9rem;
-          outline: none;
-          transition: border-color .2s, box-shadow .2s;
-        }
-        .task-details input:focus,
-        .task-details textarea:focus {
-          border-color: var(--accent);
-          box-shadow: 0 0 6px rgba(0,255,204,.4);
-        }
-    
-        /* ─── RESPONSIVE: STACK INTO ROWS + SHOW ONLY PREVIEW ─── */
-        @media (max-width: 768px) {
-          .task-grid {
-            grid-template-columns: 1fr;
-          }
-          /* hide details entirely until tapped */
-          .task-details {
-            padding: 0 1rem 1rem;
-          }
-        }
-
-        /* Progress Section Styling with Grid for Desktop */
-        .construction-tracker-progress-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; /* 6 columns for Task Name, Budgeted Cost, Actual Cost, % Complete, Actual Start, Actual Finish */
-            gap: var(--gap);
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: var(--card);
-            border: 1px solid var(--border);
+        /* Chat modal styling */
+        #chatbot-messages .chat-modal {
+            background: #1e1e1e;
+            border: 1px solid #444;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Header Styling for Desktop */
-        .construction-tracker-progress-row.construction-tracker-header {
-            background: #222;
-            font-weight: bold;
+            padding: 1rem;
+            margin: .5rem 0;
             text-align: center;
-        }
-
-        .construction-tracker-progress-row label.desktop-only,
-        .construction-tracker-progress-row input,
-        .construction-tracker-progress-row .actual-start,
-        .construction-tracker-progress-row .actual-finish {
-            font-size: 0.9rem;
-            text-align: center; /* Center-align text in desktop view */
-        }
-
-        .construction-tracker-progress-row input,
-        .construction-tracker-progress-row .actual-start,
-        .construction-tracker-progress-row .actual-finish {
-            width: 100%;
-            padding: 0.5rem;
-            background: var(--input);
-            color: var(--fg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .construction-tracker-progress-row input:focus,
-        .construction-tracker-progress-row .actual-start:focus,
-        .construction-tracker-progress-row .actual-finish:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
-        }
-
-        /* Mobile View: Stack Vertically with Labels */
-        @media (max-width: 768px) {
-            .construction-tracker-progress-row {
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.5rem;
-                padding: 1rem;
-            }
-
-            .construction-tracker-progress-row label.desktop-only {
-                display: none; /* Hide desktop-only labels on mobile */
-            }
-
-            .construction-tracker-progress-row label.mobile-only {
-                font-size: 0.9rem;
-                margin-bottom: 0.25rem;
-            }
-
-            .construction-tracker-progress-row input,
-            .construction-tracker-progress-row .actual-start,
-            .construction-tracker-progress-row .actual-finish {
-                width: 100%;
-                text-align: left; /* Align text to the left in mobile view for better readability */
-            }
-
-            .progress-entry-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background: #222;
-                padding: 0.75rem 1rem;
-                cursor: pointer;
-                user-select: none;
-            }
-
-            .progress-entry-content {
-                padding: 0 1rem 1rem;
-            }
-
-            .progress-entry-content.collapsed {
-                display: none;
-            }
-        }
-
-        /* Ensure consistency in input fields */
-        .actual-start,
-        .actual-finish {
-            box-sizing: border-box; /* Ensure padding doesn't affect width */
-        }
-
-        /* Button Styling for Save/Cancel in Progress Entries */
-        .progress-buttons {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .btn.primary,
-        .btn.secondary {
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
+        #chatbot-messages .chat-modal p {
+            margin-bottom: .5rem;
+            color: #f2f2f2;
         }
 
-        .btn.primary {
-            background: var(--accent);
-            color: var(--bg);
+        #chatbot-messages .chat-modal .btn {
+            margin: .5rem .25rem;
+            font-size: 1rem;
+            padding: .5rem 1rem;
         }
 
-        .btn.secondary {
-            background: var(--border);
-            color: var(--fg);
+        /* Typing indicator styles */
+        .typing-indicator span {
+            animation: blink 1s infinite;
         }
 
-        .btn.primary:hover {
-            background: #00ccaa;
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
         }
 
-        .btn.secondary:hover {
-            background: #555;
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
         }
     </style>
 {% endblock %}
