@@ -1,12 +1,226 @@
-from flask import request, jsonify, render_template, session
-import pandas as pd
-import json
-import plotly.graph_objects as go
-from plotly.utils import PlotlyJSONEncoder
+from flask import request, jsonify, session
 from datetime import datetime, timedelta
+import json
 import logging
-from config import supabase  # Import the pre-initialized client
+from config import supabase
 from dotenv import load_dotenv
+
+# Load environment vars
+load_dotenv()
+logger = logging.getLogger(__name__)
+
+def handle_progress_post():
+    """Handles POST requests for progress tracking and S-curve generation."""
+    try:
+        data = request.json
+        if not data or 'tasks' not in data:
+            return jsonify({"error": "No task data provided"}), 400
+
+        tasks = data['tasks']
+        if not isinstance(tasks, list):
+            return jsonify({"error": "Tasks must be a list"}), 400
+
+        # Retrieve session_id from the request
+        session_id = data.get('session_id')
+        if not session_id:
+            logger.error("Session ID not provided in request.")
+            return jsonify({"error": "Session ID required. Please generate the Gantt chart first."}), 400
+
+        # Retrieve CPM results from Supabase
+        response = supabase.table('project_sessions').select('activity_list').eq('id', session_id).execute()
+        if not response.data or len(response.data) == 0:
+            logger.error(f"No data found in Supabase for session_id: {session_id}")
+            return jsonify({"error": "Session data not found. Please generate the Gantt chart first."}), 400
+
+        activityList_with_cpm = response.data[0]['activity_list']
+
+        # Process each task
+        processed_tasks = []
+        for task in tasks:
+            required_keys = ['activityName', 'percentComplete', 'budgetedCost', 'actualCost', 'actualStart', 'actualFinish']
+            if not all(key in task for key in required_keys):
+                missing = [key for key in required_keys if key not in task]
+                logger.error(f"Missing keys in task data: {missing}")
+                return jsonify({"error": f"Incomplete task progress data received. Missing keys: {', '.join(missing)}"}), 400
+
+            try:
+                percent_complete = float(task.get('percentComplete', 0))
+                budgeted_cost = float(task.get('budgetedCost', 0))
+                actual_cost = float(task.get('actualCost', 0))
+                actual_start_str = task.get('actualStart')
+                actual_finish_str = task.get('actualFinish')
+
+                if not (0 <= percent_complete <= 100):
+                    return jsonify({"error": f"Invalid % Complete for task '{task.get('activityName', 'Unknown')}': {percent_complete}. Must be between 0 and 100."}), 400
+                if budgeted_cost < 0 or actual_cost < 0:
+                    return jsonify({"error": f"Invalid cost value for task '{task.get('activityName', 'Unknown')}'. Costs cannot be negative."}), 400
+
+                actual_start_date = None
+                actual_finish_date = None
+                if actual_start_str:
+                    try:
+                        actual_start_date = datetime.strptime(actual_start_str, '%Y-%m-%d')
+                    except ValueError:
+                        return jsonify({"error": f"Invalid Actual Start Date format for task '{task.get('activityName', 'Unknown')}': {actual_start_str}. Use YYYY-MM-DD."}), 400
+
+                if actual_finish_str:
+                    try:
+                        actual_finish_date = datetime.strptime(actual_finish_str, '%Y-%m-%d')
+                    except ValueError:
+                        return jsonify({"error": f"Invalid Actual Finish Date format for task '{task.get('activityName', 'Unknown')}': {actual_finish_str}. Use YYYY-MM-DD."}), 400
+
+                if actual_start_date and actual_finish_date and actual_start_date > actual_finish_date:
+                    logger.warning(f"Actual Start Date is after Actual Finish Date for task '{task.get('activityName', 'Unknown')}'.")
+
+                update_data = {
+                    'percent_complete': percent_complete,
+                    'budgeted_cost': budgeted_cost,
+                    'actual_cost': actual_cost,
+                    'updated_at': datetime.now().isoformat()
+                }
+                if actual_start_date:
+                    update_data['actual_start'] = actual_start_date.isoformat()
+                if actual_finish_date:
+                    update_data['actual_finish'] = actual_finish_date.isoformat()
+
+                logger.info(f"Attempting to update task '{task.get('activityName', 'Unknown')}' in Supabase with data: {update_data}")
+                response = supabase.table('tasks').update(update_data).eq('activity_name', task.get('activityName')).execute()
+
+                if response.data is None or len(response.data) == 0:
+                    logger.warning(f"Supabase update for task '{task.get('activityName', 'Unknown')}' resulted in no data or error: {response.error}")
+
+                elif response.error:
+                    logger.error(f"Supabase error updating task '{task.get('activityName', 'Unknown')}': {response.error}", exc_info=True)
+
+                earned_value = budgeted_cost * (percent_complete / 100)
+                cost_variance = earned_value - actual_cost
+                schedule_variance = earned_value - budgeted_cost
+                cost_performance_index = earned_value / actual_cost if actual_cost != 0 else (float('inf') if earned_value > 0 else 0)
+                schedule_performance_index = earned_value / budgeted_cost if budgeted_cost != 0 else (float('inf') if earned_value > 0 else 0)
+
+                processed_tasks.append({
+                    'activityName': task.get('activityName'),
+                    'percentComplete': percent_complete,
+                    'budgetedCost': budgeted_cost,
+                    'actualCost': actual_cost,
+                    'actualStart': actual_start_str,
+                    'actualFinish': actual_finish_str,
+                    'earnedValue': earned_value,
+                    'costVariance': cost_variance,
+                    'scheduleVariance': schedule_variance,
+                    'costPerformanceIndex': cost_performance_index,
+                    'schedulePerformanceIndex': schedule_performance_index
+                })
+
+            except ValueError as ve:
+                logger.error(f"Data processing error for task '{task.get('activityName', 'Unknown')}': {ve}", exc_info=True)
+                return jsonify({"error": f"Error processing data for task '{task.get('activityName', 'Unknown')}': {ve}"}), 400
+            except Exception as ex:
+                logger.error(f"Unexpected error processing task '{task.get('activityName', 'Unknown')}': {ex}", exc_info=True)
+                return jsonify({"error": f"Unexpected error processing task '{task.get('activityName', 'Unknown')}': {ex}"}), 500
+
+        # Generate S-curve data
+        try:
+            report_date_str = data.get('report_date')
+            report_date = datetime.strptime(report_date_str, '%Y-%m-%d') if report_date_str else datetime.now()
+
+            tasks_with_cpm_dict = {task['activityName']: task for task in activityList_with_cpm}
+            processed_tasks_with_ef = []
+            for task in processed_tasks:
+                cpm_info = tasks_with_cpm_dict.get(task['activityName'], {})
+                task_with_ef = task.copy()
+                task_with_ef['EF'] = cpm_info.get('EF', 0)
+                task_with_ef['start_date'] = datetime.strptime(cpm_info.get('start', report_date.strftime('%Y-%m-%d')), '%Y-%m-%d')
+                task_with_ef['duration'] = cpm_info.get('duration', 1)
+                processed_tasks_with_ef.append(task_with_ef)
+
+            sorted_tasks_for_scurve = sorted(processed_tasks_with_ef, key=lambda x: (x.get('start_date', report_date), x.get('EF', 0)))
+
+            earliest_start = min(t.get('start_date', report_date) for t in sorted_tasks_for_scurve) if sorted_tasks_for_scurve else report_date
+            project_duration_days = (report_date - earliest_start).days + 1
+
+            timeline_dates = [earliest_start + timedelta(days=i) for i in range(project_duration_days)]
+            cumulative_budget = [0] * project_duration_days
+            cumulative_actual = [0] * project_duration_days
+            cumulative_earned = [0] * project_duration_days
+
+            for day_index, current_date in enumerate(timeline_dates):
+                if day_index > 0:
+                    cumulative_budget[day_index] = cumulative_budget[day_index - 1]
+                    cumulative_actual[day_index] = cumulative_actual[day_index - 1]
+                    cumulative_earned[day_index] = cumulative_earned[day_index - 1]
+
+                cumulative_budget[day_index] = sum(
+                    task['budgetedCost'] * min(1.0, max(0.0, (current_date - task.get('start_date', report_date)).days + 1) / task.get('duration', 1))
+                    for task in sorted_tasks_for_scurve
+                    if task.get('start_date', report_date) <= current_date
+                )
+
+                for task in processed_tasks:
+                    actual_finish = None
+                    if task.get('actualFinish'):
+                        try:
+                            actual_finish = datetime.strptime(task['actualFinish'], '%Y-%m-%d')
+                        except ValueError:
+                            pass
+
+                    if actual_finish and actual_finish <= current_date:
+                        cumulative_actual[day_index] += task['actualCost']
+                        cumulative_earned[day_index] += task['earnedValue']
+                    elif task.get('actualStart') and datetime.strptime(task['actualStart'], '%Y-%m-%d') <= current_date:
+                        cumulative_actual[day_index] += task['actualCost'] * ((current_date - datetime.strptime(task['actualStart'], '%Y-%m-%d')).days + 1) / task.get('duration', 1)
+                        cumulative_earned[day_index] += task['earnedValue'] * ((current_date - datetime.strptime(task['actualStart'], '%Y-%m-%d')).days + 1) / task.get('duration', 1)
+
+            s_curve_dates = [
+                earliest_start.strftime('%Y-%m-%d'),
+                report_date.strftime('%Y-%m-%d'),
+                (earliest_start + timedelta(days=getProjectFinish(activityList_with_cpm))).strftime('%Y-%m-%d')
+            ]
+            s_curve_budget_values = [
+                0,
+                sum(
+                    task['budgetedCost'] * min(1.0, max(0.0, (report_date - task.get('start_date', report_date)).days + 1) / task.get('duration', 1))
+                    for task in sorted_tasks_for_scurve
+                    if task.get('start_date', report_date) <= report_date
+                ),
+                sum(task['budgetedCost'] for task in processed_tasks)
+            ]
+            s_curve_actual_values = [0, sum(task['actualCost'] for task in processed_tasks), sum(task['actualCost'] for task in processed_tasks)]
+            s_curve_earned_values = [0, sum(task['earnedValue'] for task in processed_tasks), sum(task['earnedValue'] for task in processed_tasks)]
+
+            total_earned_value = sum(task['earnedValue'] for task in processed_tasks)
+            total_actual_cost = sum(task['actualCost'] for task in processed_tasks)
+            schedule_variance = total_earned_value - s_curve_budget_values[1]
+            cost_variance = total_earned_value - total_actual_cost
+            schedule_performance_index = total_earned_value / s_curve_budget_values[1] if s_curve_budget_values[1] != 0 else (float('inf') if total_earned_value > 0 else 0)
+            cost_performance_index = total_earned_value / total_actual_cost if total_actual_cost != 0 else (float('inf') if total_earned_value > 0 else 0)
+
+            metrics = {
+                'schedule_variance': schedule_variance,
+                'cost_variance': cost_variance,
+                'critical_path': 'N/A',
+                'critical_path_updates': 'Run Gantt Chart generation to see critical path.',
+                'analysis_notes': 'S-curve and metrics based on reported progress as of ' + report_date.strftime('%Y-%m-%d') + '.'
+            }
+
+            return jsonify({
+                's_curve_data': {
+                    'dates': s_curve_dates,
+                    'budget_values': s_curve_budget_values,
+                    'actual_values': s_curve_actual_values,
+                    'earned_values': s_curve_earned_values
+                },
+                'metrics': metrics,
+                'processed_tasks': processed_tasks
+            }), 200
+
+        except Exception as e:
+            logger.error(f"Error generating S-curve or metrics: {e}", exc_info=True)
+            return jsonify({"error": f"Error generating S-curve or metrics: {str(e)}"}), 500
+
+    except Exception as e:
+        logger.error(f"Error in handle_progress_post: {e}", exc_info=True)
+        return jsonify({"error": f"Internal server error in progress handling: {str(e)}"}), 500
 
 # Load environment variables
 load_dotenv()

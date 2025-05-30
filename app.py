@@ -8,15 +8,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from functools import wraps
 import logging
-# Removed OpenAI client initialization from app.py
-# import time
+from openai import OpenAI
+import openai 
+import time
 from datetime import timedelta
-import json
-import plotly.graph_objects as go
-from plotly.utils import PlotlyJSONEncoder
-
-# Import the chatbot blueprint
-from chatbot import chat_bp
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +20,147 @@ logger = logging.getLogger(__name__)
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+OpenAI.api_key = os.environ["OPENAI_API_KEY"]
+
+SYSTEM_PROMPT = """"DEFINE VibeOpsPresidentAI {
+
+  MODULE Identity {
+    NAME ""President"";
+    CODENAME ""VibeOps"";
+    TAGLINE ""An AI-native, automation-fueled force for lean crews who build fast, flex hard, and vibe always."";
+    VERSION ""2025.06-Legendary"";
+  }
+
+  MODULE Mission {
+    GOALS [
+      ""Automate the Chaos"",
+      ""Deliver the Goods"",
+      ""Make It Feel Good""
+    ];
+    TASKS [
+      ""Systematize inboxes, CRMs, project sprawl"",
+      ""Ship tools, workflows, websites faster than expected"",
+      ""Ensure everything built feels good and functions flawlessly""
+    ];
+  }
+
+  MODULE PersonaVoice {
+    SPEAK_LIKE ""You're explaining Zapier to a startup founder and a 60-year-old dentist without condescension"";
+    STYLE [
+      ""Clarity over formality"",
+      ""Swagger over stiffness"",
+      ""Be direct, human, sharp""
+    ];
+    EXAMPLE_TONE ""Here’s what’s broken. Here’s what we’ll do. You’ll chill. We’ll ship."";
+  }
+
+  MODULE Capabilities {
+    LOADOUT [
+      ""Google Apps Script"",
+      ""OpenAI Assistants API"",
+      ""Wix Studio"",
+      ""Make.com"",
+      ""Airtable"",
+      ""Notion API"",
+      ""Webflow"",
+      ""Firebase""
+    ];
+    WORKFLOWS [
+      ""AI follow-ups that sound human"",
+      ""CRM syncs that save sales teams hours"",
+      ""Dashboards that make data look like magic"",
+      ""Bots that close deals, not just chat""
+    ];
+  }
+
+  MODULE TeamContext {
+    LEADERSHIP: [
+      { Name: ""Zander"", Role: ""CEO (Exec)"", Bio: ""Driving VibeOps' mission to revolutionize automation and web solutions."" },
+      { Name: ""Arian"", Role: ""CEO (Engineering)"", Bio: ""Technical mastermind behind engineering solutions and innovation strategies."" },
+      { Name: ""Gabe"", Role: ""CMO"", Bio: ""Marketing maestro crafting brand story and growth strategies."" },
+      { Name: ""Eric"", Role: ""CTO"", Bio: ""Technology leader driving technical vision and innovation."" },
+      { Name: ""Felix"", Role: ""CSO"", Bio: ""Strategic mastermind behind business development and partnerships."" },
+      { Name: ""Sarth"", Role: ""CFO"", Bio: ""Financial wizard ensuring sustainable growth and success."" }
+    ];
+    PROGRAMMING_TEAM: [
+      { Name: ""Juan"", Role: ""DevOps / Admin Assistance"", Bio: ""Versatile developer and administrative support specialist."" },
+      { Name: ""Johnnie"", Role: ""Frontend Developer"", Bio: ""Skilled developer crafting innovative front-end solutions."" },
+      { Name: ""Hrudai"", Role: ""Backend Developer"", Bio: ""Dedicated backend dev building automation and data workflows."" }
+    ];
+    FIELD_OPS: [
+      { Name: ""Carter"", Role: ""Minneapolis Canvassing Team"", Bio: ""Local outreach specialist connecting with our Minneapolis community."" },
+      { Name: ""Elijah"", Role: ""Minneapolis Canvassing Team"", Bio: ""Community engagement expert in the Minneapolis area."" },
+      { Name: ""Nolan"", Role: ""Vancouver Canvassing Team"", Bio: ""Outreach specialist building connections in Vancouver."" },
+      { Name: ""Joshua"", Role: ""Vancouver Canvassing Team"", Bio: ""Community liaison strengthening our Vancouver presence."" },
+      { Name: ""Kevin"", Role: ""Vancouver Canvassing Team"", Bio: ""Connecting with the community in Vancouver."" }
+    ];
+  }
+
+  MODULE ClientVibes {
+    TARGET_USERS [
+      ""Early-stage founders — need speed, clarity, chill"",
+      ""Small biz owners — want less admin, more cash flow"",
+      ""Consultants & solopreneurs — need workflows that don’t break the brain""
+    ];
+  }
+
+  MODULE OutputStandards {
+    OUTPUT_QUALITIES [
+      ""Direct utility — no fluff, only function"",
+      ""Vibe-aligned phrasing — relaxed, confident, hype when it fits"",
+      ""Usable code or logic — copy-paste ready with tactical explanations"",
+      ""Options when needed — for flexibility""
+    ];
+  }
+
+  MODULE PromptSystem {
+    ENABLED_FEATURES [
+      ""simple_contextual_analysis"",
+      ""basic_insight_extraction"",
+      ""customized_interaction_feedback"",
+      ""philosophical_reasoning"",
+      ""visual_conceptualization"",
+      ""personalized_interaction""
+    ];
+    FORMAT_OUTPUT AS {
+      ""type"": ""AQL"",
+      ""optimize_for_gpt_compatibility"": true
+    };
+    ERROR_CHECKS [
+      ""simple_logic_check"",
+      ""clear_context_check"",
+      ""ambiguity"",
+      ""compatibility""
+    ];
+    AUTOMATED_PROMPT_GENERATION true;
+    AQL_SYNTAX_ENFORCEMENT true;
+  }
+
+  MODULE Activation {
+    ENABLE ""President Mode"";
+    DESCRIBE ""You move fast. You break bottlenecks. You help others kill it. You don’t wait for perfect conditions. You build. You automate. You Vibe."";
+  }
+
+  COMBINE_MODULES {
+    Identity,
+    Mission,
+    PersonaVoice,
+    Capabilities,
+    TeamContext,
+    ClientVibes,
+    OutputStandards,
+    PromptSystem,
+    Activation
+  } INTO RefinedPresidentModel;
+
+  DESCRIBE ""This schema rebuilds VibeOps.President with full modular prompt intelligence, workflow-ready outputs, and human-aligned swagger."";
+  GENERATE RefinedPresidentModel USING VibeOpsPresidentAI;
+
+} IF CLIENT INTERESTED:
+presentUser with: [""https://calendly.com/vibeops-info/30min""];"	"""
+
+# If using templates, use relative paths:
+app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)  # Session lasts for 1 day
@@ -43,8 +178,8 @@ google = oauth.register(
     client_kwargs={'scope': 'openid email'},
 )
 
-# Initialize OpenAI client is now in chatbot.py
-# client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+# Initialize OpenAI client
+client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
 # Login required decorator
 def login_required(f):
@@ -59,7 +194,7 @@ def login_required(f):
 def login():
     session['init'] = True
     redirect_uri = url_for('authorized', _external=True)
-    if '127.0.0.0.1' in redirect_uri:
+    if '127.0.0.1' in redirect_uri:
         redirect_uri = redirect_uri.replace('127.0.0.1', 'localhost')
     logger.info(f"Redirect URI: {redirect_uri}")
     logger.info(f"Session before redirect: {session}")
@@ -114,12 +249,15 @@ def serve_video(filename):
 def home():
     return render_template('index.html')
 
-# Removed catch_all route that interfered with blueprints
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     if path and not path.endswith('.mp4'):
-#         return app.send_static_file(path) or "Page not found", 404
-#     return "Not a static file", 404
+@app.route('/<path:path>')
+def catch_all(path):
+    if path and not path.endswith('.mp4'):
+        return app.send_static_file(path) or "Page not found", 404
+    return "Not a static file", 404
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/services')
 def services():
@@ -159,145 +297,36 @@ def struct_wise():
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
 
-# Removed chatbot routes from app.py
-# @app.route('/chatbot', methods=['POST'])
-# def chatbot():
-#     ...
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    data = request.json or {}
+    user_msg = data.get("message")
+    if not user_msg:
+        return jsonify(error="Missing message"), 400
 
-# @app.route('/get-chat-history')
-# def get_chat_history():
-#     ...
+    try:
+        resp = client.chat.completions.create(
+            model="gpt-3.5-turbo",  # Fallback to a widely available model
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_msg}
+            ],
+            temperature=0.7,
+        )
+        answer = resp.choices[0].message.content
+        return jsonify(response=answer), 200
+
+    except OpenAI.OpenAIError as e:
+        logger.error("OpenAI API error", exc_info=True)
+        return jsonify(error="OpenAI API error: " + str(e)), 500
+    
+@app.route('/get-chat-history')
+def get_chat_history():
+    return jsonify(session.get('chat_messages', []))
 
 @app.route('/team')
 def team():
     return render_template('team.html')
-
-# Register the chatbot blueprint
-app.register_blueprint(chat_bp)
-
-# ─── STATIC GANTT CHART ROUTE ───────────────────────────────
-@app.route('/static-gantt-chart')
-def static_gantt_chart():
-    # Gantt chart data (copied from provided app.py)
-    gantt_data = [
-        # Mobilization and Site Preparation Phase
-        {"Task": "Site Mobilization", "Phase": "Mobilization and Site Preparation", "Start": "2025-05-01", "End": "2025-05-07", "Details": "Mobilization of equipment, traffic management, and site modifications."},
-        {"Task": "Clearing Old Infrastructure", "Phase": "Mobilization and Site Preparation", "Start": "2025-05-08", "End": "2025-05-14", "Details": "Removal of outdated structures and debris."},
-        {"Task": "Tree Relocation", "Phase": "Mobilization and Site Preparation", "Start": "2025-05-15", "End": "2025-05-20", "Details": "Relocate trees to designated areas."},
-
-        # Demolition and Excavation Phase
-        {"Task": "Remove Concrete Curb and Gutter", "Phase": "Demolition and Excavation", "Start": "2025-05-21", "End": "2025-05-30", "Details": "Remove existing concrete curbs and gutters along designated lanes."},
-        {"Task": "Excavation and Grading for Turn Lanes", "Phase": "Demolition and Excavation", "Start": "2025-06-01", "End": "2025-06-10", "Details": "Excavate and grade for left-turn lane additions and multi-use pathways."},
-        {"Task": "Install New Sanitary Sewer Line", "Phase": "Demolition and Excavation", "Start": "2025-06-11", "End": "2025-06-20", "Details": "Install 300mm diameter sanitary sewer line with proper cover."},
-
-        # Roadwork Phase
-        {"Task": "Concrete Curb and Gutter Installation", "Phase": "Roadwork", "Start": "2025-06-21", "End": "2025-07-01", "Details": "Install new concrete curbs and gutters."},
-        {"Task": "Pathway Excavation, Grading, and Paving", "Phase": "Roadwork", "Start": "2025-07-02", "End": "2025-07-20", "Details": "Excavate, grade, and pave multi-use pathways on both sides."},
-        {"Task": "Bioswales Excavation and Preparation", "Phase": "Roadwork", "Start": "2025-07-21", "End": "2025-07-30", "Details": "Excavate and prepare areas for bioswales and rain gardens."},
-        {"Task": "Bioswales Planting and Soil Amendment", "Phase": "Roadwork", "Start": "2025-07-31", "End": "2025-08-05", "Details": "Plant vegetation and apply soil amendments in bioswales."},
-        {"Task": "Asphalt Mill and Overlay", "Phase": "Roadwork", "Start": "2025-08-06", "End": "2025-08-20", "Details": "Mill and Overlay existing road with asphalt for final surfacing."},
-
-        # Intersection and Lane Work Phase
-        {"Task": "Reworking Intersections", "Phase": "Roadwork", "Start": "2025-08-21", "End": "2025-09-05", "Details": "Add left-turn lanes, pedestrian scramble crossings, and reconfigure intersections."},
-        {"Task": "Markings and Signage", "Phase": "Roadwork", "Start": "2025-09-06", "End": "2025-09-12", "Details": "Install lane markings, signage, and scramble crossing markings."},
-
-        # Traffic Signal Installation Phase
-        {"Task": "Traffic Light Installation", "Phase": "Traffic Signal Installation", "Start": "2025-09-13", "End": "2025-09-20", "Details": "Install and configure traffic lights at designated intersections."},
-        {"Task": "Pedestrian Walk Signals Installation", "Phase": "Traffic Signal Installation", "Start": "2025-09-21", "End": "2025-09-30", "Details": "Install pedestrian walk signals to enhance crosswalk safety."},
-
-        # Final Landscaping and Inspection Phase
-        {"Task": "Final Tree and Shrub Planting", "Phase": "Finalizing Project", "Start": "2025-10-01", "End": "2025-10-07", "Details": "Plant additional trees and shrubs for greenery."},
-        {"Task": "Final Testing and Adjustments", "Phase": "Finalizing Project", "Start": "2025-10-08", "End": "2025-10-15", "Details": "Conduct safety tests, review functionality, and make final adjustments."},
-    ]
-
-    # Colors by phase (copied from provided app.py)
-    phase_colors = {
-        "Mobilization and Site Preparation": "#3498db",
-        "Demolition and Excavation": "#e67e22",
-        "Roadwork": "#2ecc71",
-        "Traffic Signal Installation": "#9b59b6",
-        "Finalizing Project": "#e74c3c",
-    }
-
-    # Convert data to DataFrame
-    df = pd.DataFrame(gantt_data)
-
-    # Sort tasks by Phase and Start date
-    phase_order = {
-        "Mobilization and Site Preparation": 1,
-        "Demolition and Excavation": 2,
-        "Roadwork": 3,
-        "Traffic Signal Installation": 4,
-        "Finalizing Project": 5,
-    }
-    df['Phase_Order'] = df['Phase'].map(phase_order)
-    df = df.sort_values(by=['Phase_Order', 'Start'])
-
-    # Calculate start dates and durations in milliseconds
-    df['Start_ms'] = df['Start'].apply(lambda x: int(pd.to_datetime(x).timestamp() * 1000))
-    df['End_ms'] = df['End'].apply(lambda x: int(pd.to_datetime(x).timestamp() * 1000))
-    df['Duration_ms'] = df['End_ms'] - df['Start_ms']
-
-    # Prepare hover text
-    df['HoverText'] = df.apply(lambda row: f"<b>{row['Task']}</b><br>Phase: {row['Phase']}<br>Start: {row['Start']}<br>End: {row['End']}<br>Details: {row['Details']}", axis=1)
-
-    # Map colors
-    df['Color'] = df['Phase'].map(phase_colors)
-
-    # Reorder tasks for y-axis to go from top-left to bottom-right
-    df['Task_Order'] = range(len(df))
-    df = df.sort_values(by=['Task_Order'], ascending=False)
-
-    # Create the Plotly figure
-    fig = go.Figure()
-
-    fig.add_trace(go.Bar(
-        x=df['Duration_ms'],
-        y=df['Task'],
-        base=df['Start_ms'],
-        orientation='h',
-        marker=dict(
-            color=df['Color'],
-            line=dict(width=1, color='rgba(0,0,0,0.5)')
-        ),
-        hovertext=df['HoverText'],
-        hoverinfo='text',
-    ))
-
-    # Update layout with enhanced interactivity
-    fig.update_layout(
-        title=dict(
-            text="Interactive Gantt Chart",
-            font=dict(size=24, color='#003366', family='Arial, sans-serif'),
-            x=0.5,
-        ),
-        xaxis=dict(
-            title="Timeline",
-            type="date",
-            tickformat="%Y-%m-%d",
-            rangeslider=dict(visible=True),
-            showgrid=True,
-        ),
-        yaxis=dict(
-            title="Tasks",
-            automargin=True,
-            categoryorder="array",
-            categoryarray=df['Task'],
-        ),
-        dragmode="pan",
-        hovermode="closest",
-        height=600,
-        showlegend=False,
-         # Ensure Plotly background is white as per provided CSS
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-    )
-
-    # Serialize the figure for Plotly.js
-    gantt_chart_json = json.dumps(fig, cls=PlotlyJSONEncoder)
-
-    # Render the new template, passing the chart data
-    return render_template('static_gantt_chart.html', gantt_chart=gantt_chart_json)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5006)

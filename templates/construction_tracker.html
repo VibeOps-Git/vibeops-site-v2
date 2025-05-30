@@ -465,7 +465,7 @@
            });
 
            if (!formIsValid) {
-               taskFormErrorMessageDiv.textContent = 'Please fill in all required task details correctly.';
+               taskFormErrorMessageDiv.textContent = 'Please fill in all required task details correctly. Click Generate once Error is Fixed';
                return;
            }
 
@@ -755,14 +755,6 @@
                            <input type="number" placeholder="% Complete" min="0" max="100" class="progress-percent" data-task-index="${index}" value="0">
                            <input type="date" placeholder="Actual Start Date" class="actual-start" data-task-index="${index}">
                            <input type="date" placeholder="Actual Finish Date" class="actual-finish" data-task-index="${index}">
-                       </div>
-                   `;
-
-                   // Add Save and Cancel buttons for the progress entry
-                   entryContent.innerHTML += `
-                       <div class="progress-buttons">
-                           <button type="button" class="save-progress btn primary hidden">Save</button>
-                           <button type="button" class="cancel-progress btn secondary hidden">Cancel</button>
                        </div>
                    `;
 

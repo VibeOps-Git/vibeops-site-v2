@@ -1,30 +1,45 @@
-# Ignore Python environments and cache
-**/venv/
+# ─── Python envs & caches ─────────────────────────────────
+/venv/
+/.venv/
 **/__pycache__/
-**/*.pyc
+**/*.py[cod]
 
-# Ignore database files
+# ─── OS & Git internals ────────────────────────────────────
+.DS_Store
+.vercel
+.git/
+
+# ─── Local config & secrets ────────────────────────────────
+.env
+
+# ─── Static & template folders (served separately) ─────────
+/static/
+/templates/
+
+# ─── Folders outside site-v1 you don’t want deployed ──────
+/VibeReels/
+/algos/
+/data/
+/receipts/
+/sheets/
+
+# ─── Database files ────────────────────────────────────────
 **/*.db
 
-# Ignore backend projects and data directories outside of the deployed site-v1
-# Assuming the site-v1 folder is what you want to deploy
-VibeReels/
-algos/
-data/
-receipts/
-sheets/
-templates/
+# ─── Large media files ────────────────────────────────────
+**/*.mp4
+**/*.mov
+**/*.pdf
+**/*.png
+**/*.jpeg
 
-# Ignore large media files at the root level
-*.mp4
-*.mov
-*.jpeg
-*.png
-*.pdf
-
-# Ignore node_modules in any subdirectory
+# ─── Node modules (if any sub‐projects) ─────────────────────
 **/node_modules/
 
-# Git internals and OS files
+# .vercelignore
+venv/
+.venv/
+__pycache__/
+*.pyc
 .git/
-.DS_Store 
+.DS_Store
