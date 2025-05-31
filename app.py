@@ -12,6 +12,9 @@ from openai import OpenAI
 import openai 
 import time
 from datetime import timedelta
+from flask_cors import CORS
+
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -297,28 +300,119 @@ def struct_wise():
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
 
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-    data = request.json or {}
-    user_msg = data.get("message")
-    if not user_msg:
-        return jsonify(error="Missing message"), 400
-
+@app.route('/chatbot', methods=['POST'])
+def chatbot_route():
     try:
-        resp = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Fallback to a widely available model
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_msg}
-            ],
-            temperature=0.7,
-        )
-        answer = resp.choices[0].message.content
-        return jsonify(response=answer), 200
+        data = request.json
+        message = data.get('message')
+        if not message:
+            return jsonify({"error": "Missing message"}), 400
 
-    except OpenAI.OpenAIError as e:
-        logger.error("OpenAI API error", exc_info=True)
-        return jsonify(error="OpenAI API error: " + str(e)), 500
+        thread_id = session.get('thread_id')
+
+        def process_message_with_thread(current_thread_id, msg_content):
+            try:
+                client.beta.threads.messages.create(
+                    thread_id=current_thread_id,
+                    role="user",
+                    content=msg_content
+                )
+                logger.info(f"Message created in thread: {current_thread_id}")
+
+                run = client.beta.threads.runs.create(
+                    thread_id=current_thread_id,
+                    assistant_id=os.environ.get('OPENAI_ASSISTANT_ID')
+                )
+                logger.info(f"Assistant run created: {run.id} on thread {current_thread_id}")
+
+                while True:
+                    run_status = client.beta.threads.runs.retrieve(
+                        thread_id=current_thread_id,
+                        run_id=run.id
+                    )
+                    if run_status.status == 'completed':
+                        logger.info("Run completed.")
+                        break
+                    elif run_status.status in ['failed', 'cancelled', 'expired']:
+                        logger.error(f"Run failed with status: {run_status.status}")
+                        raise Exception(f"Assistant run failed with status: {run_status.status}")
+                    time.sleep(1)
+
+                messages = client.beta.threads.messages.list(thread_id=current_thread_id)
+                assistant_messages = [msg for msg in messages.data if msg.role == "assistant"]
+                if not assistant_messages:
+                    logger.warning("No response from assistant.")
+                    return "No response from assistant."
+
+                response = assistant_messages[0].content[0].text.value
+                logger.info("Assistant response retrieved.")
+                return response
+
+            except APIStatusError as e:
+                logger.error(f"API Status Error processing message in thread {current_thread_id}: {e}")
+                if e.status_code == 404:
+                    logger.warning(f"Thread {current_thread_id} not found (404). Will attempt to create a new thread.")
+                    return None
+                raise e
+            except Exception as e:
+                logger.error(f"An unexpected error occurred while processing message in thread {current_thread_id}: {e}")
+                raise e
+
+        assistant_response = None
+        if not thread_id:
+            logger.info("No thread_id in session, creating a new thread.")
+            thread = client.beta.threads.create()
+            thread_id = thread.id
+            session['thread_id'] = thread_id
+            session.modified = True
+            logger.info(f"New thread created: {thread_id}")
+
+        assistant_response = process_message_with_thread(thread_id, message)
+
+        if assistant_response is None:
+            logger.info(f"Existing thread {thread_id} not found. Creating a new thread and retrying.")
+            new_thread = client.beta.threads.create()
+            new_thread_id = new_thread.id
+            session['thread_id'] = new_thread_id
+            session.modified = True
+            logger.info(f"New thread created and session updated: {new_thread_id}")
+            assistant_response = process_message_with_thread(new_thread_id, message)
+
+        if assistant_response is None:
+            logger.error("Assistant response is still None after retry.")
+            return jsonify({"error": "Failed to get response after retry."}), 500
+
+        # Check if response contains the booking trigger and modify if needed
+        booking_trigger = "https://calendly.com/vibeops-info/30min"
+        if booking_trigger in assistant_response:
+            assistant_response = assistant_response.replace(f"[{booking_trigger}]", "").strip()
+            # Optionally, you could return a flag to trigger the modal client-side
+            return jsonify({"response": assistant_response, "show_booking_modal": True}), 200
+
+        if 'chat_messages' not in session:
+            session['chat_messages'] = []
+        session['chat_messages'].append({'role': 'user', 'content': message})
+        session['chat_messages'].append({'role': 'assistant', 'content': assistant_response})
+        session.modified = True
+
+        if 'google_id' in session:
+            try:
+                supabase.table('chatbot_logs').insert({
+                    'user_id': session['google_id'],
+                    'email': session['email'],
+                    'message': message,
+                    'response': assistant_response,
+                    'thread_id': session['thread_id'],
+                    'timestamp': datetime.utcnow().isoformat()
+                }).execute()
+            except Exception as e:
+                logger.error(f"Error storing chatbot message in Supabase: {e}")
+
+        return jsonify({"response": assistant_response}), 200
+
+    except Exception as e:
+        logger.error(f"Chatbot endpoint error: {e}")
+        return jsonify({"error": "An internal server error occurred."}), 500
     
 @app.route('/get-chat-history')
 def get_chat_history():

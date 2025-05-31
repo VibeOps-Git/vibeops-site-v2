@@ -1,20 +1,15 @@
+# config.py
 import os
+print("Using SUPABASE_KEY prefix:", os.getenv("SUPABASE_KEY", "")[:8])
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-# Load environment variables
-load_dotenv()
+load_dotenv()  # ← at the very top
 
-# Get Supabase credentials
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")  # ← service role only
 
-# Validate credentials
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise ValueError("Supabase credentials not found in environment variables")
+    raise RuntimeError("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY")
 
-# Initialize Supabase client
-try:
-    supabase: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABASE_KEY)
-except Exception as e:
-    raise ValueError(f"Failed to initialize Supabase client: {str(e)}")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)

@@ -1,82 +1,198 @@
 {% extends "base.html" %}
 {% block title %}Services{% endblock %}
+
 {% block content %}
 
-    <section class="case-studies" id="desktop-sample" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Our Web Design Work">Our Web Design Work</h2>
-        <p data-aos="fade-up" data-aos-delay="200">A glimpse of our desktop-optimized sites—modern and enchanted to convert.</p>
-        <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card">
-                <strong>Castaway Crew Desktop Demo</strong><br>
-                <div class="video-box">
-                    <iframe
-                    src="https://www.youtube.com/embed/trIZD2Lwe4s?si=wIkpTjN2aVDXjxPC"
-                    title="Desktop Design Demo"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                    </iframe>
-                    <em>Bold design, built to mesmerize</em>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">Our Services</h2>
-        <p data-aos="fade-up" data-aos-delay="200">Custom solutions for every business—big or small.</p>
-        <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card">📧 Automation<br><em>Email, Calendar, CRM</em></div>
-            <div class="card">🛠️ Engineering<br><em>Custom projects</em></div>
-            <div class="card">🌐 Web Design<br><em>Sites that shine</em></div>
-        </div>
-    </section>
 
-    <!-- Work Sample Section -->
-    <section class="case-studies" id="mobile-sample" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100">Mobile-Optimized Design</h2>
-        <p data-aos="fade-up" data-aos-delay="200">A demo of our mobile-friendly websites—smooth and responsive!</p>
-        <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card">
-                <strong>Castaway Crew Mobile Demo</strong><br>
-                <div class="video-box">
-                    <iframe
-                    src="https://www.youtube.com/embed/eJlnI9NCQuU?si=-gZXhg1msHeQkPuh"
-                    title="Mobile Design Demo"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                    </iframe>
-                    <em>Base-Level Demo</em>
-                </div>
-            </div>
-        </div>
-        <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
-            <h3>Not Seeing Your Fit?</h3>
-            <p>Need a custom solution? Book a free consultation to elevate your web design project with a stunning site and an optimized timeline.</p>
-            <a href="/booking" class="btn primary">Book Free Consultation</a>
-        </div>
-    </section>
 
-    <!-- New Video Section -->
-    <section class="case-studies" id="additional-videos" data-aos="fade-in" data-aos-duration="1000">
-        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Featured Videos">Featured Videos</h2>
-        <p data-aos="fade-up" data-aos-delay="200">Interviews and demonstrations showcasing our capabilities and insights.</p>
-        <div class="grid" data-aos="fade-up" data-aos-delay="300">
-            <div class="card">
-                <strong>YC Founder Interview</strong><br>
-                <div class="video-box">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/YztGPXvfgsw?si=94eCgQ8JNCS_IWmW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <em>Insights on building and scaling.</em>
-                </div>
-            </div>
-            <div class="card">
-                <strong>EaZy Visuals Website Demo</strong><br>
-                <div class="video-box">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/ArMIzD2MoeY?si=msg7G9dYaYRLl4DG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <em>A showcase of dynamic web design.</em>
-                </div>
-            </div>
+  {# ──────────────────────────────────────────────────────────────── #}
+  {# EXISTING SECTIONS (VIDEO EMBEDS, SERVICE CARDS, ETC.)           #}
+  {# ──────────────────────────────────────────────────────────────── #}
+
+  <!-- Desktop Sample Section -->
+  <section class="case-studies" id="desktop-sample" data-aos="fade-in" data-aos-duration="1000">
+    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Our Web Design Work">
+      Our Web Design Work
+    </h2>
+    <p data-aos="fade-up" data-aos-delay="200">
+      A glimpse of our desktop-optimized sites—modern and enchanted to convert.
+    </p>
+    <div class="grid" data-aos="fade-up" data-aos-delay="300">
+      <div class="card">
+        <strong>Castaway Crew Desktop Demo</strong><br>
+        <div class="video-box">
+          <div class="video-container">
+            <iframe
+              src="https://www.youtube.com/embed/trIZD2Lwe4s?si=wIkpTjN2aVDXjxPC"
+              title="Desktop Design Demo"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <em>Bold design, built to mesmerize</em>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Overview -->
+  <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000">
+    <h2 data-aos="fade-up" data-aos-delay="100">Our Services</h2>
+    <p data-aos="fade-up" data-aos-delay="200">
+      Custom solutions for every business—big or small.
+    </p>
+    <div class="grid" data-aos="fade-up" data-aos-delay="300">
+      <div class="card">📧 Automation<br><em>Email, Calendar, CRM</em></div>
+      <div class="card">🛠️ Engineering<br><em>Custom projects</em></div>
+      <div class="card">🌐 Web Design<br><em>Sites that shine</em></div>
+    </div>
+  </section>
+
+  <!-- Mobile Sample Section -->
+  <section class="case-studies" id="mobile-sample" data-aos="fade-in" data-aos-duration="1000">
+    <h2 data-aos="fade-up" data-aos-delay="100">Mobile-Optimized Design</h2>
+    <p data-aos="fade-up" data-aos-delay="200">
+      A demo of our mobile-friendly websites—smooth and responsive!
+    </p>
+    <div class="grid" data-aos="fade-up" data-aos-delay="300">
+      <div class="card">
+        <strong>Castaway Crew Mobile Demo</strong><br>
+        <div class="video-box">
+          <div class="video-container">
+            <iframe
+              src="https://www.youtube.com/embed/eJlnI9NCQuU?si=-gZXhg1msHeQkPuh"
+              title="Mobile Design Demo"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <em>Base-Level Demo</em>
+          <a
+          href="https://www.castawaycrewmn.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-cta-text">
+          Visit Castaway Crew →
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
+      <h3>Not Seeing Your Fit?</h3>
+      <p>
+        Need a custom solution? Book a free consultation to elevate your web
+        design project with a stunning site and an optimized timeline.
+      </p>
+      <a href="/booking" class="btn primary">Book Free Consultation</a>
+    </div>
+  </section>
+
+  <!-- Additional Featured Videos -->
+  <section class="case-studies" id="additional-videos" data-aos="fade-in" data-aos-duration="1000">
+    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Featured Videos">
+      Featured Videos
+    </h2>
+    <p data-aos="fade-up" data-aos-delay="200">
+      Interviews and demonstrations showcasing our capabilities and insights.
+    </p>
+    <div class="grid" data-aos="fade-up" data-aos-delay="300">
+
+      <!-- YC Founder Interview Card -->
+      <div class="card">
+        <strong>YC Founder Interview</strong><br>
+        <div class="video-box">
+          <div class="video-container">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/YztGPXvfgsw?si=94eCgQ8JNCS_IWmW"
+              title="YC Founder Interview"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <em>Insights on building and scaling.</em>
+        </div>
+      </div>
+
+      <!-- EaZy Visuals Demo Card -->
+      <div class="card">
+        <strong>EaZy Visuals Website Demo</strong><br>
+        <div class="video-box">
+          <div class="video-container">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/ArMIzD2MoeY?si=msg7G9dYaYRLl4DG"
+              title="EaZy Visuals Website Demo"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <em>A showcase of dynamic web design.</em><br>
+          <a
+            href="https://www.eazy-visuals.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-cta-text">
+            Visit EaZy Visuals →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  {# ──────────────────────────────────────────────────────────────── #}
+  {# LIVE DEMOS SECTION (FEATURED PROMINENTLY)                      #}
+  {# ──────────────────────────────────────────────────────────────── #}
+  <section class="case-studies live-demos" data-aos="fade-in" data-aos-duration="800">
+    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Live Demos">
+      Live Demos
+    </h2>
+    <p data-aos="fade-up" data-aos-delay="200">
+      Click below to explore our two flagship sites in their fully live form.
+    </p>
+
+    <div class="grid" data-aos="fade-up" data-aos-delay="300">
+
+      {# Castaway Crew MN Demo Card #}
+      <div class="card live-demo-card">
+        <h3>Castaway Crew MN</h3>
+        <p>
+          A fully responsive, desktop-quality site built to showcase community events, services, and team updates.  
+          Check it out live.
+        </p>
+        <a href="https://www.castawaycrewmn.com/" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn primary live-demo-btn">
+          Visit Castaway Crew MN →
+        </a>
+      </div>
+
+      {# EaZy Visuals Demo Card #}
+      <div class="card live-demo-card">
+        <h3>EaZy Visuals</h3>
+        <p>
+          A dynamic portfolio showcasing animated visuals, custom galleries, and seamless UX.  
+          Experience it live now.
+        </p>
+        <a href="https://www.eazy-visuals.com/" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn primary live-demo-btn">
+          Visit EaZy Visuals →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
 {% endblock %}

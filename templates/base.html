@@ -7,8 +7,7 @@
     <meta name="keywords" content="AI automation, workflow optimization, web development, engineering consulting, CRM integration" />
     <meta name="author" content="VibeOps" />
     <title>VibeOps — {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/styles.css" />
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
@@ -53,6 +52,24 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
+
+        .chat-modal {
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: .5rem 0;
+            text-align: left;
+            position: relative;
+          }
+          .chat-modal.hidden { display: none; }
+          .chat-modal h4 {
+            color: #00ffcc;
+            margin-top: 0;
+          }
+          .chat-modal ul { list-style: disc inside; color: #f2f2f2; }
+          .chat-modal p { color: #f2f2f2; }
+          .chat-modal .btn { margin-top: 1rem; }          
     </style>
     {% block extra_head %}{% endblock %}
 </head>
@@ -95,6 +112,13 @@
             <div class="chatbot-messages" id="chatbot-messages">
                 <div class="message bot-message">
                     Hey there! I'm President, your VibeOps AI. What's the vibe today—need a workflow fix or a slick site?
+                </div>
+                <!-- Booking Modal -->
+                <div id="booking-modal" class="chat-modal hidden">
+                    <h4>Book a 30-Minute Consultation</h4>
+                    <p>Choose a time that works for you:</p>
+                    <a href="https://calendly.com/vibeops-info/30min" target="_blank" class="btn primary">Book Now</a>
+                    <button class="btn secondary close-chat-modal">Close</button>
                 </div>
             </div>
             <div class="chatbot-input">
@@ -322,115 +346,129 @@
         clearChatButton.addEventListener('click', clearChat);
 
         // Update the sendMessage function to store messages in the UI *and* save history
+        // Updated sendMessage function
         function sendMessage() {
             const message = chatbotInput.value.trim();
             if (!message) return;
 
-            // Add user message to chat and save history
             appendMessage('user', message);
             chatbotInput.value = '';
 
-            // Show loading message
             const loadingMessage = document.createElement('div');
             loadingMessage.classList.add('message', 'bot-message');
             loadingMessage.textContent = 'President is thinking...';
             chatbotMessages.appendChild(loadingMessage);
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 
-            // Prepare payload with thread_id as a separate field
             const payload = { message };
-            const threadId = sessionStorage.getItem('thread_id'); // Corrected variable name to match session storage
-            if (threadId) {
-                payload.thread_id = threadId;
-                console.log('Sending thread_id:', threadId);
-            } else {
-                console.log('No thread_id found, expecting backend to create new thread');
-            }
-            console.log('Payload:', JSON.stringify(payload));
+            const threadId = sessionStorage.getItem('thread_id');
+            if (threadId) payload.thread_id = threadId;
 
-            // Call the Flask endpoint
             fetch('/chatbot', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             })
-            .then(response => {
-                if (!response.ok) {
-                    // Attempt to parse JSON even on non-OK responses
-                    return response.json().then(data => {
-                        // Check if the error message specifically indicates "No thread found"
-                        if (data.error && typeof data.error === 'object' && data.error.message && data.error.message.includes("No thread found")) {
-                            console.warn("Thread not found error received.");
-                            // This specific error is handled in the catch block below for UI reset
-                            // Just throw the error to be caught
-                             throw new Error(data.error.message);
-                        } else {
-                            // For other non-OK responses, throw a generic error with available info
-                            throw new Error(data.error || `HTTP error! status: ${response.status}`);
-                        }
-                    }).catch(parseError => {
-                         // If parsing JSON response fails (e.g., non-JSON error from server)
-                        console.error('Error parsing JSON from error response:', parseError);
-                         throw new Error(`HTTP error! status: ${response.status} - Could not parse error response.`);
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
+            .then(response => response.json().then(data => ({ status: response.status, data })))
+            .then(({ status, data }) => {
                 loadingMessage.remove();
 
-                // Add bot response and save history
-                if (typeof data.response === 'object' && data.response !== null) {
-                     // Pass the original JSON object if it's structured
-                     appendMessage('bot', JSON.stringify(data.response));
-                } else {
-                    // Otherwise, treat as plain text
-                    appendMessage('bot', data.response || "Something broke. Let's try that again.");
-                }
+                if (status === 200) {
+                    let responseContent = data.response || "Something broke. Let's try that again.";
+                    appendMessage('bot', responseContent);
 
-                // Store the new or existing thread_id if provided in the response
-                if (data.thread_id) {
-                    sessionStorage.setItem('thread_id', data.thread_id); // Corrected variable name to match session storage
-                    console.log('Stored thread_id:', data.thread_id);
-                } else {
-                     // If no thread_id is returned, ensure frontend also doesn't hold onto one
-                     sessionStorage.removeItem('thread_id'); // Corrected variable name
-                     console.log('No thread_id received, cleared frontend thread_id.');
-                }
+                    // Check for booking modal trigger
+                    if (data.show_booking_modal) {
+                        const bookingModal = document.getElementById('booking-modal');
+                        if (bookingModal) {
+                            const clonedModal = bookingModal.cloneNode(true);
+                            clonedModal.classList.remove('hidden');
+                            clonedModal.id = `booking-modal-${Date.now()}`; // Unique ID to avoid conflicts
+                            chatbotMessages.appendChild(clonedModal);
+                            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                        }
+                    }
 
+                    if (data.thread_id) sessionStorage.setItem('thread_id', data.thread_id);
+                    else sessionStorage.removeItem('thread_id');
+                } else {
+                    appendMessage('bot', data.error || `HTTP error! status: ${status}`);
+                }
             })
             .catch(error => {
-                console.error('Fetch error:', error.message);
                 loadingMessage.remove();
-
-                // Check if the error is specifically the "No thread found" message
-                 if (error.message && error.message.includes("No thread found")) {
-                     // This error indicates the backend session was reset, so clear frontend state
-                     sessionStorage.removeItem('chatHistory');
-                     sessionStorage.removeItem('thread_id'); // Clear thread_id
-                     console.warn("Handled 'No thread found' error: Cleared frontend state.");
-
-                     // Clear visible messages and display a reset message
-                     chatbotMessages.innerHTML = '';
-                     appendMessage('bot', "It looks like the conversation session was reset. Let's start a new chat!");
-                      // After showing the reset message, add the initial welcome message
-                      setTimeout(() => {
-                          chatbotMessages.innerHTML = ''; // Clear again just in case
-                          appendMessage('bot', "Hey there! I'm President, your VibeOps AI. How can I assist you today?");
-                      }, 1500); // Small delay before adding the welcome message
-
-                 } else {
-                    // For other errors, add a generic error message to chat
-                    appendMessage('bot', error.message || 'Oops, something broke. Try again?');
-                 }
+                appendMessage('bot', error.message || 'Oops, something broke. Try again?');
             });
+        }
+
+        function showBookingModal() {
+            const bookingModal = document.getElementById('booking-modal');
+            bookingModal.classList.remove('hidden');
+        }
+        function styleCalendlyLink() {
+            const messageContainer = document.getElementById('chatbot-messages');
+            const bookingLinkRegex = /<a\s+href="https:\/\/calendly\.com\/vibeops-info\/30min"\s+target="_blank"\s+class="btn primary">Book Now<\/a>/;
+        
+            // Check if the booking modal is present in the messages
+            const messages = messageContainer.innerHTML;
+            if (bookingLinkRegex.test(messages)) {
+                const link = messageContainer.querySelector('#booking-modal .btn.primary');
+                if (link) {
+                    link.style.backgroundColor = '#00ffcc';
+                    link.style.color = '#1e1e1e';
+                    link.style.padding = '10px 20px';
+                    link.style.borderRadius = '5px';
+                    link.style.textDecoration = 'none';
+                    link.style.fontWeight = 'bold';
+                    link.style.transition = 'background-color 0.3s ease';
+        
+                    link.addEventListener('mouseover', () => {
+                        link.style.backgroundColor = '#00ccaa';
+                    });
+                    link.addEventListener('mouseout', () => {
+                        link.style.backgroundColor = '#00ffcc';
+                    });
+                }
+            }
         }
 
         chatbotSend.addEventListener('click', sendMessage);
         chatbotInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
+        });
+        // after appendMessage(), check for team/booking triggers
+        const CHAT_TRIGGERS = [
+        { pattern: /who'?s on the team\?/i, modalId: 'team-modal' },
+        { pattern: /wanna book a meeting/i,   modalId: 'booking-modal' }
+        ];
+
+        function showChatModal(modalId) {
+        // hide any other
+        document.querySelectorAll('.chat-modal').forEach(m => m.classList.add('hidden'));
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove('hidden');
+        }
+
+        // intercept bot response to pop-up modals
+        const originalAppendMessage = appendMessage;
+        appendMessage = (role, content) => {
+        originalAppendMessage(role, content);
+        if (role === 'bot') {
+        for (let {pattern, modalId} of CHAT_TRIGGERS) {
+            if (pattern.test(content)) {
+            // slight delay so the modal appears after the message
+            setTimeout(() => showChatModal(modalId), 300);
+            break;
+            }
+        }
+        }
+        };
+
+        // close buttons inside our modals
+        document.body.addEventListener('click', e => {
+        if (e.target.classList.contains('close-chat-modal')) {
+        e.target.closest('.chat-modal').classList.add('hidden');
+        }
         });
     </script>
     {% block extra_scripts %}{% endblock %}

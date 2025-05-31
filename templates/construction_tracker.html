@@ -758,6 +758,14 @@
                        </div>
                    `;
 
+                   // Add Save and Cancel buttons for the progress entry
+                   entryContent.innerHTML += `
+                       <div class="progress-buttons">
+                           <button type="button" class="save-progress btn primary hidden">Save</button>
+                           <button type="button" class="cancel-progress btn secondary hidden">Cancel</button>
+                       </div>
+                   `;
+
                     // Initially hide content on mobile
                     if (window.innerWidth < 768) {
                         entryContent.classList.add('hidden-mobile');
