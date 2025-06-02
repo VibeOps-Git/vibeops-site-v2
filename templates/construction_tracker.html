@@ -1,1186 +1,1059 @@
 {% extends "base.html" %}
-{% block title %}Construction Tracker - VibeOps{% endblock %}
+{% block title %}Construction Tracker – VibeOps{% endblock %}
 
 {% block extra_head %}
-    <script src="https://cdn.plot.ly/plotly-2.18.1.min.js"></script> {# Include Plotly library #}
-    {# Add MathJax if you plan to display formulas in metrics #}
-    {# <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> #}
+  <!-- Plotly (for Gantt, histograms, S-curves, etc.) -->
+  <script src="https://cdn.plot.ly/plotly-2.18.1.min.js"></script>
 {% endblock %}
 
 {% block content %}
-    <section class="construction-tracker-page"> {# Use a unique class with prefix #}
-        <h2 data-aos="fade-up" data-aos-delay="100" class="construction-tracker-glitch" data-text="Construction Tracker">Construction Tracker</h2>
-        <p data-aos="fade-up" data-aos-delay="200" class="construction-tracker-text-center">Define project tasks, track progress, and visualize performance with Gantt charts and S-curves.</p>
+  <section class="construction-tracker-page" data-aos="fade-in" data-aos-duration="1000">
+    <h2
+      data-aos="fade-up"
+      data-aos-delay="100"
+      class="construction-tracker-glitch"
+      data-text="Construction Tracker"
+    >
+      Construction Tracker
+    </h2>
+    <p data-aos="fade-up" data-aos-delay="200" class="construction-tracker-text-center">
+      Define your project tasks below. You can also click “Insert example schedule” to load a sample.
+      Once your tasks are in place, hit “Generate Plan (Gantt Chart)”.
+    </p>
 
-        <div class="construction-tracker-input-section" data-aos="fade-up" data-aos-delay="300"> {# Use input-section with prefix #}
-            <div>
-                <label for="project_name">Project Name</label>
-                <input type="text" name="project_name" id="project_name" class="construction-tracker-project-name" required placeholder="e.g., Office Building Renovation">
-            </div>
-            
-            <div id="task-list" class="construction-tracker-task-list space-y-6 mt-4">
-                <h3 class="construction-tracker-task-heading" style="color: #00a886; margin-top:10px;">Define Project Tasks</h3>
-                <div id="tasks-container">
-                    {# Task input rows will be added here by JavaScript #}
-                </div>
-                <button type="button" id="add-task" class="construction-tracker-btn secondary w-full flex justify-center">Add Task</button>
-            </div>
+    <!-- ─── INPUT SECTION ───────────────────────────────────────────────── -->
+    <div class="construction-tracker-input-section" data-aos="fade-up" data-aos-delay="300">
+      <!-- Project Name -->
+      <div style="margin-bottom: 1rem;">
+        <label for="project_name">Project Name</label><br>
+        <input
+          type="text"
+          id="project_name"
+          class="construction-tracker-project-name"
+          placeholder="e.g., Office Building Renovation"
+          required
+          style="width: 100%; padding: .75rem; border: 1px solid #444; border-radius: 6px; background:#3e3e3e; color:#f2f2f2;"
+        >
+      </div>
 
-            <div class="mt-4">
-                <button type="button" id="generate-gantt" class="construction-tracker-btn primary w-full flex justify-center">Generate Plan (Gantt Chart)</button>
-                <div id="task-form-error-message" class="construction-tracker-error-message text-center" style="color: red; margin-top: 1rem;"></div>
-            </div>
-        </div>
+      <!-- ─── “Define Project Tasks” TABLE ─────────────────────────────────── -->
+      <div id="task-list" class="construction-tracker-task-list" style="margin-bottom: 1.5rem;">
+        <h3 class="construction-tracker-task-heading" style="color: #00a886; margin-bottom: .5rem;">
+          Define Project Tasks
+        </h3>
 
-        <!-- Gantt Chart Display -->
-        <div id="gantt-results" class="construction-tracker-output-section mt-8 hidden">
-            <h2>Project Gantt Chart</h2>
-            <div id="gantt-chart" class="construction-tracker-box">
-                <div id="gantt-loading-spinner" class="construction-tracker-loading-spinner hidden"></div>
-            </div>
-        </div>
-                
-        <!-- Progress Rating Interface -->
-        <div id="progress-section" class="construction-tracker-input-section mt-8 hidden">
-            <h3 class="construction-tracker-progress-heading text-xl font-semibold mb-4" style="color: #00a886;">Report Progress & Costs</h3>
-            <div id="progress-form-error-message" class="construction-tracker-error-message text-center" style="color: red; margin-bottom: 1rem;"></div>
-            <div id="progress-list" class="construction-tracker-progress-list space-y-4">
-                <!-- Header Row for Desktop -->
-                <div class="construction-tracker-progress-row construction-tracker-header desktop-only">
-                    <label>Task Name</label>
-                    <label>Budgeted Cost ($)</label>
-                    <label>Actual Cost ($)</label>
-                    <label>% Complete</label>
-                    <label>Actual Start</label>
-                    <label>Actual Finish</label>
-                </div>
-                {# Progress input rows will be populated here by JavaScript #}
-            </div>
-            <button type="button" id="submit-progress" class="construction-tracker-btn primary w-full flex justify-center mt-4">Analyze Progress (S-Curves)</button>
-        </div>
+        <table
+          id="tasks-table"
+          class="task-table"
+          style="width: 100%; border-collapse: collapse; margin-bottom: .5rem;"
+        >
+          <thead>
+            <tr style="background: #3e3e3e; color: #f2f2f2;">
+              <th style="padding: .5rem; border: 1px solid #444;">Task Name</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Phase</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Start Date</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Duration (days)</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Predecessors</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Crew ID</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Personnel</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Equipment</th>
+              <th style="padding: .5rem; border: 1px solid #444;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tasks-container">
+            <!-- JavaScript will append <tr> rows here -->
+          </tbody>
+        </table>
 
-        <!-- S-Curve and Analysis Results -->
-        <div id="analysis-results" class="output-section mt-8 hidden"> {# Use output-section and hidden #}
-            <h2>Performance Analysis</h2> {# Use h2 #}
-            <div id="s-curve-chart" class="box mb-4"> {# Use box #}
-                {# S-curve chart will be plotted here by Plotly #}
-            </div>
-            <div id="metrics" class="box"> {# Use box #}
-                {# Performance metrics will be displayed here #}
-            </div>
-        </div>
+        <button
+          type="button"
+          id="add-task"
+          class="construction-tracker-btn secondary w-full"
+          style="margin-top: .5rem;"
+        >
+          + Add Task
+        </button>
+      </div>
+      <!-- ─────────────────────────────────────────────────────────────────────── -->
 
-        <!-- Resource Histograms -->
-        <div id="resource-histograms" class="construction-tracker-output-section mt-8 hidden">
-            <h2>Resource Usage</h2>
-            <div id="personnel-histogram" class="construction-tracker-box mb-4">
-                {# Personnel histogram will be plotted here by Plotly #}
-            </div>
-            <div id="equipment-histogram" class="construction-tracker-box">
-                {# Equipment histogram will be plotted here by Plotly #}
-            </div>
-        </div>
-    </section>
+      <!-- “Insert Example Schedule” and “Generate Plan” buttons -->
+      <div class="mt-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button
+          type="button"
+          id="load-example-schedule"
+          class="construction-tracker-btn secondary"
+          style="flex: 1;"
+        >
+          Insert Example Schedule
+        </button>
+        <button
+          type="button"
+          id="generate-gantt"
+          class="construction-tracker-btn primary"
+          style="flex: 1;"
+        >
+          Generate Plan (Gantt Chart)
+        </button>
+      </div>
 
-    <!-- Fullscreen Gantt Chart Modal -->
-    <div id="gantt-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="fullscreen-gantt-chart"></div>
-        </div>
+      <!-- Error message placeholder for task validation -->
+      <div
+        id="task-form-error-message"
+        class="construction-tracker-error-message"
+        style="color: red; margin-top: 1rem; text-align: center;"
+      ></div>
     </div>
+    <!-- ─────────────────────────────────────────────────────────────────────── -->
 
+
+    <!-- ─── GANTT CHART DISPLAY ──────────────────────────────────────────────── -->
+    <div id="gantt-results" class="construction-tracker-output-section mt-8 hidden">
+      <h2 style="margin-bottom: .75rem; color: #00a886;">Project Gantt Chart</h2>
+      <div
+        id="gantt-chart"
+        class="construction-tracker-box"
+        style="position: relative; min-height: 300px; background: #282828; border:1px solid #333; border-radius:8px; padding:1rem;"
+      >
+        <!-- Loading spinner (hidden by default) -->
+        <div
+          id="gantt-loading-spinner"
+          class="construction-tracker-loading-spinner hidden"
+          style="
+            border: 8px solid #1e1e1e;
+            border-top: 8px solid #00ffcc;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: calc(50% - 30px);
+            left: calc(50% - 30px);
+          "
+        ></div>
+      </div>
+    </div>
+    <!-- ─────────────────────────────────────────────────────────────────────── -->
+
+
+    <!-- ─── PROGRESS SECTION (hidden until Gantt is generated) ───────────────── -->
+    <div id="progress-section" class="construction-tracker-input-section mt-8 hidden">
+      <h3 style="color: #00a886; margin-bottom: .75rem;">Report Progress & Costs</h3>
+      <div
+        id="progress-form-error-message"
+        class="construction-tracker-error-message"
+        style="color: red; margin-bottom: 1rem;"
+      ></div>
+
+      <!-- ─── “Insert Example Progress Data” button ─────────────────────────── -->
+      <button
+        type="button"
+        id="load-example-progress"
+        class="construction-tracker-btn secondary w-full"
+        style="margin-bottom: 1rem;"
+      >
+        Insert Example Progress Data
+      </button>
+      <!-- ───────────────────────────────────────────────────────────────────────── -->
+
+      <!-- “Report Progress & Costs” TABLE -->
+      <table
+        id="progress-table"
+        style="width: 100%; border-collapse: collapse; margin-bottom: .5rem;"
+      >
+        <thead>
+          <tr style="background: #3e3e3e; color: #f2f2f2;">
+            <th style="padding: .5rem; border: 1px solid #444;">Task Name</th>
+            <th style="padding: .5rem; border: 1px solid #444;">Budgeted Cost ($)</th>
+            <th style="padding: .5rem; border: 1px solid #444;">Actual Cost ($)</th>
+            <th style="padding: .5rem; border: 1px solid #444;">% Complete</th>
+            <th style="padding: .5rem; border: 1px solid #444;">Actual Start</th>
+            <th style="padding: .5rem; border: 1px solid #444;">Actual Finish</th>
+          </tr>
+        </thead>
+        <tbody id="progress-list">
+          <!-- JavaScript will append <tr> rows here -->
+        </tbody>
+      </table>
+
+      <button
+        type="button"
+        id="submit-progress"
+        class="construction-tracker-btn primary w-full"
+        style="margin-top: 1rem;"
+      >
+        Analyze Progress (S-Curves)
+      </button>
+    </div>
+    <!-- ─────────────────────────────────────────────────────────────────────── -->
+
+
+    <!-- ─── S-CURVE & METRICS (hidden until progress is submitted) ────────────── -->
+    <div id="analysis-results" class="output-section mt-8 hidden">
+      <h2 style="color: #00a886; margin-bottom: .75rem;">Performance Analysis</h2>
+      <div
+        id="s-curve-chart"
+        class="construction-tracker-box mb-4"
+        style="min-height: 300px; background: #282828; border:1px solid #333; border-radius:8px; padding:1rem;"
+      ></div>
+      <div
+        id="metrics"
+        class="construction-tracker-box"
+        style="min-height: 120px; padding: 1rem; background: #282828; border:1px solid #333; border-radius:8px;"
+      ></div>
+    </div>
+    <!-- ─────────────────────────────────────────────────────────────────────── -->
+
+
+    <!-- ─── RESOURCE HISTOGRAMS (hidden until Gantt is generated) ─────────────── -->
+    <div id="resource-histograms" class="construction-tracker-output-section mt-8 hidden">
+      <h2 style="color: #00a886; margin-bottom: .75rem;">Resource Usage</h2>
+      <!-- Personnel (Employees) Histogram -->
+      <div
+        id="personnel-histogram"
+        class="construction-tracker-box mb-4"
+        style="min-height: 200px; background: #282828; border:1px solid #333; border-radius:8px; padding:1rem;"
+      ></div>
+      <!-- Equipment Histogram -->
+      <div
+        id="equipment-histogram"
+        class="construction-tracker-box"
+        style="min-height: 200px; background: #282828; border:1px solid #333; border-radius:8px; padding:1rem;"
+      ></div>
+    </div>
+    <!-- ─────────────────────────────────────────────────────────────────────── -->
+
+
+    <!-- ─── INSIGHT DASHBOARD (NEW) ────────────────────────────────────────── -->
+    <div id="insights" class="construction-tracker-output-section mt-8 hidden">
+      <h2 style="color: #00a886; margin-bottom: .75rem;">Project Insights</h2>
+      <div
+        id="insights-content"
+        class="construction-tracker-box"
+        style="padding: 1rem; background: #282828; border:1px solid #333; border-radius:8px; color: #f2f2f2;"
+      >
+        <!-- JS will inject “Over/Under budget” & “Ahead/Behind schedule” text here -->
+      </div>
+    </div>
+    <!-- ─────────────────────────────────────────────────────────────────────── -->
+
+
+    <!-- Full-screen Gantt Modal (unchanged) -->
+    <div id="gantt-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="fullscreen-gantt-chart" style="width:100%; height: calc(90vh - 60px);"></div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
-{% block extra_scripts %} {# Use extra_scripts block #}
-    <script>
-        // Task Input Management
-        let taskCount = 0;
-        const tasksContainer = document.getElementById('tasks-container');
-        const addTaskButton = document.getElementById('add-task');
-        let taskList = []; // Store tasks globally after Gantt generation
 
-        // Example data based on user's provided structure and construction flow
-        const exampleTasks = [
-            { "Task": "A", "Start": new Date().toISOString().split('T')[0], "End": new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 3, "immediatePredecessor": [], "crew": "C-1", "personnel": 5, "equipment": 1 },
-            { "Task": "B", "Start": new Date().toISOString().split('T')[0], "End": new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 4, "immediatePredecessor": [], "crew": "C-2", "personnel": 6, "equipment": 0 },
-            { "Task": "C", "Start": new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "End": new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 4, "immediatePredecessor": ["A"], "crew": "C-1", "personnel": 5, "equipment": 1 },
-            { "Task": "D", "Start": new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "End": new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 7, "immediatePredecessor": ["A"], "crew": "C-3", "personnel": 4, "equipment": 1 },
-            { "Task": "E", "Start": new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "End": new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 4, "immediatePredecessor": ["C"], "crew": "C-1", "personnel": 5, "equipment": 1 },
-            { "Task": "F", "Start": new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "End": new Date(Date.now() + 11 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 7, "immediatePredecessor": ["C"], "crew": "C-4", "personnel": 7, "equipment": 0 },
-            { "Task": "G", "Start": new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "End": new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 3, "immediatePredecessor": ["D", "E"], "crew": "C-5", "personnel": 3, "equipment": 0 },
-            { "Task": "H", "Start": new Date(Date.now() + 11 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "End": new Date(Date.now() + 17 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], "Duration": 7, "immediatePredecessor": ["F", "G"], "crew": "C-4", "personnel": 7, "equipment": 1 }
-        ];
+{% block extra_scripts %}
+  <script>
+    // ─── UTILITY FUNCTIONS ──────────────────────────────────────────────
+    function formatDate(dt) {
+      return dt.toISOString().split('T')[0];
+    }
+    function showElement(el) { el.classList.remove('hidden'); }
+    function hideElement(el) { el.classList.add('hidden'); }
 
-        // Function to add a task input row (updated to handle new example data structure)
-        function addTaskRow(task = {}) {
-            taskCount++;
-            const taskRow = document.createElement('div');
-            taskRow.id = `task-${taskCount}`;
+    // Spinner animation keyframes
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+    // ────────────────────────────────────────────────────────────────────
 
-            // Create the main container for the collapsible entry
-            const taskEntryContainer = document.createElement('div');
-            taskEntryContainer.className = 'task-entry-container'; // Use a new class for task entries
-            taskEntryContainer.id = `task-entry-${taskCount}`;
 
-            // Create the collapsible header
-            const entryHeader = document.createElement('div');
-            entryHeader.className = 'task-entry-header mobile-only'; // Visible on mobile, clickable
-            entryHeader.innerHTML = `
-                <label>${task.Task || task.activityName || 'New Task'}</label>
-                <span class="expand-icon">+</span>
-            `;
-            // Add event listener for toggling
-            entryHeader.addEventListener('click', () => toggleTaskEntry(taskEntryContainer));
-            taskEntryContainer.appendChild(entryHeader);
+    // ─── TASK INPUT MANAGEMENT (TABLE-BASED) ────────────────────────────
+    let taskCount = 0;
+    const tasksContainer = document.getElementById('tasks-container');
+    const addTaskBtn     = document.getElementById('add-task');
+    const exampleBtn     = document.getElementById('load-example-schedule');
 
-            // Create the collapsible content containing the input fields
-            const entryContent = document.createElement('div');
-            entryContent.className = 'task-entry-content task-row'; // Reuse task-row class for grid layout
-            // Initially hide content on mobile
-            if (window.innerWidth < 768) {
-                entryContent.classList.add('hidden-mobile');
-            }
+    // Eight example tasks (to populate on button click)
+    const exampleTasks = [
+      {
+        "Task": "A",
+        "Start": formatDate(new Date()),
+        "End":   formatDate(new Date(Date.now() + 2*24*3600*1000)),
+        "Duration": 3,
+        "immediatePredecessor": [],
+        "crew": "C-1",
+        "personnel": 5,
+        "equipment": 1
+      },
+      {
+        "Task": "B",
+        "Start": formatDate(new Date()),
+        "End":   formatDate(new Date(Date.now() + 3*24*3600*1000)),
+        "Duration": 4,
+        "immediatePredecessor": [],
+        "crew": "C-2",
+        "personnel": 6,
+        "equipment": "0"
+      },
+      {
+        "Task": "C",
+        "Start": formatDate(new Date(Date.now() + 2*24*3600*1000)),
+        "End":   formatDate(new Date(Date.now() + 5*24*3600*1000)),
+        "Duration": 4,
+        "immediatePredecessor": ["A"],
+        "crew": "C-1",
+        "personnel": 5,
+        "equipment": 1
+      },
+      {
+        "Task": "D",
+        "Start": formatDate(new Date(Date.now() + 2*24*3600*1000)),
+        "End":   formatDate(new Date(Date.now() + 8*24*3600*1000)),
+        "Duration": 7,
+        "immediatePredecessor": ["A"],
+        "crew": "C-3",
+        "personnel": 4,
+        "equipment": 1
+      },
+      {
+        "Task": "E",
+        "Start": formatDate(new Date(Date.now() + 5*24*3600*1000)),
+        "End":   formatDate(new Date(Date.now() + 8*24*3600*1000)),
+        "Duration": 4,
+        "immediatePredecessor": ["C"],
+        "crew": "C-1",
+        "personnel": 5,
+        "equipment": 1
+      },
+      {
+        "Task": "F",
+        "Start": formatDate(new Date(Date.now() + 5*24*3600*1000)),
+        "End":   formatDate(new Date(Date.now() + 11*24*3600*1000)),
+        "Duration": 7,
+        "immediatePredecessor": ["C"],
+        "crew": "C-4",
+        "personnel": 7,
+        "equipment": "0"
+      },
+      {
+        "Task": "G",
+        "Start": formatDate(new Date(Date.now() + 8*24*3600*1000)),
+        "End":   formatDate(new Date(Date.now() + 10*24*3600*1000)),
+        "Duration": 3,
+        "immediatePredecessor": ["D", "E"],
+        "crew": "C-5",
+        "personnel": 3,
+        "equipment": "0"
+      },
+      {
+        "Task": "H",
+        "Start": formatDate(new Date(Date.now() + 11*24*3600*1000)),
+        "End":   formatDate(new Date(Date.now() + 17*24*3600*1000)),
+        "Duration": 7,
+        "immediatePredecessor": ["F", "G"],
+        "crew": "C-4",
+        "personnel": 7,
+        "equipment": 1
+      }
+    ];
 
-            // Calculate duration if Start and End are provided in the example task
-            let duration = task.duration || '';
-            if (task.Start && task.End) {
-                const startDate = new Date(task.Start);
-                const endDate = new Date(task.End);
-                const timeDiff = endDate.getTime() - startDate.getTime();
-                duration = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 to include both start and end days
-            }
+    function addTaskRow(task = {}) {
+      taskCount++;
+      const tbody = document.getElementById('tasks-container');
 
-            entryContent.innerHTML = `
-                <label class="mobile-only">Task Name:</label>
-                <textarea placeholder="Task Name" class="task-name" required>${task.Task || task.activityName || ''}</textarea>
+      // Compute durationVal if Start & End exist
+      let durationVal = task.Duration || '';
+      if (task.Start && task.End) {
+        const s = new Date(task.Start), e = new Date(task.End);
+        const diffDays = Math.ceil((e - s) / (1000 * 3600 * 24)) + 1;
+        durationVal = diffDays;
+      }
 
-                <label class="mobile-only">Phase:</label>
-                <input type="text" placeholder="Phase" class="task-phase" value="${task.phase || ''}">
+      const tr = document.createElement('tr');
+      tr.id = `task-row-${taskCount}`;
+      tr.innerHTML = `
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="text"
+            class="task-name"
+            placeholder="Task Name"
+            value="${task.Task || ''}"
+            required
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="text"
+            class="task-phase"
+            placeholder="Phase"
+            value="${task.phase || ''}"
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="date"
+            class="task-start"
+            value="${task.Start || ''}"
+            required
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="number"
+            class="task-duration"
+            placeholder="Duration"
+            value="${durationVal}"
+            min="1"
+            required
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="text"
+            class="task-predecessors"
+            placeholder="Predecessors"
+            value="${(task.immediatePredecessor || []).join(', ')}"
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="text"
+            class="task-crew"
+            placeholder="Crew ID"
+            value="${task.crew || ''}"
+            required
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="number"
+            class="task-personnel"
+            placeholder="Personnel"
+            value="${task.personnel || ''}"
+            min="0"
+            required
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem;">
+          <input
+            type="number"
+            class="task-equipment"
+            placeholder="Equipment"
+            value="${task.equipment || ''}"
+            min="0"
+            required
+            style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+          />
+        </td>
+        <td style="border:1px solid #444; padding:.5rem; text-align:center;">
+          <button type="button" class="remove-task construction-tracker-btn secondary">Remove</button>
+        </td>
+      `;
 
-                <label class="mobile-only">Start Date:</label>
-                <input type="date" placeholder="Start Date" class="task-start" value="${task.Start || task.start || ''}" required>
+      // “Remove” logic
+      tr.querySelector('.remove-task').addEventListener('click', () => {
+        tbody.removeChild(tr);
+      });
 
-                <label class="mobile-only">Duration (days):</label>
-                <input type="number" placeholder="Duration (days)" class="task-duration" value="${duration}" min="1" required>
+      tbody.appendChild(tr);
+    }
 
-                <label class="mobile-only">Predecessors:</label>
-                <textarea placeholder="Predecessors (comma-separated task names)" class="task-predecessors">${(task.immediatePredecessor || []).join(', ')}</textarea>
+    // Add a brand-new (empty) task row
+    addTaskBtn.addEventListener('click', e => {
+      e.preventDefault();
+      addTaskRow();
+    });
 
-                <label class="mobile-only">Crew ID:</label>
-                <input type="text" placeholder="Crew ID" class="task-crew" value="${task.crew || ''}" required>
+    // “Insert Example Schedule” clears existing rows and populates the eight sample tasks
+    exampleBtn.addEventListener('click', e => {
+      e.preventDefault();
+      tasksContainer.innerHTML = '';
+      exampleTasks.forEach(t => addTaskRow(t));
+    });
 
-                <label class="mobile-only">Personnel Count:</label>
-                <input type="number" placeholder="Personnel Count" class="task-personnel" value="${task.personnel === undefined ? '' : task.personnel}" min="0" required>
+    // On page load: add one blank row so user can start typing immediately
+    document.addEventListener('DOMContentLoaded', () => {
+      addTaskRow();
+    });
+    // ────────────────────────────────────────────────────────────────────
 
-                <label class="mobile-only">Equipment Units:</label>
-                <input type="number" placeholder="Equipment Units" class="task-equipment" value="${task.equipment === undefined ? '' : task.equipment}" min="0" required>
 
-                <button type="button" class="remove-task btn secondary">Remove</button>
+    // ─── GENERATE GANTT BUTTON ──────────────────────────────────────────
+    document.getElementById('generate-gantt').addEventListener('click', () => {
+      const projectNameInput = document.getElementById('project_name');
+      const errorDiv         = document.getElementById('task-form-error-message');
+      errorDiv.textContent = '';
 
-                <!-- Save and Cancel buttons for the task entry -->
-                <button type="button" class="save-task btn primary hidden">Save</button>
-                <button type="button" class="cancel-task btn secondary hidden">Cancel</button>
-            `;
+      const projectName = projectNameInput.value.trim();
+      if (!projectName) {
+        errorDiv.textContent = 'Please enter a project name.';
+        projectNameInput.style.borderColor = 'red';
+        return;
+      }
+      projectNameInput.style.borderColor = '';
 
-            // Add the content to the container, and the container to the tasks list
-            taskEntryContainer.appendChild(entryContent);
-            tasksContainer.appendChild(taskEntryContainer);
+      // Collect all <tr> rows from the tasks table
+      const rowElements    = Array.from(document.querySelectorAll('#tasks-container tr'));
+      const collectedTasks = [];
+      let formIsValid = true;
 
-            // Add event listener to the remove button (now inside the content)
-            taskEntryContainer.querySelector('.remove-task').addEventListener('click', () => {
-                // Find the parent container (taskEntryContainer) and remove it
-                tasksContainer.removeChild(taskEntryContainer);
+      rowElements.forEach(tr => {
+        const nameEl      = tr.querySelector('.task-name');
+        const phaseEl     = tr.querySelector('.task-phase');
+        const startEl     = tr.querySelector('.task-start');
+        const durationEl  = tr.querySelector('.task-duration');
+        const predEl      = tr.querySelector('.task-predecessors');
+        const crewEl      = tr.querySelector('.task-crew');
+        const personnelEl = tr.querySelector('.task-personnel');
+        const equipmentEl = tr.querySelector('.task-equipment');
+
+        const name       = nameEl.value.trim();
+        const phase      = phaseEl.value.trim();
+        const start      = startEl.value;
+        const duration   = parseInt(durationEl.value, 10);
+        const preds      = predEl.value.trim().split(',').map(p => p.trim()).filter(p => p !== '');
+        const crew       = crewEl.value.trim();
+        const personnel  = parseInt(personnelEl.value, 10);
+        const equipment  = parseInt(equipmentEl.value, 10);
+
+        // Basic validation:
+        if (
+          !name ||
+          !start ||
+          isNaN(duration) || duration < 1 ||
+          !crew ||
+          isNaN(personnel) || personnel < 0 ||
+          isNaN(equipment) || equipment < 0
+        ) {
+          formIsValid = false;
+          nameEl.style.borderColor       = name       ? '' : 'red';
+          startEl.style.borderColor      = start      ? '' : 'red';
+          durationEl.style.borderColor   = (!isNaN(duration) && duration > 0) ? '' : 'red';
+          crewEl.style.borderColor       = crew       ? '' : 'red';
+          personnelEl.style.borderColor  = (!isNaN(personnel) && personnel >= 0) ? '' : 'red';
+          equipmentEl.style.borderColor  = (!isNaN(equipment) && equipment >= 0) ? '' : 'red';
+        } else {
+          // Clear any red border if it was previously highlighted
+          nameEl.style.borderColor       = '';
+          startEl.style.borderColor      = '';
+          durationEl.style.borderColor   = '';
+          crewEl.style.borderColor       = '';
+          personnelEl.style.borderColor  = '';
+          equipmentEl.style.borderColor  = '';
+
+          collectedTasks.push({
+            activityName: name,
+            phase:        phase,
+            start:        start,
+            duration:     duration,
+            immediatePredecessor: preds,
+            crew:         crew,
+            personnel:    personnel,
+            equipment:    equipment
+          });
+        }
+      });
+
+      if (!formIsValid) {
+        errorDiv.textContent = 'Please fill in all required task details correctly.';
+        return;
+      }
+      if (collectedTasks.length === 0) {
+        errorDiv.textContent = 'Please add at least one task before generating.';
+        return;
+      }
+
+      // Validate that all predecessors exist in the set of task names
+      const nameSet = new Set(collectedTasks.map(t => t.activityName));
+      for (let t of collectedTasks) {
+        for (let p of t.immediatePredecessor) {
+          if (!nameSet.has(p)) {
+            formIsValid = false;
+            errorDiv.textContent = `Predecessor "${p}" not found for task "${t.activityName}".`;
+            // Highlight that particular predecessor field:
+            rowElements.forEach(tr => {
+              if (tr.querySelector('.task-name').value.trim() === t.activityName) {
+                tr.querySelector('.task-predecessors').style.borderColor = 'red';
+              }
             });
+            break;
+          }
+        }
+        if (!formIsValid) break;
+      }
+      if (!formIsValid) return;
 
-            // Update the header label when task name changes (for initial name or after edit)
-            const nameInput = taskEntryContainer.querySelector('.task-name');
-            nameInput.addEventListener('input', () => {
-                entryHeader.querySelector('label').textContent = nameInput.value.trim() || 'New Task';
-            });
-            // Trigger input event once to set initial header text
-            nameInput.dispatchEvent(new Event('input'));
+      // All validation passed → show spinner & send to backend
+      const ganttDiv      = document.getElementById('gantt-chart');
+      const ganttResults  = document.getElementById('gantt-results');
+      const spinner       = document.getElementById('gantt-loading-spinner');
+
+      showElement(ganttResults);
+      ganttDiv.innerHTML = '';
+      ganttDiv.appendChild(spinner);
+      showElement(spinner);
+
+      // Hide progress/analysis until new Gantt arrives
+      document.getElementById('progress-section').classList.add('hidden');
+      document.getElementById('analysis-results').classList.add('hidden');
+      document.getElementById('resource-histograms').classList.add('hidden');
+      document.getElementById('insights').classList.add('hidden');
+
+      fetch('/construction-tracker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_name: projectName, tasks: collectedTasks })
+      })
+      .then(resp => resp.ok
+        ? resp.json()
+        : resp.json().then(d => { throw new Error(d.error || `HTTP ${resp.status}`); })
+      )
+      .then(result => {
+        hideElement(spinner);
+        ganttDiv.innerHTML = '';
+
+        if (result.gantt_data) {
+          const data   = result.gantt_data.data;
+          const layout = result.gantt_data.layout;
+
+          // Attach to dataset so modal can re-plot later
+          ganttDiv.dataset.plotData    = JSON.stringify(data);
+          ganttDiv.dataset.plotLayout  = JSON.stringify(layout);
+          ganttDiv.dataset.projectName = projectName;
+
+          // Adjust inline layout height based on number of tasks
+          const inlineLayout = JSON.parse(JSON.stringify(layout));
+          inlineLayout.height = Math.max(300, collectedTasks.length * 30);
+
+          // Plot inline Gantt
+          Plotly.newPlot('gantt-chart', data, inlineLayout, {
+            responsive: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['toImage','lasso2d','select2d'],
+            displaylogo: false
+          });
+
+          // ─── ALWAYS PLOT RESOURCE HISTOGRAMS ──────────────────────────
+          const personnelDiv = document.getElementById('personnel-histogram');
+          if (result.personnel_data) {
+            Plotly.newPlot(
+              'personnel-histogram',
+              result.personnel_data.data,
+              result.personnel_data.layout,
+              {responsive: true, displayModeBar: false}
+            );
+          } else {
+            personnelDiv.innerHTML = '<div style="color:red;text-align:center;">No personnel data received.</div>';
+          }
+
+          const equipmentDiv = document.getElementById('equipment-histogram');
+          if (result.equipment_data) {
+            Plotly.newPlot(
+              'equipment-histogram',
+              result.equipment_data.data,
+              result.equipment_data.layout,
+              {responsive: true, displayModeBar: false}
+            );
+          } else {
+            equipmentDiv.innerHTML = '<div style="color:red;text-align:center;">No equipment data received.</div>';
+          }
+
+          // Show the resource histograms section unconditionally
+          showElement(document.getElementById('resource-histograms'));
+
+          // Prepare progress section
+          window.taskList = collectedTasks; // store globally
+          populateProgressSection();
+        } else {
+          ganttDiv.innerHTML = '<div style="color:red;text-align:center;">No Gantt data received.</div>';
+        }
+      })
+      .catch(err => {
+        hideElement(spinner);
+        ganttDiv.innerHTML = `<div style="color:red;text-align:center;">Error: ${err.message}</div>`;
+      });
+    });
+    // ────────────────────────────────────────────────────────────────────
+
+
+    // ─── POPULATE “Report Progress & Costs” TABLE ────────────────────────
+    function populateProgressSection() {
+      const progressSection = document.getElementById('progress-section');
+      const tbody           = document.getElementById('progress-list');
+      tbody.innerHTML       = '';
+
+      if (window.taskList && window.taskList.length > 0) {
+        window.taskList.forEach((task, idx) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="border:1px solid #444; padding:.5rem;">${task.activityName}</td>
+            <td style="border:1px solid #444; padding:.5rem;">
+              <input
+                type="number"
+                class="budgeted-cost"
+                data-idx="${idx}"
+                min="0"
+                value="0"
+                style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+              />
+            </td>
+            <td style="border:1px solid #444; padding:.5rem;">
+              <input
+                type="number"
+                class="actual-cost"
+                data-idx="${idx}"
+                min="0"
+                value="0"
+                style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+              />
+            </td>
+            <td style="border:1px solid #444; padding:.5rem;">
+              <input
+                type="number"
+                class="progress-percent"
+                data-idx="${idx}"
+                min="0"
+                max="100"
+                value="0"
+                style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+              />
+            </td>
+            <td style="border:1px solid #444; padding:.5rem;">
+              <input
+                type="date"
+                class="actual-start"
+                data-idx="${idx}"
+                style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+              />
+            </td>
+            <td style="border:1px solid #444; padding:.5rem;">
+              <input
+                type="date"
+                class="actual-finish"
+                data-idx="${idx}"
+                style="width:100%; padding:.5rem; border:1px solid #444; border-radius:6px; background:#3e3e3e; color:#f2f2f2;"
+              />
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        showElement(progressSection);
+      } else {
+        hideElement(progressSection);
+      }
+    }
+    // ────────────────────────────────────────────────────────────────────
+
+
+    // ─── “INSERT EXAMPLE PROGRESS DATA” BUTTON HANDLER ────────────────────
+    document.getElementById('load-example-progress').addEventListener('click', () => {
+      if (!window.taskList || window.taskList.length === 0) {
+        alert('No tasks available yet. Generate a Gantt chart first.');
+        return;
+      }
+
+      // Find each <tr> in the progress table and fill with example data
+      const rows = Array.from(document.querySelectorAll('#progress-list tr'));
+      rows.forEach((tr, idx) => {
+        const task = window.taskList[idx];
+        if (!task) return;
+
+        // Build example “actual” dates from planned start/duration
+        const plannedStartDate = new Date(task.start);
+        const durationDays     = parseInt(task.duration, 10) || 1;
+        const actualStartDate  = plannedStartDate;
+        const halfwayDays      = Math.floor(durationDays / 2);
+        const exampleFinishDate = new Date(plannedStartDate.getTime() + halfwayDays * 24*3600*1000);
+
+        // Example numbers
+        const budgetedExample    = 1000 + idx * 100;
+        const actualCostExample  = Math.round(budgetedExample * 0.8);
+        const percentExample     = (durationDays > 1 ? 50 : 100);
+
+        // Set values in each input
+        const budgetEl    = tr.querySelector('.budgeted-cost');
+        const actualCostEl= tr.querySelector('.actual-cost');
+        const percentEl   = tr.querySelector('.progress-percent');
+        const startEl     = tr.querySelector('.actual-start');
+        const finishEl    = tr.querySelector('.actual-finish');
+
+        budgetEl.value       = budgetedExample;
+        actualCostEl.value   = actualCostExample;
+        percentEl.value      = percentExample;
+        startEl.value        = actualStartDate.toISOString().slice(0,10);
+        finishEl.value       = exampleFinishDate.toISOString().slice(0,10);
+
+        // Clear any previous error highlight
+        [budgetEl, actualCostEl, percentEl, startEl, finishEl].forEach(el => {
+          el.style.borderColor = '';
+        });
+      });
+    });
+    // ────────────────────────────────────────────────────────────────────
+
+
+    // ─── SUBMIT PROGRESS & PLOT S-CURVES ─────────────────────────────────
+    document.getElementById('submit-progress').addEventListener('click', () => {
+      const errorDiv   = document.getElementById('progress-form-error-message');
+      const sCurveDiv  = document.getElementById('s-curve-chart');
+      const metricsDiv = document.getElementById('metrics');
+      errorDiv.textContent = '';
+      sCurveDiv.innerHTML  = 'Analyzing…';
+      metricsDiv.innerHTML = 'Calculating…';
+
+      // Collect data from each <tr> in the progress table
+      const rows         = Array.from(document.querySelectorAll('#progress-list tr'));
+      const progressData = [];
+      let valid         = true;
+
+      rows.forEach((tr, idx) => {
+        const budgetEl     = tr.querySelector('.budgeted-cost');
+        const actualCostEl = tr.querySelector('.actual-cost');
+        const percentEl    = tr.querySelector('.progress-percent');
+        const startEl      = tr.querySelector('.actual-start');
+        const finishEl     = tr.querySelector('.actual-finish');
+
+        const budgeted    = parseFloat(budgetEl.value);
+        const actualCost  = parseFloat(actualCostEl.value);
+        const percent     = parseFloat(percentEl.value);
+        const actualStart = startEl.value;
+        const actualFinish= finishEl.value;
+
+        if (isNaN(budgeted) || budgeted < 0) {
+          valid = false;
+          budgetEl.style.borderColor = 'red';
+        } else {
+          budgetEl.style.borderColor = '';
         }
 
-        // Add initial task row on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            // addTaskRow(); // Comment out or remove to start with example data prompt
-           // checkAndShowModal();
-           // --- Auto-populate example data and generate chart on load ---
-           document.getElementById('tasks-container').innerHTML = '';
-           document.getElementById('project_name').value = 'Bridge Footings';
-           exampleTasks.forEach(task => addTaskRow(task));
-           // Automatically trigger Gantt chart generation
-           setTimeout(() => {
-               document.getElementById('generate-gantt').click();
-           }, 300); // Small delay to ensure DOM is ready
+        if (isNaN(actualCost) || actualCost < 0) {
+          valid = false;
+          actualCostEl.style.borderColor = 'red';
+        } else {
+          actualCostEl.style.borderColor = '';
+        }
+
+        if (isNaN(percent) || percent < 0 || percent > 100) {
+          valid = false;
+          percentEl.style.borderColor = 'red';
+        } else {
+          percentEl.style.borderColor = '';
+        }
+
+        if (!valid) return;
+
+        progressData.push({
+          taskIndex:       idx,
+          percentComplete: percent,
+          actualCost:      actualCost,
+          budgetedCost:    budgeted,
+          actualStart:     actualStart,
+          actualFinish:    actualFinish
         });
+      });
 
-       // Gantt chart functionality inspired by the work of UBC Group 14,
-       // which our founder Zander based this implementation off of.
+      if (!valid) {
+        errorDiv.textContent = 'Please correct the highlighted fields.';
+        return;
+      }
 
-       // Function to plot Gantt chart using ResizeObserver for better timing
-       function plotGanttChartWithObserver(containerId, plotData, plotLayout) {
-           const container = document.getElementById(containerId);
-           if (!container) {
-               console.error(`Gantt chart container with ID ${containerId} not found.`);
-               return;
-           }
-       
-           container.innerHTML = ''; // Clear existing content (like spinner)
-       
-           const observer = new ResizeObserver(entries => {
-               for (let entry of entries) {
-                   const { width, height } = entry.contentRect;
-                   console.log(`ResizeObserver: ${containerId} dimensions changed to width: ${width}, height: ${height}`);
-       
-                   if (width > 0 && height > 0) {
-                       console.log(`Sufficient size for ${containerId}, plotting now.`);
-                       observer.disconnect();
+      fetch('/construction-tracker-progress', {
+        method:  'POST',
+        headers: {'Content-Type':'application/json'},
+        body:    JSON.stringify({
+          tasks:       window.taskList,
+          progress:    progressData,
+          report_date: formatDate(new Date())
+        })
+      })
+      .then(resp => resp.ok 
+        ? resp.json() 
+        : resp.json().then(d => { throw new Error(d.error || `HTTP ${resp.status}`); })
+      )
+      .then(res => {
+        sCurveDiv.innerHTML  = '';
+        metricsDiv.innerHTML = '';
 
-                       // Apply layout adjustments based on screen width
-                       const isMobile = window.innerWidth < 768; // Define a breakpoint
-                       const finalLayout = JSON.parse(JSON.stringify(plotLayout)); // Deep copy the base layout
+        if (res.s_curve_data) {
+          Plotly.newPlot('s-curve-chart', res.s_curve_data.data, res.s_curve_data.layout, {responsive:true});
+        } else {
+          sCurveDiv.innerHTML = '<div style="color:red;text-align:center;">Failed to generate S-curve.</div>';
+        }
 
-                       if (isMobile) {
-                           finalLayout.margin = { l: 80, r: 10, t: 60, b: 60 }; // Reduced margins for mobile
-                           // Adjust font sizes for mobile if needed
-                           if (finalLayout.title && finalLayout.title.font) finalLayout.title.font.size = 14;
-                           if (finalLayout.xaxis && finalLayout.xaxis.title && finalLayout.xaxis.title.font) finalLayout.xaxis.title.font.size = 12;
-                           if (finalLayout.yaxis && finalLayout.yaxis.title && finalLayout.yaxis.title.font) finalLayout.yaxis.title.font.size = 12;
-                           if (finalLayout.yaxis && finalLayout.yaxis.tickfont) finalLayout.yaxis.tickfont.size = 10;
+        if (res.metrics) {
+          metricsDiv.innerHTML = `
+            <h4 style="color:#00ffcc; margin-bottom:.5rem;">Performance Metrics:</h4>
+            <p><strong>Schedule Variance (SV):</strong> ${res.metrics.schedule_variance != null ? '$'+res.metrics.schedule_variance.toLocaleString() : 'N/A'}</p>
+            <p><strong>Cost Variance (CV):</strong> ${res.metrics.cost_variance != null ? '$'+res.metrics.cost_variance.toLocaleString() : 'N/A'}</p>
+            <p><strong>Critical Path:</strong> ${res.metrics.critical_path || 'N/A'}</p>
+            ${res.metrics.planned_finish ? `<p><strong>Planned Finish:</strong> ${res.metrics.planned_finish}</p>` : ''}
+            <p><strong>SPI:</strong> ${res.metrics.schedule_performance_index}</p>
+            <p><strong>CPI:</strong> ${res.metrics.cost_performance_index}</p>
+          `;
+        } else {
+          metricsDiv.innerHTML = '<div style="color:red;">Failed to calculate metrics.</div>';
+        }
 
-                           // Adjust annotations for mobile if needed
-                           if (finalLayout.annotations) {
-                               finalLayout.annotations.forEach(annotation => {
-                                   if (annotation.font) annotation.font.size = (annotation.font.size || 12) * 0.8; // Reduce annotation font size
-                                   // Adjust vertical position slightly for mobile
-                                   if (annotation.y) annotation.y -= 0.01; // Shift up slightly
-                               });
-                           }
+        showElement(document.getElementById('analysis-results'));
 
-                       } else {
-                            // Use original or slightly adjusted desktop layout properties
-                            // The backend provides a good starting point, but we can refine here if needed
-                            finalLayout.margin = { l: 150, r: 20, t: 80, b: 80 }; // Desktop margins (can be same as backend or adjusted)
-                            // Ensure desktop font sizes are set if mobile adjusted them
-                             if (finalLayout.title && finalLayout.title.font) finalLayout.title.font.size = 24; // Restore desktop size
-                             if (finalLayout.xaxis && finalLayout.xaxis.title && finalLayout.xaxis.title.font) finalLayout.xaxis.title.font.size = 16;
-                             if (finalLayout.yaxis && finalLayout.yaxis.title && finalLayout.yaxis.title.font) finalLayout.yaxis.title.font.size = 16;
-                             if (finalLayout.yaxis && finalLayout.yaxis.tickfont) finalLayout.yaxis.tickfont.size = 12;
-                             // Restore annotation font sizes for desktop and adjust y position
-                             if (finalLayout.annotations) {
-                                 finalLayout.annotations.forEach(annotation => {
-                                     if (annotation.text === '[ Group 14 ]') { annotation.font.size = 16; annotation.y = 1.04; } // Adjusted y
-                                     if (annotation.text === 'CIVL 303 Preliminary Design Gantt Chart') { annotation.font.size = 18; annotation.y = 1.07; } // Adjusted y
-                                 });
-                            }
-                       }
+        // ─── NEW: POPULATE “PROJECT INSIGHTS” PANEL ────────────────────
+        const insightsDiv = document.getElementById('insights-content');
+        let insightsHtml = "";
+        if (res.metrics) {
+          const sv = res.metrics.schedule_variance;
+          const cv = res.metrics.cost_variance;
 
-                       // Ensure main title is centered after all adjustments
-                       if (finalLayout.title) {
-                           finalLayout.title.x = 0.5;
-                           finalLayout.title.xanchor = 'center';
-                       }
+          // Cost insights
+          if (cv < 0) {
+            insightsHtml += `<p style="color:#ff3333;">🔴 <strong>Over Budget:</strong> You are $${Math.abs(cv).toLocaleString()} over budget.</p>`;
+          } else {
+            insightsHtml += `<p style="color:#00ffcc;">🟢 <strong>Under Budget:</strong> You are $${cv.toLocaleString()} under budget.</p>`;
+          }
 
-                       setTimeout(() => {
-                           Plotly.newPlot(containerId, plotData, finalLayout, {
-                               responsive: true,
-                               displayModeBar: true,
-                               modeBarButtonsToRemove: ['toImage', 'lasso2d', 'select2d'],
-                               displaylogo: false
-                           }).then(() => {
-                               console.log(`${containerId} Plotly chart rendered successfully.`);
-                           }).catch(err => {
-                               console.error(`Error rendering Plotly chart in ${containerId}:`, err);
-                               container.innerHTML = '<div style="color: red; text-align: center;">Error rendering chart. Check console for details.</div>';
-                           });
-                       }, 10);
-                   } else {
-                        // If size is not sufficient, maybe show a placeholder or smaller spinner
-                        // Currently, it just waits. We could add a message here if needed.
-                   }
-               }
-           });
+          // Schedule insights
+          if (sv < 0) {
+            insightsHtml += `<p style="color:#ff3333;">🔴 <strong>Behind Schedule:</strong> You are $${Math.abs(sv).toLocaleString()} behind schedule.</p>`;
+          } else {
+            insightsHtml += `<p style="color:#00ffcc;">🟢 <strong>Ahead of Schedule:</strong> You are $${sv.toLocaleString()} ahead of schedule.</p>`;
+          }
 
-           observer.observe(container);
-       }
-       
-       function plotFullscreenGanttChart() {
-           const fullscreenGanttChartDiv = document.getElementById('fullscreen-gantt-chart');
-           const ganttChartDiv = document.getElementById('gantt-chart');
-           const plotDataString = ganttChartDiv.dataset.plotData;
-           const plotLayoutString = ganttChartDiv.dataset.plotLayout;
-            const projectName = ganttChartDiv.dataset.projectName || 'Project';
+          // Always show SPI & CPI
+          insightsHtml += `<p><strong>Schedule Performance Index (SPI):</strong> ${res.metrics.schedule_performance_index}</p>`;
+          insightsHtml += `<p><strong>Cost Performance Index (CPI):</strong> ${res.metrics.cost_performance_index}</p>`;
+        }
+        insightsDiv.innerHTML = insightsHtml;
+        showElement(document.getElementById('insights'));
+      })
+      .catch(err => {
+        sCurveDiv.innerHTML  = `<div style="color:red;text-align:center;">Error: ${err.message}</div>`;
+        metricsDiv.innerHTML = '';
+      });
+    });
+    // ────────────────────────────────────────────────────────────────────
 
-           if (plotDataString && plotLayoutString) {
-               try {
-                   const plotData = JSON.parse(plotDataString);
-                   const plotLayout = JSON.parse(plotLayoutString);
 
-                   // Apply layout adjustments specifically for the fullscreen modal, also considering mobile
-                   const isMobile = window.innerWidth < 768;
-                   const finalLayout = JSON.parse(JSON.stringify(plotLayout)); // Deep copy
+    // ─── FULLSCREEN GANTT MODAL (UNCHANGED) ─────────────────────────────
+    const ganttModal   = document.getElementById('gantt-modal');
+    const closeModalEl = document.querySelector('.close-modal');
 
-                   if (isMobile) {
-                       finalLayout.height = Math.max(400, taskList.length * 50); // Adjust height for mobile modal
-                       finalLayout.margin = { l: 80, r: 10, t: 80, b: 80 }; // Reduced margins for mobile modal
-                       // Adjust font sizes for mobile modal if needed
-                        if (finalLayout.title && finalLayout.title.font) finalLayout.title.font.size = 18; // Smaller title
-                        if (finalLayout.xaxis && finalLayout.xaxis.title && finalLayout.xaxis.title.font) finalLayout.xaxis.title.font.size = 14;
-                        if (finalLayout.yaxis && finalLayout.yaxis.title && finalLayout.yaxis.title.font) finalLayout.yaxis.title.font.size = 14;
-                        if (finalLayout.yaxis && finalLayout.yaxis.tickfont) finalLayout.yaxis.tickfont.size = 12;
+    function plotGanttFullscreen() {
+      const fullscreenDiv = document.getElementById('fullscreen-gantt-chart');
+      const ganttDiv      = document.getElementById('gantt-chart');
+      const plotDataStr   = ganttDiv.dataset.plotData;
+      const plotLayoutStr = ganttDiv.dataset.plotLayout;
+      const projectName   = ganttDiv.dataset.projectName || 'Project';
 
-                        // Adjust annotations for mobile modal
-                        if (finalLayout.annotations) {
-                           finalLayout.annotations.forEach(annotation => {
-                               // Adjust positioning and size for mobile modal
-                               if (annotation.text === '[ Group 14 ]') {
-                                   annotation.y = 1.02; // Adjusted position
-                                   annotation.font.size = 14;
-                               }
-                               if (annotation.text === 'CIVL 303 Preliminary Design Gantt Chart') {
-                                   annotation.y = 1.05; // Adjusted position
-                                   annotation.font.size = 16; // Adjust size
-                               }
-                               if (annotation.text === 'Critical Path Highlighted') {
-                                    annotation.y = 1.08; // Adjusted position
-                                    annotation.font.size = 12; // Adjust size
-                               }
-                           });
-                       }
+      if (!plotDataStr || !plotLayoutStr) {
+        fullscreenDiv.innerHTML = '<div style="color:orange;text-align:center;">Generate the chart first.</div>';
+        return;
+      }
+      try {
+        const data   = JSON.parse(plotDataStr);
+        const layout = JSON.parse(plotLayoutStr);
 
-                   } else {
-                        // Desktop fullscreen modal layout
-                       finalLayout.height = Math.max(600, taskList.length * 60);
-                       finalLayout.margin = { l: 250, r: 50, t: 120, b: 100 };
-                       finalLayout.title.font.size = 24;
-                       // Restore desktop annotation positions and sizes
-                       if (finalLayout.annotations) {
-                           finalLayout.annotations.forEach(annotation => {
-                               if (annotation.text === '[ Group 14 ]') {
-                                   annotation.y = 1.08; // Adjusted position
-                                   annotation.font.size = 12;
-                               }
-                               if (annotation.text === 'CIVL 303 Preliminary Design Gantt Chart') {
-                                   annotation.y = 1.12; // Adjusted position
-                                   annotation.font.size = 14;
-                               }
-                               if (annotation.text === 'Critical Path Highlighted') {
-                                    annotation.y = 1.04; // Adjusted position
-                                    annotation.font.size = 12;
-                                }
-                           });
-                       }
-                   }
+        // Adjust layout for fullscreen:
+        layout.height = Math.max(400, window.taskList.length * 40);
+        layout.margin = { l: 150, r: 20, t: 100, b: 80 };
+        layout.title = {
+          text: projectName + ' Gantt Chart',
+          font: { size: 24 },
+          x: 0.5, xanchor: 'center'
+        };
 
-                   finalLayout.title.text = projectName + ' Gantt Chart';
+        plotGanttChartWithObserver('fullscreen-gantt-chart', data, layout);
+      } catch (e) {
+        fullscreenDiv.innerHTML = `<div style="color:red;text-align:center;">Error plotting fullscreen: ${e.message}</div>`;
+      }
+    }
 
-                   // Ensure main title is centered after all adjustments
-                   if (finalLayout.title) {
-                       finalLayout.title.x = 0.5;
-                       finalLayout.title.xanchor = 'center';
-                   }
+    // Click on inline Gantt → open modal & plot
+    document.getElementById('gantt-chart').addEventListener('click', () => {
+      ganttModal.classList.add('active');
+      plotGanttFullscreen();
+    });
 
-                   plotGanttChartWithObserver('fullscreen-gantt-chart', plotData, finalLayout);
-               } catch (e) {
-                   console.error('Error parsing plot data or layout from dataset:', e);
-                   fullscreenGanttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Error displaying chart.</div>';
-               }
-           } else {
-               fullscreenGanttChartDiv.innerHTML = '<div style="color: orange; text-align: center;">Chart data not available. Please generate the chart first.</div>';
-           }
-       }
+    // Close modal
+    closeModalEl.onclick = () => {
+      ganttModal.classList.remove('active');
+      document.getElementById('fullscreen-gantt-chart').innerHTML = '';
+    };
+    window.onclick = e => {
+      if (e.target === ganttModal) {
+        ganttModal.classList.remove('active');
+        document.getElementById('fullscreen-gantt-chart').innerHTML = '';
+      }
+    };
+    // ────────────────────────────────────────────────────────────────────
 
-       // Generate Gantt Chart
-       document.getElementById('generate-gantt').addEventListener('click', function() {
-           const projectName = document.getElementById('project_name').value.trim();
-           const taskFormErrorMessageDiv = document.getElementById('task-form-error-message');
-           taskFormErrorMessageDiv.textContent = ''; // Clear previous errors on each click
-           console.log('Attempting to clear task form error message.'); // Add console log
 
-           if (!projectName) {
-               taskFormErrorMessageDiv.textContent = 'Please enter a project name.';
-               document.getElementById('project_name').style.borderColor = 'red';
-               return;
-           } else {
-               document.getElementById('project_name').style.borderColor = '';
-           }
+    // ─── PLOTTING HELPER (ResizeObserver) ─────────────────────────────────
+    function plotGanttChartWithObserver(containerId, plotData, plotLayout) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          const { width, height } = entry.contentRect;
+          if (width > 0 && height > 0) {
+            observer.disconnect();
+            // Center the title
+            if (plotLayout.title) {
+              plotLayout.title.x = 0.5;
+              plotLayout.title.xanchor = 'center';
+            }
 
-           const taskRows = tasksContainer.querySelectorAll('.task-entry-container');
-           taskList = [];
-
-           // First pass: Collect task names and basic data
-           const collectedTasks = [];
-           let formIsValid = true;
-
-           taskRows.forEach(row => {
-               const nameInput = row.querySelector('.task-name');
-               const startInput = row.querySelector('.task-start');
-               const durationInput = row.querySelector('.task-duration');
-               const predecessorsInput = row.querySelector('.task-predecessors');
-               const crewInput = row.querySelector('.task-crew');
-               const personnelInput = row.querySelector('.task-personnel');
-               const equipmentInput = row.querySelector('.task-equipment');
-
-               const name = nameInput.value.trim();
-               const start = startInput.value;
-               const duration = parseInt(durationInput.value);
-               const predecessorsString = predecessorsInput.value.trim();
-               const crew = crewInput.value.trim();
-               const personnel = parseInt(personnelInput.value);
-               const equipment = parseInt(equipmentInput.value);
-
-               const predecessors = predecessorsString
-                   .split(',')
-                   .map(p => p.trim())
-                   .filter(p => p !== '');
-
-               if (!name || !start || isNaN(duration) || duration <= 0 || !crew || isNaN(personnel) || personnel < 0 || isNaN(equipment) || equipment < 0) {
-                   formIsValid = false;
-                   nameInput.style.borderColor = name ? '' : 'red';
-                   startInput.style.borderColor = start ? '' : 'red';
-                   durationInput.style.borderColor = (!isNaN(duration) && duration > 0) ? '' : 'red';
-                   crewInput.style.borderColor = crew ? '' : 'red';
-                   personnelInput.style.borderColor = (!isNaN(personnel) && personnel >= 0) ? '' : 'red';
-                   equipmentInput.style.borderColor = (!isNaN(equipment) && equipment >= 0) ? '' : 'red';
-               } else {
-                   nameInput.style.borderColor = '';
-                   startInput.style.borderColor = '';
-                   durationInput.style.borderColor = '';
-                   crewInput.style.borderColor = '';
-                   personnelInput.style.borderColor = '';
-                   equipmentInput.style.borderColor = '';
-                   
-                   collectedTasks.push({
-                       activityName: name,
-                       start: start,
-                       duration: duration,
-                       immediatePredecessor: predecessors,
-                       crew: crew,
-                       personnel: personnel,
-                       equipment: equipment
-                   });
-               }
-           });
-
-           if (!formIsValid) {
-               taskFormErrorMessageDiv.textContent = 'Please fill in all required task details correctly. Click Generate once Error is Fixed';
-               return;
-           }
-
-           if (collectedTasks.length === 0) {
-               taskFormErrorMessageDiv.textContent = 'Please add at least one task.';
-               return;
-           }
-
-           // Create a map of task names for quick lookup
-           const taskNameMap = new Map();
-           collectedTasks.forEach(task => {
-                taskNameMap.set(task.activityName, true); // Use map for efficient lookup
-           });
-
-           // Validate predecessors against the collected task names map (Second Pass is no longer needed here)
-           let predecessorsAreValid = true;
-           collectedTasks.forEach(task => {
-                for (const pred of task.immediatePredecessor) {
-                   if (!taskNameMap.has(pred)) { // Check if the predecessor exists in the map
-                       predecessorsAreValid = false;
-                         taskFormErrorMessageDiv.textContent = `Predecessor "${pred}" not found in task list for task "${task.activityName}".`;
-                        // Optionally highlight the predecessor input causing the error
-                         // Find the row for this task and highlight its predecessor input
-                         taskRows.forEach(row => {
-                              if (row.querySelector('.task-name').value.trim() === task.activityName) {
-                                   row.querySelector('.task-predecessors').style.borderColor = 'red';
-                              }
-                         });
-
-                       return; // Exit the forEach loop early on error
-                   }
-               }
-                // Reset border if valid for this task's predecessors
-                 taskRows.forEach(row => {
-                     if (row.querySelector('.task-name').value.trim() === task.activityName) {
-                          row.querySelector('.task-predecessors').style.borderColor = '';
-                     }
+            // Adjust margins/font-sizes for mobile vs desktop:
+            const isMobile = window.innerWidth < 768;
+            const finalLayout = JSON.parse(JSON.stringify(plotLayout));
+            if (isMobile) {
+              finalLayout.margin = { l:80, r:10, t:60, b:60 };
+              if (finalLayout.title && finalLayout.title.font) finalLayout.title.font.size = 14;
+              if (finalLayout.xaxis && finalLayout.xaxis.title && finalLayout.xaxis.title.font) finalLayout.xaxis.title.font.size = 12;
+              if (finalLayout.yaxis && finalLayout.yaxis.title && finalLayout.yaxis.title.font) finalLayout.yaxis.title.font.size = 12;
+              if (finalLayout.yaxis && finalLayout.yaxis.tickfont) finalLayout.yaxis.tickfont.size = 10;
+              if (finalLayout.annotations) {
+                finalLayout.annotations.forEach(a => {
+                  if (a.font) a.font.size = (a.font.size || 12)*0.8;
+                  if (a.y) a.y -= 0.01;
                 });
-
-            });
-
-            // If any predecessor was invalid, stop here
-            if (!predecessorsAreValid) {
-                return;
-            }
-
-           taskList = collectedTasks; // Use the collected tasks array
-
-           const ganttChartDiv = document.getElementById('gantt-chart');
-           const ganttResultsDiv = document.getElementById('gantt-results');
-           const fullscreenGanttChartDiv = document.getElementById('fullscreen-gantt-chart');
-           const ganttModal = document.getElementById('gantt-modal');
-           const loadingSpinner = document.getElementById('gantt-loading-spinner'); // Get the spinner element
-
-           // Show the results section
-           ganttResultsDiv.classList.remove('hidden');
-
-           // Clear previous chart and show loading spinner
-           ganttChartDiv.innerHTML = ''; // Clear previous chart content
-           ganttChartDiv.appendChild(loadingSpinner); // Add spinner to the div
-           loadingSpinner.classList.remove('hidden'); // Show the spinner
-
-           // Hide the modal temporarily while fetching/plotting
-            ganttModal.classList.remove('active');
-
-           fetch('/construction-tracker', {
-               method: 'POST',
-               headers: {'Content-Type': 'application/json'},
-               body: JSON.stringify({project_name: projectName, tasks: taskList})
-           })
-           .then(response => response.ok ? response.json() : response.json().then(data => { throw new Error(data.error || `HTTP error! status: ${response.status}`); }))
-           .then(result => {
-               console.log('Gantt Backend response:', result);
-
-               // Hide the loading spinner
-               loadingSpinner.classList.add('hidden');
-                // Clear the ganttChartDiv again before plotting Plotly chart
-               ganttChartDiv.innerHTML = '';
-
-               if (result.gantt_data) {
-                   const plotData = result.gantt_data.data;
-                   const plotLayout = result.gantt_data.layout;
-
-                   // Store data and layout to be used when modal is opened
-                   ganttChartDiv.dataset.plotData = JSON.stringify(plotData);
-                   ganttChartDiv.dataset.plotLayout = JSON.stringify(plotLayout);
-                   ganttChartDiv.dataset.projectName = projectName; // Store project name for modal title
-
-                   // Create a copy of layout for the inline chart and adjust height/margins if needed
-                   const inlinePlotLayout = JSON.parse(JSON.stringify(plotLayout)); // Deep copy
-                   inlinePlotLayout.height = Math.max(300, taskList.length * 30); // Adjust height for inline view
-                   // Removed margin and annotation adjustments from here - handled by plotGanttChartWithObserver
-                   // inlinePlotLayout.margin = { l: 100, r: 20, t: 60, b: 60 };
-                   // inlinePlotLayout.title.text = projectName + ' Gantt Chart';
-                   // inlinePlotLayout.title.font.size = 18;
-                   // inlinePlotLayout.annotations = [...];
-
-                   // Plot the inline chart using the observer function
-                   plotGanttChartWithObserver('gantt-chart', plotData, inlinePlotLayout);
-
-                   // Plot resource histograms if available
-                   if (result.resource_data) {
-                       const resourceData = result.resource_data.data;
-                       const resourceLayout = result.resource_data.layout;
-                       
-                       // Show the resource histograms section
-                       document.getElementById('resource-histograms').classList.remove('hidden');
-                       
-                       // Plot personnel histogram
-                       Plotly.newPlot('personnel-histogram', [resourceData[0]], resourceLayout, {
-                           responsive: true,
-                           displayModeBar: true,
-                           modeBarButtonsToRemove: ['toImage', 'lasso2d', 'select2d'],
-                           displaylogo: false
-                       });
-                       
-                       // Plot equipment histogram
-                       Plotly.newPlot('equipment-histogram', [resourceData[1]], resourceLayout, {
-                           responsive: true,
-                           displayModeBar: true,
-                           modeBarButtonsToRemove: ['toImage', 'lasso2d', 'select2d'],
-                           displaylogo: false
-                       });
-                   }
-
-                   // Update taskList with processed data from backend for progress section
-                   taskList = result.processed_tasks; 
-                   populateProgressSection();
-
-               } else {
-                   ganttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Failed to generate Gantt chart. No data received.</div>'; // Also show error in inline div
-                   fullscreenGanttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Failed to generate Gantt chart. No data received.</div>';
-                   document.getElementById('progress-section').classList.add('hidden');
-                   document.getElementById('analysis-results').classList.add('hidden');
-                   document.getElementById('resource-histograms').classList.add('hidden');
-               }
-           })
-           .catch(error => {
-               console.error('Error generating Gantt:', error);
-                ganttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Error generating Gantt chart: ' + error.message + '</div>'; // Also show error in inline div
-               fullscreenGanttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Error generating Gantt chart: ' + error.message + '</div>';
-               document.getElementById('progress-section').classList.add('hidden');
-               document.getElementById('analysis-results').classList.add('hidden');
-               document.getElementById('resource-histograms').classList.add('hidden');
-           });
-       });
-
-       // Get the modal and the close button
-       const ganttModal = document.getElementById('gantt-modal');
-       const closeModalSpan = document.querySelector('.close-modal');
-
-       // Function to plot the fullscreen Gantt chart when the modal is opened
-       function plotFullscreenGanttChart() {
-           const fullscreenGanttChartDiv = document.getElementById('fullscreen-gantt-chart');
-           const ganttChartDiv = document.getElementById('gantt-chart');
-           const plotDataString = ganttChartDiv.dataset.plotData;
-           const plotLayoutString = ganttChartDiv.dataset.plotLayout;
-            const projectName = ganttChartDiv.dataset.projectName || 'Project';
-
-           if (plotDataString && plotLayoutString) {
-               try {
-                   const plotData = JSON.parse(plotDataString);
-                   const plotLayout = JSON.parse(plotLayoutString);
-
-                   // Adjust layout specifically for fullscreen modal if needed
-                    plotLayout.height = Math.max(400, taskList.length * 40); // Ensure appropriate height
-                    plotLayout.margin = { l: 150, r: 20, t: 100, b: 80 }; // Adjust margins for modal to make space for subtitles
-                    plotLayout.title.text = projectName + ' Gantt Chart'; // Use project name for title
-                    plotLayout.title.font.size = 24; // Original title size for modal
-
-                   // Add annotations for subtitles in fullscreen modal
-                    plotLayout.annotations = [
-                        {
-                            text: '[ Group 14 ]',
-                            xref: 'paper',
-                            yref: 'paper',
-                            x: 0.5,
-                            y: 1.03, // Position below the main title in modal
-                            showarrow: false,
-                            font: {
-                                size: 16,
-                                color: '#cccccc'
-                            },
-                            xanchor: 'center',
-                            yanchor: 'bottom'
-                        },
-                        {
-                             text: 'CIVL 303 Preliminary Design Gantt Chart',
-                             xref: 'paper',
-                             yref: 'paper',
-                             x: 0.5,
-                             y: 1.06, // Position further below the main title in modal
-                             showarrow: false,
-                             font: {
-                                 size: 18,
-                                color: '#cccccc'
-                            },
-                            xanchor: 'center',
-                            yanchor: 'bottom'
-                         }
-                    ];
-
-                   // Plot the fullscreen chart using the observer function
-                   plotGanttChartWithObserver('fullscreen-gantt-chart', plotData, plotLayout);
-
-               } catch (e) {
-                   console.error('Error parsing plot data or layout from dataset:', e);
-                   fullscreenGanttChartDiv.innerHTML = '<div style="color: red; text-align: center;">Error displaying chart.</div>';
-               }
-           } else {
-               fullscreenGanttChartDiv.innerHTML = '<div style="color: orange; text-align: center;">Chart data not available. Please generate the chart first.</div>';
-           }
-       }
-
-       // When the user clicks on the inline chart box, open the modal and plot the fullscreen chart
-       document.getElementById('gantt-chart').addEventListener('click', () => {
-           ganttModal.classList.add('active');
-           // plotFullscreenGanttChart(); // Plot when modal opens - handled by transitionend now
-       });
-
-       // When the modal is shown, plot the fullscreen chart using the observer function
-       // Removed transitionend listener as modal should open manually and fullscreen chart plots when modal is active
-       // ganttModal.addEventListener('transitionend', () => {
-       //     if(ganttModal.classList.contains('active')) {
-       //         plotFullscreenGanttChart();
-       //     }
-       // });
-
-       // When the user clicks on <span> (x), close the modal
-       closeModalSpan.onclick = function() {
-           ganttModal.classList.remove('active');
-            // Clear the fullscreen chart when closing the modal to prevent rendering issues on reopen
-           document.getElementById('fullscreen-gantt-chart').innerHTML = '';
-       }
-
-       // When the user clicks anywhere outside of the modal, close it
-       window.onclick = function(event) {
-           if (event.target == ganttModal) {
-               ganttModal.classList.remove('active');
-                // Clear the fullscreen chart when closing the modal
-               document.getElementById('fullscreen-gantt-chart').innerHTML = '';
-           }
-       }
-
-       // Function to populate the progress rating section
-       function populateProgressSection() {
-           const progressSectionDiv = document.getElementById('progress-section');
-           const progressListDiv = document.getElementById('progress-list');
-           progressListDiv.innerHTML = '';
-
-           if (taskList.length > 0) {
-               // Add headers for the progress table/list (visible on desktop)
-               const headerRow = document.createElement('div');
-               headerRow.className = 'progress-row header desktop-only'; // Add desktop-only class
-               headerRow.innerHTML = `
-                   <label>Task Name</label>
-                   <label>Budgeted Cost ($)</label>
-                   <label>Actual Cost ($)</label>
-                   <label>% Complete</label>
-                   <label>Actual Start</label>
-                   <label>Actual Finish</label>
-               `;
-               progressListDiv.appendChild(headerRow);
-
-               taskList.forEach((task, index) => {
-                   const progressRow = document.createElement('div');
-                   progressRow.className = 'progress-entry-container'; // Container for collapsible entry
-                   
-                   // Collapsible header (visible on mobile, clickable)
-                   const entryHeader = document.createElement('div');
-                   entryHeader.className = 'progress-entry-header mobile-only'; // Add mobile-only class
-                   entryHeader.innerHTML = `
-                       <label>${task.activityName}</label>
-                       <span class="expand-icon">+</span>
-                   `;
-                   entryHeader.addEventListener('click', () => toggleProgressEntry(progressRow, index));
-                   progressRow.appendChild(entryHeader);
-
-                   // Collapsible content (visible on desktop, hidden on mobile by default)
-                   const entryContent = document.createElement('div');
-                   entryContent.className = 'progress-entry-content'; // Content for inputs
-                   entryContent.innerHTML = `
-                       <div class="progress-row data-row">
-                           <label class="desktop-only">${task.activityName}</label> 
-                           <input type="number" placeholder="Budgeted Cost ($)" min="0" class="budgeted-cost" data-task-index="${index}" value="0">
-                           <input type="number" placeholder="Actual Cost ($)" min="0" class="actual-cost" data-task-index="${index}" value="0">
-                           <input type="number" placeholder="% Complete" min="0" max="100" class="progress-percent" data-task-index="${index}" value="0">
-                           <input type="date" placeholder="Actual Start Date" class="actual-start" data-task-index="${index}">
-                           <input type="date" placeholder="Actual Finish Date" class="actual-finish" data-task-index="${index}">
-                       </div>
-                   `;
-
-                   // Add Save and Cancel buttons for the progress entry
-                   entryContent.innerHTML += `
-                       <div class="progress-buttons">
-                           <button type="button" class="save-progress btn primary hidden">Save</button>
-                           <button type="button" class="cancel-progress btn secondary hidden">Cancel</button>
-                       </div>
-                   `;
-
-                    // Initially hide content on mobile
-                    if (window.innerWidth < 768) {
-                        entryContent.classList.add('hidden-mobile');
-                    }
-                   progressRow.appendChild(entryContent);
-
-                   progressListDiv.appendChild(progressRow);
-               });
-
-               progressSectionDiv.classList.remove('hidden');
-           } else {
-               progressSectionDiv.classList.add('hidden');
-           }
-       }
-
-       // Toggle collapse/expand for progress entry
-       let openEntryIndex = null; // Track the currently open entry
-
-       function toggleProgressEntry(entryContainer, index) {
-           const content = entryContainer.querySelector('.progress-entry-content');
-           const icon = entryContainer.querySelector('.expand-icon');
-           const saveButton = entryContainer.querySelector('.save-progress');
-           const cancelButton = entryContainer.querySelector('.cancel-progress');
-
-           // Use a general collapsed class instead of hidden-mobile
-           const isCollapsed = content.classList.contains('collapsed');
-
-           // Close the currently open entry if it's different
-           if (openEntryIndex !== null && openEntryIndex !== index) {
-               const openEntryContainer = progressListDiv.children[openEntryIndex];
-               if (openEntryContainer) {
-                   const openContent = openEntryContainer.querySelector('.progress-entry-content');
-                   const openIcon = openEntryContainer.querySelector('.expand-icon');
-                   const openSaveButton = openEntryContainer.querySelector('.save-progress');
-                   const openCancelButton = openEntryContainer.querySelector('.cancel-progress');
-
-                   openContent.classList.add('collapsed');
-                   openIcon.textContent = '+';
-                   openSaveButton.classList.add('hidden');
-                   openCancelButton.classList.add('hidden');
-               }
-           }
-
-           // Toggle the clicked entry
-           if (isCollapsed) {
-               content.classList.remove('collapsed');
-               icon.textContent = '-';
-               saveButton.classList.remove('hidden');
-               cancelButton.classList.remove('hidden');
-               openEntryIndex = index; // This entry is now open
-           } else {
-               content.classList.add('collapsed');
-               icon.textContent = '+';
-               saveButton.classList.add('hidden');
-               cancelButton.classList.add('hidden');
-               openEntryIndex = null; // No entry is open now
-           }
-       }
-
-       // --- New function to toggle collapse/expand for Task Entry ---
-       let openTaskEntryIndex = null; // Track the currently open task entry index
-
-       function toggleTaskEntry(entryContainer) {
-           const content = entryContainer.querySelector('.task-entry-content');
-           const icon = entryContainer.querySelector('.expand-icon');
-            const saveButton = entryContainer.querySelector('.save-task');
-             const cancelButton = entryContainer.querySelector('.cancel-task');
-
-            // Use a general collapsed class instead of hidden-mobile
-            const isCollapsed = content.classList.contains('collapsed');
-
-            // Close the currently open task entry if it's different
-            if (openTaskEntryIndex !== null && tasksContainer.children[openTaskEntryIndex] !== entryContainer) {
-                 // Find the previously open container using its index
-                const openEntryContainer = tasksContainer.children[openTaskEntryIndex];
-                if (openEntryContainer) {
-                    const openContent = openEntryContainer.querySelector('.task-entry-content');
-                    const openIcon = openEntryContainer.querySelector('.expand-icon');
-                    const openSaveButton = openEntryContainer.querySelector('.save-task');
-                    const openCancelButton = openEntryContainer.querySelector('.cancel-task');
-
-                    openContent.classList.add('collapsed');
-                    openIcon.textContent = '+';
-                     openSaveButton.classList.add('hidden');
-                     openCancelButton.classList.add('hidden');
-                }
-            }
-
-            // Toggle the clicked entry
-            if (isCollapsed) {
-                content.classList.remove('collapsed');
-                icon.textContent = '-';
-                 saveButton.classList.remove('hidden');
-                 cancelButton.classList.remove('hidden');
-                openTaskEntryIndex = Array.from(tasksContainer.children).indexOf(entryContainer); // Store the index of the currently opened container
-                 // Store initial values for cancel
-                 storeInitialValues(entryContainer);
+              }
             } else {
-                content.classList.add('collapsed');
-                icon.textContent = '+';
-                 saveButton.classList.add('hidden');
-                 cancelButton.classList.add('hidden');
-                openTaskEntryIndex = null; // No entry is open now
-                 // Revert values on collapse if not saved (implement cancel logic here or on cancel button click)
-                 revertValues(entryContainer);
-            }
-        }
-
-        // Function to store initial values of inputs in an entry
-        function storeInitialValues(entryContainer) {
-            const inputs = entryContainer.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.dataset.initialValue = input.value;
-            });
-        }
-
-        // Function to revert input values in an entry to their initial state
-        function revertValues(entryContainer) {
-            const inputs = entryContainer.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                 // Only revert if the input currently has an initial value stored
-                 if (input.dataset.initialValue !== undefined) {
-                    input.value = input.dataset.initialValue;
-                     // Clear the stored initial value after reverting
-                     delete input.dataset.initialValue;
-                 }
-            });
-        }
-
-        // Submit Progress and Generate S-Curves and Metrics
-        document.getElementById('submit-progress').addEventListener('click', () => {
-            const progressFormErrorMessageDiv = document.getElementById('progress-form-error-message');
-            progressFormErrorMessageDiv.textContent = '';
-
-            const progressData = [];
-            const progressRows = document.querySelectorAll('#progress-list .progress-row:not(.header)'); // Exclude header row
-            let progressFormIsValid = true;
-
-            progressRows.forEach(row => {
-                const percentInput = row.querySelector('.progress-percent');
-                const costInput = row.querySelector('.actual-cost');
-                const budgetedCostInput = row.querySelector('.budgeted-cost');
-                const actualStartInput = row.querySelector('.actual-start');
-                const actualFinishInput = row.querySelector('.actual-finish');
-
-                const index = parseInt(percentInput.dataset.taskIndex);
-                const percentComplete = parseFloat(percentInput.value);
-                const actualCost = parseFloat(costInput.value);
-                const budgetedCost = parseFloat(budgetedCostInput.value);
-                const actualStart = actualStartInput.value;
-                const actualFinish = actualFinishInput.value;
-
-                // Basic validation for new fields
-                if (isNaN(budgetedCost) || budgetedCost < 0) {
-                    progressFormIsValid = false;
-                    budgetedCostInput.style.borderColor = 'red';
-                } else {
-                    budgetedCostInput.style.borderColor = '';
-                }
-
-                // Add validation for date formats if necessary, though input type="date" helps
-                // You might want to add checks if dates are logically valid (e.g., start before finish)
-
-                if (isNaN(percentComplete) || percentComplete < 0 || percentComplete > 100 || isNaN(actualCost) || actualCost < 0) {
-                    progressFormIsValid = false;
-                    percentInput.style.borderColor = (!isNaN(percentComplete) && percentComplete >= 0 && percentComplete <= 100) ? '' : 'red';
-                    costInput.style.borderColor = (!isNaN(actualCost) && actualCost >= 0) ? '' : 'red';
-                } else {
-                    percentInput.style.borderColor = '';
-                    costInput.style.borderColor = '';
-                }
-
-                if (progressFormIsValid) { // Only push if the current row is valid so far
-                    progressData.push({
-                        taskIndex: index,
-                        percentComplete: percentComplete,
-                        actualCost: actualCost,
-                        budgetedCost: budgetedCost,
-                        actualStart: actualStart,
-                        actualFinish: actualFinish
-                    });
-                }
-            });
-
-            if (!progressFormIsValid) {
-                progressFormErrorMessageDiv.textContent = 'Please fill in all required progress details correctly.';
-                return;
+              finalLayout.margin = { l:150, r:20, t:80, b:80 };
+              if (finalLayout.title && finalLayout.title.font) finalLayout.title.font.size = 24;
+              if (finalLayout.xaxis && finalLayout.xaxis.title && finalLayout.xaxis.title.font) finalLayout.xaxis.title.font.size = 16;
+              if (finalLayout.yaxis && finalLayout.yaxis.title && finalLayout.yaxis.title.font) finalLayout.yaxis.title.font.size = 16;
+              if (finalLayout.yaxis && finalLayout.yaxis.tickfont) finalLayout.yaxis.tickfont.size = 12;
+              if (finalLayout.annotations) {
+                finalLayout.annotations.forEach(a => {
+                  if (a.text === '[ Group 14 ]') { a.font.size = 16; a.y = 1.04; }
+                  if (a.text === 'CIVL 303 Preliminary Design Gantt Chart') { a.font.size = 18; a.y = 1.07; }
+                });
+              }
             }
 
-            const sCurveChartDiv = document.getElementById('s-curve-chart');
-            const metricsDiv = document.getElementById('metrics');
-            const analysisResultsDiv = document.getElementById('analysis-results');
-            analysisResultsDiv.classList.remove('hidden');
-            sCurveChartDiv.innerHTML = 'Analyzing progress...';
-            metricsDiv.innerHTML = 'Calculating metrics...';
-
-            fetch('/construction-tracker-progress', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({tasks: taskList, progress: progressData, report_date: new Date().toISOString().split('T')[0]})
-            })
-            .then(response => response.ok ? response.json() : response.json().then(data => { throw new Error(data.error || `HTTP error! status: ${response.status}`); }))
-            .then(result => {
-                console.log('Analysis Backend response:', result);
-                sCurveChartDiv.innerHTML = '';
-                metricsDiv.innerHTML = '';
-                if (result.s_curve_data) {
-                    Plotly.newPlot('s-curve-chart', result.s_curve_data.data, result.s_curve_data.layout, { responsive: true });
-                } else {
-                    sCurveChartDiv.innerHTML = '<div style="color: red;">Failed to generate S-curves.</div>';
-                }
-                if (result.metrics) {
-                    metricsDiv.innerHTML = `
-                        <h4 class="font-semibold" style="color: #00ffcc;">Performance Metrics:</h4>
-                        <p><strong>Schedule Variance (SV):</strong> ${result.metrics.schedule_variance ? '$' + result.metrics.schedule_variance.toLocaleString() : 'N/A'}</p>
-                        <p><strong>Cost Variance (CV):</strong> ${result.metrics.cost_variance ? '$' + result.metrics.cost_variance.toLocaleString() : 'N/A'}</p>
-                        <p><strong>Critical Path:</strong> ${result.metrics.critical_path ? result.metrics.critical_path : 'N/A'}</p>
-                        ${result.metrics.critical_path_updates ? `<p style="color: yellow;"><strong>Critical Path Updates:</strong> ${result.metrics.critical_path_updates}</p>` : ''}
-                        ${result.metrics.analysis_notes ? `<p style="color: yellow;"><strong>Notes:</strong> ${result.metrics.analysis_notes}</p>` : ''}\
-                    `;
-                } else {
-                    metricsDiv.innerHTML = '<div style="color: red;">Failed to calculate metrics.</div>';
-                }
-            })
-            .catch(error => {
-                console.error('Error generating analysis:', error);
-                sCurveChartDiv.innerHTML = '<div style="color: red;">Error generating analysis: ' + error.message + '</div>';
-                metricsDiv.innerHTML = '';
-            });
-        });
-
-        // Helper to append a styled bot message
-        function appendBotMessage(html) {
-            const msgs = document.getElementById('chatbot-messages');
-            if (!msgs) return;
-
-            // Remove any existing modals first
-            const existingModals = msgs.querySelectorAll('.chat-modal');
-            existingModals.forEach(modal => modal.remove());
-
-            const div = document.createElement('div');
-            div.classList.add('message', 'bot-message', 'chat-modal');
-            div.innerHTML = html;
-            msgs.appendChild(div);
-            msgs.scrollTop = msgs.scrollHeight;
-        }
-
-        // Helper function to add a typing indicator
-        function addTypingIndicator() {
-            const msgs = document.getElementById('chatbot-messages');
-            if (!msgs) return;
-            removeTypingIndicator();
-
-            const typingDiv = document.createElement('div');
-            typingDiv.classList.add('message', 'bot-message', 'typing-indicator');
-            typingDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
-            msgs.appendChild(typingDiv);
-            msgs.scrollTop = msgs.scrollHeight;
-        }
-
-        // Helper function to remove the typing indicator
-        function removeTypingIndicator() {
-            const typingDiv = document.querySelector('.typing-indicator');
-            if (typingDiv) typingDiv.remove();
-        }
-
-        // Function to show the example modal
-        function showExampleModal() {
-            const chatWin = document.querySelector('.chatbot-window');
-            if (!chatWin) return;
-
-            // Show typing indicator and then modal
-            addTypingIndicator();
             setTimeout(() => {
-                removeTypingIndicator();
-                appendBotMessage(`
-                    <p><strong>President:</strong> Want me to drop in an example schedule to get you started?</p>
-                    <button id="modal-yes" class="btn primary">Yes, please!</button>
-                    <button id="modal-no" class="btn secondary">No, thanks</button>
-                `);
-            }, 1500);
+              Plotly.newPlot(containerId, plotData, finalLayout, {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['toImage','lasso2d','select2d'],
+                displaylogo: false
+              }).catch(err => {
+                container.innerHTML = `<div style="color:red;text-align:center;">Plot error: ${err.message}</div>`;
+              });
+            }, 10);
+          }
         }
-
-        // Function to check and show modal if needed
-        function checkAndShowModal() {
-            const chatWin = document.querySelector('.chatbot-window');
-            if (chatWin && chatWin.classList.contains('active')) {
-                showExampleModal();
-            }
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            addTaskRow(); // Add initial task row
-
-            // Set up observer for chat window state changes
-            const chatWin = document.querySelector('.chatbot-window');
-            if (chatWin) {
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach(mutation => {
-                        if (mutation.attributeName === 'class' && chatWin.classList.contains('active')) {
-                            showExampleModal();
-                        }
-                    });
-                });
-                observer.observe(chatWin, { attributes: true });
-
-                // Check if chat is already open
-                if (chatWin.classList.contains('active')) {
-                    showExampleModal();
-                }
-            }
-        });
-
-        // Handle Yes/No clicks on the modal prompt
-        document.body.addEventListener('click', e => {
-            if (e.target.id === 'modal-no') {
-                const modal = e.target.closest('.chat-modal');
-                if (modal) modal.remove();
-            }
-
-            if (e.target.id === 'modal-yes') {
-                const modal = e.target.closest('.chat-modal');
-                if (modal) modal.remove();
-
-                // Populate example data
-                document.getElementById('tasks-container').innerHTML = '';
-                document.getElementById('project_name').value = 'Bridge Footings';
-                exampleTasks.forEach(task => addTaskRow(task));
-
-                // Close the chat window
-                const chatWin = document.querySelector('.chatbot-window');
-                const chatToggle = document.querySelector('.chatbot-toggle');
-                if (chatWin) {
-                    chatWin.classList.remove('active');
-                    if (chatToggle) {
-                        chatToggle.classList.remove('chatbot-hidden');
-                        chatToggle.setAttribute('aria-expanded', 'false');
-                    }
-                }
-            }
-        });
-
-        // The actual chat sending/receiving, history loading/saving, and clear chat
-        // logic is expected to be defined in the main <script> block of base.html.
-        // We do NOT define or override appendMessage, sendMessage, saveChatHistory, or clearChat here.
-        // This script block only adds page-specific behavior (scroll-to-open, modal prompt, typing indicator helpers).
-
-        // Ensure all entries are collapsed by default on page load (for both mobile and desktop)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add a small delay to allow the DOM to be fully built by addTaskRow/populateProgressSection
-            setTimeout(() => {
-                // Collapse task entries
-                document.querySelectorAll('.task-row-inline').forEach(row => {
-                    row.querySelector('.task-display').classList.remove('hidden');
-                    row.querySelector('.task-edit').classList.add('hidden');
-                });
-                // Collapse progress entries
-                document.querySelectorAll('.progress-row-inline').forEach(row => {
-                    row.querySelector('.progress-display').classList.remove('hidden');
-                    row.querySelector('.progress-edit').classList.add('hidden');
-                });
-
-                // Ensure initial values are stored for all rows after they are added
-                document.querySelectorAll('.task-row-inline .task-edit').forEach(editDiv => {
-                    storeInitialValues(editDiv);
-                });
-                document.querySelectorAll('.progress-row-inline .progress-edit').forEach(editDiv => {
-                    storeInitialValues(editDiv);
-                });
-            }, 0);
-        });
-    </script>
-
-    <style>
-        /* Chat modal styling */
-        #chatbot-messages .chat-modal {
-            background: #1e1e1e;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: .5rem 0;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #chatbot-messages .chat-modal p {
-            margin-bottom: .5rem;
-            color: #f2f2f2;
-        }
-
-        #chatbot-messages .chat-modal .btn {
-            margin: .5rem .25rem;
-            font-size: 1rem;
-            padding: .5rem 1rem;
-        }
-
-        /* Typing indicator styles */
-        .typing-indicator span {
-            animation: blink 1s infinite;
-        }
-
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-    </style>
+      });
+      observer.observe(container);
+    }
+    // ────────────────────────────────────────────────────────────────────
+  </script>
 {% endblock %}

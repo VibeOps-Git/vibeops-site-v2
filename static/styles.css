@@ -1745,7 +1745,7 @@ body.nav-menu-active .chatbot-toggle {
 #gantt-chart, #fullscreen-gantt-chart {
     background-color: #1e1e1e;
     width: 100%;
-    min-height: 400px;
+    min-height: 600px;
     display: block !important;
     overflow: auto;
 }
@@ -1758,46 +1758,57 @@ body.nav-menu-active .chatbot-toggle {
     display: block;
 }
 
-#gantt-modal.active {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    overflow: auto;
+/* Make sure your site’s navbar/header sits above the modal */
+.navbar,
+header.site-header {
+  position: relative;
+  z-index: 3000; /* higher than the modal’s z-index */
 }
 
+/* Modal overlay: fixed, full‐screen, centered flex container */
 #gantt-modal {
-    display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;               /* hidden by default */
+  align-items: center;         /* vertical centering */
+  justify-content: center;     /* horizontal centering */
+  z-index: 2000;               /* sits below the navbar (z-index:3000) */
 }
 
-.modal-content {
-    position: relative;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #444;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 1200px;
-    background: #1e1e1e;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    /* Ensure content fits within max height on smaller screens */
-    max-height: 90vh;
-    overflow-y: auto;
+/* When “active” class is applied, show the modal as a flexbox */
+#gantt-modal.active {
+  display: flex;
 }
 
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 30px;
-    color: #f2f2f2;
-    cursor: pointer;
-    transition: color 0.3s ease;
+/* The “box” inside the overlay */
+#gantt-modal .modal-content {
+  position: relative;   /* so the close button can be absolute INSIDE this box */
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  z-index: 2100; /* sits above the overlay, but still under navbar if needed */
 }
+
+/* The “×” in top‐right of modal-content */
+#gantt-modal .close-modal {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 28px;
+  color: #ccc;
+  cursor: pointer;
+  z-index: 2200; /* above .modal-content’s other children */
+}
+
 
 .close-modal:hover,
 .close-modal:focus {
@@ -2393,4 +2404,995 @@ body.nav-menu-active .chatbot-toggle {
     font-size: 0.9rem;
     text-align: center;
   }
+  
+  /* construction_tracker.html (in the <style> block or static/css/construction_tracker.css) */
+
+/* Base styles for the page */
+.construction-tracker-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    background: #1e1e1e; /* Dark background for contrast */
+    color: #f2f2f2; /* Light text */
+}
+
+/* Headings */
+.construction-tracker-glitch {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00a886; /* VibeOps green */
+    text-align: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.construction-tracker-task-heading,
+.construction-tracker-progress-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #00a886;
+    margin-bottom: 1rem;
+}
+
+/* Text alignment */
+.construction-tracker-text-center {
+    text-align: center;
+    color: #cccccc;
+    margin-bottom: 2rem;
+}
+
+/* Input section */
+.construction-tracker-input-section {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Project name input */
+.construction-tracker-project-name {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #f2f2f2;
+    font-size: 1rem;
+}
+
+.construction-tracker-project-name:focus {
+    outline: none;
+    border-color: #00a886;
+}
+
+/* Task list */
+.construction-tracker-task-list {
+    margin-top: 1.5rem;
+}
+
+.task-entry-container {
+    background: #333;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.task-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+.task-entry-header label {
+    font-weight: 500;
+    color: #f2f2f2;
+}
+
+.expand-icon {
+    font-size: 1.25rem;
+    color: #00a886;
+}
+
+.task-entry-content {
+    padding-top: 1rem;
+}
+
+.task-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr) 100px; /* Adjust for new fields and buttons */
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.task-row label.mobile-only {
+    display: none; /* Hidden on desktop */
+}
+
+.task-row input,
+.task-row textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #f2f2f2;
+    font-size: 0.9rem;
+}
+
+.task-row input:focus,
+.task-row textarea:focus {
+    outline: none;
+    border-color: #00a886;
+}
+
+.task-row textarea {
+    resize: vertical;
+    min-height: 40px;
+}
+
+@media (max-width: 768px) {
+    .task-row {
+        grid-template-columns: 1fr;
+    }
+    .task-row label.mobile-only {
+        display: block;
+        font-weight: 500;
+        color: #cccccc;
+        margin-top: 0.5rem;
+    }
+    .task-entry-content.collapsed {
+        display: none;
+    }
+}
+
+/* Buttons */
+.construction-tracker-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.construction-tracker-btn.primary {
+    background: #00a886;
+    color: #fff;
+    border: none;
+}
+
+.construction-tracker-btn.primary:hover {
+    background: #008f70;
+    transform: translateY(-2px);
+}
+
+.construction-tracker-btn.secondary {
+    background: #444;
+    color: #f2f2f2;
+    border: 1px solid #666;
+}
+
+.construction-tracker-btn.secondary:hover {
+    background: #555;
+    transform: translateY(-2px);
+}
+
+.remove-task,
+.save-task,
+.cancel-task {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Error message */
+.construction-tracker-error-message {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* Output section */
+.construction-tracker-output-section {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.construction-tracker-box {
+    background: #333;
+    border-radius: 6px;
+    padding: 1rem;
+    min-height: 300px;
+}
+
+/* Progress section */
+.construction-tracker-progress-list {
+    margin-top: 1rem;
+}
+
+.progress-entry-container {
+    background: #333;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.progress-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+.progress-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.progress-row.header {
+    font-weight: 600;
+    color: #cccccc;
+}
+
+.progress-row label.desktop-only {
+    display: block;
+}
+
+.progress-row input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #f2f2f2;
+    font-size: 0.9rem;
+}
+
+.progress-row input:focus {
+    outline: none;
+    border-color: #00a886;
+}
+
+@media (max-width: 768px) {
+    .progress-row {
+        grid-template-columns: 1fr;
+    }
+    .progress-row label.desktop-only {
+        display: none;
+    }
+    .progress-entry-content.collapsed {
+        display: none;
+    }
+    .desktop-only {
+        display: none;
+    }
+}
+
+/* Loading spinner */
+.construction-tracker-loading-spinner {
+    border: 4px solid #444;
+    border-top: 4px solid #00a886;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    background: #2a2a2a;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 1200px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #f2f2f2;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #00a886;
+}
+
+/* Chat modal (from existing styles) */
+#chatbot-messages .chat-modal {
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#chatbot-messages .chat-modal p {
+    margin-bottom: 0.5rem;
+    color: #f2f2f2;
+}
+
+#chatbot-messages .chat-modal .btn {
+    margin: 0.5rem 0.25rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Typing indicator */
+.typing-indicator span {
+    animation: blink 1s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #444;
+    border-radius: 4px;
+  }
+  
+  .table-scroll table {
+    width: 100%;
+    min-width: 600px; /* adjust as needed */
+    border-collapse: collapse;
+  }
+
+@keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* ─── CSS VARIABLES FOR CONSISTENCY ───────────────────────────────────── */
+:root {
+    --neon-glow: #00ffcc;
+    --neon-glow-secondary: #00ccaa;
+    --dark-bg: #0e0e0e;
+    --card-bg: #1e1e1e;
+    --input-bg: #2e2e2e;
+    --border-dark: #444;
+    --text-muted: #ccc;
+    --error-red: #e74c3c;
+    --shadow-glow: 0 0 12px rgba(0, 255, 204, 0.4);
+    --transition-ease: all 0.3s ease;
+  }
+  
+  /* ─── INTERACTIVE TOOLTIPS ────────────────────────────────────────────── */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  }
+  
+  .tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--card-bg);
+    color: var(--neon-glow);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-dark);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-ease), transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-12px);
+  }
+  
+  /* ─── ANIMATED UNDERLINE FOR LINKS ────────────────────────────────────── */
+  .animated-link {
+    position: relative;
+    text-decoration: none;
+    color: var(--neon-glow);
+    padding-bottom: 2px;
+  }
+  
+  .animated-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: var(--neon-glow);
+    transition: width 0.3s ease;
+  }
+  
+  .animated-link:hover::after {
+    width: 100%;
+  }
+  
+  /* ─── GLOWING BORDER ANIMATION ────────────────────────────────────────── */
+  .glow-border {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(0, 255, 204, 0.3),
+      transparent
+    );
+    animation: rotate-glow 4s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes rotate-glow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* ─── NEON PULSE ANIMATION FOR BUTTONS ────────────────────────────────── */
+  .neon-pulse {
+    animation: neon-pulse 2s infinite;
+  }
+  
+  @keyframes neon-pulse {
+    0%, 100% { box-shadow: var(--shadow-glow); }
+    50% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.8); }
+  }
+  
+  /* ─── FADE-IN ANIMATION FOR ELEMENTS ──────────────────────────────────── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in 0.8s ease-out forwards;
+  }
+  
+  @keyframes fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ─── SLIDE-IN ANIMATION FOR SECTIONS ─────────────────────────────────── */
+  .slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slide-in 1s ease-out forwards;
+  }
+  
+  .slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slide-in 1s ease-out forwards;
+  }
+  
+  @keyframes slide-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* ─── HOVER SCALE EFFECT ──────────────────────────────────────────────── */
+  .scale-hover {
+    transition: var(--transition-ease);
+  }
+  
+  .scale-hover:hover {
+    transform: scale(1.05);
+  }
+  
+  /* ─── ACCESSIBILITY HIGHLIGHT ─────────────────────────────────────────── */
+  .focus-highlight {
+    outline: 3px solid var(--neon-glow);
+    outline-offset: 2px;
+    transition: outline 0.2s ease;
+  }
+  
+  :focus-visible.focus-highlight {
+    outline: 3px solid var(--neon-glow-secondary);
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* ─── DARK MODE TOGGLE BUTTON ─────────────────────────────────────────── */
+  .dark-mode-toggle {
+    background: var(--input-bg);
+    border: 1px solid var(--border-dark);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-ease);
+  }
+  
+  .dark-mode-toggle:hover {
+    background: var(--neon-glow);
+    color: var(--dark-bg);
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* ─── PROGRESS BAR FOR TASKS ──────────────────────────────────────────── */
+  .task-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--input-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+  
+  .task-progress-bar::after {
+    content: '';
+    display: block;
+    height: 100%;
+    background: var(--neon-glow);
+    width: var(--progress, 0%);
+    transition: width 0.5s ease;
+  }
+  
+  /* ─── COLLAPSIBLE SECTION TOGGLE ──────────────────────────────────────── */
+  .collapsible-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    color: var(--neon-glow);
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .collapsible-toggle::after {
+    content: '▶';
+    transition: transform 0.3s ease;
+  }
+  
+  .collapsible-toggle.active::after {
+    transform: rotate(90deg);
+  }
+  
+  .collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    background: var(--input-bg);
+    border-radius: 8px;
+    padding: 0 1rem;
+  }
+  
+  .collapsible-content.active {
+    max-height: 500px; /* Adjust based on content */
+    padding: 1rem;
+  }
+  
+  /* ─── ERROR NOTIFICATION ──────────────────────────────────────────────── */
+  .error-notification {
+    background: var(--error-red);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem auto;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slide-in 0.5s ease-out;
+  }
+  
+  .error-notification::before {
+    content: '⚠';
+    font-size: 1.2rem;
+  }
+  
+  /* ─── SUCCESS NOTIFICATION ────────────────────────────────────────────── */
+  .success-notification {
+    background: var(--neon-glow);
+    color: var(--dark-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem auto;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slide-in 0.5s ease-out;
+  }
+  
+  .success-notification::before {
+    content: '✓';
+    font-size: 1.2rem;
+  }
+  
+  /* ─── SKELETON LOADING ANIMATION ──────────────────────────────────────── */
+  .skeleton {
+    background: var(--input-bg);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    animation: skeleton-shine 1.5s infinite;
+  }
+  
+  @keyframes skeleton-shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+  
+  /* ─── PARALLAX BACKGROUND EFFECT ──────────────────────────────────────── */
+  .parallax-section {
+    position: relative;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .parallax-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .parallax-section > * {
+    z-index: 2;
+  }
+  
+  /* ─── GLASSMORPHISM EFFECT ────────────────────────────────────────────── */
+  .glass-effect {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* ─── CUSTOM CURSOR ───────────────────────────────────────────────────── */
+  .custom-cursor {
+    cursor: none;
+  }
+  
+  .custom-cursor::after {
+    content: '';
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--neon-glow);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    z-index: 9999;
+  }
+  
+  /* ─── RESPONSIVE UTILITIES ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .tooltip::after {
+      white-space: normal;
+      width: 200px;
+      font-size: 0.8rem;
+    }
+  
+    .collapsible-content.active {
+      max-height: 1000px; /* Allow more content on mobile */
+    }
+  
+    .error-notification,
+    .success-notification {
+      width: 90%;
+      font-size: 0.9rem;
+    }
+  
+    .parallax-section {
+      background-attachment: scroll; /* Disable parallax on mobile */
+    }
+  }
+  
+  /* ─── ACCESSIBILITY PREFERENCES ───────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .neon-pulse,
+    .fade-in,
+    .slide-in-left,
+    .slide-in-right,
+    .glow-border::before,
+    .skeleton::after {
+      animation: none;
+    }
+  
+    .scale-hover:hover {
+      transform: none;
+    }
+  }
+  
+  /* ─── HIGH CONTRAST MODE ──────────────────────────────────────────────── */
+  @media (prefers-contrast: high) {
+    .tooltip::after {
+      background: #000;
+      color: #fff;
+      border-color: #fff;
+    }
+  
+    .animated-link::after {
+      background: #fff;
+    }
+  
+    .task-progress-bar::after {
+      background: #fff;
+    }
+  }
+
+  /* ─── MOBILE RESPONSES FOR CONSTRUCTION TRACKER ────────────────────────── */
+@media (max-width: 768px) {
+    /* Make the entire input/output sections more compact */
+    .construction-tracker-input-section,
+    .construction-tracker-output-section {
+      padding: 1rem !important;
+      margin: 1rem 0 !important;
+    }
+  
+    /* Wrap tables so they can scroll horizontally */
+    /* ==============================
+    TABLE HEADERS (WRAPPING / SIZING)
+    ============================== */
+    #tasks-table th,
+    #progress-table th {
+        /* allow wrapping */
+        white-space: normal;                  
+        word-break: break-word;           
+        font-size: 0.9rem;                 /* slightly smaller on mobile */
+        padding: 0.5rem 0.75rem;           
+    }
+    
+    /* Give each header a base min-width so that table overflows instead of overlapping */
+    #tasks-table th:nth-child(1) { min-width: 80px; }  /* “Task Name” */
+    #tasks-table th:nth-child(2) { min-width: 50px; }  /* “Phase” */
+    #tasks-table th:nth-child(3) { min-width: 80px; }  /* “Start Date” */
+    #tasks-table th:nth-child(4) { min-width: 90px; }  /* “Duration” */
+    #tasks-table th:nth-child(5) { min-width: 100px; } /* “Predecessors” */
+    #tasks-table th:nth-child(6) { min-width: 70px; }  /* “Crew ID” */
+    #tasks-table th:nth-child(7) { min-width: 60px; }  /* “Personnel” */
+    #tasks-table th:nth-child(8) { min-width: 70px; }  /* “Equipment” */
+    #tasks-table th:nth-child(9) { min-width: 80px; }  /* “Actions” */
+   
+    #progress-table td,
+    #progress-table th {
+      white-space: nowrap;
+      padding: 0.5rem !important;
+      font-size: 0.9rem !important;
+    }
+  
+    /* Stack action buttons full-width */
+    .construction-tracker-btn.w-full {
+      width: 100% !important;
+      margin-bottom: 0.75rem !important;
+    }
+  
+    /* Reduce font-sizes on headings/text */
+    .construction-tracker-glitch {
+      font-size: 1.8rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+    .construction-tracker-task-heading,
+    .construction-tracker-progress-heading {
+      font-size: 1.2rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+    .construction-tracker-text-center {
+      font-size: 0.95rem !important;
+      margin-bottom: 1.25rem !important;
+    }
+  
+    /* Adjust Project Name input */
+    .construction-tracker-project-name {
+      font-size: 0.95rem !important;
+      padding: 0.5rem !important;
+    }
+  
+    /* Collapse Gantt and histograms containers to full width */
+    #gantt-chart,
+    #s-curve-chart,
+    #personnel-histogram,
+    #equipment-histogram {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 200px !important;
+    }
+  
+    /* Insights panel text smaller and padded */
+    #insights-content {
+      font-size: 0.95rem !important;
+      padding: 0.75rem !important;
+    }
+  
+    /* Ensure hidden class still applies */
+    .hidden {
+      display: none !important;
+    }
+  }
+  
+  /* ─── VERY NARROW SCREENS (PHONES) ───────────────────────────────────── */
+  @media (max-width: 480px) {
+    /* Further reduce padding on all tracker sections */
+    .construction-tracker-input-section,
+    .construction-tracker-output-section {
+      padding: 0.75rem !important;
+    }
+  
+    /* Shrink table cell padding/font further */
+    #tasks-table td,
+    #tasks-table th,
+    #progress-table td,
+    #progress-table th {
+      padding: 0.4rem !important;
+      font-size: 0.85rem !important;
+    }
+  
+    /* Buttons full-width and slightly smaller */
+    .construction-tracker-btn {
+      padding: 0.5rem 1rem !important;
+      font-size: 0.9rem !important;
+    }
+  
+    /* Reduce chart container heights */
+    #gantt-chart,
+    #s-curve-chart,
+    #personnel-histogram,
+    #equipment-histogram {
+      min-height: 150px !important;
+    }
+  
+    /* Insight panel text tweaks */
+    #insights-content p {
+      font-size: 0.9rem !important;
+    }
+  }
+  
+  @media (max-width: 768px) {
+      .table-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+          border: 1px solid #ddd;
+          border-radius: 4px;
+      }
+      
+      #tasks-table,
+      #progress-table {
+          min-width: 600px; /* ensures table doesn't compress too much */
+      }
+  }
+
+  @media (max-width: 768px) {
+      .construction-tracker-button-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+      }
+      
+      .construction-tracker-btn.w-full {
+          flex: 1;
+          margin-bottom: 0 !important; /* remove if using gap */
+      }
+  }
+
+  @media (max-width: 768px) {
+      /* Increase touch targets */
+      .construction-tracker-btn {
+          min-height: 44px; /* Apple's recommended touch target */
+          touch-action: manipulation; /* prevents zoom on double-tap */
+      }
+      
+      /* Better input field sizing */
+      input, select, textarea {
+          font-size: 16px !important; /* prevents zoom on iOS */
+      }
+  }
+
+  @media (max-width: 480px) {
+      /* Better spacing for very small screens */
+      .construction-tracker-input-section + .construction-tracker-output-section {
+          margin-top: 1.5rem !important;
+      }
+      
+      /* Card-like sections */
+      .construction-tracker-input-section,
+      .construction-tracker-output-section {
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+  }
+  
+  
+  
   

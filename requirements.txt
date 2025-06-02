@@ -8,8 +8,8 @@ httpx>=0.24.0
 plotly==5.15.0
 pandas
 datetime
-functools
 flask_cors
 python-dotenv 
 psycopg2-binary
 sqlalchemy 
+openai.error

@@ -1,476 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="VibeOps — AI-powered automation, engineering, and web solutions for startups, businesses, and niche projects." />
-    <meta name="keywords" content="AI automation, workflow optimization, web development, engineering consulting, CRM integration" />
-    <meta name="author" content="VibeOps" />
-    <title>VibeOps — {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <style>
-        /* Chat modal styling */
-        #chatbot-messages .chat-modal {
-            background: #1e1e1e;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: .5rem 0;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #chatbot-messages .chat-modal p {
-            margin-bottom: .5rem;
-            color: #f2f2f2;
-        }
-
-        #chatbot-messages .chat-modal .btn {
-            margin: .5rem .25rem;
-            font-size: 1rem;
-            padding: .5rem 1rem;
-        }
-
-        /* Typing indicator styles */
-        .typing-indicator span {
-            animation: blink 1s infinite;
-        }
-
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        .chat-modal {
-            background: #1e1e1e;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: .5rem 0;
-            text-align: left;
-            position: relative;
-          }
-          .chat-modal.hidden { display: none; }
-          .chat-modal h4 {
-            color: #00ffcc;
-            margin-top: 0;
-          }
-          .chat-modal ul { list-style: disc inside; color: #f2f2f2; }
-          .chat-modal p { color: #f2f2f2; }
-          .chat-modal .btn { margin-top: 1rem; }          
-    </style>
-    {% block extra_head %}{% endblock %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VibeOps — AI-powered automation, engineering, and web solutions…" />
+  <meta name="keywords" content="AI automation, workflow optimization, web development, engineering consulting, CRM integration" />
+  <meta name="author" content="VibeOps" />
+  <title>VibeOps — {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <header>
-        <nav class="nav-container">
-            <a href="/" class="nav-logo-link">
-                <img src="/static/Logo-wht.png" alt="VibeOps Logo" class="nav-logo">
-            </a>
-            <button class="nav-toggle" aria-label="Toggle navigation menu">
-                <span class="hamburger"></span>
-            </button>
-            <ul class="nav-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/team">Team</a></li>
-                <li><a href="/services">Services</a></li>
-                <li><a href="/pipeline-estimator">Pipeline Estimator</a></li>
-                <li><a href="/construction-tracker">Construction Tracker</a></li>
-                <li><a href="/struct-wise">Struct-wise Demo</a></li>
-                <li><a href="/booking" class="btn primary">Book Now</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav class="nav-container">
+      <a href="/" class="nav-logo-link">
+        <img src="/static/Logo-wht.png" alt="VibeOps Logo" class="nav-logo" />
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu">
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/team">Team</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/pipeline-estimator">Pipeline Estimator</a></li>
+        <li><a href="/construction-tracker">Construction Tracker</a></li>
+        <li><a href="/struct-wise">Struct-wise Demo</a></li>
+        <li><a href="/booking" class="btn primary">Book Now</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
-    <!-- Chatbot Widget -->
-    <div class="chatbot-container">
-        <button class="chatbot-toggle" aria-label="Toggle chatbot">
-            <span class="chatbot-icon">💬</span>
-        </button>
-        <div class="chatbot-window">
-            <div class="chatbot-header">
-                <h3>VibeOps: President</h3>
-                <button id="clear-chat-button" aria-label="Clear chat history">Clear Chat</button>
-                <button class="chatbot-close" aria-label="Close chatbot">✖</button>
-            </div>
-            <div class="chatbot-messages" id="chatbot-messages">
-                <div class="message bot-message">
-                    Hey there! I'm President, your VibeOps AI. What's the vibe today—need a workflow fix or a slick site?
-                </div>
-                <!-- Booking Modal -->
-                <div id="booking-modal" class="chat-modal hidden">
-                    <h4>Book a 30-Minute Consultation</h4>
-                    <p>Choose a time that works for you:</p>
-                    <a href="https://calendly.com/vibeops-info/30min" target="_blank" class="btn primary">Book Now</a>
-                    <button class="btn secondary close-chat-modal">Close</button>
-                </div>
-            </div>
-            <div class="chatbot-input">
-                <input type="text" id="chatbot-input" placeholder="Type your message..." aria-label="Chat input">
-                <button id="chatbot-send" aria-label="Send message">➤</button>
-            </div>
-        </div>
+  <footer class="footer" data-aos="fade-in" data-aos-duration="1000">
+    <img src="/static/Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100" />
+    <p class="footer-tagline" data-aos="fade-up" data-aos-delay="150"> [VibeOps.ca Engineering Consulting Collective {VECC}]</p>
+    <p class="footer-cta-text" data-aos="fade-up" data-aos-delay="180">Ready to build? Connect with our engineering and AI automation teams.</p>
+    <p data-aos="fade-up" data-aos-delay="200">© 2025 VibeOps — AI Automation & Web Solutions. All rights reserved.</p>
+    <div class="socials" data-aos="fade-up" data-aos-delay="300">
+      <a href="mailto:vibeops.info@gmail.com?subject=Let's%20Build:%20_________&body=Hey%20VibeOps%2C%0A%0AI've%20got%20a%20project%20in%20mind:%20[details].%20Let%20s%20connect!%0A%0A[Your%20Name]" class="footer-email-btn">Email Us!</a>
     </div>
+  </footer>
 
-    <footer class="footer" data-aos="fade-in" data-aos-duration="1000">
-        <img src="/static/Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100">
-        <p class="footer-tagline" data-aos="fade-up" data-aos-delay="150"> [VibeOps.ca Engineering Consulting Collective {VECC}]</p>
-        <p class="footer-cta-text" data-aos="fade-up" data-aos-delay="180">Ready to build? Connect with our engineering and AI automation teams.</p>
-        <p data-aos="fade-up" data-aos-delay="200">© 2025 VibeOps — AI Automation & Web Solutions. All rights reserved.</p>
-        <div class="socials" data-aos="fade-up" data-aos-delay="300">
-            <a href="mailto:vibeops.info@gmail.com?subject=Let's%20Build:%20_________&body=Hey%20VibeOps%2C%0A%0AI've%20got%20a%20project%20in%20mind:%20[details].%20Let%20s%20connect!%0A%0A[Your%20Name]" class="footer-email-btn">Email Us!</a>
-        </div>
-    </footer>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-back',
+      once: true,
+      mirror: false,
+      offset: 100
+    });
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out-back',
-            once: true,
-            mirror: false,
-            offset: 100
-        });
-
-        // Mobile nav toggle
-        const navToggle = document.querySelector('.nav-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        navToggle.addEventListener('click', () => {
-            const isActive = navToggle.classList.toggle('active'); // Toggle active class on the toggle button
-             navMenu.classList.toggle('active', isActive); // Also toggle active class on the nav menu to show/hide it
-             navToggle.setAttribute('aria-expanded', isActive);
-            document.body.classList.toggle('nav-menu-active', isActive); // Toggle class on body
-        });
-
-        // Chatbot functionality
-        const chatbotToggle = document.querySelector('.chatbot-toggle');
-        const chatbotWindow = document.querySelector('.chatbot-window');
-        const chatbotClose = document.querySelector('.chatbot-close');
-        const chatbotMessages = document.getElementById('chatbot-messages');
-        const chatbotInput = document.getElementById('chatbot-input');
-        const chatbotSend = document.getElementById('chatbot-send');
-        const clearChatButton = document.getElementById('clear-chat-button');
-
-        // Toggle chatbot window with morphing effect
-        chatbotToggle.addEventListener('click', () => {
-            if (!document.body.classList.contains('nav-menu-active')) { // Only toggle if nav is not active
-                const isActive = !chatbotWindow.classList.contains('active');
-            chatbotWindow.classList.toggle('active');
-                chatbotToggle.classList.toggle('chatbot-hidden', isActive);
-                chatbotToggle.setAttribute('aria-expanded', isActive);
-                sessionStorage.setItem('chatOpen', isActive);
-
-                 // Use a small delay to allow opacity transition before changing display
-                 if (isActive) {
-                     chatbotWindow.style.display = 'flex'; // Make visible when activating
-                 } else {
-                     // Delay hiding the window until after the fade out transition
-                      setTimeout(() => {
-                          chatbotWindow.style.display = 'none';
-                      }, 300); // Match this delay to your CSS transition duration
-                 }
-
-            }
-        });
-
-        chatbotClose.addEventListener('click', () => {
-            chatbotWindow.classList.remove('active');
-            chatbotToggle.classList.remove('chatbot-hidden');
-            chatbotToggle.setAttribute('aria-expanded', 'false');
-            sessionStorage.setItem('chatOpen', 'false');
-
-             // Delay hiding the window until after the fade out transition
-             setTimeout(() => {
-                 chatbotWindow.style.display = 'none';
-             }, 300); // Match this delay to your CSS transition duration
-        });
-
-        // Load chat history when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Use sessionStorage for history that clears on hard reload/tab close
-            const savedChatHistory = sessionStorage.getItem('chatHistory');
-            const chatbotMessages = document.getElementById('chatbot-messages');
-
-            if (savedChatHistory) {
-                // Load history from sessionStorage
-                const messages = JSON.parse(savedChatHistory);
-                chatbotMessages.innerHTML = ''; // Clear existing content
-                messages.forEach(msg => {
-                    appendMessage(msg.role, msg.content);
-                });
-                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to bottom
-            } else {
-                // If no history in sessionStorage, fetch from server (optional, or start fresh)
-                // Note: Server-side session might also have cleared on hard reload,
-                // so fetching might return empty history or an error.
-                fetch('/get-chat-history')
-                    .then(response => response.json())
-                    .then(messages => {
-                        // Clear initial welcome message if server sends history
-                        chatbotMessages.innerHTML = '';
-                        
-                        // Add all messages from history
-                        messages.forEach(msg => {
-                            appendMessage(msg.role, msg.content);
-                        });
-                        
-                        // Scroll to bottom and save initial history
-                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                        // Only save if there's actual history fetched, otherwise session storage remains empty and welcome message appears
-                        if (messages.length > 0) {
-                             saveChatHistory(); // Save the initial history fetched from server
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error loading chat history:', error);
-                        // If server fetch fails and no sessionStorage, ensure initial welcome message is there
-                         if (!sessionStorage.getItem('chatHistory') || chatbotMessages.children.length === 0) {
-                             // Add initial welcome message if starting fresh or fetch failed
-                              appendMessage('bot', "Hey there! I'm President, your VibeOps AI. How can I assist you today?");
-                         }
-                    });
-            }
-
-            // Check if chat was open in previous page using sessionStorage
-            const wasChatOpen = sessionStorage.getItem('chatOpen') === 'true';
-            if (wasChatOpen && !document.body.classList.contains('nav-menu-active')) {
-                chatbotWindow.classList.add('active');
-                chatbotToggle.classList.add('chatbot-hidden');
-                chatbotToggle.setAttribute('aria-expanded', 'true');
-                 chatbotWindow.style.display = 'flex'; // Ensure display is flex if opened on load
-            }
-        });
-
-        // Helper function to append messages
-        function appendMessage(role, content) {
-            const chatbotMessages = document.getElementById('chatbot-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.classList.add(role === 'user' ? 'user-message' : 'bot-message');
-            
-            // Check for button data in content
-            try {
-                const data = JSON.parse(content);
-                if (data.type === 'prompt' && data.text && data.buttons && Array.isArray(data.buttons)) {
-                    // This is a structured prompt message with buttons
-                    const textSpan = document.createElement('span');
-                    textSpan.textContent = data.text;
-                    messageDiv.appendChild(textSpan);
-
-                    const buttonContainer = document.createElement('div');
-                    buttonContainer.style.display = 'flex'; // Use flexbox for layout
-                    buttonContainer.style.gap = '10px'; // Space between buttons
-                    buttonContainer.style.marginTop = '10px'; // Space above buttons
-
-                    data.buttons.forEach(button => {
-                        const buttonElement = document.createElement('button');
-                        buttonElement.classList.add('btn'); // Add base button class
-                        // Add primary or secondary class based on button type, defaulting to secondary
-                         buttonElement.classList.add(button.type === 'primary' ? 'primary' : 'secondary');
-                        buttonElement.textContent = button.text;
-                        // Store the value to be sent on click
-                        buttonElement.dataset.value = button.value;
-
-                        buttonElement.addEventListener('click', function() {
-                            // Handle button click - send the value as a user message
-                             const valueToSend = this.dataset.value;
-                            chatbotInput.value = valueToSend; // Populate input with the value
-                            sendMessage(); // Send the message
-                        });
-
-                        buttonContainer.appendChild(buttonElement);
-                    });
-                    messageDiv.appendChild(buttonContainer);
-
-                } else {
-                    // Regular text message
-                    messageDiv.textContent = content;
-                }
-            } catch (e) {
-                // Content is not JSON or not a prompt message, treat as plain text
-                messageDiv.textContent = content;
-            }
-
-            chatbotMessages.appendChild(messageDiv);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to bottom after adding message
-            // Save history after adding any message
-            saveChatHistory();
-        }
-
-        // Helper function to save current chat history to sessionStorage
-        function saveChatHistory() {
-            const chatbotMessages = document.getElementById('chatbot-messages');
-            const messages = [];
-            chatbotMessages.querySelectorAll('.message').forEach(msgDiv => {
-                const role = msgDiv.classList.contains('user-message') ? 'user' : 'bot';
-                 let content;
-                 // If the message has a button container, try to reconstruct the original structured data
-                 // Note: This part might need refinement depending on how structured prompts are sent from the server.
-                 // For simplicity and ensuring basic history persistence, we are saving the visible text content for now.
-                 // A more robust solution might involve storing the original JSON if available.
-                 content = msgDiv.textContent; // Save the text content visible
-                messages.push({ role, content });
-            });
-            sessionStorage.setItem('chatHistory', JSON.stringify(messages));
-        }
-
-        // Function to clear chat history and reset UI
-        function clearChat() {
-            sessionStorage.removeItem('chatHistory');
-            sessionStorage.removeItem('thread_id'); // Clear thread_id too
-            chatbotMessages.innerHTML = ''; // Clear visible messages
-
-            // Add the initial welcome message after clearing
-            appendMessage('bot', "Hey there! I'm President, your VibeOps AI. How can I assist you today?");
-
-            console.log("Chat history and thread ID cleared.");
-        }
-
-        // Add event listener to the clear chat button
-        clearChatButton.addEventListener('click', clearChat);
-
-        // Update the sendMessage function to store messages in the UI *and* save history
-        // Updated sendMessage function
-        function sendMessage() {
-            const message = chatbotInput.value.trim();
-            if (!message) return;
-
-            appendMessage('user', message);
-            chatbotInput.value = '';
-
-            const loadingMessage = document.createElement('div');
-            loadingMessage.classList.add('message', 'bot-message');
-            loadingMessage.textContent = 'President is thinking...';
-            chatbotMessages.appendChild(loadingMessage);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-
-            const payload = { message };
-            const threadId = sessionStorage.getItem('thread_id');
-            if (threadId) payload.thread_id = threadId;
-
-            fetch('/chatbot', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            })
-            .then(response => response.json().then(data => ({ status: response.status, data })))
-            .then(({ status, data }) => {
-                loadingMessage.remove();
-
-                if (status === 200) {
-                    let responseContent = data.response || "Something broke. Let's try that again.";
-                    appendMessage('bot', responseContent);
-
-                    // Check for booking modal trigger
-                    if (data.show_booking_modal) {
-                        const bookingModal = document.getElementById('booking-modal');
-                        if (bookingModal) {
-                            const clonedModal = bookingModal.cloneNode(true);
-                            clonedModal.classList.remove('hidden');
-                            clonedModal.id = `booking-modal-${Date.now()}`; // Unique ID to avoid conflicts
-                            chatbotMessages.appendChild(clonedModal);
-                            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                        }
-                    }
-
-                    if (data.thread_id) sessionStorage.setItem('thread_id', data.thread_id);
-                    else sessionStorage.removeItem('thread_id');
-                } else {
-                    appendMessage('bot', data.error || `HTTP error! status: ${status}`);
-                }
-            })
-            .catch(error => {
-                loadingMessage.remove();
-                appendMessage('bot', error.message || 'Oops, something broke. Try again?');
-            });
-        }
-
-        function showBookingModal() {
-            const bookingModal = document.getElementById('booking-modal');
-            bookingModal.classList.remove('hidden');
-        }
-        function styleCalendlyLink() {
-            const messageContainer = document.getElementById('chatbot-messages');
-            const bookingLinkRegex = /<a\s+href="https:\/\/calendly\.com\/vibeops-info\/30min"\s+target="_blank"\s+class="btn primary">Book Now<\/a>/;
-        
-            // Check if the booking modal is present in the messages
-            const messages = messageContainer.innerHTML;
-            if (bookingLinkRegex.test(messages)) {
-                const link = messageContainer.querySelector('#booking-modal .btn.primary');
-                if (link) {
-                    link.style.backgroundColor = '#00ffcc';
-                    link.style.color = '#1e1e1e';
-                    link.style.padding = '10px 20px';
-                    link.style.borderRadius = '5px';
-                    link.style.textDecoration = 'none';
-                    link.style.fontWeight = 'bold';
-                    link.style.transition = 'background-color 0.3s ease';
-        
-                    link.addEventListener('mouseover', () => {
-                        link.style.backgroundColor = '#00ccaa';
-                    });
-                    link.addEventListener('mouseout', () => {
-                        link.style.backgroundColor = '#00ffcc';
-                    });
-                }
-            }
-        }
-
-        chatbotSend.addEventListener('click', sendMessage);
-        chatbotInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-        // after appendMessage(), check for team/booking triggers
-        const CHAT_TRIGGERS = [
-        { pattern: /who'?s on the team\?/i, modalId: 'team-modal' },
-        { pattern: /wanna book a meeting/i,   modalId: 'booking-modal' }
-        ];
-
-        function showChatModal(modalId) {
-        // hide any other
-        document.querySelectorAll('.chat-modal').forEach(m => m.classList.add('hidden'));
-        const modal = document.getElementById(modalId);
-        if (modal) modal.classList.remove('hidden');
-        }
-
-        // intercept bot response to pop-up modals
-        const originalAppendMessage = appendMessage;
-        appendMessage = (role, content) => {
-        originalAppendMessage(role, content);
-        if (role === 'bot') {
-        for (let {pattern, modalId} of CHAT_TRIGGERS) {
-            if (pattern.test(content)) {
-            // slight delay so the modal appears after the message
-            setTimeout(() => showChatModal(modalId), 300);
-            break;
-            }
-        }
-        }
-        };
-
-        // close buttons inside our modals
-        document.body.addEventListener('click', e => {
-        if (e.target.classList.contains('close-chat-modal')) {
-        e.target.closest('.chat-modal').classList.add('hidden');
-        }
-        });
-    </script>
-    {% block extra_scripts %}{% endblock %}
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    navToggle.addEventListener('click', () => {
+      const isActive = navToggle.classList.toggle('active');
+      navMenu.classList.toggle('active', isActive);
+      navToggle.setAttribute('aria-expanded', isActive);
+      document.body.classList.toggle('nav-menu-active', isActive);
+    });
+  </script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

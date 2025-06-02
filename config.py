@@ -1,15 +1,15 @@
 # config.py
 import os
-print("Using SUPABASE_KEY prefix:", os.getenv("SUPABASE_KEY", "")[:8])
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-load_dotenv()  # ← at the very top
+load_dotenv()
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")  # ← service role only
+SUPABASE_URL               = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE_KEY  = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY")
+if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+    raise RuntimeError("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in environment")
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+# Use the service role key for back‐end operations (inserts, updates, deletes, etc.)
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
