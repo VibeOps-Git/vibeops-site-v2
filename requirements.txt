@@ -1,15 +1,6 @@
 Flask==2.3.2
 python-dotenv==1.1.0
-Authlib==1.2.0
 pandas==2.2.2
 supabase==2.15.2
-openai>=1.16.0
 httpx>=0.24.0
 plotly==5.15.0
-pandas
-datetime
-flask_cors
-python-dotenv 
-psycopg2-binary
-sqlalchemy 
-openai.error
