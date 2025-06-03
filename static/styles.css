@@ -118,15 +118,18 @@ header {
     text-decoration: none;
     font-weight: 700;
     transition: color 0.3s ease;
+    background: #000000;
+    box-shadow: 0 0 20px #000000;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .nav-menu a:hover {
     color: #00ffcc;
     background: #000000;
-    box-shadow: 0 0 16px rgba(0, 255, 204, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
     border-radius: 10px;
     padding: 10px;
-    gap: 20px;
 }
 
 /* Style for navigation buttons */
