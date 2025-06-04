@@ -96,7 +96,7 @@ site-v1/
 1. **Clone repository and initialize project**
    ```bash
    git clone https://github.com/ZanderDent/vibeops-testing.git
-   cd vibeops-testing/site-v1
+   cd vibeops-testing
    ```
 
 2. **Initialize virtual environment**
