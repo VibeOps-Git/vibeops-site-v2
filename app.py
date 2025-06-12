@@ -30,7 +30,6 @@ def pipeline_estimator():
     return render_template('pipeline_estimator.html')
 
 
-# ← Only one decorator for /construction-tracker, handling BOTH GET and POST:
 @app.route('/construction-tracker', methods=['GET', 'POST'])
 def construction_tracker():
     if request.method == 'POST':
@@ -38,7 +37,6 @@ def construction_tracker():
     return render_template('construction_tracker.html')
 
 
-# This is the single POST-only endpoint for "Analyze Progress (S-Curves)"
 @app.route('/construction-tracker-progress', methods=['POST'])
 def construction_tracker_progress():
     return handle_progress_post()
@@ -82,5 +80,7 @@ def team():
 
 
 if __name__ == '__main__':
+    # Use PORT env variable for Railway, default to 5006 locally
     port = int(os.environ.get('PORT', 5006))
-    app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_DEBUG', 'False').lower() == 'true')
+    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(host='0.0.0.0', port=port, debug=debug)
