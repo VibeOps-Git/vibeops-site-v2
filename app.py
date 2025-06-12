@@ -38,7 +38,7 @@ def construction_tracker():
     return render_template('construction_tracker.html')
 
 
-# This is the single POST-only endpoint for “Analyze Progress (S-Curves)”
+# This is the single POST-only endpoint for "Analyze Progress (S-Curves)"
 @app.route('/construction-tracker-progress', methods=['POST'])
 def construction_tracker_progress():
     return handle_progress_post()
@@ -82,4 +82,5 @@ def team():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5006)
+    port = int(os.environ.get('PORT', 5006))
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_DEBUG', 'False').lower() == 'true')
