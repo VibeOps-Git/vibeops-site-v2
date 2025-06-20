@@ -20,18 +20,12 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
 
-# Helper function to check if user is admin
-def is_admin(user_email):
-    return user_email and user_email.endswith('@vibeops.ca')
-
 # Add context processor to make auth status available in templates
 @app.context_processor
 def inject_auth_status():
-    current_user = get_current_user()
     return {
         'is_authenticated': is_authenticated(),
-        'current_user': current_user,
-        'is_admin': is_admin(current_user.get('email') if current_user else None)
+        'current_user': get_current_user()
     }
 
 @app.route('/')
@@ -78,33 +72,30 @@ def reviews():
             flash('You must be logged in to submit a review', 'error')
             return redirect(url_for('login', next=url_for('reviews')))
         
-        rating = request.form.get('rating')
+        reviewer_name = request.form.get('reviewer_name')
         review_text = request.form.get('review_text')
         
-        if not rating or not review_text:
+        if not reviewer_name or not review_text:
             flash('Please fill in all required fields', 'error')
             return render_template('reviews.html')
         
         try:
-            # Store review submission in moderation queue
+            # Store review directly in public reviews table
             from config import supabase
-            result = supabase.table('review_submissions').insert({
-                'user_id': session.get('user_id'),
-                'user_email': session.get('user_email'),
-                'rating': int(rating),
-                'review_text': review_text,
-                'status': 'pending'
+            result = supabase.table('reviews').insert({
+                'reviewer_name': reviewer_name,
+                'review_text': review_text
             }).execute()
             
-            flash('Thank you! Your review has been submitted and is pending approval.', 'success')
+            flash('Review added successfully!', 'success')
             return redirect(url_for('reviews'))
             
         except Exception as e:
-            flash('Error submitting review. Please try again.', 'error')
-            logger.error(f"Error submitting review: {e}")
+            flash('Error adding review. Please try again.', 'error')
+            logger.error(f"Error adding review: {e}")
             return render_template('reviews.html')
     
-    # GET request - display approved reviews
+    # GET request - display all reviews
     try:
         from config import supabase
         result = supabase.table('reviews').select('*').order('created_at', desc=True).execute()
@@ -114,90 +105,6 @@ def reviews():
         reviews_list = []
     
     return render_template('reviews.html', reviews=reviews_list)
-
-@app.route('/reviews/pending')
-@login_required
-def pending_reviews():
-    # Check if user is admin (any @vibeops.ca email)
-    current_user = get_current_user()
-    if not current_user or not is_admin(current_user.get('email')):
-        flash('Access denied. Admin privileges required.', 'error')
-        return redirect(url_for('reviews'))
-    
-    try:
-        from config import supabase
-        result = supabase.table('review_submissions').select('*').eq('status', 'pending').order('created_at', desc=True).execute()
-        pending_reviews = result.data if result.data else []
-    except Exception as e:
-        logger.error(f"Error fetching pending reviews: {e}")
-        pending_reviews = []
-    
-    return render_template('pending_reviews.html', pending_reviews=pending_reviews)
-
-@app.route('/reviews/approve/<review_id>', methods=['POST'])
-@login_required
-def approve_review(review_id):
-    current_user = get_current_user()
-    if not current_user or not is_admin(current_user.get('email')):
-        flash('Access denied. Admin privileges required.', 'error')
-        return redirect(url_for('reviews'))
-    
-    try:
-        from config import supabase
-        
-        # Get the submission
-        submission_result = supabase.table('review_submissions').select('*').eq('id', review_id).execute()
-        if not submission_result.data:
-            flash('Review not found.', 'error')
-            return redirect(url_for('pending_reviews'))
-        
-        submission = submission_result.data[0]
-        
-        # Move to approved reviews
-        supabase.table('reviews').insert({
-            'user_id': submission['user_id'],
-            'user_email': submission['user_email'],
-            'rating': submission['rating'],
-            'review_text': submission['review_text']
-        }).execute()
-        
-        # Update submission status
-        supabase.table('review_submissions').update({'status': 'approved'}).eq('id', review_id).execute()
-        
-        flash('Review approved successfully!', 'success')
-        
-    except Exception as e:
-        flash('Error approving review. Please try again.', 'error')
-        logger.error(f"Error approving review: {e}")
-    
-    return redirect(url_for('pending_reviews'))
-
-@app.route('/reviews/reject/<review_id>', methods=['POST'])
-@login_required
-def reject_review(review_id):
-    current_user = get_current_user()
-    if not current_user or not is_admin(current_user.get('email')):
-        flash('Access denied. Admin privileges required.', 'error')
-        return redirect(url_for('reviews'))
-    
-    rejection_reason = request.form.get('rejection_reason', 'No reason provided')
-    
-    try:
-        from config import supabase
-        
-        # Update submission status with rejection reason
-        supabase.table('review_submissions').update({
-            'status': 'rejected',
-            'rejection_reason': rejection_reason
-        }).eq('id', review_id).execute()
-        
-        flash('Review rejected successfully!', 'success')
-        
-    except Exception as e:
-        flash('Error rejecting review. Please try again.', 'error')
-        logger.error(f"Error rejecting review: {e}")
-    
-    return redirect(url_for('pending_reviews'))
 
 # Public routes - no authentication required
 @app.route('/pipeline-estimator', methods=['GET', 'POST'])

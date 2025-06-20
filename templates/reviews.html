@@ -12,47 +12,29 @@
 
 <section class="reviews-content">
   <div class="container">
-    <!-- Admin Button for Pending Reviews -->
-    {% if is_admin %}
-    <div class="admin-actions" data-aos="fade-up" data-aos-duration="800">
-      <a href="{{ url_for('pending_reviews') }}" class="btn secondary">Review Pending Submissions</a>
-    </div>
-    {% endif %}
-
     <!-- Review Form (only for authenticated users) -->
     {% if is_authenticated %}
     <div class="review-form-container" data-aos="fade-up" data-aos-duration="800">
-      <h2>Share Your Experience</h2>
-      <p class="form-subtitle">Your review will be reviewed by our team before being published.</p>
+      <h2>Add a Review</h2>
+      <p class="form-subtitle">Add reviews from clients who have shared their feedback with us.</p>
       <form method="POST" class="review-form">
         <div class="form-group">
-          <label for="rating">Rating</label>
-          <div class="rating-stars">
-            <input type="radio" id="star5" name="rating" value="5" required>
-            <label for="star5" class="star">★</label>
-            <input type="radio" id="star4" name="rating" value="4">
-            <label for="star4" class="star">★</label>
-            <input type="radio" id="star3" name="rating" value="3">
-            <label for="star3" class="star">★</label>
-            <input type="radio" id="star2" name="rating" value="2">
-            <label for="star2" class="star">★</label>
-            <input type="radio" id="star1" name="rating" value="1">
-            <label for="star1" class="star">★</label>
-          </div>
+          <label for="reviewer_name">Client Name</label>
+          <input type="text" id="reviewer_name" name="reviewer_name" required placeholder="Enter the client's name">
         </div>
         
         <div class="form-group">
-          <label for="review_text">Your Review</label>
-          <textarea id="review_text" name="review_text" required placeholder="Share your experience with VibeOps..." rows="5"></textarea>
+          <label for="review_text">Review</label>
+          <textarea id="review_text" name="review_text" required placeholder="Enter the client's review..." rows="5"></textarea>
         </div>
         
-        <button type="submit" class="btn primary">Submit Review</button>
+        <button type="submit" class="btn primary">Add Review</button>
       </form>
     </div>
     {% else %}
-    <div class="login-prompt" data-aos="fade-up" data-aos-duration="800">
+    <div class="contact-prompt" data-aos="fade-up" data-aos-duration="800">
       <h2>Want to Leave a Review?</h2>
-      <p>Please <a href="{{ url_for('login', next=url_for('reviews')) }}">log in</a> to share your experience with VibeOps.</p>
+      <p>Please email us at <a href="mailto:marketing@vibeops.ca">marketing@vibeops.ca</a> to share your experience with VibeOps.</p>
     </div>
     {% endif %}
 
@@ -66,15 +48,10 @@
           <div class="review-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ loop.index * 100 }}">
             <div class="review-header">
               <div class="reviewer-info">
-                <h4>{{ review.user_email.split('@')[0] if review.user_email else 'Anonymous' }}</h4>
+                <h4>{{ review.reviewer_name }}</h4>
                 <div class="review-date">
                   {{ review.created_at.strftime('%B %d, %Y') if review.created_at else 'Recently' }}
                 </div>
-              </div>
-              <div class="review-rating">
-                {% for i in range(5) %}
-                  <span class="star {% if i < review.rating %}filled{% endif %}">★</span>
-                {% endfor %}
               </div>
             </div>
             <div class="review-text">
@@ -134,28 +111,6 @@
   .reviews-content {
     padding: 80px 20px;
     background: #0e0e0e;
-  }
-
-  .admin-actions {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .admin-actions .btn {
-    background: rgba(0, 255, 204, 0.1);
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-block;
-  }
-
-  .admin-actions .btn:hover {
-    background: rgba(0, 255, 204, 0.2);
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
   }
 
   .review-form-container {
@@ -224,31 +179,7 @@
     color: #888;
   }
 
-  .rating-stars {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 5px;
-  }
-
-  .rating-stars input[type="radio"] {
-    display: none;
-  }
-
-  .rating-stars .star {
-    font-size: 2rem;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-
-  .rating-stars .star:hover,
-  .rating-stars .star:hover ~ .star,
-  .rating-stars input[type="radio"]:checked ~ .star {
-    color: #00ffcc;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-  }
-
-  .login-prompt {
+  .contact-prompt {
     text-align: center;
     max-width: 500px;
     margin: 0 auto 80px;
@@ -258,24 +189,25 @@
     border-radius: 15px;
   }
 
-  .login-prompt h2 {
+  .contact-prompt h2 {
     color: #00ffcc;
     margin-bottom: 20px;
   }
 
-  .login-prompt p {
+  .contact-prompt p {
     color: #f2f2f2;
     font-size: 1.1rem;
+    line-height: 1.6;
   }
 
-  .login-prompt a {
+  .contact-prompt a {
     color: #00ffcc;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
   }
 
-  .login-prompt a:hover {
+  .contact-prompt a:hover {
     text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
   }
 
@@ -313,9 +245,6 @@
   }
 
   .review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     margin-bottom: 20px;
   }
 
@@ -330,25 +259,11 @@
     font-size: 0.9rem;
   }
 
-  .review-rating {
-    display: flex;
-    gap: 2px;
-  }
-
-  .review-rating .star {
-    font-size: 1.2rem;
-    color: #333;
-  }
-
-  .review-rating .star.filled {
-    color: #00ffcc;
-    text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
-  }
-
   .review-text p {
     color: #f2f2f2;
     line-height: 1.6;
     margin: 0;
+    font-size: 1rem;
   }
 
   .no-reviews {
@@ -428,19 +343,6 @@
     .review-card {
       padding: 20px;
     }
-
-    .review-header {
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .rating-stars .star {
-      font-size: 1.5rem;
-    }
-
-    .review-rating .star {
-      font-size: 1rem;
-    }
   }
 
   @media (max-width: 480px) {
@@ -452,7 +354,7 @@
       padding: 25px 15px;
     }
 
-    .login-prompt {
+    .contact-prompt {
       padding: 30px 20px;
     }
   }
