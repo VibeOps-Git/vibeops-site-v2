@@ -114,6 +114,10 @@ def reviews():
         result = supabase.table('reviews').select('*').order('created_at', desc=True).execute()
         reviews_list = result.data if result.data else []
         
+        logger.info(f"Raw result from Supabase: {result}")
+        logger.info(f"Reviews data: {reviews_list}")
+        logger.info(f"Number of reviews: {len(reviews_list)}")
+        
         # Convert created_at strings to datetime objects
         for review in reviews_list:
             if review.get('created_at') and isinstance(review['created_at'], str):
