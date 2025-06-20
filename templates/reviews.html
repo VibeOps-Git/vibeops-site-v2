@@ -50,7 +50,11 @@
               <div class="reviewer-info">
                 <h4>{{ review.reviewer_name }}</h4>
                 <div class="review-date">
-                  {{ review.created_at.strftime('%B %d, %Y') if review.created_at else 'Recently' }}
+                  {% if review.created_at %}
+                    {{ review.created_at.strftime('%B %d, %Y') }}
+                  {% else %}
+                    Recently
+                  {% endif %}
                 </div>
               </div>
             </div>

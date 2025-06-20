@@ -82,6 +82,16 @@ def reviews():
         try:
             # Store review directly in public reviews table
             from config import supabase
+            
+            # First check if the table exists by trying to select from it
+            try:
+                test_result = supabase.table('reviews').select('id').limit(1).execute()
+                logger.info("Reviews table exists and is accessible")
+            except Exception as table_error:
+                logger.error(f"Reviews table error: {table_error}")
+                flash('Database table not accessible. Please contact support.', 'error')
+                return render_template('reviews.html')
+            
             result = supabase.table('reviews').insert({
                 'reviewer_name': reviewer_name,
                 'review_text': review_text
@@ -91,8 +101,10 @@ def reviews():
             return redirect(url_for('reviews'))
             
         except Exception as e:
-            flash('Error adding review. Please try again.', 'error')
+            flash(f'Error adding review: {str(e)}', 'error')
             logger.error(f"Error adding review: {e}")
+            logger.error(f"Error type: {type(e)}")
+            logger.error(f"Review data: reviewer_name={reviewer_name}, review_text={review_text[:50]}...")
             return render_template('reviews.html')
     
     # GET request - display all reviews
@@ -100,8 +112,10 @@ def reviews():
         from config import supabase
         result = supabase.table('reviews').select('*').order('created_at', desc=True).execute()
         reviews_list = result.data if result.data else []
+        logger.info(f"Successfully fetched {len(reviews_list)} reviews")
     except Exception as e:
         logger.error(f"Error fetching reviews: {e}")
+        logger.error(f"Error type: {type(e)}")
         reviews_list = []
     
     return render_template('reviews.html', reviews=reviews_list)
@@ -153,6 +167,26 @@ def booking():
 @app.route('/team')
 def team():
     return render_template('team.html')
+
+@app.route('/debug/db-test')
+def debug_db_test():
+    """Debug route to test database connectivity"""
+    try:
+        from config import supabase
+        # Test basic connection
+        result = supabase.table('reviews').select('count').execute()
+        return jsonify({
+            'status': 'success',
+            'message': 'Database connection successful',
+            'table_exists': True
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e),
+            'error_type': str(type(e)),
+            'table_exists': False
+        }), 500
 
 if __name__ == '__main__':
     # Use PORT env variable for Railway, default to 5006 locally
