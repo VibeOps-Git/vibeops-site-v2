@@ -65,9 +65,53 @@ def login():
 def logout():
     return logout_user()
 
-# Protected routes - require authentication
+@app.route('/reviews', methods=['GET', 'POST'])
+def reviews():
+    if request.method == 'POST':
+        if not is_authenticated():
+            flash('You must be logged in to submit a review', 'error')
+            return redirect(url_for('login', next=url_for('reviews')))
+        
+        name = request.form.get('name')
+        rating = request.form.get('rating')
+        review_text = request.form.get('review_text')
+        
+        if not name or not rating or not review_text:
+            flash('Please fill in all fields', 'error')
+            return render_template('reviews.html')
+        
+        try:
+            # Store review in Supabase
+            from config import supabase
+            result = supabase.table('reviews').insert({
+                'name': name,
+                'rating': int(rating),
+                'review_text': review_text,
+                'user_id': session.get('user_id'),
+                'user_email': session.get('user_email')
+            }).execute()
+            
+            flash('Review submitted successfully!', 'success')
+            return redirect(url_for('reviews'))
+            
+        except Exception as e:
+            flash('Error submitting review. Please try again.', 'error')
+            logger.error(f"Error submitting review: {e}")
+            return render_template('reviews.html')
+    
+    # GET request - display reviews
+    try:
+        from config import supabase
+        result = supabase.table('reviews').select('*').order('created_at', desc=True).execute()
+        reviews_list = result.data if result.data else []
+    except Exception as e:
+        logger.error(f"Error fetching reviews: {e}")
+        reviews_list = []
+    
+    return render_template('reviews.html', reviews=reviews_list)
+
+# Public routes - no authentication required
 @app.route('/pipeline-estimator', methods=['GET', 'POST'])
-@login_required
 def pipeline_estimator():
     from pipeline import handle_pipeline_post
     if request.method == 'POST':
@@ -75,25 +119,21 @@ def pipeline_estimator():
     return render_template('pipeline_estimator.html')
 
 @app.route('/construction-tracker', methods=['GET', 'POST'])
-@login_required
 def construction_tracker():
     if request.method == 'POST':
         return handle_tracker_post()
     return render_template('construction_tracker.html')
 
 @app.route('/construction-tracker-progress', methods=['POST'])
-@login_required
 def construction_tracker_progress():
     return handle_progress_post()
 
 @app.route('/struct-wise', methods=['GET', 'POST'])
-@login_required
 def struct_wise():
     if request.method == 'POST':
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
 
-# Public routes - no authentication required
 @app.route('/about')
 def about():
     return render_template('about.html')

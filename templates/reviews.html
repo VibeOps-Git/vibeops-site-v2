@@ -1,0 +1,428 @@
+{% extends "base.html" %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block content %}
+<section class="reviews-hero" data-aos="fade-up" data-aos-duration="800">
+  <div class="container">
+    <h1>Client Reviews</h1>
+    <p>See what our clients have to say about their experience with VibeOps</p>
+  </div>
+</section>
+
+<section class="reviews-content">
+  <div class="container">
+    <!-- Review Form (only for authenticated users) -->
+    {% if is_authenticated %}
+    <div class="review-form-container" data-aos="fade-up" data-aos-duration="800">
+      <h2>Share Your Experience</h2>
+      <form method="POST" class="review-form">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required placeholder="Enter your name">
+        </div>
+        
+        <div class="form-group">
+          <label for="rating">Rating</label>
+          <div class="rating-stars">
+            <input type="radio" id="star5" name="rating" value="5" required>
+            <label for="star5" class="star">★</label>
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4" class="star">★</label>
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3" class="star">★</label>
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2" class="star">★</label>
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1" class="star">★</label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="review_text">Your Review</label>
+          <textarea id="review_text" name="review_text" required placeholder="Share your experience with VibeOps..." rows="5"></textarea>
+        </div>
+        
+        <button type="submit" class="btn primary">Submit Review</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="login-prompt" data-aos="fade-up" data-aos-duration="800">
+      <h2>Want to Leave a Review?</h2>
+      <p>Please <a href="{{ url_for('login', next=url_for('reviews')) }}">log in</a> to share your experience with VibeOps.</p>
+    </div>
+    {% endif %}
+
+    <!-- Reviews Display -->
+    <div class="reviews-grid" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+      <h2>What Our Clients Say</h2>
+      
+      {% if reviews %}
+        <div class="reviews-container">
+          {% for review in reviews %}
+          <div class="review-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ loop.index * 100 }}">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <h4>{{ review.name }}</h4>
+                <div class="review-date">
+                  {{ review.created_at.strftime('%B %d, %Y') if review.created_at else 'Recently' }}
+                </div>
+              </div>
+              <div class="review-rating">
+                {% for i in range(5) %}
+                  <span class="star {% if i < review.rating %}filled{% endif %}">★</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="review-text">
+              <p>{{ review.review_text }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="no-reviews">
+          <p>No reviews yet. Be the first to share your experience!</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .reviews-hero {
+    background: linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%);
+    padding: 120px 20px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reviews-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .reviews-hero h1 {
+    color: #00ffcc;
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .reviews-hero p {
+    font-size: 1.2rem;
+    color: #f2f2f2;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .reviews-content {
+    padding: 80px 20px;
+    background: #0e0e0e;
+  }
+
+  .review-form-container {
+    max-width: 600px;
+    margin: 0 auto 80px;
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    border-radius: 15px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 255, 204, 0.1);
+  }
+
+  .review-form-container h2 {
+    color: #00ffcc;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+  }
+
+  .review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group label {
+    color: #f2f2f2;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: rgba(14, 14, 14, 0.8);
+    border: 2px solid rgba(0, 255, 204, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #f2f2f2;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #00ffcc;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: #888;
+  }
+
+  .rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5px;
+  }
+
+  .rating-stars input[type="radio"] {
+    display: none;
+  }
+
+  .rating-stars .star {
+    font-size: 2rem;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .rating-stars .star:hover,
+  .rating-stars .star:hover ~ .star,
+  .rating-stars input[type="radio"]:checked ~ .star {
+    color: #00ffcc;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+  }
+
+  .login-prompt {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 80px;
+    padding: 40px;
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    border-radius: 15px;
+  }
+
+  .login-prompt h2 {
+    color: #00ffcc;
+    margin-bottom: 20px;
+  }
+
+  .login-prompt p {
+    color: #f2f2f2;
+    font-size: 1.1rem;
+  }
+
+  .login-prompt a {
+    color: #00ffcc;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .login-prompt a:hover {
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+  }
+
+  .reviews-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .reviews-grid h2 {
+    color: #00ffcc;
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 2.5rem;
+  }
+
+  .reviews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+  }
+
+  .review-card {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .review-card:hover {
+    border-color: rgba(0, 255, 204, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 255, 204, 0.2);
+    transform: translateY(-5px);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .reviewer-info h4 {
+    color: #00ffcc;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+
+  .review-date {
+    color: #888;
+    font-size: 0.9rem;
+  }
+
+  .review-rating {
+    display: flex;
+    gap: 2px;
+  }
+
+  .review-rating .star {
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .review-rating .star.filled {
+    color: #00ffcc;
+    text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+  }
+
+  .review-text p {
+    color: #f2f2f2;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .no-reviews {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+    font-size: 1.1rem;
+  }
+
+  .flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+  }
+
+  .flash-message {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .flash-error {
+    border-left: 4px solid #e74c3c;
+  }
+
+  .flash-success {
+    border-left: 4px solid #27ae60;
+  }
+
+  .flash-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    margin-left: 1rem;
+  }
+
+  .flash-close:hover {
+    color: #f2f2f2;
+  }
+
+  @media (max-width: 768px) {
+    .reviews-hero {
+      padding: 100px 20px 60px;
+    }
+
+    .reviews-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .reviews-hero p {
+      font-size: 1rem;
+    }
+
+    .review-form-container {
+      padding: 30px 20px;
+      margin-bottom: 60px;
+    }
+
+    .reviews-container {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .review-card {
+      padding: 20px;
+    }
+
+    .review-header {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rating-stars .star {
+      font-size: 1.5rem;
+    }
+
+    .review-rating .star {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .reviews-content {
+      padding: 60px 15px;
+    }
+
+    .review-form-container {
+      padding: 25px 15px;
+    }
+
+    .login-prompt {
+      padding: 30px 20px;
+    }
+  }
+</style>
+{% endblock %} 
