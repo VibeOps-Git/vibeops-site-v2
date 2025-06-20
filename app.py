@@ -131,6 +131,66 @@ def reviews():
     
     return render_template('reviews.html', reviews=reviews_list)
 
+@app.route('/reviews/<int:review_id>/edit', methods=['GET', 'POST'])
+def edit_review(review_id):
+    if not is_authenticated():
+        flash('You must be logged in to edit reviews', 'error')
+        return redirect(url_for('login', next=url_for('reviews')))
+    
+    try:
+        from config import supabase
+        
+        if request.method == 'POST':
+            reviewer_name = request.form.get('reviewer_name')
+            review_text = request.form.get('review_text')
+            
+            if not reviewer_name or not review_text:
+                flash('Please fill in all required fields', 'error')
+                return redirect(url_for('edit_review', review_id=review_id))
+            
+            # Update the review
+            result = supabase.table('reviews').update({
+                'reviewer_name': reviewer_name,
+                'review_text': review_text
+            }).eq('id', review_id).execute()
+            
+            flash('Review updated successfully!', 'success')
+            return redirect(url_for('reviews'))
+        
+        # GET request - show edit form
+        result = supabase.table('reviews').select('*').eq('id', review_id).execute()
+        if not result.data:
+            flash('Review not found', 'error')
+            return redirect(url_for('reviews'))
+        
+        review = result.data[0]
+        return render_template('edit_review.html', review=review)
+        
+    except Exception as e:
+        flash(f'Error editing review: {str(e)}', 'error')
+        logger.error(f"Error editing review: {e}")
+        return redirect(url_for('reviews'))
+
+@app.route('/reviews/<int:review_id>/delete', methods=['POST'])
+def delete_review(review_id):
+    if not is_authenticated():
+        flash('You must be logged in to delete reviews', 'error')
+        return redirect(url_for('login', next=url_for('reviews')))
+    
+    try:
+        from config import supabase
+        
+        # Delete the review
+        result = supabase.table('reviews').delete().eq('id', review_id).execute()
+        
+        flash('Review deleted successfully!', 'success')
+        return redirect(url_for('reviews'))
+        
+    except Exception as e:
+        flash(f'Error deleting review: {str(e)}', 'error')
+        logger.error(f"Error deleting review: {e}")
+        return redirect(url_for('reviews'))
+
 # Public routes - no authentication required
 @app.route('/pipeline-estimator', methods=['GET', 'POST'])
 def pipeline_estimator():
