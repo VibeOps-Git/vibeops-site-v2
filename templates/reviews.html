@@ -12,16 +12,19 @@
 
 <section class="reviews-content">
   <div class="container">
+    <!-- Admin Button for Pending Reviews -->
+    {% if is_admin %}
+    <div class="admin-actions" data-aos="fade-up" data-aos-duration="800">
+      <a href="{{ url_for('pending_reviews') }}" class="btn secondary">Review Pending Submissions</a>
+    </div>
+    {% endif %}
+
     <!-- Review Form (only for authenticated users) -->
     {% if is_authenticated %}
     <div class="review-form-container" data-aos="fade-up" data-aos-duration="800">
       <h2>Share Your Experience</h2>
+      <p class="form-subtitle">Your review will be reviewed by our team before being published.</p>
       <form method="POST" class="review-form">
-        <div class="form-group">
-          <label for="name">Your Name</label>
-          <input type="text" id="name" name="name" required placeholder="Enter your name">
-        </div>
-        
         <div class="form-group">
           <label for="rating">Rating</label>
           <div class="rating-stars">
@@ -63,7 +66,7 @@
           <div class="review-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ loop.index * 100 }}">
             <div class="review-header">
               <div class="reviewer-info">
-                <h4>{{ review.name }}</h4>
+                <h4>{{ review.user_email.split('@')[0] if review.user_email else 'Anonymous' }}</h4>
                 <div class="review-date">
                   {{ review.created_at.strftime('%B %d, %Y') if review.created_at else 'Recently' }}
                 </div>
@@ -133,6 +136,28 @@
     background: #0e0e0e;
   }
 
+  .admin-actions {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .admin-actions .btn {
+    background: rgba(0, 255, 204, 0.1);
+    border: 2px solid #00ffcc;
+    color: #00ffcc;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .admin-actions .btn:hover {
+    background: rgba(0, 255, 204, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+  }
+
   .review-form-container {
     max-width: 600px;
     margin: 0 auto 80px;
@@ -147,8 +172,15 @@
   .review-form-container h2 {
     color: #00ffcc;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     font-size: 2rem;
+  }
+
+  .form-subtitle {
+    text-align: center;
+    color: #888;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
   }
 
   .review-form {

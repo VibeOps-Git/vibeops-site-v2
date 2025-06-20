@@ -1,0 +1,505 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Reviews{% endblock %}
+
+{% block content %}
+<section class="pending-reviews-hero" data-aos="fade-up" data-aos-duration="800">
+  <div class="container">
+    <h1>Review Moderation</h1>
+    <p>Approve or reject pending review submissions</p>
+    <a href="{{ url_for('reviews') }}" class="btn secondary">← Back to Reviews</a>
+  </div>
+</section>
+
+<section class="pending-reviews-content">
+  <div class="container">
+    {% if pending_reviews %}
+      <div class="pending-reviews-grid">
+        {% for review in pending_reviews %}
+        <div class="pending-review-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ loop.index * 100 }}">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <h4>{{ review.user_email.split('@')[0] if review.user_email else 'Anonymous' }}</h4>
+              <div class="review-date">
+                Submitted: {{ review.created_at.strftime('%B %d, %Y at %I:%M %p') if review.created_at else 'Recently' }}
+              </div>
+              <div class="reviewer-email">
+                {{ review.user_email }}
+              </div>
+            </div>
+            <div class="review-rating">
+              {% for i in range(5) %}
+                <span class="star {% if i < review.rating %}filled{% endif %}">★</span>
+              {% endfor %}
+            </div>
+          </div>
+          
+          <div class="review-text">
+            <p>{{ review.review_text }}</p>
+          </div>
+          
+          <div class="moderation-actions">
+            <form method="POST" action="{{ url_for('approve_review', review_id=review.id) }}" style="display: inline;">
+              <button type="submit" class="btn primary approve-btn">
+                ✓ Approve
+              </button>
+            </form>
+            
+            <button class="btn secondary reject-btn" onclick="showRejectModal('{{ review.id }}')">
+              ✗ Reject
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="no-pending-reviews">
+        <h2>No Pending Reviews</h2>
+        <p>All review submissions have been processed.</p>
+        <a href="{{ url_for('reviews') }}" class="btn primary">Back to Reviews</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Rejection Modal -->
+<div id="rejectModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Reject Review</h3>
+      <button class="close-modal" onclick="closeRejectModal()">&times;</button>
+    </div>
+    <form id="rejectForm" method="POST">
+      <div class="form-group">
+        <label for="rejection_reason">Reason for Rejection</label>
+        <textarea id="rejection_reason" name="rejection_reason" required placeholder="Please provide a reason for rejecting this review..." rows="4"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn secondary" onclick="closeRejectModal()">Cancel</button>
+        <button type="submit" class="btn primary">Reject Review</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .pending-reviews-hero {
+    background: linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%);
+    padding: 120px 20px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pending-reviews-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .pending-reviews-hero h1 {
+    color: #00ffcc;
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pending-reviews-hero p {
+    font-size: 1.2rem;
+    color: #f2f2f2;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pending-reviews-hero .btn {
+    position: relative;
+    z-index: 1;
+  }
+
+  .pending-reviews-content {
+    padding: 80px 20px;
+    background: #0e0e0e;
+  }
+
+  .pending-reviews-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+  }
+
+  .pending-review-card {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+  }
+
+  .pending-review-card:hover {
+    border-color: rgba(0, 255, 204, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 255, 204, 0.2);
+  }
+
+  .pending-review-card::before {
+    content: 'PENDING';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .reviewer-info h4 {
+    color: #00ffcc;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+
+  .review-date {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+
+  .reviewer-email {
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  .review-rating {
+    display: flex;
+    gap: 2px;
+  }
+
+  .review-rating .star {
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .review-rating .star.filled {
+    color: #00ffcc;
+    text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+  }
+
+  .review-text {
+    margin-bottom: 25px;
+  }
+
+  .review-text p {
+    color: #f2f2f2;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .moderation-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+  }
+
+  .approve-btn {
+    background: rgba(39, 174, 96, 0.2);
+    border: 2px solid #27ae60;
+    color: #27ae60;
+  }
+
+  .approve-btn:hover {
+    background: rgba(39, 174, 96, 0.3);
+    box-shadow: 0 0 15px rgba(39, 174, 96, 0.3);
+  }
+
+  .reject-btn {
+    background: rgba(231, 76, 60, 0.2);
+    border: 2px solid #e74c3c;
+    color: #e74c3c;
+  }
+
+  .reject-btn:hover {
+    background: rgba(231, 76, 60, 0.3);
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
+  }
+
+  .no-pending-reviews {
+    text-align: center;
+    padding: 100px 20px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .no-pending-reviews h2 {
+    color: #00ffcc;
+    margin-bottom: 20px;
+  }
+
+  .no-pending-reviews p {
+    color: #888;
+    margin-bottom: 30px;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+  }
+
+  .modal-content {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    border-radius: 15px;
+    margin: 10% auto;
+    padding: 0;
+    width: 90%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+  }
+
+  .modal-header h3 {
+    color: #00ffcc;
+    margin: 0;
+  }
+
+  .close-modal {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .close-modal:hover {
+    color: #f2f2f2;
+  }
+
+  .modal form {
+    padding: 30px;
+  }
+
+  .modal .form-group {
+    margin-bottom: 20px;
+  }
+
+  .modal .form-group label {
+    display: block;
+    color: #f2f2f2;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .modal .form-group textarea {
+    width: 100%;
+    background: rgba(14, 14, 14, 0.8);
+    border: 2px solid rgba(0, 255, 204, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    color: #f2f2f2;
+    font-size: 1rem;
+    resize: vertical;
+  }
+
+  .modal .form-group textarea:focus {
+    outline: none;
+    border-color: #00ffcc;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+
+  .flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+  }
+
+  .flash-message {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .flash-error {
+    border-left: 4px solid #e74c3c;
+  }
+
+  .flash-success {
+    border-left: 4px solid #27ae60;
+  }
+
+  .flash-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    margin-left: 1rem;
+  }
+
+  .flash-close:hover {
+    color: #f2f2f2;
+  }
+
+  @media (max-width: 768px) {
+    .pending-reviews-hero {
+      padding: 100px 20px 60px;
+    }
+
+    .pending-reviews-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .pending-reviews-hero p {
+      font-size: 1rem;
+    }
+
+    .pending-reviews-content {
+      padding: 60px 20px;
+    }
+
+    .pending-reviews-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .pending-review-card {
+      padding: 20px;
+    }
+
+    .review-header {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .moderation-actions {
+      flex-direction: column;
+    }
+
+    .modal-content {
+      margin: 20% auto;
+      width: 95%;
+    }
+
+    .modal-header {
+      padding: 15px 20px;
+    }
+
+    .modal form {
+      padding: 20px;
+    }
+
+    .modal-actions {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pending-reviews-content {
+      padding: 40px 15px;
+    }
+
+    .pending-review-card {
+      padding: 15px;
+    }
+
+    .modal-content {
+      margin: 10% auto;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function showRejectModal(reviewId) {
+    const modal = document.getElementById('rejectModal');
+    const form = document.getElementById('rejectForm');
+    
+    // Set the form action to the correct review ID
+    form.action = `/reviews/reject/${reviewId}`;
+    
+    // Clear any previous rejection reason
+    document.getElementById('rejection_reason').value = '';
+    
+    // Show the modal
+    modal.style.display = 'block';
+  }
+
+  function closeRejectModal() {
+    const modal = document.getElementById('rejectModal');
+    modal.style.display = 'none';
+  }
+
+  // Close modal when clicking outside of it
+  window.onclick = function(event) {
+    const modal = document.getElementById('rejectModal');
+    if (event.target === modal) {
+      closeRejectModal();
+    }
+  }
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeRejectModal();
+    }
+  });
+</script>
+{% endblock %} 

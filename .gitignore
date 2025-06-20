@@ -8,3 +8,4 @@ __pycache__
 .pytest_cache
 *.cache
 .vercel
+supabase_reviews_schema.sql
