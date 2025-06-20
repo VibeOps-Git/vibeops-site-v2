@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response
 import os, logging
 from dotenv import load_dotenv
+from datetime import datetime
 
 # Make sure your tracker.py defines BOTH of these:
 #   def handle_tracker_post(...):
@@ -112,6 +113,16 @@ def reviews():
         from config import supabase
         result = supabase.table('reviews').select('*').order('created_at', desc=True).execute()
         reviews_list = result.data if result.data else []
+        
+        # Convert created_at strings to datetime objects
+        for review in reviews_list:
+            if review.get('created_at') and isinstance(review['created_at'], str):
+                try:
+                    review['created_at'] = datetime.fromisoformat(review['created_at'].replace('Z', '+00:00'))
+                except ValueError:
+                    # If parsing fails, keep as string
+                    pass
+        
         logger.info(f"Successfully fetched {len(reviews_list)} reviews")
     except Exception as e:
         logger.error(f"Error fetching reviews: {e}")

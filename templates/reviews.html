@@ -12,32 +12,6 @@
 
 <section class="reviews-content">
   <div class="container">
-    <!-- Review Form (only for authenticated users) -->
-    {% if is_authenticated %}
-    <div class="review-form-container" data-aos="fade-up" data-aos-duration="800">
-      <h2>Add a Review</h2>
-      <p class="form-subtitle">Add reviews from clients who have shared their feedback with us.</p>
-      <form method="POST" class="review-form">
-        <div class="form-group">
-          <label for="reviewer_name">Client Name</label>
-          <input type="text" id="reviewer_name" name="reviewer_name" required placeholder="Enter the client's name">
-        </div>
-        
-        <div class="form-group">
-          <label for="review_text">Review</label>
-          <textarea id="review_text" name="review_text" required placeholder="Enter the client's review..." rows="5"></textarea>
-        </div>
-        
-        <button type="submit" class="btn primary">Add Review</button>
-      </form>
-    </div>
-    {% else %}
-    <div class="contact-prompt" data-aos="fade-up" data-aos-duration="800">
-      <h2>Want to Leave a Review?</h2>
-      <p>Please email us at <a href="mailto:marketing@vibeops.ca">marketing@vibeops.ca</a> to share your experience with VibeOps.</p>
-    </div>
-    {% endif %}
-
     <!-- Reviews Display -->
     <div class="reviews-grid" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
       <h2>What Our Clients Say</h2>
@@ -70,6 +44,32 @@
         </div>
       {% endif %}
     </div>
+
+    <!-- Review Form (only for authenticated users) -->
+    {% if is_authenticated %}
+    <div class="review-form-container" data-aos="fade-up" data-aos-duration="800">
+      <h2>Add a Review</h2>
+      <p class="form-subtitle">Add reviews from clients who have shared their feedback with us.</p>
+      <form method="POST" class="review-form">
+        <div class="form-group">
+          <label for="reviewer_name">Client Name</label>
+          <input type="text" id="reviewer_name" name="reviewer_name" required placeholder="Enter the client's name">
+        </div>
+        
+        <div class="form-group">
+          <label for="review_text">Review</label>
+          <textarea id="review_text" name="review_text" required placeholder="Enter the client's review..." rows="5"></textarea>
+        </div>
+        
+        <button type="submit" class="btn primary">Add Review</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="contact-prompt" data-aos="fade-up" data-aos-duration="800">
+      <h2>Want to Leave a Review?</h2>
+      <p>Please email us at <a href="mailto:marketing@vibeops.ca">marketing@vibeops.ca</a> to share your experience with VibeOps.</p>
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
@@ -119,7 +119,7 @@
 
   .review-form-container {
     max-width: 600px;
-    margin: 0 auto 80px;
+    margin: 80px auto 80px;
     background: rgba(26, 26, 26, 0.8);
     border: 1px solid rgba(0, 255, 204, 0.3);
     border-radius: 15px;
@@ -217,7 +217,7 @@
 
   .reviews-grid {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 80px;
   }
 
   .reviews-grid h2 {
