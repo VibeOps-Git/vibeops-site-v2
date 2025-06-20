@@ -1,6 +1,6 @@
 # app.py
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response
 import os, logging
 from dotenv import load_dotenv
 
@@ -8,6 +8,10 @@ from dotenv import load_dotenv
 #   def handle_tracker_post(...):
 #   def handle_progress_post(...):
 from tracker import handle_tracker_post, handle_progress_post  
+from auth import (
+    is_authenticated, login_required, get_current_user, 
+    handle_supabase_login, logout_user
+)
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -16,68 +20,103 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
 
+# Add context processor to make auth status available in templates
+@app.context_processor
+def inject_auth_status():
+    return {
+        'is_authenticated': is_authenticated(),
+        'current_user': get_current_user()
+    }
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        if not email or not password:
+            flash('Please provide both email and password', 'error')
+            return render_template('login.html')
+        
+        result = handle_supabase_login(email, password)
+        
+        if result['success']:
+            # Store user info in session
+            session['user_id'] = result['user'].id
+            session['user_email'] = result['user'].email
+            
+            # Set JWT token as cookie
+            response = make_response(redirect(request.args.get('next', url_for('home'))))
+            response.set_cookie('auth_token', result['session'].access_token, 
+                              max_age=3600*24*7, httponly=True, secure=False)  # 7 days
+            flash('Login successful!', 'success')
+            return response
+        else:
+            flash(result['error'], 'error')
+            return render_template('login.html')
+    
+    return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    return logout_user()
+
+# Protected routes - require authentication
 @app.route('/pipeline-estimator', methods=['GET', 'POST'])
+@login_required
 def pipeline_estimator():
     from pipeline import handle_pipeline_post
     if request.method == 'POST':
         return handle_pipeline_post()
     return render_template('pipeline_estimator.html')
 
-
 @app.route('/construction-tracker', methods=['GET', 'POST'])
+@login_required
 def construction_tracker():
     if request.method == 'POST':
         return handle_tracker_post()
     return render_template('construction_tracker.html')
 
-
 @app.route('/construction-tracker-progress', methods=['POST'])
+@login_required
 def construction_tracker_progress():
     return handle_progress_post()
 
-
 @app.route('/struct-wise', methods=['GET', 'POST'])
+@login_required
 def struct_wise():
     if request.method == 'POST':
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
 
-
+# Public routes - no authentication required
 @app.route('/about')
 def about():
     return render_template('about.html')
-
 
 @app.route('/services')
 def services():
     return render_template('services.html')
 
-
 @app.route('/case-studies')
 def case_studies():
     return render_template('case_studies.html')
-
 
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
 
-
 @app.route('/booking')
 def booking():
     return render_template('booking.html')
 
-
 @app.route('/team')
 def team():
     return render_template('team.html')
-
 
 if __name__ == '__main__':
     # Use PORT env variable for Railway, default to 5006 locally
