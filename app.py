@@ -243,6 +243,10 @@ def booking():
 def team():
     return render_template('team.html')
 
+@app.route('/app-demos')
+def appdemo():
+    return render_template('app-demos.html')
+
 @app.route('/debug/db-test')
 def debug_db_test():
     """Debug route to test database connectivity"""
@@ -265,6 +269,6 @@ def debug_db_test():
 
 if __name__ == '__main__':
     # Use PORT env variable for Railway, default to 5006 locally
-    port = int(os.environ.get('PORT', 5006))
+    port = int(os.environ.get('PORT', 5008))
     debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     app.run(host='0.0.0.0', port=port, debug=debug)
