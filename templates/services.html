@@ -3,196 +3,266 @@
 
 {% block content %}
 
-
-
-
-  {# ──────────────────────────────────────────────────────────────── #}
-  {# EXISTING SECTIONS (VIDEO EMBEDS, SERVICE CARDS, ETC.)           #}
-  {# ──────────────────────────────────────────────────────────────── #}
-
-  <!-- Desktop Sample Section -->
-  <section class="case-studies" id="desktop-sample" data-aos="fade-in" data-aos-duration="1000">
-    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Our Web Design Work">
-      Our Web Design Work
+  <!-- ─── SERVICES OVERVIEW ─────────────────────────────────────────────── -->
+  <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000" style="padding:4rem 1rem;">
+    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Web & Mobile • Automation • Engineering" style="text-align:center;">
+      Web & Mobile • Automation • Engineering
     </h2>
-    <p data-aos="fade-up" data-aos-delay="200">
-      A glimpse of our desktop-optimized sites—modern and enchanted to convert.
+    <p data-aos="fade-up" data-aos-delay="200" style="max-width:640px; margin:0 auto 2rem; text-align:center; color:#ddd; line-height:1.5;">
+      Our core focus is building pixel-perfect, high-converting websites and mobile experiences—crafted for speed, style, and results.  
+      From landing pages to full-stack web apps, we deliver modern, responsive, and lightning-fast solutions for teams that ship fast, flex hard, and vibe always.
     </p>
-    <div class="grid" data-aos="fade-up" data-aos-delay="300">
-      <div class="card">
-        <strong>Castaway Crew Desktop Demo</strong><br>
-        <div class="video-box">
-          <div class="video-container">
-            <iframe
-              src="https://www.youtube.com/embed/trIZD2Lwe4s?si=wIkpTjN2aVDXjxPC"
-              title="Desktop Design Demo"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <em>Bold design, built to mesmerize</em>
-        </div>
+    <div class="grid" data-aos="fade-up" data-aos-delay="300" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; max-width:900px; margin:0 auto;">
+      <div class="card" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; padding:1.5rem; transition:transform .2s ease, box-shadow .2s; box-shadow:0 2px 8px rgba(0,0,0,0.3);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.3)'">
+        <h3 class="glitch" data-text="Web & Mobile" style="color:#00ffcc;">Web & Mobile</h3>
+        <p style="color:#ddd; font-size:.95rem;">Pixel-perfect sites, anywhere you go<br><em style="color:#aaa;">Responsive, modern, and fast</em></p>
+      </div>
+      <div class="card" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; padding:1.5rem; transition:transform .2s ease, box-shadow .2s; box-shadow:0 2px 8px rgba(0,0,0,0.3);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.3)'">
+        <h3 class="glitch" data-text="Automation" style="color:#00ffcc;">Automation</h3>
+        <p style="color:#ddd; font-size:.95rem;">Bots that hustle while you chill<br><em style="color:#aaa;">Email, Calendar, CRM, and more</em></p>
+      </div>
+      <div class="card" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; padding:1.5rem; transition:transform .2s ease, box-shadow .2s; box-shadow:0 2px 8px rgba(0,0,0,0.3);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.3)'">
+        <h3 class="glitch" data-text="Engineering" style="color:#00ffcc;">Engineering</h3>
+        <p style="color:#ddd; font-size:.95rem;">Bespoke code, zero bottlenecks<br><em style="color:#aaa;">Custom projects & integrations</em></p>
       </div>
     </div>
   </section>
 
-  <!-- Services Overview -->
-  <section class="services" id="services" data-aos="fade-in" data-aos-duration="1000">
-    <h2 data-aos="fade-up" data-aos-delay="100">Our Services</h2>
-    <p data-aos="fade-up" data-aos-delay="200">
-      Custom solutions for every business—big or small.
-    </p>
-    <div class="grid" data-aos="fade-up" data-aos-delay="300">
-      <div class="card">📧 Automation<br><em>Email, Calendar, CRM</em></div>
-      <div class="card">🛠️ Engineering<br><em>Custom projects</em></div>
-      <div class="card">🌐 Web Design<br><em>Sites that shine</em></div>
-    </div>
-  </section>
-
-  <!-- Mobile Sample Section -->
-  <section class="case-studies" id="mobile-sample" data-aos="fade-in" data-aos-duration="1000">
-    <h2 data-aos="fade-up" data-aos-delay="100">Mobile-Optimized Design</h2>
-    <p data-aos="fade-up" data-aos-delay="200">
-      A demo of our mobile-friendly websites—smooth and responsive!
-    </p>
-    <div class="grid" data-aos="fade-up" data-aos-delay="300">
-      <div class="card">
-        <strong>Castaway Crew Mobile Demo</strong><br>
-        <div class="video-box">
-          <div class="video-container">
-            <iframe
-              src="https://www.youtube.com/embed/eJlnI9NCQuU?si=-gZXhg1msHeQkPuh"
-              title="Mobile Design Demo"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <em>Base-Level Demo</em>
-          <a
-          href="https://www.castawaycrewmn.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer-cta-text">
-          Visit Castaway Crew →
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
-      <h3>Not Seeing Your Fit?</h3>
-      <p>
-        Need a custom solution? Book a free consultation to elevate your web
-        design project with a stunning site and an optimized timeline.
-      </p>
-      <a href="/booking" class="btn primary">Book Free Consultation</a>
-    </div>
-  </section>
-
-  <!-- Additional Featured Videos -->
-  <section class="case-studies" id="additional-videos" data-aos="fade-in" data-aos-duration="1000">
-    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Featured Videos">
-      Featured Videos
+  <!-- ─── PRIMARY SHOWCASE: WEB DESIGN VIDEOS ─────────────────────────────── -->
+  <section class="case-studies" id="web-design-videos" data-aos="fade-in" data-aos-duration="1000" style="padding:4rem 1rem;">
+    <h2 data-aos="fade-up" data-aos-delay="400" class="glitch" data-text="See Our Web Design Work" style="text-align:center;">
+      See Our Web Design Work
     </h2>
-    <p data-aos="fade-up" data-aos-delay="200">
-      Interviews and demonstrations showcasing our capabilities and insights.
+    <p data-aos="fade-up" data-aos-delay="500" style="color:#ddd; text-align:center; max-width:640px; margin:0 auto 2rem;">
+      Explore real client projects and sample builds—modern, responsive, and built to convert.
     </p>
-    <div class="grid" data-aos="fade-up" data-aos-delay="300">
-
-      <!-- YC Founder Interview Card -->
-      <div class="card">
-        <strong>YC Founder Interview</strong><br>
-        <div class="video-box">
-          <div class="video-container">
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/YztGPXvfgsw?si=94eCgQ8JNCS_IWmW"
-              title="YC Founder Interview"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
+    <div class="carousel-container" style="position:relative; max-width:900px; margin:0 auto;">
+      <button class="carousel-arrow arrow-left" aria-label="Previous" style="position:absolute;left:-40px;top:50%;transform:translateY(-50%);z-index:2;background:none;border:none;font-size:2rem;color:#00ffcc;cursor:pointer;">&#8592;</button>
+      <div class="carousel-track" style="display:flex;gap:1.5rem;padding-bottom:1rem;overflow:hidden;">
+        <div class="carousel-card" data-type="video" data-src="https://www.youtube.com/embed/trIZD2Lwe4s?si=wIkpTjN2aVDXjxPC" tabindex="0" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; min-width:320px; flex:0 0 320px; cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+          <iframe
+            src="https://www.youtube.com/embed/trIZD2Lwe4s?si=wIkpTjN2aVDXjxPC"
+            title="Castaway Crew Desktop Demo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            style="width:100%;height:180px;border-radius:8px 8px 0 0;pointer-events:none;">
+          </iframe>
+          <div style="padding:1rem;width:100%;">
+            <h4 style="margin:0 0 .5rem 0;color:#00ffcc;">Castaway Crew Desktop Demo</h4>
+            <p style="color:#aaa;font-size:.95rem;">Bold design, built to mesmerize</p>
           </div>
-          <em>Insights on building and scaling.</em>
+        </div>
+        <div class="carousel-card" data-type="video" data-src="https://www.youtube.com/embed/eJlnI9NCQuU?si=-gZXhg1msHeQkPuh" tabindex="0" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; min-width:320px; flex:0 0 320px; cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+          <iframe
+            src="https://www.youtube.com/embed/eJlnI9NCQuU?si=-gZXhg1msHeQkPuh"
+            title="Castaway Crew Mobile Demo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            style="width:100%;height:180px;border-radius:8px 8px 0 0;pointer-events:none;">
+          </iframe>
+          <div style="padding:1rem;width:100%;">
+            <h4 style="margin:0 0 .5rem 0;color:#00ffcc;">Castaway Crew Mobile Demo</h4>
+            <p style="color:#aaa;font-size:.95rem;">Base-Level Demo</p>
+            <a href="https://www.castawaycrewmn.com/" target="_blank" rel="noopener noreferrer" class="footer-cta-text" style="color:#00ffcc;">Visit Castaway Crew →</a>
+          </div>
+        </div>
+        <div class="carousel-card" data-type="video" data-src="https://www.youtube.com/embed/ArMIzD2MoeY?si=msg7G9dYaYRLl4DG" tabindex="0" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; min-width:320px; flex:0 0 320px; cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+          <iframe
+            src="https://www.youtube.com/embed/ArMIzD2MoeY?si=msg7G9dYaYRLl4DG"
+            title="EaZy Visuals Website Demo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            style="width:100%;height:180px;border-radius:8px 8px 0 0;pointer-events:none;">
+          </iframe>
+          <div style="padding:1rem;width:100%;">
+            <h4 style="margin:0 0 .5rem 0;color:#00ffcc;">EaZy Visuals Website Demo</h4>
+            <p style="color:#aaa;font-size:.95rem;">A showcase of dynamic web design.</p>
+            <a href="https://www.eazy-visuals.com/" target="_blank" rel="noopener noreferrer" class="footer-cta-text" style="color:#00ffcc;">Visit EaZy Visuals →</a>
+          </div>
         </div>
       </div>
-
-      <!-- EaZy Visuals Demo Card -->
-      <div class="card">
-        <strong>EaZy Visuals Website Demo</strong><br>
-        <div class="video-box">
-          <div class="video-container">
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/ArMIzD2MoeY?si=msg7G9dYaYRLl4DG"
-              title="EaZy Visuals Website Demo"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <em>A showcase of dynamic web design.</em><br>
-          <a
-            href="https://www.eazy-visuals.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="footer-cta-text">
-            Visit EaZy Visuals →
-          </a>
-        </div>
-      </div>
-
+      <button class="carousel-arrow arrow-right" aria-label="Next" style="position:absolute;right:-40px;top:50%;transform:translateY(-50%);z-index:2;background:none;border:none;font-size:2rem;color:#00ffcc;cursor:pointer;">&#8594;</button>
     </div>
+
+    <style>
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-track { -ms-overflow-style: none; scrollbar-width: none; }
+    @media (max-width: 600px) {
+      .carousel-container {
+        max-width: 100vw !important;
+        padding: 0 0.5rem;
+        overflow: visible !important;
+      }
+      .carousel-track {
+        gap: 0.5rem !important;
+      }
+      .carousel-card {
+        min-width: 92vw !important;
+        max-width: 98vw !important;
+        padding: 0 !important;
+      }
+      .carousel-arrow {
+        font-size: 2.2rem !important;
+        top: 45% !important;
+        /* Move arrows inside the container */
+        left: 4px !important;
+        right: 4px !important;
+        z-index: 10 !important;
+      }
+      .carousel-arrow.arrow-left {
+        left: 4px !important;
+        right: auto !important;
+      }
+      .carousel-arrow.arrow-right {
+        right: 4px !important;
+        left: auto !important;
+      }
+    }
+    </style>
   </section>
-  {# ──────────────────────────────────────────────────────────────── #}
-  {# LIVE DEMOS SECTION (FEATURED PROMINENTLY)                      #}
-  {# ──────────────────────────────────────────────────────────────── #}
-  <section class="case-studies live-demos" data-aos="fade-in" data-aos-duration="800">
-    <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Live Demos">
-      Live Demos
+
+  <!-- Modal for video playback -->
+  <div id="videoModal" class="modal" tabindex="-1" style="display:none;">
+    <div class="modal-content" style="background:#1e1e1e; border-radius:12px; padding:1.5rem; max-width:700px; margin:auto; position:relative;">
+      <span class="close-modal" style="position:absolute;top:10px;right:20px;font-size:2rem;cursor:pointer;color:#00ffcc;">&times;</span>
+      <h4 id="modalTitle" style="color:#00ffcc;margin-bottom:1rem;"></h4>
+      <div id="modalMediaContainer" style="width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;">
+        <iframe id="modalVid" width="100%" height="400" style="border-radius:8px;display:none;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <img id="modalImg" style="max-width:100%;max-height:400px;display:none;border-radius:8px;" />
+      </div>
+      <div id="modalCaption" style="color:#aaa;margin-top:1rem;"></div>
+      <div style="margin-top:1rem;text-align:center;">
+        <button class="carousel-arrow arrow-left" aria-label="Previous" style="background:none;border:none;font-size:2rem;color:#00ffcc;cursor:pointer;margin-right:2rem;">&#8592;</button>
+        <button class="carousel-arrow arrow-right" aria-label="Next" style="background:none;border:none;font-size:2rem;color:#00ffcc;cursor:pointer;">&#8594;</button>
+      </div>
+    </div>
+    <div id="modalOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:-1;"></div>
+  </div>
+
+  <!-- ─── CTA: SEE ENGINEERING & APP DEMOS ─────────────────────────────── -->
+  <section class="portfolio-intro" data-aos="fade-in" data-aos-duration="1000" style="padding:4rem 1rem;">
+    <h2 data-aos="fade-up" data-aos-delay="1000" class="glitch" data-text="Want to See Our Engineering in Action?" style="text-align:center;">
+      Want to See Our Engineering in Action?
     </h2>
-    <p data-aos="fade-up" data-aos-delay="200">
-      Click below to explore our two flagship sites in their fully live form.
+    <p data-aos="fade-up" data-aos-delay="1100" style="max-width:640px; margin:0 auto 2rem; text-align:center; color:#ddd; line-height:1.5;">
+      Curious about our workflow automation, custom tools, and rapid prototyping?  
+      <a href="/app-demos" style="color:#00ffcc; text-decoration:underline;">Check out our interactive app demos</a> to see real-time prototypes and engineering solutions built by VibeOps.
     </p>
-
-    <div class="grid" data-aos="fade-up" data-aos-delay="300">
-
-      {# Castaway Crew MN Demo Card #}
-      <div class="card live-demo-card">
-        <h3>Castaway Crew MN</h3>
-        <p>
-          A fully responsive, desktop-quality site built to showcase community events, services, and team updates.  
-          Check it out live.
-        </p>
-        <a href="https://www.castawaycrewmn.com/" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn primary live-demo-btn">
-          Visit Castaway Crew MN →
-        </a>
-      </div>
-
-      {# EaZy Visuals Demo Card #}
-      <div class="card live-demo-card">
-        <h3>EaZy Visuals</h3>
-        <p>
-          A dynamic portfolio showcasing animated visuals, custom galleries, and seamless UX.  
-          Experience it live now.
-        </p>
-        <a href="https://www.eazy-visuals.com/" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn primary live-demo-btn">
-          Visit EaZy Visuals →
-        </a>
-      </div>
-
+    <div style="text-align:center;">
+      <a href="/app-demos" class="btn primary" style="min-width:200px;">Explore App Demos →</a>
     </div>
   </section>
 
+  <!-- ─── FINAL CTA ─────────────────────────────────────────────── -->
+  <section class="custom-plan" data-aos="fade-up" data-aos-delay="1300" style="background:#1e1e1e; border:1px solid #444; border-radius:8px; padding:2rem; margin-top:2rem; text-align:center;">
+    <h3 class="glitch" data-text="Let’s Build Your Custom Tool →" style="color:#00ffcc;">Let’s Build Your Custom Vibe →</h3>
+    <p style="color:#ddd;">
+      Strategy huddles for founders who ship fast, flex hard, and vibe always.
+    </p>
+    <a href="/booking" class="btn primary" style="min-width:200px;">Let’s Build Your Custom Tool →</a>
+  </section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Carousel logic
+  const cards = Array.from(document.querySelectorAll('.carousel-card'));
+  const track = document.querySelector('.carousel-track');
+  const leftBtn = document.querySelector('.carousel-arrow.arrow-left');
+  const rightBtn = document.querySelector('.carousel-arrow.arrow-right');
+  let currentIndex = 0;
+  const step = 340; // card width + gap
+
+  // Modal logic
+  const modal = document.getElementById('videoModal');
+  const modalVid = document.getElementById('modalVid');
+  const modalImg = document.getElementById('modalImg');
+  const modalCaption = document.getElementById('modalCaption');
+  const modalTitle = document.getElementById('modalTitle');
+  const overlay = document.getElementById('modalOverlay');
+
+  // Detailed captions for each card
+  const detailedCaptions = [
+    `Bold design, built to mesmerize. <a href="https://www.castawaycrewmn.com/" target="_blank" rel="noopener noreferrer" style="color:#00ffcc;text-decoration:underline;">Visit Castaway Crew →</a>`,
+    `Base-Level Demo. <a href="https://www.castawaycrewmn.com/" target="_blank" rel="noopener noreferrer" style="color:#00ffcc;text-decoration:underline;">Visit Castaway Crew →</a>`,
+    `A showcase of dynamic web design. <a href="https://www.eazy-visuals.com/" target="_blank" rel="noopener noreferrer" style="color:#00ffcc;text-decoration:underline;">Visit EaZy Visuals →</a>`
+  ];
+
+  function openModal(index) {
+    currentIndex = index;
+    const card = cards[index];
+    const type = card.getAttribute('data-type');
+    const src = card.getAttribute('data-src');
+    const title = card.querySelector('h4').textContent;
+
+    modalImg.style.display = 'none';
+    modalVid.style.display = 'none';
+
+    if (type === 'image') {
+      modalImg.src = src;
+      modalImg.style.display = 'block';
+    } else if (type === 'video') {
+      modalVid.src = src;
+      modalVid.style.display = 'block';
+    }
+
+    modalCaption.innerHTML = detailedCaptions[index];
+    modalTitle.textContent = title;
+    modal.style.display = 'block';
+    document.body.classList.add('modal-open');
+  }
+
+  function closeModal() {
+    modal.style.display = 'none';
+    modalVid.src = '';
+    modalImg.src = '';
+    document.body.classList.remove('modal-open');
+  }
+
+  function navigateModal(direction, event) {
+    event?.stopPropagation();
+    currentIndex = (currentIndex + direction + cards.length) % cards.length;
+    openModal(currentIndex);
+  }
+
+  // Card click opens modal
+  cards.forEach((card, index) => {
+    card.addEventListener('click', () => openModal(index));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') openModal(index);
+    });
+  });
+
+  // Modal navigation
+  document.querySelector('#videoModal .arrow-left').addEventListener('click', (e) => navigateModal(-1, e));
+  document.querySelector('#videoModal .arrow-right').addEventListener('click', (e) => navigateModal(1, e));
+  document.querySelector('#videoModal .close-modal').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => e.stopPropagation());
+
+  // Keyboard navigation for modal
+  document.addEventListener('keydown', (e) => {
+    if (modal.style.display === 'block') {
+      switch (e.key) {
+        case 'ArrowLeft': navigateModal(-1, e); break;
+        case 'ArrowRight': navigateModal(1, e); break;
+        case 'Escape': closeModal(); break;
+      }
+    }
+  });
+
+  // Carousel scroll navigation
+  leftBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    track.scrollBy({ left: -step, behavior: 'smooth' });
+  });
+  rightBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    track.scrollBy({ left: step, behavior: 'smooth' });
+  });
+</script>
 {% endblock %}
