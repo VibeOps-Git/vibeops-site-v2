@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Portfolio Demos – VibeOps{% endblock %}
+
+{% block content %}
+<section
+  class="app-demos-page"
+  data-aos="fade-in"
+  data-aos-duration="1000"
+  style="padding: 4rem 1rem;"
+>
+  <!-- Main Headline -->
+  <h2
+    data-aos="fade-up"
+    data-aos-delay="100"
+    class="glitch"
+    data-text="Showcase Solutions"
+    style="text-align:center; margin-bottom:1rem;"
+  >
+    Showcase Solutions
+  </h2>
+
+  <!-- Intro Copy -->
+  <p
+    data-aos="fade-up"
+    data-aos-delay="200"
+    style="max-width:640px; margin:0 auto 2.5rem; text-align:center; line-height:1.5;"
+  >
+    Ready to see VibeOps code in action? These are live portfolio demos -   
+    examples of the sort of custom solutions we can offer your business.    
+    <br><br>
+    <small><strong>Note:</strong> All demos run in-browser and reset on page reload.</small>
+  </p>
+
+  <!-- Demo Cards Grid -->
+  <div
+    class="demo-grid"
+    data-aos="fade-up"
+    data-aos-delay="300"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+      gap:1.5rem;
+      max-width:900px;
+      margin:0 auto;
+    "
+  >
+    <!-- Pipeline Estimator Demo -->
+    <div
+      class="demo-card"
+      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem;"
+      data-aos="fade-up"
+      data-aos-delay="350"
+    >
+      <h3
+        class="glitch"
+        data-text="Pipeline Estimator"
+        style="margin-bottom:.5rem; color:#00ffcc;"
+      >
+        Pipeline Estimator
+      </h3>
+      <p style="font-size:.95rem; line-height:1.4; margin-bottom:1rem; color:#ddd;">
+        Live demo of our in-house pipeline-cost engine: enter length, diameter, terrain,  
+        and watch a Bill of Materials & cost breakdown compute instantly.
+      </p>
+      <a
+        href="/pipeline-estimator"
+        class="btn primary"
+        style="width:100%; text-align:center;"
+      >
+        Explore Demo →
+      </a>
+    </div>
+
+    <!-- Construction Tracker Demo -->
+    <div
+      class="demo-card"
+      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem;"
+      data-aos="fade-up"
+      data-aos-delay="400"
+    >
+      <h3
+        class="glitch"
+        data-text="Construction Tracker"
+        style="margin-bottom:.5rem; color:#00ffcc;"
+      >
+        Project Tracker
+      </h3>
+      <p style="font-size:.95rem; line-height:1.4; margin-bottom:1rem; color:#ddd;">
+        Prototype of our Gantt + S-curve engine: define tasks, load sample data,  
+        and spin up interactive charts to track progress & costs in real time.
+      </p>
+      <a
+        href="/construction-tracker"
+        class="btn primary"
+        style="width:100%; text-align:center;"
+      >
+        Explore Demo →
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer CTA -->
+  <p
+    data-aos="fade-up"
+    data-aos-delay="450"
+    style="text-align:center; margin-top:3rem; line-height:1.5;"
+  >
+    Imagine this power and customizability built for your exact workflow... 
+    <br><br>
+    <a href="/booking" class="btn secondary" style="margin-left:.5rem;">
+      Let’s Build Your Custom Tool →
+    </a>
+  </p>
+</section>
+{% endblock %}
