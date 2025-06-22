@@ -3399,3 +3399,118 @@ header.site-header {
   
   
   
+/* ...existing code... */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.footer-links .footer-link {
+  color: #00ffcc;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.footer-links .footer-link:hover {
+  background: #00ffcc22;
+  color: #fff;
+}
+/* ...existing code... */
+
+/* styles.css */
+
+/* Desktop dropdown */
+.dropdown-menu.desktop-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #111; /* Adjust to match your theme */
+  border: 1px solid #00ffcc; /* VibeOps theme color */
+  border-radius: 4px;
+  padding: 8px 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-menu.desktop-dropdown.open {
+  display: block;
+}
+
+/* Mobile dropdown */
+.nav-apps-mobile .dropdown-menu {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #111;
+}
+
+.nav-apps-mobile .dropdown-menu.open {
+  display: block;
+}
+
+/* General dropdown item styling */
+.dropdown-menu li {
+  padding: 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a:focus {
+  background: #00ffcc;
+  color: #111;
+}
+
+/* Ensure nav-menu is responsive */
+.nav-menu {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Adjust based on header height */
+    left: 0;
+    width: 100%;
+    background: #111;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-apps-desktop {
+    display: none; /* Hide desktop dropdown on mobile */
+  }
+
+  .nav-apps-mobile {
+    display: block; /* Show mobile dropdown on mobile */
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-apps-mobile {
+    display: none; /* Hide mobile dropdown on desktop */
+  }
+
+  .nav-apps-desktop {
+    display: block;
+  }
+}
+
