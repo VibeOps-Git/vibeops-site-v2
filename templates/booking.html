@@ -24,17 +24,14 @@
     Book a Free Consultation
   </h2>
   <p data-aos="fade-up" data-aos-delay="200">
-    Schedule a 30-minute free consultation to elevate your web design project.
-    We’ll discuss your website goals, optimize your design timeline with Gantt
-    charts, and explore progress tracking with S-curves using our app. Be ready
-    to share your project challenges and goals. After booking, you’ll see a
-    confirmation page with options to schedule another consultation or explore
-    our project tracker.
+    Lock in a free 30-minute strategy session with our AI-powered ops crew.  
+    We’ll nail your site goals, map out a custom plan,
+    and get you set up with the tools to crush your project.
+    Bring your biggest challenge, we’ll bring the plan.  
   </p>
 
   <div class="calendly-container" data-aos="fade-up" data-aos-delay="300">
     <div
-      id="calendly-widget"
       class="calendly-inline-widget"
       data-url="https://calendly.com/vibeops-info/30min"
       style="min-width:320px; height:700px;"
@@ -42,25 +39,20 @@
   </div>
 
   <div class="custom-plan" data-aos="fade-up" data-aos-delay="400">
-    <h3>Ready to Start?</h3>
+    <h3>Prefer Email?</h3>
     <p>
-      After booking, explore our project tracker to create Gantt charts and
-      manage your timeline.
+      Shoot us a quick note and we’ll lock in a 15–20 min call on your terms.
     </p>
-    <a href="/construction-tracker" class="btn primary">Go to Project Tracker</a>
+    <a
+      href="mailto:sales@vibeops.ca?cc=ceo@vibeops.ca&subject=Let’s%20Hack%20the%20Ops!&body=Hey%20VibeOps%20Team%2C%0A%0AI’d%20love%20to%20book%20a%2015–20%20min%20strategy%20huddle%20to%20skyrocket%20our%20AI%20automation%20and%20engineering%20game.%20What%20times%20work%20for%20you%3F%0A%0ACheers%2C%0A[Your%20Name]%20%7C%20[Company]"
+      class="btn primary"
+    >
+      Connect via Email
+    </a>
   </div>
 </section>
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    if (window.Calendly) {
-      Calendly.initInlineWidget({
-        url: "https://calendly.com/vibeops-info/30min",
-        parentElement: document.getElementById("calendly-widget"),
-      });
-    }
-  });
-</script>
+<!-- No Calendly JS needed here -->
 {% endblock %}
