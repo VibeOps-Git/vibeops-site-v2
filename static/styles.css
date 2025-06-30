@@ -1234,7 +1234,7 @@ cite {
     /* Mobile navigation menu (re-positioned for fixed header) */
     .nav-menu {
       position: fixed;
-        top: 100px; /* Height of fixed header */
+      top: 100px; /* Height of fixed header */
       left: 0;
       right: 0;
       background: #111;
@@ -1266,14 +1266,6 @@ cite {
       padding: 15px 0;
         font-size: 1.2rem;
     }
-
-    .nav-menu a:hover { /* Apply hover styles here for mobile */
-         background: #000000; /* Match the desktop hover background */
-         box-shadow: 0 0 16px rgba(0, 255, 204, 0.4); /* Match desktop glow */
-         border-radius: 10px; /* Match desktop border-radius */
-         padding: 10px; /* Keep the padding */
-         margin: -10px; /* Counteract the padding to prevent layout shift */
-     }
 
     /* Adjust main content padding to account for fixed header */
      main {
@@ -3487,7 +3479,7 @@ header.site-header {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 60px; /* Adjust based on header height */
+    top: 100px; /* Adjust based on header height */
     left: 0;
     width: 100%;
     background: #111;
