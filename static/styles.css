@@ -542,10 +542,11 @@ cite {
 
 .team-grid {
     display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
+    justify-content: center;
 }
 
 .team-card {
@@ -1305,6 +1306,7 @@ cite {
     /* Team page adjustments */
     .team-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        justify-content: center;
     }
 
     .team-image {
@@ -1761,11 +1763,11 @@ body.nav-menu-active .chatbot-toggle {
     display: block;
 }
 
-/* Make sure your site’s navbar/header sits above the modal */
+/* Make sure your site's navbar/header sits above the modal */
 .navbar,
 header.site-header {
   position: relative;
-  z-index: 3000; /* higher than the modal’s z-index */
+  z-index: 3000; /* higher than the modal's z-index */
 }
 
 /* Modal overlay: fixed, full‐screen, centered flex container */
@@ -1782,12 +1784,12 @@ header.site-header {
   z-index: 2000;               /* sits below the navbar (z-index:3000) */
 }
 
-/* When “active” class is applied, show the modal as a flexbox */
+/* When "active" class is applied, show the modal as a flexbox */
 #gantt-modal.active {
   display: flex;
 }
 
-/* The “box” inside the overlay */
+/* The "box" inside the overlay */
 #gantt-modal .modal-content {
   position: relative;   /* so the close button can be absolute INSIDE this box */
   background: #1e1e1e;
@@ -1801,7 +1803,7 @@ header.site-header {
   z-index: 2100; /* sits above the overlay, but still under navbar if needed */
 }
 
-/* The “×” in top‐right of modal-content */
+/* The "×" in top‐right of modal-content */
 #gantt-modal .close-modal {
   position: absolute;
   top: 12px;
@@ -1809,7 +1811,7 @@ header.site-header {
   font-size: 28px;
   color: #ccc;
   cursor: pointer;
-  z-index: 2200; /* above .modal-content’s other children */
+  z-index: 2200; /* above .modal-content's other children */
 }
 
 
@@ -3239,15 +3241,15 @@ header.site-header {
     }
     
     /* Give each header a base min-width so that table overflows instead of overlapping */
-    #tasks-table th:nth-child(1) { min-width: 80px; }  /* “Task Name” */
-    #tasks-table th:nth-child(2) { min-width: 50px; }  /* “Phase” */
-    #tasks-table th:nth-child(3) { min-width: 80px; }  /* “Start Date” */
-    #tasks-table th:nth-child(4) { min-width: 90px; }  /* “Duration” */
-    #tasks-table th:nth-child(5) { min-width: 100px; } /* “Predecessors” */
-    #tasks-table th:nth-child(6) { min-width: 70px; }  /* “Crew ID” */
-    #tasks-table th:nth-child(7) { min-width: 60px; }  /* “Personnel” */
-    #tasks-table th:nth-child(8) { min-width: 70px; }  /* “Equipment” */
-    #tasks-table th:nth-child(9) { min-width: 80px; }  /* “Actions” */
+    #tasks-table th:nth-child(1) { min-width: 80px; }  /* "Task Name" */
+    #tasks-table th:nth-child(2) { min-width: 50px; }  /* "Phase" */
+    #tasks-table th:nth-child(3) { min-width: 80px; }  /* "Start Date" */
+    #tasks-table th:nth-child(4) { min-width: 90px; }  /* "Duration" */
+    #tasks-table th:nth-child(5) { min-width: 100px; } /* "Predecessors" */
+    #tasks-table th:nth-child(6) { min-width: 70px; }  /* "Crew ID" */
+    #tasks-table th:nth-child(7) { min-width: 60px; }  /* "Personnel" */
+    #tasks-table th:nth-child(8) { min-width: 70px; }  /* "Equipment" */
+    #tasks-table th:nth-child(9) { min-width: 80px; }  /* "Actions" */
    
     #progress-table td,
     #progress-table th {
