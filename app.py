@@ -1,6 +1,6 @@
 # app.py
 
-from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response, send_file
 import os, logging
 from dotenv import load_dotenv
 from datetime import datetime
@@ -218,6 +218,64 @@ def struct_wise():
     if request.method == 'POST':
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
+
+@app.route('/ai-report-generator', methods=['GET', 'POST'])
+def ai_report_generator():
+    """VibeOps-branded AI-powered report generator"""
+    if request.method == 'POST':
+        try:
+            report_type = request.form.get('report_type')
+            company_name = request.form.get('company_name')
+            project_context = request.form.get('project_context', '')
+            if not report_type or not company_name:
+                flash('Please fill in all required fields', 'error')
+                return render_template('ai_report_generator.html')
+            from ai_report_generator import create_vibeops_report
+            filename = create_vibeops_report(
+                report_type=report_type,
+                company_name=company_name,
+                project_context=project_context
+            )
+            return send_file(
+                filename,
+                as_attachment=True,
+                download_name=filename,
+                mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            )
+        except Exception as e:
+            flash(f'Error generating report: {str(e)}', 'error')
+            logger.error(f"Error generating VibeOps report: {e}")
+            return render_template('ai_report_generator.html')
+    return render_template('ai_report_generator.html')
+
+@app.route('/generate-sample-reports')
+def generate_sample_reports():
+    """Generate sample reports for demonstration"""
+    try:
+        from ai_report_generator import generate_sample_reports
+        generated_files = generate_sample_reports()
+        
+        # Create a zip file with all generated reports
+        import zipfile
+        import tempfile
+        
+        zip_filename = f'sample_reports_{datetime.now().strftime("%Y%m%d_%H%M%S")}.zip'
+        
+        with zipfile.ZipFile(zip_filename, 'w') as zipf:
+            for file_info in generated_files:
+                zipf.write(file_info['filename'], file_info['filename'])
+        
+        return send_file(
+            zip_filename,
+            as_attachment=True,
+            download_name=zip_filename,
+            mimetype='application/zip'
+        )
+        
+    except Exception as e:
+        flash(f'Error generating sample reports: {str(e)}', 'error')
+        logger.error(f"Error generating sample reports: {e}")
+        return redirect(url_for('ai_report_generator'))
 
 @app.route('/about')
 def about():
