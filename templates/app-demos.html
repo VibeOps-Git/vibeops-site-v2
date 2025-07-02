@@ -1,37 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Portfolio Demos – VibeOps{% endblock %}
+{% block title %}Custom Solutions Portfolio – VibeOps{% endblock %}
 
 {% block content %}
 <section
-  class="app-demos-page"
+  class="solutions-portfolio"
   data-aos="fade-in"
   data-aos-duration="1000"
   style="padding: 4rem 1rem;"
 >
-  <!-- Main Headline -->
+  <!-- Hero Section -->
   <h2
+    class="glitch"
+    data-text="Proven Solutions, Custom-Built"
     data-aos="fade-up"
     data-aos-delay="100"
-    class="glitch"
-    data-text="Showcase Solutions"
     style="text-align:center; margin-bottom:1rem;"
   >
-    Showcase Solutions
+    Proven Solutions, Custom-Built
   </h2>
-
-  <!-- Intro Copy -->
   <p
     data-aos="fade-up"
     data-aos-delay="200"
-    style="max-width:640px; margin:0 auto 2.5rem; text-align:center; line-height:1.5;"
+    style="max-width:640px; margin:0 auto 2rem; text-align:center; line-height:1.6;"
   >
-    Ready to see VibeOps code in action? These are live portfolio demos -   
-    examples of the sort of custom solutions we can offer your business.    
-    <br><br>
-    <small><strong>Note:</strong> All demos run in-browser and reset on page reload.</small>
+    Trusted by leading general contractors, engineering firms, and defense agencies, these live demos showcase the types of tools we design and deliver.  
+    Tweak inputs, watch real-time insights, and imagine this power fine-tuned to your workflow.
   </p>
 
-  <!-- Demo Cards Grid -->
+  <!-- Demos Grid -->
   <div
     class="demo-grid"
     data-aos="fade-up"
@@ -44,72 +40,103 @@
       margin:0 auto;
     "
   >
-    <!-- Pipeline Estimator Demo -->
+    <!-- 1. Automated Reporting Engine -->
     <div
       class="demo-card"
-      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem;"
       data-aos="fade-up"
       data-aos-delay="350"
+      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .2s;"
+      onmouseover="this.style.transform='translateY(-5px)';"
+      onmouseout="this.style.transform='translateY(0)';"
     >
       <h3
         class="glitch"
-        data-text="Pipeline Estimator"
+        data-text="Instant AI Reporting"
         style="margin-bottom:.5rem; color:#00ffcc;"
       >
-        Pipeline Estimator
+        Instant AI Reporting
       </h3>
-      <p style="font-size:.95rem; line-height:1.4; margin-bottom:1rem; color:#ddd;">
-        Live demo of our in-house pipeline-cost engine: enter length, diameter, terrain,  
-        and watch a Bill of Materials & cost breakdown compute instantly.
+      <p style="color:#ddd; font-size:.95rem; line-height:1.4; margin-bottom:1rem;">
+        Eliminate 90% of manual reporting: feed in your project data and our AI crafts compliance-grade Word/PDF briefs.
+      </p>
+      <a
+        href="/ai-report-generator"
+        class="btn primary"
+        style="width:100%; text-align:center;"
+      >
+        Try the Demo →
+      </a>
+    </div>
+
+    <!-- 2. Pipeline Cost Estimator -->
+    <div
+      class="demo-card"
+      data-aos="fade-up"
+      data-aos-delay="400"
+      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .2s;"
+      onmouseover="this.style.transform='translateY(-5px)';"
+      onmouseout="this.style.transform='translateY(0)';"
+    >
+      <h3
+        class="glitch"
+        data-text="Rapid Cost Estimation"
+        style="margin-bottom:.5rem; color:#00ffcc;"
+      >
+        Rapid Cost Estimation
+      </h3>
+      <p style="color:#ddd; font-size:.95rem; line-height:1.4; margin-bottom:1rem;">
+        Compress days of quoting into seconds: enter length, diameter & terrain to get a detailed BOM and cost-per-mile breakdown. 
       </p>
       <a
         href="/pipeline-estimator"
         class="btn primary"
         style="width:100%; text-align:center;"
       >
-        Explore Demo →
+        Try the Demo →
       </a>
     </div>
 
-    <!-- Construction Tracker Demo -->
+    <!-- 3. Project Tracker -->
     <div
       class="demo-card"
-      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem;"
       data-aos="fade-up"
-      data-aos-delay="400"
+      data-aos-delay="450"
+      style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .2s;"
+      onmouseover="this.style.transform='translateY(-5px)';"
+      onmouseout="this.style.transform='translateY(0)';"
     >
       <h3
         class="glitch"
-        data-text="Construction Tracker"
+        data-text="Live Project Tracking"
         style="margin-bottom:.5rem; color:#00ffcc;"
       >
-        Project Tracker
+        Live Project Tracking
       </h3>
-      <p style="font-size:.95rem; line-height:1.4; margin-bottom:1rem; color:#ddd;">
-        Prototype of our Gantt + S-curve engine: define tasks, load sample data,  
-        and spin up interactive charts to track progress & costs in real time.
+      <p style="color:#ddd; font-size:.95rem; line-height:1.4; margin-bottom:1rem;">
+        Gain 24/7 visibility with interactive Gantt charts, S-curve analytics, and resource dashboards.
       </p>
       <a
         href="/construction-tracker"
         class="btn primary"
         style="width:100%; text-align:center;"
       >
-        Explore Demo →
+        Try the Demo →
       </a>
     </div>
   </div>
 
-  <!-- Footer CTA -->
-  <p
+  <!-- Final CTA -->
+  <div
     data-aos="fade-up"
-    data-aos-delay="450"
-    style="text-align:center; margin-top:3rem; line-height:1.5;"
+    data-aos-delay="500"
+    style="text-align:center; margin-top:3rem;"
   >
-    Imagine this power and customizability built for your exact workflow... 
-    <br><br>
-    <a href="/booking" class="btn secondary" style="margin-left:.5rem;">
-      Let’s Build Your Custom Tool →
+    <p style="max-width:640px; margin:0 auto 1rem; line-height:1.5;">
+      Limited pilot spots available this quarter: secure your free strategy session and see how a bespoke tool can drive your next project to success.
+    </p>
+    <a href="/booking" class="btn secondary">
+      Book Your Free Strategy Huddle →
     </a>
-  </p>
+  </div>
 </section>
 {% endblock %}
