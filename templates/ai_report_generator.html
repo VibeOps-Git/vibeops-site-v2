@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}VibeOps AI Report Generator{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --vibeops-accent: #00ffcc;
+    --vibeops-accent-dark: #00ccaa;
+    --vibeops-bg: #0e0e0e;
+    --vibeops-card-bg: #181c1f;
+    --vibeops-header-bg: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+    --vibeops-border: #222;
+    --vibeops-shadow: 0 4px 32px rgba(0,255,204,0.08);
+    --vibeops-radius: 18px;
+    --vibeops-font: 'Inter', 'Arial', sans-serif;
+    --vibeops-heading: 'Orbitron', 'Montserrat', Arial, sans-serif;
+}
+
+.vibeops-ai-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1rem 3rem 1rem;
+}
+
+.vibeops-ai-hero {
+    background: var(--vibeops-header-bg);
+    color: #fff;
+    border-radius: 0 0 var(--vibeops-radius) var(--vibeops-radius);
+    box-shadow: var(--vibeops-shadow);
+    margin-bottom: 2.5rem;
+    padding: 3.5rem 1rem 2.5rem 1rem;
+    text-align: center;
+}
+
+.vibeops-ai-title {
+    font-family: var(--vibeops-heading);
+    font-size: 2.7rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+    color: var(--vibeops-accent);
+    text-shadow: 0 2px 24px rgba(0,255,204,0.12);
+    border-bottom: 3px solid var(--vibeops-accent);
+    display: inline-block;
+    padding-bottom: 0.25rem;
+    background: linear-gradient(90deg, #00ffcc 0%, #2a5298 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.vibeops-ai-lead {
+    font-size: 1.25rem;
+    font-weight: 400;
+    opacity: 0.95;
+    font-family: var(--vibeops-font);
+    margin-bottom: 0;
+}
+
+.vibeops-ai-card {
+    background: var(--vibeops-card-bg);
+    border-radius: var(--vibeops-radius);
+    box-shadow: 0 2px 32px rgba(0,255,204,0.10);
+    border: 1.5px solid var(--vibeops-border);
+    margin-bottom: 2.5rem;
+    padding: 0;
+}
+
+.vibeops-ai-card-header {
+    background: var(--vibeops-header-bg);
+    color: #fff;
+    border-radius: var(--vibeops-radius) var(--vibeops-radius) 0 0;
+    padding: 1.5rem 2rem 1.25rem 2rem;
+    font-family: var(--vibeops-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--vibeops-accent-dark);
+}
+
+.vibeops-ai-card-body {
+    padding: 2.5rem 2rem 2rem 2rem;
+    background: var(--vibeops-bg);
+    border-radius: 0 0 var(--vibeops-radius) var(--vibeops-radius);
+}
+
+.vibeops-ai-form-label {
+    font-weight: 700;
+    color: var(--vibeops-accent);
+    font-family: var(--vibeops-font);
+    margin-bottom: 0.5rem;
+}
+
+.vibeops-ai-form-control, .vibeops-ai-form-select {
+    width: 100%;
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.5rem;
+    border: 1.5px solid var(--vibeops-border);
+    background: #181c1f;
+    color: #fff;
+    font-size: 1.08rem;
+    font-family: var(--vibeops-font);
+    margin-bottom: 1.2rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.vibeops-ai-form-control:focus, .vibeops-ai-form-select:focus {
+    border-color: var(--vibeops-accent);
+    box-shadow: 0 0 0 2px rgba(0,255,204,0.15);
+    outline: none;
+}
+
+.vibeops-ai-btn {
+    background: var(--vibeops-header-bg);
+    color: #fff;
+    font-weight: 800;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.85rem 2.2rem;
+    font-size: 1.15rem;
+    font-family: var(--vibeops-heading);
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 16px rgba(0,255,204,0.10);
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+    margin-top: 0.5rem;
+}
+.vibeops-ai-btn:hover {
+    background: linear-gradient(90deg, #2a5298 0%, #00ffcc 100%);
+    color: #181c1f;
+    box-shadow: 0 4px 24px rgba(0,255,204,0.18);
+}
+
+.vibeops-ai-section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--vibeops-accent);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--vibeops-heading);
+    letter-spacing: 0.5px;
+}
+
+.vibeops-ai-list {
+    background: #181c1f;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 6px rgba(0,255,204,0.04);
+    padding: 1.1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--vibeops-border);
+}
+.vibeops-ai-list-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.08rem;
+    padding: 0.5rem 0;
+    border: none;
+    background: none;
+    color: #e6f9f7;
+    font-family: var(--vibeops-font);
+}
+.vibeops-ai-list-item i {
+    color: var(--vibeops-accent);
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+}
+@media (max-width: 768px) {
+    .vibeops-ai-title { font-size: 2rem; }
+    .vibeops-ai-card-body { padding: 1.2rem; }
+    .vibeops-ai-section-title { font-size: 1.1rem; }
+    .vibeops-ai-card-header { font-size: 1.1rem; padding: 1rem 1.2rem; }
+}
+.vibeops-ai-error-message {
+    background: rgba(255, 60, 60, 0.12);
+    color: #ff4d4d;
+    border: 1.5px solid #ff4d4d;
+    border-radius: 0.75rem;
+    font-family: var(--vibeops-font);
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 2px 12px rgba(255, 60, 60, 0.08);
+    letter-spacing: 0.2px;
+}
+.vibeops-ai-error-message i {
+    color: #ff4d4d;
+    font-size: 1.3rem;
+    margin-right: 0.5rem;
+}
+</style>
+
+<div class="vibeops-ai-container">
+    <div class="vibeops-ai-hero">
+      <h1 class="vibeops-ai-title">Instant, Branded Project Reports</h1>
+      <p class="vibeops-ai-lead">
+        Join <strong>contractors & engineers</strong> who’ve slashed reporting time.  
+        Generate polished, compliance-ready reports in seconds: we use your templates, for less headaches.
+      </p>
+    </div>
+  
+    <div class="vibeops-ai-card">
+      <div class="vibeops-ai-card-header">
+        <i class="fas fa-rocket me-2"></i>Generate Your First Report
+      </div>
+      <div class="vibeops-ai-card-body">
+        {% with messages = get_flashed_messages() %}
+          {% for msg in messages %}
+            <div class="vibeops-ai-error-message">
+              <i class="fas fa-exclamation-circle"></i> {{ msg }}
+            </div>
+          {% endfor %}
+        {% endwith %}
+  
+        <form method="POST" action="{{ url_for('ai_report_generator') }}">
+          <label for="report_type" class="vibeops-ai-form-label">Report Category *</label>
+          <select id="report_type" name="report_type" class="vibeops-ai-form-select" required>
+            <option value="">– Select –</option>
+            <option value="capital_planning">Capital Planning</option>
+            <option value="feasibility_study">Feasibility Study</option>
+            <option value="closeout">Closeout &amp; Handover</option>
+          </select>
+  
+          <label for="company_name" class="vibeops-ai-form-label">Your Organization *</label>
+          <input type="text" id="company_name" name="company_name" class="vibeops-ai-form-control" placeholder="e.g. Acme Construction Co." required>
+  
+          <label for="project_context" class="vibeops-ai-form-label">
+            Project Brief <small>(optional, drives insights)</small>
+          </label>
+          <textarea id="project_context" name="project_context" class="vibeops-ai-form-control" rows="4" placeholder="Scope, goals, challenges…"></textarea>
+  
+          <button type="submit" class="vibeops-ai-btn btn-lg">
+            <i class="fas fa-magic me-2"></i>Generate My Report
+          </button>
+          <p style="font-size:.85rem; opacity:.7; margin-top:.5rem;">No credit card required.</p>
+        </form>
+      </div>
+    </div>
+  
+    <h3 class="vibeops-ai-section-title">What You’ll Get Instantly</h3>
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="vibeops-ai-list">
+          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Branded cover, logo & styling</li>
+          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Executive summary & milestones</li>
+          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Detailed budget & timeline tables</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <ul class="vibeops-ai-list">
+          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>AI-powered analysis & recommendations</li>
+          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Appendices & risk data sections</li>
+          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Instant .DOCX download</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  
