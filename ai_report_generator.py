@@ -58,19 +58,19 @@ class AIReportGenerator:
         logger.debug(f"Generating AI report sections for {report_type}, {company_name}, {project_context}")
         try:
             template = REPORT_TEMPLATES[report_type]
+            table_headers = template['table_headers']
+            # Build prompt for AI to generate all sections and table data
             prompt = f"""
-            {template['ai_prompt']}
-            Company: {company_name}
-            Project Context: {project_context}
-            Please provide a JSON object with the following keys relevant to this report type:
-            - executive_summary: string
-            - recommendations: list of strings
-            - risk_assessment: string (if applicable)
-            - findings: string (if applicable)
-            - project_review: string (if applicable)
-            - financial_analysis: string (if applicable)
-            """
-            logger.debug("Calling OpenAI API for report sections...")
+You are a VibeOps {report_type.replace('_', ' ')} expert. Generate a detailed report for {company_name} with project context: {project_context}.
+Return a JSON object with:
+- executive_summary: string
+- recommendations: list of strings
+- {'risk_assessment: string' if report_type in ['capital_planning', 'feasibility_study'] else 'project_review: string'}
+- {'financial_analysis: string' if report_type == 'capital_planning' else 'findings: string' if report_type == 'feasibility_study' else ''}
+- table_data: list of objects, each with keys {', '.join(table_headers)}
+Ensure table_data is realistic, aligns with the project context, and matches the report type.
+Use a professional, confident tone. Respond in valid JSON only.
+"""
             if self.use_new_client and self.client:
                 response = self.client.chat.completions.create(
                     model="gpt-3.5-turbo",
@@ -79,52 +79,56 @@ class AIReportGenerator:
                         {"role": "user", "content": prompt}
                     ],
                     temperature=0.7,
-                    max_tokens=1800
+                    max_tokens=2000
                 )
-                content = response.choices[0].message.content
-                logger.debug("OpenAI API call successful.")
-                return json.loads(content)
+                content = json.loads(response.choices[0].message.content)
+                # Validate JSON structure
+                required_keys = ['executive_summary', 'recommendations', 'table_data']
+                if report_type == 'capital_planning':
+                    required_keys.extend(['risk_assessment', 'financial_analysis'])
+                elif report_type == 'feasibility_study':
+                    required_keys.extend(['risk_assessment', 'findings'])
+                elif report_type == 'closeout':
+                    required_keys.append('project_review')
+                if not all(key in content for key in required_keys):
+                    raise ValueError("Invalid JSON structure from AI response")
+                # Validate table_data keys
+                for row in content['table_data']:
+                    if not all(h in row for h in table_headers):
+                        raise ValueError("Table row missing required headers")
+                return content
             else:
                 raise Exception("OpenAI client not initialized.")
         except Exception as e:
             logger.error(f"Error generating AI content: {e}")
-            logger.error(traceback.format_exc())
-            logger.info("Falling back to static AI section.")
             return self._get_fallback_sections(report_type)
 
     def _get_fallback_sections(self, report_type: str) -> dict:
-        # Provide fallback for each report type
-        fallback = {}
-        if report_type == "capital_planning":
-            fallback = {
-                "executive_summary": REPORT_TEMPLATES[report_type]["intro"],
-                "recommendations": [
-                    "Prioritize projects with the highest ROI and strategic alignment.",
-                    "Adopt a phased approach to capital deployment to manage risk.",
-                    "Engage stakeholders early to ensure alignment."
-                ],
+        template = REPORT_TEMPLATES[report_type]
+        table_headers = template['table_headers']
+        table_data = [dict(zip(table_headers, row)) for row in template['table_data']]
+        fallback = {
+            "executive_summary": template['intro'],
+            "recommendations": [
+                "Prioritize high-impact initiatives.",
+                "Monitor risks and adjust plans."
+            ],
+            "table_data": table_data
+        }
+        if report_type == 'capital_planning':
+            fallback.update({
                 "risk_assessment": AI_SECTION_FALLBACKS[report_type],
-                "financial_analysis": "Financial projections are within industry norms. Regular reviews recommended."
-            }
-        elif report_type == "feasibility_study":
-            fallback = {
-                "executive_summary": REPORT_TEMPLATES[report_type]["intro"],
-                "findings": AI_SECTION_FALLBACKS[report_type],
-                "recommendations": [
-                    "Proceed with contingency planning.",
-                    "Monitor regulatory changes closely."
-                ],
-                "risk_assessment": AI_SECTION_FALLBACKS[report_type]
-            }
-        elif report_type == "closeout":
-            fallback = {
-                "executive_summary": REPORT_TEMPLATES[report_type]["intro"],
-                "project_review": AI_SECTION_FALLBACKS[report_type],
-                "recommendations": [
-                    "Enhance documentation for future projects.",
-                    "Conduct post-project reviews to capture best practices."
-                ]
-            }
+                "financial_analysis": "Financial projections align with industry standards."
+            })
+        elif report_type == 'feasibility_study':
+            fallback.update({
+                "risk_assessment": AI_SECTION_FALLBACKS[report_type],
+                "findings": "Project is viable with moderate risk."
+            })
+        elif report_type == 'closeout':
+            fallback.update({
+                "project_review": AI_SECTION_FALLBACKS[report_type]
+            })
         return fallback
 
 def insert_simple_field(paragraph, field_code):
@@ -615,10 +619,10 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
         for run in cell_p.runs:
             run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         hdr_cells[i].paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    for idx, row_data in enumerate(template['table_data']):
+    for idx, row_data in enumerate(ai_sections['table_data']):
         row = table.add_row().cells
-        for i, val in enumerate(row_data):
-            row[i].text = str(val)
+        for i, hdr in enumerate(template['table_headers']):
+            row[i].text = str(row_data[hdr])
             row[i].paragraphs[0].style = 'EngBody'
             row[i].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
             if idx % 2 == 1:
@@ -656,7 +660,7 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
     insert_logos(doc)
     # --- Hyperlink ---
     p = doc.add_paragraph('For more, visit ', style='EngBody')
-    add_hyperlink(p, 'VibeOps.com', 'https://vibeops.com')
+    add_hyperlink(p, 'VibeOps.ca', 'https://www.vibeops.ca')
     # --- Appendix ---
     doc.add_page_break()
     doc.add_paragraph('Appendix: Supporting Data', style='EngSubtitle')
