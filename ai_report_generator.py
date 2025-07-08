@@ -35,85 +35,97 @@ if not logger.hasHandlers():
 # from openai import OpenAI
 # client = OpenAI(api_key=os.getenv('OpenAI_API_KEY'))
 
-# class AIReportGenerator:
-#     def __init__(self):
-#         logger.debug("Initializing AIReportGenerator...")
-#         try:
-#             # Try the newer OpenAI client
-#             self.use_new_client = True
-#             logger.debug("Using new OpenAI client.")
-#         except Exception as e:
-#             logger.warning(f"Could not initialize new OpenAI client: {e}")
-#             self.client = None
-#             self.use_new_client = False
-#
-#     def generate_report_content(self, company_name: str, industry: str, 
-#                                budget_range: str, focus_areas: List[str]) -> Dict:
-#         logger.debug(f"Generating report content for {company_name}, {industry}, {budget_range}, {focus_areas}")
-#         try:
-#             prompt = f"""
-#             Generate a professional capital planning report for {company_name}, a company in the {industry} industry.
-#             
-#             Company Details:
-#             - Name: {company_name}
-#             - Industry: {industry}
-#             - Budget Range: {budget_range}
-#             - Focus Areas: {', '.join(focus_areas)}
-#             
-#             Please provide a JSON response with the following structure:
-#             {{
-#                 "executive_summary": "A comprehensive executive summary...",
-#                 "key_projects": [
-#                     {{
-#                         "name": "Project Name",
-#                         "description": "Project description",
-#                         "budget": "Budget amount",
-#                         "timeline": "Timeline",
-#                         "roi": "Expected ROI percentage"
-#                     }}
-#                 ],
-#                 "recommendations": [
-#                     "Recommendation 1",
-#                     "Recommendation 2"
-#                 ],
-#                 "risk_assessment": "Risk assessment text",
-#                 "financial_analysis": "Financial analysis text"
-#             }}
-#             
-#             Make the content realistic, professional, and tailored to the specific industry and budget range.
-#             """
-#
-#             logger.debug("Calling OpenAI API for report content...")
-#             if self.use_new_client and self.client:
-#                 response = self.client.chat.completions.create(
-#                     model="gpt-3.5-turbo",
-#                     messages=[
-#                         {"role": "system", "content": "You are a professional financial analyst specializing in capital planning reports. Provide detailed, realistic, and industry-specific recommendations."},
-#                         {"role": "user", "content": prompt}
-#                     ],
-#                     temperature=0.7,
-#                     max_tokens=2000
-#                 )
-#                 content = response.choices[0].message.content
-#             else:
-#                 logger.debug("Using fallback OpenAI client.")
-#                 response = client.chat.completions.create(model="gpt-3.5-turbo",
-#                 messages=[
-#                     {"role": "system", "content": "You are a professional financial analyst specializing in capital planning reports. Provide detailed, realistic, and industry-specific recommendations."},
-#                     {"role": "user", "content": prompt}
-#                 ],
-#                 temperature=0.7,
-#                 max_tokens=2000)
-#                 content = response.choices[0].message.content
-#
-#             logger.debug("OpenAI API call successful.")
-#             return json.loads(content)
-#
-#         except Exception as e:
-#             logger.error(f"Error generating AI content: {e}")
-#             logger.error(traceback.format_exc())
-#             logger.info("Falling back to static report content.")
-#             return self._get_fallback_content(company_name, industry, budget_range, focus_areas)
+# Restore and update AIReportGenerator
+class AIReportGenerator:
+    def __init__(self):
+        logger.debug("Initializing AIReportGenerator...")
+        self.api_key = os.getenv('OpenAI_API_KEY')
+        if self.api_key:
+            try:
+                self.client = OpenAI(api_key=self.api_key)
+                self.use_new_client = True
+                logger.debug("Using OpenAI client.")
+            except Exception as e:
+                logger.warning(f"Could not initialize OpenAI client: {e}")
+                self.client = None
+                self.use_new_client = False
+        else:
+            logger.warning("No OpenAI API key found. AI features will be disabled.")
+            self.client = None
+            self.use_new_client = False
+
+    def generate_report_sections(self, report_type: str, company_name: str, project_context: str = "") -> dict:
+        logger.debug(f"Generating AI report sections for {report_type}, {company_name}, {project_context}")
+        try:
+            template = REPORT_TEMPLATES[report_type]
+            prompt = f"""
+            {template['ai_prompt']}
+            Company: {company_name}
+            Project Context: {project_context}
+            Please provide a JSON object with the following keys relevant to this report type:
+            - executive_summary: string
+            - recommendations: list of strings
+            - risk_assessment: string (if applicable)
+            - findings: string (if applicable)
+            - project_review: string (if applicable)
+            - financial_analysis: string (if applicable)
+            """
+            logger.debug("Calling OpenAI API for report sections...")
+            if self.use_new_client and self.client:
+                response = self.client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are a professional analyst. Respond in valid JSON only."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.7,
+                    max_tokens=1800
+                )
+                content = response.choices[0].message.content
+                logger.debug("OpenAI API call successful.")
+                return json.loads(content)
+            else:
+                raise Exception("OpenAI client not initialized.")
+        except Exception as e:
+            logger.error(f"Error generating AI content: {e}")
+            logger.error(traceback.format_exc())
+            logger.info("Falling back to static AI section.")
+            return self._get_fallback_sections(report_type)
+
+    def _get_fallback_sections(self, report_type: str) -> dict:
+        # Provide fallback for each report type
+        fallback = {}
+        if report_type == "capital_planning":
+            fallback = {
+                "executive_summary": REPORT_TEMPLATES[report_type]["intro"],
+                "recommendations": [
+                    "Prioritize projects with the highest ROI and strategic alignment.",
+                    "Adopt a phased approach to capital deployment to manage risk.",
+                    "Engage stakeholders early to ensure alignment."
+                ],
+                "risk_assessment": AI_SECTION_FALLBACKS[report_type],
+                "financial_analysis": "Financial projections are within industry norms. Regular reviews recommended."
+            }
+        elif report_type == "feasibility_study":
+            fallback = {
+                "executive_summary": REPORT_TEMPLATES[report_type]["intro"],
+                "findings": AI_SECTION_FALLBACKS[report_type],
+                "recommendations": [
+                    "Proceed with contingency planning.",
+                    "Monitor regulatory changes closely."
+                ],
+                "risk_assessment": AI_SECTION_FALLBACKS[report_type]
+            }
+        elif report_type == "closeout":
+            fallback = {
+                "executive_summary": REPORT_TEMPLATES[report_type]["intro"],
+                "project_review": AI_SECTION_FALLBACKS[report_type],
+                "recommendations": [
+                    "Enhance documentation for future projects.",
+                    "Conduct post-project reviews to capture best practices."
+                ]
+            }
+        return fallback
 
 def insert_simple_field(paragraph, field_code):
     """Insert a field into the given paragraph."""
@@ -152,7 +164,7 @@ def create_ai_generated_report(company_name: str, industry: str, budget_range: s
     doc = Document()
 
     # Initialize AI generator
-    # ai_generator = AIReportGenerator()
+    ai_generator = AIReportGenerator()
 
     # Generate content
     if include_ai_analysis:
@@ -451,13 +463,12 @@ def insert_logos(doc):
         except Exception:
             continue
 
-def ai_generate_section(prompt: str, company_name: str, project_context: str, report_type: str = None) -> str:
-    # Always use static fallback for now
-    if report_type and report_type in AI_SECTION_FALLBACKS:
-        logger.info(f"[AI DISABLED] Using static AI section for report_type={report_type}")
-        return AI_SECTION_FALLBACKS[report_type]
-    logger.info("[AI DISABLED] No static fallback found for AI section.")
-    return "[AI section unavailable: AI functionality is currently disabled.]"
+# Update ai_generate_section to use AI for the main body sections
+ai_generator = AIReportGenerator()
+def ai_generate_section(prompt: str, company_name: str, project_context: str, report_type: str = None) -> dict:
+    if report_type:
+        return ai_generator.generate_report_sections(report_type, company_name, project_context)
+    return {}
 
 # Backup AI section text for each template
 AI_SECTION_FALLBACKS = {
@@ -581,8 +592,9 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
     company_info.add_run(f"\nProject Context: {project_context}")
     company_info.paragraph_format.space_after = Pt(18)
     # --- Executive Summary ---
+    ai_sections = ai_generate_section(template['ai_prompt'], company_name, project_context, report_type=report_type)
     doc.add_paragraph('Executive Summary', style='EngSubtitle')
-    doc.add_paragraph(template['intro'], style='EngBody')
+    doc.add_paragraph(ai_sections.get('executive_summary', template['intro']), style='EngBody')
     # --- Static Sections ---
     for section_title, bullets in template['static_sections']:
         doc.add_paragraph(section_title, style='EngSubtitle')
@@ -603,7 +615,6 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
         for run in cell_p.runs:
             run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         hdr_cells[i].paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    # Alternating row colors
     for idx, row_data in enumerate(template['table_data']):
         row = table.add_row().cells
         for i, val in enumerate(row_data):
@@ -614,10 +625,32 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
                 shading_elm = OxmlElement('w:shd')
                 shading_elm.set(qn('w:fill'), 'F2F6FA')
                 row[i]._tc.get_or_add_tcPr().append(shading_elm)
-    # --- AI Section ---
-    doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
-    ai_text = ai_generate_section(template['ai_prompt'], company_name, project_context, report_type=report_type)
-    doc.add_paragraph(ai_text, style='EngBody')
+    # --- AI Section(s) ---
+    if report_type == 'capital_planning':
+        doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('financial_analysis', '') or ai_sections.get('risk_assessment', ''), style='EngBody')
+        doc.add_paragraph('Strategic Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
+        doc.add_paragraph('Risk Assessment', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('risk_assessment', ''), style='EngBody')
+    elif report_type == 'feasibility_study':
+        doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('findings', ''), style='EngBody')
+        doc.add_paragraph('Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
+        doc.add_paragraph('Risk Assessment', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('risk_assessment', ''), style='EngBody')
+    elif report_type == 'closeout':
+        doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('project_review', ''), style='EngBody')
+        doc.add_paragraph('Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
     # --- Branding ---
     doc.add_paragraph('Company Branding', style='EngSubtitle')
     insert_logos(doc)
