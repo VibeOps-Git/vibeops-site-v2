@@ -271,7 +271,12 @@
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .reviewer-info {
+    text-align: center;
+    flex: 1;
   }
 
   .reviewer-info h4 {
@@ -408,6 +413,21 @@
 
     .review-card {
       padding: 20px;
+    }
+
+    .review-header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+
+    .reviewer-info {
+      order: 1;
+    }
+
+    .review-actions {
+      order: 2;
+      justify-content: center;
     }
   }
 
