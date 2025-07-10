@@ -177,6 +177,11 @@ def edit_review(review_id):
 
 @app.route('/reviews/<int:review_id>/delete', methods=['POST'])
 def delete_review(review_id):
+    logger.info(f"Delete review called for review_id: {review_id}")
+    logger.info(f"User authenticated: {is_authenticated()}")
+    logger.info(f"Request method: {request.method}")
+    logger.info(f"Request form data: {request.form}")
+    
     if not is_authenticated():
         flash('You must be logged in to delete reviews', 'error')
         return redirect(url_for('login', next=url_for('reviews')))
@@ -184,8 +189,18 @@ def delete_review(review_id):
     try:
         from config import supabase
         
+        # First check if the review exists
+        check_result = supabase.table('reviews').select('id').eq('id', review_id).execute()
+        logger.info(f"Check result: {check_result}")
+        
+        if not check_result.data:
+            flash('Review not found', 'error')
+            logger.error(f"Review with id {review_id} not found")
+            return redirect(url_for('reviews'))
+        
         # Delete the review
         result = supabase.table('reviews').delete().eq('id', review_id).execute()
+        logger.info(f"Delete result: {result}")
         
         flash('Review deleted successfully!', 'success')
         return redirect(url_for('reviews'))
@@ -193,6 +208,7 @@ def delete_review(review_id):
     except Exception as e:
         flash(f'Error deleting review: {str(e)}', 'error')
         logger.error(f"Error deleting review: {e}")
+        logger.error(f"Error type: {type(e)}")
         return redirect(url_for('reviews'))
 
 # Public routes - no authentication required
@@ -323,6 +339,37 @@ def debug_db_test():
             'message': str(e),
             'error_type': str(type(e)),
             'table_exists': False
+        }), 500
+
+@app.route('/debug/test-delete/<int:review_id>')
+def debug_test_delete(review_id):
+    """Debug route to test delete operation"""
+    if not is_authenticated():
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    try:
+        from config import supabase
+        
+        # Check if review exists
+        check_result = supabase.table('reviews').select('id, reviewer_name').eq('id', review_id).execute()
+        
+        if not check_result.data:
+            return jsonify({'error': 'Review not found'}), 404
+        
+        # Try to delete
+        delete_result = supabase.table('reviews').delete().eq('id', review_id).execute()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Review deleted successfully',
+            'review_id': review_id,
+            'delete_result': str(delete_result)
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'error': str(e),
+            'error_type': str(type(e))
         }), 500
 
 if __name__ == '__main__':

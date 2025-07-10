@@ -41,7 +41,7 @@
                 </a>
                 <form method="POST" action="{{ url_for('delete_review', review_id=review.id) }}" 
                       style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this review?')">
-                  <button type="submit" class="btn-delete" title="Delete Review">
+                  <button type="submit" class="btn-delete" title="Delete Review" onclick="console.log('Delete button clicked for review {{ review.id }}')">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <polyline points="3,6 5,6 21,6"></polyline>
                       <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
