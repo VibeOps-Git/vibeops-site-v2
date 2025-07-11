@@ -20,6 +20,8 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.opc.constants import RELATIONSHIP_TYPE
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
+import re
+from PIL import Image
 
 # Set OpenAI API key globally
 
@@ -131,12 +133,55 @@ Use a professional, confident tone. Respond in valid JSON only.
             })
         return fallback
 
+def validate_input(text: str, default: str) -> str:
+    if not text or not re.match(r'^[a-zA-Z0-9\s\.,\-]+$', text):
+        logger.warning(f"Invalid input '{text}', using default: {default}")
+        return default
+    return text
+
+def format_price(value):
+    # Try to format as price if it looks like a number or $-prefixed string
+    try:
+        if isinstance(value, (int, float)):
+            return f"${value:,.0f}"
+        s = str(value).replace('$', '').replace(',', '').replace(' ', '')
+        if s.replace('.', '', 1).isdigit():
+            return f"${float(s):,.0f}"
+        # Try to extract numbers from things like '500000' or '500000.00'
+        match = re.match(r'\$?([0-9]+(?:\.[0-9]+)?)', str(value))
+        if match:
+            return f"${float(match.group(1)):,}"
+    except Exception:
+        pass
+    return str(value)
+
+def add_scaled_logo(paragraph, logo_path, max_width=Inches(1.5), max_pixel_height=40):
+    try:
+        with Image.open(logo_path) as img:
+            width, height = img.size
+            # Always restrict by pixel height
+            scale = min(1.0, max_pixel_height / height)
+            width = int(width * scale)
+            height = int(height * scale)
+            # Convert to inches (assuming 96 DPI)
+            width_inches = width / 96
+            height_inches = height / 96
+            run = paragraph.add_run()
+            run.add_picture(logo_path, width=Inches(width_inches), height=Inches(height_inches))
+    except Exception as e:
+        logger.error(f"Failed to add logo {logo_path}: {e}")
+        paragraph.add_run("[Logo]")
+
 def insert_simple_field(paragraph, field_code):
-    """Insert a field into the given paragraph."""
-    fld = OxmlElement('w:fldSimple')
-    fld.set(qn('w:instr'), field_code)
-    paragraph._p.append(fld)
-    return fld
+    try:
+        fld = OxmlElement('w:fldSimple')
+        fld.set(qn('w:instr'), field_code)
+        paragraph._p.append(fld)
+        return fld
+    except Exception as e:
+        logger.error(f"Failed to insert field {field_code}: {e}")
+        paragraph.add_run(f"[Field Error: {field_code}]")
+        return None
 
 def add_hyperlink(paragraph, text, url):
     """Add a hyperlink to the paragraph."""
@@ -373,89 +418,181 @@ def generate_sample_reports():
     return generated_files
 
 REPORT_TEMPLATES = {
-    "capital_planning": {
-        "title": "VibeOps Capital Planning Report",
+    "engineering_feasibility": {
+        "title": "VibeOps Engineering Feasibility Study Report",
         "intro": (
-            "This Capital Planning Report outlines the strategic allocation of resources for VibeOps client projects. "
-            "It includes detailed analyses of proposed capital expenditures, project timelines, and expected returns on investment."
+            "This Engineering Feasibility Study evaluates the technical and economic viability of the proposed engineering project for VibeOps clients. "
+            "It provides a comprehensive analysis of project objectives, constraints, and risks to ensure informed decision-making."
         ),
-        "table_headers": ['Project', 'Budget (USD)', 'Timeline', 'ROI (%)'],
+        "table_headers": ["Project Component", "Estimated Cost", "Timeline", "Risk Level"],
         "table_data": [
-            ('Facility Expansion', '$5,000,000', 'Q2 2025 - Q4 2026', '12'),
-            ('Equipment Modernization', '$2,500,000', 'Q3 2025 - Q1 2026', '8'),
-            ('Technology Integration', '$1,800,000', 'Q4 2025 - Q2 2026', '15'),
-            ('Sustainability Initiatives', '$1,200,000', 'Q1 2025 - Q3 2025', '10'),
-        ],
-        "static_sections": [
-            ("Key Capital Projects", [
-                'Facility Expansion: New manufacturing plant to increase production capacity by 20%.',
-                'Equipment Modernization: Upgrade to energy-efficient machinery to reduce operational costs.',
-                'Technology Integration: Implementation of IoT systems for real-time asset monitoring.',
-                'Sustainability Initiatives: Installation of solar panels to achieve 30% energy self-sufficiency.'
-            ]),
-        ],
-        "ai_section_title": "AI Analysis & Recommendations",
-        "ai_prompt": (
-            "You are a VibeOps capital planning expert. Write a detailed, professional analysis and recommendations section for a capital planning report. "
-            "Focus on the provided company and project context. Use a confident, expert, and helpful tone."
-        ),
-    },
-    "feasibility_study": {
-        "title": "VibeOps Feasibility Study Report",
-        "intro": (
-            "This Feasibility Study Report evaluates the technical and financial viability of the proposed project for VibeOps clients. "
-            "It includes a summary of objectives, constraints, and a professional risk assessment."
-        ),
-        "table_headers": ['Scenario', 'Estimated Cost', 'Timeline', 'Risk Level'],
-        "table_data": [
-            ('Base Case', '$2,000,000', '12 months', 'Medium'),
-            ('Optimistic', '$1,800,000', '10 months', 'Low'),
-            ('Pessimistic', '$2,400,000', '15 months', 'High'),
+            ("Structural Design", "$1,500,000", "6 months", "Low"),
+            ("Material Procurement", "$800,000", "3 months", "Medium"),
+            ("Site Preparation", "$600,000", "2 months", "Low"),
         ],
         "static_sections": [
             ("Project Objectives", [
-                'Deliver scalable infrastructure for future growth.',
-                'Minimize operational risk and maximize ROI.',
-                'Ensure compliance with all regulatory requirements.'
+                "Validate technical feasibility of proposed engineering solutions.",
+                "Optimize cost efficiency while maintaining quality standards.",
+                "Ensure compliance with engineering regulations and standards."
             ]),
         ],
         "ai_section_title": "AI Findings & Risk Assessment",
         "ai_prompt": (
-            "You are a VibeOps feasibility study expert. Write a detailed findings and risk assessment section for a feasibility study report. "
-            "Focus on the provided company and project context. Use a confident, expert, and helpful tone."
+            "You are a VibeOps engineering feasibility expert. Generate a detailed feasibility study report for {company_name} with project context: {project_context}. "
+            "Return a JSON object with: "
+            "- executive_summary: string summarizing the feasibility study "
+            "- recommendations: list of actionable recommendations "
+            "- findings: string detailing technical and economic findings "
+            "- risk_assessment: string analyzing potential risks "
+            "- table_data: list of objects with keys Project Component, Estimated Cost, Timeline, Risk Level "
+            "Ensure table_data is realistic, aligns with the project context, and matches engineering feasibility requirements. "
+            "Use a professional, confident tone. Respond in valid JSON only."
         ),
+        "fallback_sections": {
+            "executive_summary": "This section would normally contain a detailed AI-generated executive summary. Due to a technical issue, here is a professional fallback.",
+            "recommendations": [
+                "Prioritize projects with the highest ROI and strategic alignment.",
+                "A phased approach to capital deployment will help manage risk and optimize cash flow.",
+                "Regularly review project milestones and adjust resource allocation as needed.",
+                "Engage stakeholders early and often to ensure alignment and minimize disruptions."
+            ],
+            "findings": "This section would normally contain a detailed AI-generated findings and risk assessment. Due to a technical issue, here is a professional fallback.",
+            "risk_assessment": "This section would normally contain a detailed AI-generated risk assessment. Due to a technical issue, here is a professional fallback.",
+            "financial_analysis": "This section would normally contain a detailed AI-generated financial analysis. Due to a technical issue, here is a professional fallback.",
+            "project_review": "This section would normally contain a detailed AI-generated project review and recommendations. Due to a technical issue, here is a professional fallback.",
+        }
     },
-    "closeout": {
-        "title": "VibeOps Project Closeout Report",
+    "defense_compliance": {
+        "title": "VibeOps Defense Compliance Report",
         "intro": (
-            "This Project Closeout Report summarizes the completion of the VibeOps client project, including deliverables, lessons learned, and final recommendations."
+            "This Defense Compliance Report ensures that the project adheres to strict regulatory and security standards required for defense contracts. "
+            "It outlines compliance measures, audit readiness, and risk mitigation strategies."
         ),
-        "table_headers": ['Milestone', 'Completion Date', 'Status', 'Notes'],
+        "table_headers": ["Compliance Area", "Status", "Audit Date", "Notes"],
         "table_data": [
-            ('Site Preparation', '2025-03-01', 'Complete', 'No issues'),
-            ('Construction', '2025-09-15', 'Complete', 'Minor delays'),
-            ('Commissioning', '2025-10-10', 'Complete', 'Successful'),
-            ('Handover', '2025-10-20', 'Complete', 'Client satisfied'),
+            ("Security Protocols", "Compliant", "2025-06-15", "Meets DoD standards"),
+            ("Data Protection", "In Progress", "2025-07-01", "Requires encryption update"),
+            ("Personnel Clearance", "Compliant", "2025-06-01", "All staff cleared"),
+        ],
+        "static_sections": [
+            ("Compliance Objectives", [
+                "Ensure adherence to DoD and federal regulations.",
+                "Maintain audit-ready documentation for all compliance areas.",
+                "Implement robust cybersecurity measures."
+            ]),
+        ],
+        "ai_section_title": "AI Compliance Analysis & Recommendations",
+        "ai_prompt": (
+            "You are a VibeOps defense compliance expert. Generate a detailed compliance report for {company_name} with project context: {project_context}. "
+            "Return a JSON object with: "
+            "- executive_summary: string summarizing compliance status "
+            "- recommendations: list of actionable recommendations "
+            "- compliance_summary: string detailing compliance status and audit readiness "
+            "- risk_assessment: string analyzing compliance risks "
+            "- table_data: list of objects with keys Compliance Area, Status, Audit Date, Notes "
+            "Ensure table_data is realistic, aligns with defense contract requirements, and matches the project context. "
+            "Use a professional, confident tone. Respond in valid JSON only."
+        ),
+        "fallback_sections": {
+            "executive_summary": "This section would normally contain a detailed AI-generated executive summary. Due to a technical issue, here is a professional fallback.",
+            "recommendations": [
+                "Ensure adherence to DoD and federal regulations.",
+                "Maintain audit-ready documentation for all compliance areas.",
+                "Implement robust cybersecurity measures."
+            ],
+            "compliance_summary": "This section would normally contain a detailed AI-generated compliance summary. Due to a technical issue, here is a professional fallback.",
+            "risk_assessment": "This section would normally contain a detailed AI-generated risk assessment. Due to a technical issue, here is a professional fallback.",
+            "project_review": "This section would normally contain a detailed AI-generated project review and recommendations. Due to a technical issue, here is a professional fallback.",
+        }
+    },
+    "utilities_estimate": {
+        "title": "VibeOps Utilities Infrastructure Estimate Report",
+        "intro": (
+            "This Utilities Infrastructure Estimate Report provides detailed cost and material estimates for pipelines, grids, or network projects. "
+            "It includes a bill of materials (BOM), timelines, and strategic recommendations."
+        ),
+        "table_headers": ["Component", "Quantity", "Unit Cost", "Total Cost"],
+        "table_data": [
+            ("Pipeline Segment", "10 km", "$50,000/km", "$500,000"),
+            ("Substation Upgrade", "2 units", "$200,000/unit", "$400,000"),
+            ("Control Systems", "5 units", "$30,000/unit", "$150,000"),
+        ],
+        "static_sections": [
+            ("Project Scope", [
+                "Develop accurate cost estimates for infrastructure components.",
+                "Ensure scalability for future utility expansions.",
+                "Minimize environmental impact during implementation."
+            ]),
+        ],
+        "ai_section_title": "AI Cost Analysis & Recommendations",
+        "ai_prompt": (
+            "You are a VibeOps utilities infrastructure expert. Generate a detailed estimate report for {company_name} with project context: {project_context}. "
+            "Return a JSON object with: "
+            "- executive_summary: string summarizing the cost estimate "
+            "- recommendations: list of actionable recommendations "
+            "- cost_breakdown: string detailing cost analysis and BOM "
+            "- table_data: list of objects with keys Component, Quantity, Unit Cost, Total Cost "
+            "Ensure table_data is realistic, aligns with utilities infrastructure requirements, and matches the project context. "
+            "Use a professional, confident tone. Respond in valid JSON only."
+        ),
+        "fallback_sections": {
+            "executive_summary": "This section would normally contain a detailed AI-generated executive summary. Due to a technical issue, here is a professional fallback.",
+            "recommendations": [
+                "Develop accurate cost estimates for infrastructure components.",
+                "Ensure scalability for future utility expansions.",
+                "Minimize environmental impact during implementation."
+            ],
+            "cost_breakdown": "This section would normally contain a detailed AI-generated cost breakdown. Due to a technical issue, here is a professional fallback.",
+            "project_review": "This section would normally contain a detailed AI-generated project review and recommendations. Due to a technical issue, here is a professional fallback.",
+        }
+    },
+    "construction_closeout": {
+        "title": "VibeOps Construction Closeout & Handover Report",
+        "intro": (
+            "This Construction Closeout & Handover Report summarizes the completion of the construction project, including deliverables, lessons learned, and final recommendations."
+        ),
+        "table_headers": ["Milestone", "Completion Date", "Status", "Notes"],
+        "table_data": [
+            ("Foundation Work", "2025-04-01", "Complete", "No issues"),
+            ("Structural Build", "2025-08-15", "Complete", "Minor delays"),
+            ("Final Inspections", "2025-09-30", "Complete", "Passed"),
         ],
         "static_sections": [
             ("Lessons Learned", [
-                'Early stakeholder engagement reduced change orders.',
-                'Regular site meetings improved communication.',
-                'Contingency planning mitigated supply chain risks.'
+                "Early coordination with subcontractors reduced delays.",
+                "Regular quality checks improved outcomes.",
+                "Documentation streamlined handover process."
             ]),
         ],
         "ai_section_title": "AI Project Review & Recommendations",
         "ai_prompt": (
-            "You are a VibeOps project closeout expert. Write a detailed project review and recommendations section for a closeout report. "
-            "Focus on the provided company and project context. Use a confident, expert, and helpful tone."
+            "You are a VibeOps construction closeout expert. Generate a detailed closeout report for {company_name} with project context: {project_context}. "
+            "Return a JSON object with: "
+            "- executive_summary: string summarizing project completion "
+            "- recommendations: list of actionable recommendations "
+            "- project_review: string detailing project outcomes and lessons learned "
+            "- table_data: list of objects with keys Milestone, Completion Date, Status, Notes "
+            "Ensure table_data is realistic, aligns with construction project requirements, and matches the project context. "
+            "Use a professional, confident tone. Respond in valid JSON only."
         ),
+        "fallback_sections": {
+            "executive_summary": "This section would normally contain a detailed AI-generated executive summary. Due to a technical issue, here is a professional fallback.",
+            "recommendations": [
+                "The project was completed on schedule and within budget.",
+                "Lessons learned include the value of early stakeholder engagement and robust risk management.",
+                "For future projects, VibeOps recommends enhanced documentation and post-project reviews to capture best practices."
+            ],
+            "project_review": "This section would normally contain a detailed AI-generated project review. Due to a technical issue, here is a professional fallback.",
+        }
     },
 }
 
 REPORT_TYPE_CHOICES = [
-    ("capital_planning", "Capital Planning Report"),
-    ("feasibility_study", "Feasibility Study Report"),
-    ("closeout", "Project Closeout Report"),
+    ("engineering_feasibility", "Engineering Feasibility Study"),
+    ("defense_compliance", "Defense Compliance Report"),
+    ("utilities_estimate", "Utilities Infrastructure Estimate"),
+    ("construction_closeout", "Construction Closeout & Handover"),
 ]
 
 def insert_logos(doc):
@@ -469,9 +606,9 @@ def insert_logos(doc):
 
 # Update ai_generate_section to use AI for the main body sections
 ai_generator = AIReportGenerator()
-def ai_generate_section(prompt: str, company_name: str, project_context: str, report_type: str = None) -> dict:
-    if report_type:
-        return ai_generator.generate_report_sections(report_type, company_name, project_context)
+def ai_generate_section(prompt: str, company_name: str, project_context: str, report_template: str = None) -> dict:
+    if report_template:
+        return ai_generator.generate_report_sections(report_template, company_name, project_context)
     return {}
 
 # Backup AI section text for each template
@@ -501,10 +638,12 @@ AI_SECTION_FALLBACKS = {
     ),
 }
 
-def create_vibeops_report(report_type: str, company_name: str, project_context: str = "") -> str:
-    template = REPORT_TEMPLATES[report_type]
+def create_vibeops_report(report_template: str, company_name: str, project_context: str = "", logo_path: str = None) -> str:
+    template = REPORT_TEMPLATES[report_template]
+    company_name_input = company_name
+    company_name = validate_input(company_name, "Unknown Company")
+    project_context = validate_input(project_context, "General Project")
     doc = Document()
-    # --- Page Setup ---
     section = doc.sections[0]
     section.left_margin = Inches(1)
     section.right_margin = Inches(1)
@@ -519,31 +658,39 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
     hdr_tbl.columns[0].width = Inches(1.5)
     hdr_tbl.columns[1].width = avail_width - Inches(1.5)
     cell0 = hdr_tbl.rows[0].cells[0]
+    # Always use a new paragraph for the logo, and keep text separate
     p0 = cell0.paragraphs[0]
-    try:
-        run0 = p0.add_run()
-        run0.add_picture(os.path.join('static', 'Logo-blk.png'), width=Inches(1.5))
-    except Exception:
-        p0.add_run("VibeOps Logo")
+    p0.clear()
+    if logo_path:
+        add_scaled_logo(p0, logo_path, max_width=Inches(1.5), max_pixel_height=40)
+    else:
+        add_scaled_logo(p0, os.path.join('static', 'Logo-blk.png'), max_width=Inches(1.5), max_pixel_height=40)
     cell1 = hdr_tbl.rows[0].cells[1]
     p1 = cell1.paragraphs[0]
+    p1.clear()
     p1.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
-    run1 = p1.add_run("Page ")
+    run1 = p1.add_run(f"{company_name_input.strip() if company_name_input.strip() else 'Your Company'} Report  |  Page ")
     run1.font.name = 'Arial'
     run1.font.size = Pt(10)
     insert_simple_field(p1, 'PAGE')
     # --- Footer ---
     footer = section.footer
-    f_par = footer.paragraphs[0]
+    f_par = footer.add_paragraph()
     f_par.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    run_f = f_par.add_run("VibeOps — Confidential | ")
+    footer_company = company_name_input.strip() if company_name_input.strip() else "Your Company"
+    run_f = f_par.add_run(f"{footer_company} — Confidential | ")
     run_f.font.name = 'Arial'
     run_f.font.size = Pt(9)
     run_f.font.italic = True
     insert_simple_field(f_par, 'DATE \\@ "MMMM d, yyyy"')
+    # Always use a new paragraph for the logo in the footer
+    logo_footer_par = footer.add_paragraph()
+    logo_footer_par.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     try:
-        run_logo = f_par.add_run()
-        run_logo.add_picture(os.path.join('static', 'Logo-wht.png'), width=Inches(0.75))
+        if logo_path:
+            add_scaled_logo(logo_footer_par, logo_path, max_width=Inches(0.75), max_pixel_height=30)
+        else:
+            add_scaled_logo(logo_footer_par, os.path.join('static', 'Logo-wht.png'), max_width=Inches(0.75), max_pixel_height=30)
     except Exception:
         pass
     # Add a subtle footer line
@@ -576,18 +723,16 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
     table_header_style.font.name = 'Arial'
     table_header_style.font.size = Pt(12)
     table_header_style.font.bold = True
-    table_header_style.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+    table_header_style.font.color.rgb = RGBColor(0x00, 0x00, 0x00)  # Black text
     table_header_style.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     # --- Cover Page ---
     title_p = doc.add_paragraph(template['title'])
     title_p.style = 'EngTitle'
-    # Horizontal line under title
     hr = doc.add_paragraph()
     hr.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     hr_run = hr.add_run("―" * 30)
     hr_run.font.color.rgb = RGBColor(0x00, 0x2E, 0x5E)
     hr_run.font.size = Pt(14)
-    # Company Info (centered, spaced)
     company_info = doc.add_paragraph()
     company_info.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     company_info.add_run(f"Prepared for: {company_name}\n").bold = True
@@ -595,10 +740,74 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
     insert_simple_field(company_info, 'DATE \\@ "MMMM d, yyyy"')
     company_info.add_run(f"\nProject Context: {project_context}")
     company_info.paragraph_format.space_after = Pt(18)
+    # --- AI Section Handling ---
+    ai_sections = ai_generate_section(template['ai_prompt'], company_name, project_context, report_template=report_template)
+    required_keys = ['executive_summary', 'recommendations', 'table_data']
+    if report_template == 'defense_compliance':
+        required_keys += ['compliance_summary', 'risk_assessment']
+    elif report_template == 'engineering_feasibility':
+        required_keys += ['findings', 'risk_assessment']
+    elif report_template == 'utilities_estimate':
+        required_keys += ['cost_breakdown', 'project_scope']
+    elif report_template == 'construction_closeout':
+        required_keys += ['project_review']
+    fallback_sections = template.get('fallback_sections', {})
+    for key in required_keys:
+        if key not in ai_sections:
+            logger.error(f"Missing AI section: {key}")
+            if key == 'cost_breakdown' and 'table_data' in ai_sections:
+                try:
+                    total = 0
+                    for row in ai_sections['table_data']:
+                        val = row.get('Total Cost') or row.get('Estimated Cost') or row.get('Budget (USD)')
+                        if val:
+                            try:
+                                total += float(str(val).replace('$','').replace(',','').replace(' ','').replace('USD',''))
+                            except Exception:
+                                pass
+                    ai_sections[key] = f"Total estimated cost: ${total:,.0f}" if total else fallback_sections.get(key, "")
+                except Exception:
+                    ai_sections[key] = fallback_sections.get(key, "")
+            else:
+                ai_sections[key] = fallback_sections.get(key, "")
     # --- Executive Summary ---
-    ai_sections = ai_generate_section(template['ai_prompt'], company_name, project_context, report_type=report_type)
     doc.add_paragraph('Executive Summary', style='EngSubtitle')
     doc.add_paragraph(ai_sections.get('executive_summary', template['intro']), style='EngBody')
+    # --- Template-specific AI Sections ---
+    if report_template == 'defense_compliance':
+        doc.add_paragraph('Compliance Summary', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('compliance_summary', ''), style='EngBody')
+        doc.add_paragraph('Risk Assessment', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('risk_assessment', ''), style='EngBody')
+        doc.add_paragraph('Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
+    elif report_template == 'engineering_feasibility':
+        doc.add_paragraph('Findings', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('findings', ''), style='EngBody')
+        doc.add_paragraph('Risk Assessment', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('risk_assessment', ''), style='EngBody')
+        doc.add_paragraph('Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
+    elif report_template == 'utilities_estimate':
+        doc.add_paragraph('Project Scope', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('project_scope', ''), style='EngBody')
+        doc.add_paragraph('Cost Breakdown', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('cost_breakdown', ''), style='EngBody')
+        doc.add_paragraph('Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
+    elif report_template == 'construction_closeout':
+        doc.add_paragraph('Project Review', style='EngSubtitle')
+        doc.add_paragraph(ai_sections.get('project_review', ''), style='EngBody')
+        doc.add_paragraph('Recommendations', style='EngSubtitle')
+        for rec in ai_sections.get('recommendations', []):
+            p = doc.add_paragraph(rec, style='List Bullet')
+            p.style = 'EngBody'
     # --- Static Sections ---
     for section_title, bullets in template['static_sections']:
         doc.add_paragraph(section_title, style='EngSubtitle')
@@ -607,66 +816,60 @@ def create_vibeops_report(report_type: str, company_name: str, project_context: 
             p.style = 'EngBody'
     # --- Table ---
     doc.add_paragraph('Overview Table', style='EngSubtitle')
-    table = doc.add_table(rows=1, cols=len(template['table_headers']))
+    table_headers = template['table_headers']
+    ai_table_data = ai_sections.get('table_data')
+    if not ai_table_data or not isinstance(ai_table_data, list) or not all(isinstance(row, dict) for row in ai_table_data):
+        ai_table_data = [dict(zip(table_headers, row)) for row in template['table_data']]
+    table = doc.add_table(rows=1, cols=len(table_headers))
     table.style = 'Table Grid'
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = True
     hdr_cells = table.rows[0].cells
-    for i, hdr in enumerate(template['table_headers']):
+    for i, hdr in enumerate(table_headers):
         cell_p = hdr_cells[i].paragraphs[0]
         cell_p.text = hdr
         cell_p.style = 'EngTableHeader'
-        for run in cell_p.runs:
-            run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        shading_elm = OxmlElement('w:shd')
+        shading_elm.set(qn('w:fill'), 'D3D3D3')  # Light gray background
+        hdr_cells[i]._tc.get_or_add_tcPr().append(shading_elm)
         hdr_cells[i].paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    for idx, row_data in enumerate(ai_sections['table_data']):
+    for idx, row_data in enumerate(ai_table_data):
         row = table.add_row().cells
-        for i, hdr in enumerate(template['table_headers']):
-            row[i].text = str(row_data[hdr])
+        for i, hdr in enumerate(table_headers):
+            val = row_data.get(hdr, '')
+            # Format as price if header is cost-related
+            if 'cost' in hdr.lower() or 'budget' in hdr.lower() or 'price' in hdr.lower():
+                row[i].text = format_price(val)
+            else:
+                row[i].text = str(val)
             row[i].paragraphs[0].style = 'EngBody'
             row[i].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
             if idx % 2 == 1:
                 shading_elm = OxmlElement('w:shd')
                 shading_elm.set(qn('w:fill'), 'F2F6FA')
                 row[i]._tc.get_or_add_tcPr().append(shading_elm)
-    # --- AI Section(s) ---
-    if report_type == 'capital_planning':
-        doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
-        doc.add_paragraph(ai_sections.get('financial_analysis', '') or ai_sections.get('risk_assessment', ''), style='EngBody')
-        doc.add_paragraph('Strategic Recommendations', style='EngSubtitle')
-        for rec in ai_sections.get('recommendations', []):
-            p = doc.add_paragraph(rec, style='List Bullet')
-            p.style = 'EngBody'
-        doc.add_paragraph('Risk Assessment', style='EngSubtitle')
-        doc.add_paragraph(ai_sections.get('risk_assessment', ''), style='EngBody')
-    elif report_type == 'feasibility_study':
-        doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
-        doc.add_paragraph(ai_sections.get('findings', ''), style='EngBody')
-        doc.add_paragraph('Recommendations', style='EngSubtitle')
-        for rec in ai_sections.get('recommendations', []):
-            p = doc.add_paragraph(rec, style='List Bullet')
-            p.style = 'EngBody'
-        doc.add_paragraph('Risk Assessment', style='EngSubtitle')
-        doc.add_paragraph(ai_sections.get('risk_assessment', ''), style='EngBody')
-    elif report_type == 'closeout':
-        doc.add_paragraph(template['ai_section_title'], style='EngSubtitle')
-        doc.add_paragraph(ai_sections.get('project_review', ''), style='EngBody')
-        doc.add_paragraph('Recommendations', style='EngSubtitle')
-        for rec in ai_sections.get('recommendations', []):
-            p = doc.add_paragraph(rec, style='List Bullet')
-            p.style = 'EngBody'
+    # Add spacing after table
+    doc.add_paragraph()
     # --- Branding ---
     doc.add_paragraph('Company Branding', style='EngSubtitle')
-    insert_logos(doc)
+    if logo_path:
+        try:
+            logo_brand_par = doc.add_paragraph()
+            logo_brand_par.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            add_scaled_logo(logo_brand_par, logo_path, max_width=Inches(1.5), max_pixel_height=40)
+        except Exception:
+            doc.add_paragraph("[Logo could not be displayed]")
+    else:
+        insert_logos(doc)
     # --- Hyperlink ---
     p = doc.add_paragraph('For more, visit ', style='EngBody')
-    add_hyperlink(p, 'VibeOps.ca', 'https://www.vibeops.ca')
+    add_hyperlink(p, 'VibeOps.ca - ', 'https://www.vibeops.ca')
     # --- Appendix ---
     doc.add_page_break()
     doc.add_paragraph('Appendix: Supporting Data', style='EngSubtitle')
     doc.add_paragraph('Detailed cost breakdowns, risk assessments, and technical specifications are available upon request.', style='EngBody')
     # --- Save ---
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f'vibeops_{report_type}_report_{timestamp}.docx'
+    filename = f'vibeops_{report_template}_report_{timestamp}.docx'
     doc.save(filename)
     return filename 
