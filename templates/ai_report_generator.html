@@ -213,13 +213,14 @@
           {% endfor %}
         {% endwith %}
   
-        <form method="POST" action="{{ url_for('ai_report_generator') }}">
-          <label for="report_type" class="vibeops-ai-form-label">Report Category *</label>
-          <select id="report_type" name="report_type" class="vibeops-ai-form-select" required>
-            <option value="">– Select –</option>
-            <option value="capital_planning">Capital Planning</option>
-            <option value="feasibility_study">Feasibility Study</option>
-            <option value="closeout">Closeout &amp; Handover</option>
+        <form method="POST" action="{{ url_for('ai_report_generator') }}" enctype="multipart/form-data">
+          <label for="report_template" class="vibeops-ai-form-label">Choose Your Report Template *</label>
+          <select id="report_template" name="report_template" class="vibeops-ai-form-select" required>
+            <option value="">– Select Template –</option>
+            <option value="engineering_feasibility">Engineering Feasibility Study</option>
+            <option value="defense_compliance">Defense Compliance Report</option>
+            <option value="utilities_estimate">Utilities Infrastructure Estimate</option>
+            <option value="construction_closeout">Construction Closeout & Handover</option>
           </select>
   
           <label for="company_name" class="vibeops-ai-form-label">Your Organization *</label>
@@ -229,6 +230,9 @@
             Project Brief <small>(optional, drives insights)</small>
           </label>
           <textarea id="project_context" name="project_context" class="vibeops-ai-form-control" rows="4" placeholder="Scope, goals, challenges…"></textarea>
+
+          <label for="logo_file" class="vibeops-ai-form-label">Upload Your Logo <small>(optional)</small></label>
+          <input type="file" id="logo_file" name="logo_file" class="vibeops-ai-form-control" accept="image/*">
   
           <button type="submit" class="vibeops-ai-btn btn-lg">
             <i class="fas fa-magic me-2"></i>Generate My Report
@@ -239,21 +243,46 @@
     </div>
   
     <h3 class="vibeops-ai-section-title">What You’ll Get Instantly</h3>
-    <div class="row">
-      <div class="col-md-6">
-        <ul class="vibeops-ai-list">
-          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Branded cover, logo & styling</li>
-          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Executive summary & milestones</li>
-          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Detailed budget & timeline tables</li>
-        </ul>
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <h4>🛠️ Engineering Feasibility</h4>
+        <p>Validate project viability in minutes, not weeks.</p>
       </div>
-      <div class="col-md-6">
-        <ul class="vibeops-ai-list">
-          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>AI-powered analysis & recommendations</li>
-          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Appendices & risk data sections</li>
-          <li class="vibeops-ai-list-item"><i class="fas fa-check-circle"></i>Instant .DOCX download</li>
-        </ul>
+      <div class="usecase-card">
+        <h4>🔒 Defense Compliance</h4>
+        <p>Produce audit-ready packets that meet strict standards.</p>
       </div>
+      <div class="usecase-card">
+        <h4>💧 Utilities Estimate</h4>
+        <p>Auto-calculate BOM & cost for pipelines, grids, and networks.</p>
+      </div>
+      <div class="usecase-card">
+        <h4>📑 Project Closeout</h4>
+        <p>Generate polished handover docs with lessons learned.</p>
+      </div>
+    </div>
+
+    <div class="trusted-logos">
+      <img src="/static/logo-acme.svg" alt="ACME Construction">
+      <img src="/static/logo-skyline.svg" alt="Skyline Engineering">
+      <img src="/static/logo-defense.svg" alt="Gov DefenseDept">
+    </div>
+    <p class="testimonials">
+      “VibeOps cut our compliance reporting from 5 days to 2 hours.”—<strong>Skyline Engineering</strong>
+    </p>
+
+    <div class="roi-box">
+      <strong>ROI Snapshot:</strong> Save up to <span class="highlight">200 man-hours/month</span> on reporting.
+    </div>
+
+    <div class="final-cta">
+      <p>Ready to automate your team’s reporting?</p>
+      <a href="/booking" class="btn secondary cta-audit">
+        Book Your Free Template Audit →
+      </a>
+      <a href="/upload-template" class="btn primary" style="margin-left:1rem;">
+        Upload Your Template →
+      </a>
     </div>
   </div>
   {% endblock %}
