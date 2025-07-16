@@ -1,6 +1,7 @@
 # app.py
 
 from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response, send_file
+from flask_cors import CORS
 import os, logging
 from dotenv import load_dotenv
 from datetime import datetime
@@ -20,6 +21,9 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
+
+# Enable CORS for API routes
+CORS(app, origins=['https://vibeops.ca', 'https://www.vibeops.ca', 'http://localhost:3000', 'http://localhost:5000'])
 
 # Redirect vibeops.ca to www.vibeops.ca
 @app.before_request
@@ -145,6 +149,175 @@ def reviews():
     
     return render_template('reviews.html', reviews=reviews_list)
 
+# API Routes
+@app.route('/api/reviews', methods=['GET'])
+def api_get_reviews():
+    """API endpoint to get all reviews"""
+    try:
+        from config import supabase
+        result = supabase.table('reviews').select('*').order('created_at', desc=True).execute()
+        reviews_list = result.data if result.data else []
+        
+        # Convert created_at strings to datetime objects for JSON serialization
+        for review in reviews_list:
+            if review.get('created_at') and isinstance(review['created_at'], str):
+                try:
+                    review['created_at'] = datetime.fromisoformat(review['created_at'].replace('Z', '+00:00'))
+                except ValueError:
+                    pass
+        
+        return jsonify({
+            'success': True,
+            'reviews': reviews_list,
+            'count': len(reviews_list)
+        })
+    except Exception as e:
+        logger.error(f"API Error fetching reviews: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/reviews', methods=['POST'])
+def api_create_review():
+    """API endpoint to create a new review"""
+    if not is_authenticated():
+        return jsonify({
+            'success': False,
+            'error': 'Authentication required'
+        }), 401
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({
+            'success': False,
+            'error': 'No data provided'
+        }), 400
+    
+    reviewer_name = data.get('reviewer_name')
+    review_text = data.get('review_text')
+    
+    if not reviewer_name or not review_text:
+        return jsonify({
+            'success': False,
+            'error': 'reviewer_name and review_text are required'
+        }), 400
+    
+    try:
+        from config import supabase
+        result = supabase.table('reviews').insert({
+            'reviewer_name': reviewer_name,
+            'review_text': review_text
+        }).execute()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Review created successfully',
+            'review': result.data[0] if result.data else None
+        })
+    except Exception as e:
+        logger.error(f"API Error creating review: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/reviews/<int:review_id>', methods=['PUT'])
+def api_update_review(review_id):
+    """API endpoint to update a review"""
+    if not is_authenticated():
+        return jsonify({
+            'success': False,
+            'error': 'Authentication required'
+        }), 401
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({
+            'success': False,
+            'error': 'No data provided'
+        }), 400
+    
+    reviewer_name = data.get('reviewer_name')
+    review_text = data.get('review_text')
+    
+    if not reviewer_name or not review_text:
+        return jsonify({
+            'success': False,
+            'error': 'reviewer_name and review_text are required'
+        }), 400
+    
+    try:
+        from config import supabase
+        
+        # Check if review exists
+        check_result = supabase.table('reviews').select('id').eq('id', review_id).execute()
+        if not check_result.data:
+            return jsonify({
+                'success': False,
+                'error': 'Review not found'
+            }), 404
+        
+        # Update the review
+        result = supabase.table('reviews').update({
+            'reviewer_name': reviewer_name,
+            'review_text': review_text
+        }).eq('id', review_id).execute()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Review updated successfully',
+            'review': result.data[0] if result.data else None
+        })
+    except Exception as e:
+        logger.error(f"API Error updating review: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/reviews/<int:review_id>', methods=['DELETE'])
+def api_delete_review(review_id):
+    """API endpoint to delete a review"""
+    if not is_authenticated():
+        return jsonify({
+            'success': False,
+            'error': 'Authentication required'
+        }), 401
+    
+    try:
+        from config import supabase
+        
+        # Check if review exists
+        check_result = supabase.table('reviews').select('id').eq('id', review_id).execute()
+        if not check_result.data:
+            return jsonify({
+                'success': False,
+                'error': 'Review not found'
+            }), 404
+        
+        # Delete the review
+        result = supabase.table('reviews').delete().eq('id', review_id).execute()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Review deleted successfully'
+        })
+    except Exception as e:
+        logger.error(f"API Error deleting review: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/auth/status')
+def api_auth_status():
+    """API endpoint to check authentication status"""
+    return jsonify({
+        'authenticated': is_authenticated(),
+        'user': get_current_user()
+    })
+
 @app.route('/reviews/<int:review_id>/edit', methods=['GET', 'POST'])
 def edit_review(review_id):
     if not is_authenticated():
@@ -244,6 +417,28 @@ def struct_wise():
     if request.method == 'POST':
         return jsonify({"message": "Analysis completed"})
     return render_template('struct_wise.html')
+
+# API Routes for other features
+@app.route('/api/pipeline-estimator', methods=['POST'])
+def api_pipeline_estimator():
+    """API endpoint for pipeline estimator"""
+    from pipeline import handle_pipeline_post
+    return handle_pipeline_post()
+
+@app.route('/api/construction-tracker', methods=['POST'])
+def api_construction_tracker():
+    """API endpoint for construction tracker"""
+    return handle_tracker_post()
+
+@app.route('/api/construction-tracker-progress', methods=['POST'])
+def api_construction_tracker_progress():
+    """API endpoint for construction tracker progress"""
+    return handle_progress_post()
+
+@app.route('/api/struct-wise', methods=['POST'])
+def api_struct_wise():
+    """API endpoint for struct-wise analysis"""
+    return jsonify({"message": "Analysis completed"})
 
 @app.route('/ai-report-generator', methods=['GET', 'POST'])
 def ai_report_generator():
