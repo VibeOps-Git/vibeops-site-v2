@@ -45,17 +45,30 @@ def inject_auth_status():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return jsonify({
+        'message': 'VibeOps API is running',
+        'status': 'success',
+        'endpoints': {
+            'reviews': '/api/reviews',
+            'auth_status': '/api/auth/status',
+            'pipeline_estimator': '/api/pipeline-estimator',
+            'construction_tracker': '/api/construction-tracker',
+            'struct_wise': '/api/struct-wise'
+        }
+    })
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        data = request.get_json()
+        email = data.get('email') if data else request.form.get('email')
+        password = data.get('password') if data else request.form.get('password')
         
         if not email or not password:
-            flash('Please provide both email and password', 'error')
-            return render_template('login.html')
+            return jsonify({
+                'success': False,
+                'error': 'Please provide both email and password'
+            }), 400
         
         result = handle_supabase_login(email, password)
         
@@ -65,20 +78,40 @@ def login():
             session['user_email'] = result['user'].email
             
             # Set JWT token as cookie
-            response = make_response(redirect(request.args.get('next', url_for('home'))))
+            response = make_response(jsonify({
+                'success': True,
+                'message': 'Login successful!',
+                'user': {
+                    'id': result['user'].id,
+                    'email': result['user'].email
+                }
+            }))
             response.set_cookie('auth_token', result['session'].access_token, 
                               max_age=3600*24*7, httponly=True, secure=False)  # 7 days
-            flash('Login successful!', 'success')
             return response
         else:
-            flash(result['error'], 'error')
-            return render_template('login.html')
+            return jsonify({
+                'success': False,
+                'error': result['error']
+            }), 401
     
-    return render_template('login.html')
+    return jsonify({
+        'message': 'Login endpoint - send POST with email and password',
+        'method': 'POST',
+        'fields': ['email', 'password']
+    })
 
 @app.route('/logout')
 def logout():
-    return logout_user()
+    result = logout_user()
+    # Convert the response to JSON if it's a redirect
+    if isinstance(result, str) and result.startswith('http'):
+        return jsonify({
+            'success': True,
+            'message': 'Logged out successfully',
+            'redirect': result
+        })
+    return result
 
 @app.route('/reviews', methods=['GET', 'POST'])
 def reviews():

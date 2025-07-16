@@ -1,0 +1,3510 @@
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0e0e0e;
+    color: #f2f2f2;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3 {
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.1;
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+}
+
+h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+}
+
+h3 {
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+}
+
+p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    margin: 20px 0;
+}
+
+/* Layout */
+section {
+    padding: 80px 20px;
+    text-align: center;
+    min-height: 60vh;
+}
+
+main {
+    margin-bottom: 80px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Utility Classes for spacing and visibility */
+.mt-4 {
+    margin-top: 1rem; /* 16px */
+}
+
+.mt-8 {
+    margin-top: 2rem; /* 32px */
+}
+
+.mb-4 {
+    margin-bottom: 1rem; /* 16px */
+}
+
+.hidden {
+    display: none !important; /* Ensure element is hidden, overriding other styles */
+}
+
+
+/* Navigation */
+header {
+    background: #111;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo-link {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    max-width: 150px;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.nav-menu li {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu a {
+    color: #f2f2f2;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+    background: #000000;
+    box-shadow: 0 0 20px #000000;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.nav-menu a:hover {
+    color: #00ffcc;
+    background: #000000;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Style for navigation buttons */
+.nav-button {
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer;
+    color: #f2f2f2;
+    text-decoration: none; /* Remove default button text decoration */
+    font-weight: 700;
+    font-family: 'Inter', sans-serif; /* Match body font */
+    font-size: 1rem; /* Match body font size */
+    padding: 0; /* Remove default button padding */
+    transition: color 0.3s ease, box-shadow 0.3s ease; /* Add box-shadow to transition */
+}
+
+.nav-button:hover {
+    color: #00ffcc;
+    background-color: #00ffcc1a; /* A slightly visible background */
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); /* Add a glow effect */
+    border-radius: 4px; /* Optional: slight rounded corners on hover */
+    padding: 0 4px; /* Optional: slight padding for visual separation without layout shift */
+    margin: 0 -4px; /* Counteract padding to prevent layout shift */
+}
+
+/* Hamburger / Mobile Nav Toggle (Initially Hidden on Desktop) */
+.nav-toggle {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 200; /* Above navigation menu when active */
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #f2f2f2;
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.7s ease;
+}
+
+.hamburger::before {
+    top: -8px;
+    right: 5px;
+}
+
+.hamburger::after {
+    top: 5px;
+    right: 4px;
+}
+
+.nav-toggle.active .hamburger {
+    background: transparent;
+}
+
+.nav-toggle.active .hamburger::before {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle.active .hamburger::after {
+    transform: translateY(-5px) rotate(-45deg);
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('/static/banner.png');
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 0;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 2%,rgba(0, 0, 0, 0.7) 25%, rgb(18, 18, 18) 100%);
+    z-index: 1;
+}
+
+/* Ensure hero content is above the pseudo-element */
+.hero-content {
+    z-index: 2;
+    max-width: 900px;
+    padding: 20px;
+}
+
+
+.hero span {
+    color: #00ffcc;
+    font-style: italic;
+    /* Consider adding text-shadow here if needed for stronger contrast */
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 14px 32px;
+    margin: 10px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn.primary {
+    background: #00ffcc;
+    color: #0e0e0e;
+    border: 2px solid #ffffff;
+}
+
+.btn.primary:hover {
+    box-shadow: 0 0 16px rgba(0, 255, 204, 0.4);
+    animation: pulse 1.5s infinite;
+    border: 2px solid #00ffcc;
+}
+
+.btn.secondary {
+    border: 2px solid #00ffcc;
+    color: #00ffcc;
+    background: none; /* Ensure secondary button has transparent background */
+}
+
+.btn.secondary:hover {
+    background: rgba(0, 255, 204, 0.1); /* Subtle background on hover */
+    color: #00ffcc; /* Keep color on hover */
+}
+
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.7);
+    animation: wiggle 0.3s ease;
+}
+
+/* Grid & Cards */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.card {
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 12px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px) rotate(1deg);
+    box-shadow: 0 15px 35px rgba(0, 255, 204, 0.3);
+    border-image: linear-gradient(to right, #8e2de2, #00ffcc) 1;
+}
+
+.card .price {
+    font-size: 1.5rem;
+    color: #00ffcc;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+/* Services */
+.services span {
+    color: #00ffcc;
+}
+
+.custom-plan {
+    margin-top: 40px;
+}
+
+.custom-plan h3 {
+    color: #00ffcc;
+}
+
+/* Pricing */
+.pricing {
+    background: #0e0e0e;
+}
+
+/* Testimonials */
+.testimonials {
+    background: #111;
+}
+
+.testimonials .grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+blockquote {
+    font-style: italic;
+    margin: 20px 0;
+    padding: 25px;
+    background: #1e1e1e;
+    border-left: 4px solid #00ffcc;
+}
+
+cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Why Us */
+.why-us {
+    background: #0e0e0e;
+}
+
+/* CTA */
+.cta {
+    background: #111;
+}
+
+.cta span {
+    color: #00ffcc;
+}
+
+/* Contact */
+.contact {
+    background: #0e0e0e;
+}
+
+/* Calendly Integration */
+.calendly-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #444;
+}
+
+.calendly-inline-widget {
+    border-radius: 8px;
+    width: 100%;
+}
+
+/* Footer */
+.footer {
+    background: #111;
+    padding: 50px 20px;
+    color: #ccc;
+}
+
+.footer-logo {
+    max-width: 150px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease; /* Add transition for smooth effect */
+}
+
+.footer-logo:hover {
+    transform: translateY(-5px); /* Move up slightly on hover */
+    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4); /* Add a blue-ish glow/shadow */
+    margin-bottom: 25px; /* Optional: adjust margin-bottom slightly to compensate for the translation */
+    border-radius: 20px;
+    background: #000;
+}
+
+.socials {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.socials a {
+    color: #00ffcc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.socials a:hover {
+    text-decoration: underline;
+    color: #fff;
+}
+
+/* Footer Email Button */
+.footer-email-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #f2f2f2;
+    background: linear-gradient(to bottom right, #8e2de2, #4a00e0);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+}
+
+.footer-email-btn:hover {
+    background: linear-gradient(to top left, #8e2de2, #4a00e0);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* Ensure existing footer link styles don't interfere */
+.footer .socials a.footer-email-btn {
+    color: #f2f2f2; /* Keep text color white for button */
+}
+
+/* Adjust existing footer social link spacing if necessary */
+.footer .socials a:not(.footer-email-btn) {
+   /* Add specific styles for other links if they need to be different from the button */
+   color: #00ffcc; /* Example: keep original link color */
+}
+
+/* Add styling for the Process button on Struct-wise page */
+.processBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px auto; /* Center button if it's a block element */
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #f2f2f2;
+    background: linear-gradient(to bottom right, #8e2de2, #4a00e0);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+}
+
+.processBtn:hover {
+    background: linear-gradient(to top left, #8e2de2, #4a00e0);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* Animations */
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 255, 204, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
+}
+
+
+/* ─── VIDEO BOX ───────────────────────────────────────────────── */
+.video-box {
+    background: #1e1e1e;
+    padding: 16px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 40px auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.video-box iframe {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: none;
+    border-radius: 6px;
+    display: block;
+}
+
+/* ─── TEAM PAGE STYLES ───────────────────────────────────────────────── */
+.team {
+    padding: 80px 20px;
+    background: #0e0e0e;
+}
+
+.team-section {
+    margin: 60px 0;
+}
+
+.team-section h3 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #00ffcc;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.team-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #444;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 10px 10px 30px rgba(0, 255, 204, 0.2); /* Adjusted shadow for better lift effect */
+    border-color: #00ffcc;
+}
+
+.team-image {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #222;
+  }
+
+.team-image img {
+        display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.team-card h4 {
+    color: #00ffcc;
+    margin: 10px 0;
+    font-size: 1.4rem;
+}
+
+.team-card .role {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.team-card .bio {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+
+/* ─── STRUCT-WISE / BEAM SELECTION STYLES ─────────────────────────────── */
+/* Styles based on provided scaffold for Beam Selection Assistant */
+
+.struct-wise-page h2,
+.struct-wise-page p {
+      text-align: center;
+    }
+
+.struct-wise-page h2 {
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.struct-wise-page p {
+    margin-bottom: 40px;
+}
+
+/* Input & Output Sections (Specific to Struct-wise and Construction Tracker) */
+.input-section,
+.output-section {
+    background: #1e1e1e; /* Darker background for sections */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Subtle shadow */
+    padding: 1.5rem; /* Padding inside the section */
+    margin-bottom: 30px; /* Space below the section */
+    max-width: 800px; /* Max width for content */
+    margin-left: auto; /* Center the block */
+    margin-right: auto; /* Center the block */
+    border: 1px solid #444; /* Border color */
+}
+
+.input-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: #f2f2f2; /* Light color for labels */
+}
+
+.input-section textarea {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    resize: vertical;
+    background-color: #3e3e3e; /* Input background */
+    color: #f2f2f2; /* Text color */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-section textarea::placeholder {
+    color: #bbb;
+}
+
+.input-section textarea:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+/* Add/Update styles for inputs and selects within input-section for consistency */
+.input-section input[type="text"],
+.input-section input[type="number"],
+.input-section input[type="date"],
+.input-section select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3e3e3e;
+    color: #f2f2f2;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px; /* Add some space below inputs */
+    /* Ensure dropdown arrow is visible against dark background */
+    -webkit-appearance: none; /* Remove default styling */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23f2f2f2%22%20d%3D%22M287%2C197.938L146.2%2C57.138L5.4%2C197.938h281.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px auto;
+    padding-right: 30px; /* Make space for the arrow */
+}
+
+.input-section input::placeholder,
+.input-section select::placeholder { /* Select does not directly support placeholder, but include for consistency */
+    color: #bbb;
+}
+
+.input-section input:focus,
+.input-section select:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+/* Adjust margin for the last input in a series if needed, though margin-bottom on each is often sufficient */
+.input-section > div:last-child input, 
+.input-section > div:last-child select, 
+.input-section > div:last-child textarea {
+    margin-bottom: 0; /* Remove bottom margin for the very last input before the button */
+}
+
+/* ─── CONSTRUCTION TRACKER STYLES ─────────────────────────────── */
+
+/* Style for the Project Name input */
+.input-section .project_name { /* Targeting the project_name input within input-section */
+    width: 100%; /* Ensure input takes full width */
+    padding: 10px; /* Padding inside input */
+    border: 1px solid #444; /* Border color */
+    border-radius: 6px; /* Rounded corners */
+    background-color: #3e3e3e; /* Input background */
+    color: #f2f2f2; /* Text color */
+    font-size: 1rem; /* Font size */
+    outline: none; /* Remove default outline */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
+    margin-bottom: 15px; /* Add some space below the project name input */
+}
+
+.input-section .project_name::placeholder {
+    color: #bbb; /* Placeholder text color */
+}
+
+.input-section .project_name:focus {
+    border-color: #00ffcc; /* Highlight border on focus */
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); /* Add glow on focus */
+}
+
+
+/* Style for individual task input rows */
+.task-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid for inputs */
+    gap: 15px; /* Space between inputs */
+    align-items: center;
+    padding: 15px; /* Padding around each task row */
+    border: 1px solid #333; /* Subtle border for separation */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #282828; /* Slightly lighter background for rows */
+    margin-bottom: 15px; /* Space between task rows */
+}
+
+/* Style for input fields within task and progress rows */
+.task-row input[type="text"],
+.task-row input[type="date"],
+.task-row input[type="number"],
+.progress-row input[type="number"],
+.progress-row input[type="text"],
+.task-row textarea { /* Added textarea here */
+    width: auto; /* Allow flexbox to control width */
+    flex-grow: 1; /* Allow inputs to grow */
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3e3e3e;
+    color: #f2f2f2;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+    min-height: 40px;
+}
+
+/* Specific widths for progress inputs */
+.progress-row input[type="number"],
+.progress-row input[type="text"] { /* Include text type */
+    flex-basis: 100px; /* Base width for number/text inputs */
+    max-width: 120px; /* Maximum width */
+}
+
+.progress-row input[type="date"] {
+    flex-basis: 130px; /* Base width for date inputs */
+    max-width: 150px; /* Maximum width */
+}
+
+.task-row input::placeholder,
+.progress-row input::placeholder,
+.task-row textarea::placeholder { /* Added textarea here */
+    color: #bbb; /* Placeholder text color */
+}
+
+.task-row input:focus,
+.progress-row input:focus,
+.task-row textarea:focus { /* Added textarea here */
+    border-color: #00ffcc; /* Highlight border on focus */
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); /* Add glow on focus */
+}
+
+/* Style for the remove task button */
+.task-row .remove-task {
+    /* Inherits some styles from .btn.secondary, but refine positioning */
+    padding: 8px 12px;
+        font-size: 0.9rem;
+    width: auto; /* Prevent stretching */
+    justify-self: end; /* Align to the end of the grid cell */
+    align-self: center; /* Center vertically in the grid cell */
+}
+
+/* Style for the progress rating section rows */
+.progress-row {
+    display: grid; /* Use grid for progress rows */
+    /* Define grid columns: Task Name, Budgeted Cost, Actual Cost, % Complete, Actual Start, Actual Finish */
+    /* Consistent grid template for both header and data rows */
+    grid-template-columns: 100px repeat(2, 120px) 80px repeat(2, 140px); /* Example: Task Name | BC | AC | % | AS | AF - using fixed/semi-fixed widths */
+    gap: 10px; /* Space between grid items */
+    align-items: center; /* Vertically align items in the grid */
+    padding: 10px;
+    border-bottom: 1px solid #333; /* Separator between rows */
+}
+
+.progress-row:last-child {
+    border-bottom: none; /* No border for the last row */
+}
+
+.progress-row.header {
+    font-weight: bold;
+    color: #f2f2f2; /* Header text color */
+    border-bottom: 2px solid #00ffcc; /* Thicker separator for header */
+    padding-bottom: 10px; /* Add padding below header */
+    margin-bottom: 10px; /* Add margin below header */
+    /* Ensure header labels align with grid columns by using the same grid template */
+    display: grid; /* Apply grid to header as well */
+    grid-template-columns: 100px repeat(2, 120px) 80px repeat(2, 140px); /* Match data row grid */
+    gap: 10px; /* Match data row grid gap */
+}
+
+/* Ensure labels and inputs span correctly within the grid */
+.progress-row label,
+.progress-row input[type="number"],
+.progress-row input[type="text"],
+.progress-row input[type="date"] {
+    width: 100%; /* Ensure they take full width of their grid cell */
+}
+
+/* Adjust mobile styles for progress rows to use grid */
+@media (max-width: 768px) {
+    .progress-row {
+        display: grid; /* Keep grid on mobile */
+        /* Adjust grid columns for smaller screens - using flexible units for inputs */
+        grid-template-columns: 50px repeat(5, 1fr); /* Task Label | 5 flexible input columns */
+        gap: 5px; /* Keep smaller gap on mobile */
+        padding: 5px; /* Keep smaller padding on mobile */
+        /* Remove flexbox-specific mobile styles */
+        flex-direction: unset;
+        align-items: center;
+    }
+
+     .progress-row label {
+         font-size: 0.7rem; /* Further smaller font for labels */
+         align-self: center; /* Center label vertically */
+         display: block; /* Ensure labels are displayed on mobile */
+     }
+
+     .progress-row.header {
+        display: grid !important; /* Keep grid on mobile, use !important to override */
+        grid-template-columns: 50px repeat(5, 1fr); /* Match data row grid on mobile */
+        gap: 5px; /* Match data row grid gap on mobile */
+        padding-bottom: 5px; /* Smaller padding below header */
+        margin-bottom: 5px; /* Smaller margin below header */
+     }
+
+     .progress-row.header label {
+        font-size: 0.7rem; /* Further smaller font for header labels */
+        text-align: center; /* Center header text on mobile */
+     }
+
+    .progress-row input[type="number"],
+    .progress-row input[type="text"],
+    .progress-row input[type="date"] {
+        font-size: 0.7rem; /* Further smaller font for inputs */
+        padding: 3px; /* Further Smaller padding for inputs */
+    }
+
+    /* Hide desktop-only elements on mobile */
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* Show mobile-only elements on mobile */
+    .mobile-only {
+        display: block !important; /* Use block or flex as needed for layout */
+    }
+
+    /* Styling for the collapsible progress entries */
+    .progress-entry-container {
+        border: 1px solid #333; /* Subtle border for each entry */
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #282828;
+        overflow: hidden; /* Hide overflow during collapse/expand transition */
+    }
+
+    .progress-entry-header {
+        display: flex; /* Use flex to align task name and icon */
+        justify-content: space-between; /* Space out task name and icon */
+        align-items: center;
+        padding: 10px;
+        background-color: #3e3e3e; /* Slightly different background */
+        cursor: pointer;
+        font-weight: bold;
+        color: #f2f2f2;
+    }
+
+    .progress-entry-header label {
+        margin: 0; /* Remove margin from label inside header */
+        font-size: 1rem; /* Larger font for task name in header */
+    }
+
+    .expand-icon {
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: transform 0.3s ease;
+    }
+
+    .progress-entry-content {
+        padding: 10px;
+        border-top: 1px solid #333; /* Separator between header and content */
+        /* Use grid for inputs within the content */
+        display: grid; /* Use grid for inputs */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive columns for inputs */
+        gap: 10px; /* Gap between input items */
+    }
+
+    .progress-entry-content .mobile-only {
+        font-size: 0.8rem; /* Smaller font for mobile labels */
+        color: #ccc; /* Muted color */
+        margin-bottom: -5px; /* Adjust spacing */
+    }
+
+    /* Hide content on mobile by default */
+    .progress-entry-content.hidden-mobile {
+        display: none; /* Hide content */
+    }
+
+    /* Desktop styles to show original grid and hide mobile-only elements */
+    @media (min-width: 769px) {
+         .progress-row.header.desktop-only,
+         .progress-entry-content {
+             display: grid !important; /* Ensure grid is used on desktop */
+         }
+
+         .progress-entry-container .progress-entry-header.mobile-only {
+             display: none !important; /* Hide mobile header on desktop */
+         }
+         
+         .progress-entry-content.hidden-mobile {
+             display: grid !important; /* Ensure content is visible on desktop even if it has the hidden-mobile class */
+         }
+         
+         /* Ensure labels within the progress-row are handled by the desktop grid */
+          .progress-row label {
+              display: block; /* Ensure labels are block elements for grid */
+          }
+
+          /* Hide mobile-only labels within the progress-entry-content on desktop */
+         .progress-entry-content .mobile-only {
+              display: none !important;
+         }
+
+         /* Show desktop-only labels within the progress-entry-content on desktop */
+          .progress-entry-content .desktop-only {
+               display: block !important;
+          }
+    }
+}
+
+.task-row input::placeholder,
+.progress-row input::placeholder,
+.task-row textarea::placeholder { /* Added textarea here */
+    color: #bbb; /* Placeholder text color */
+}
+
+/* Style for Gantt and S-Curve chart containers and metrics box */
+.box {
+    background: #282828; /* Background matching task rows */
+    border: 1px solid #333; /* Border matching task rows */
+    border-radius: 8px; /* Rounded corners matching task rows */
+    padding: 20px; /* Padding inside the box */
+    margin-top: 20px; /* Space above the box */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Inner shadow for depth */
+}
+
+.box h4 {
+    color: #00ffcc; /* Highlight color for metric headings */
+    margin-bottom: 10px;
+}
+
+.box p {
+    margin: 5px 0; /* Smaller margin for paragraphs in the box */
+    font-size: 1rem;
+    color: #ccc; /* Muted text color */
+}
+
+/* Ensure content within boxes and output sections wraps */
+.output-section pre,
+.output-section code,
+.box pre,
+.box code,
+.output-section p,
+.box p {
+    word-wrap: break-word; /* Deprecated but widely supported */
+    overflow-wrap: break-word; /* Standard property */
+    word-break: break-word; /* Ensure long words break */
+}
+
+
+/* ─── CHATBOT STYLES ───────────────────────────────────────────────── */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001; /* Above page content, below nav menu */
+}
+
+.chatbot-toggle {
+    background: #00ffcc;
+    color: #0e0e0e;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 1; /* Default state is visible */
+}
+
+.chatbot-toggle:hover {
+    box-shadow: 0 6px 20px rgba(0, 255, 204, 0.9);
+    transform: scale(1.1);
+}
+
+.chatbot-toggle.chatbot-hidden {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none; /* Keep: Disable interaction when hidden visually */
+}
+
+.chatbot-window {
+    position: absolute; /* Position relative to .chatbot-container initially */
+    bottom: 80px;
+        right: 0;
+    width: 350px;
+    height: 500px;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 12px;
+    box-shadow: 0 75px 150px rgba(0, 0, 0, 1.0); /* Shadow for desktop window */
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000; /* Below nav menu, above other content */
+    transition: all 0.3s ease;
+    opacity: 0;
+    display: none; /* Initially hidden */
+}
+
+.chatbot-window.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Enable pointer events on the container when the window is active */
+.chatbot-container .chatbot-window.active {
+    pointer-events: auto;
+}
+
+.chatbot-header {
+        background: #111;
+    padding: 15px;
+    border-bottom: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.chatbot-header h3 {
+    font-size: 1.2rem;
+    color: #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+    margin-right: 10px;
+    min-width: 0;
+}
+
+#clear-chat-button {
+    background: none;
+    border: 1px solid #444;
+    color: #f2f2f2;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  
+#clear-chat-button:hover {
+    background-color: rgba(242, 242, 242, 0.1);
+    color: #00ffcc;
+    border-color: #00ffcc;
+}
+  
+.chatbot-close {
+    background: none;
+    border: none;
+    color: #f2f2f2;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.chatbot-close:hover {
+    color: #00ffcc;
+    background-color: rgba(0, 255, 204, 0.1);
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+        flex-direction: column;
+    gap: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #1e1e1e;
+}
+
+#chatbot-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chatbot-messages::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+#chatbot-messages::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+    border: 2px solid #1e1e1e;
+}
+
+.message {
+    padding: 10px 12px;
+    border-radius: 18px;
+    max-width: 75%;
+    word-wrap: break-word;
+    display: flex; /* Use flex to align content */
+    align-items: center; /* Vertically center content if needed */
+}
+
+.user-message {
+    background: #00ffcc;
+    color: #0e0e0e;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    margin-left: auto; /* Push user message to the right */
+}
+
+.bot-message {
+    background: #2e2e2e;
+    color: #f2f2f2;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    margin-right: auto; /* Push bot message to the left */
+}
+
+.chatbot-input {
+        display: flex;
+    padding: 15px;
+    border-top: 1px solid #444;
+    flex-shrink: 0;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 10px;
+    background: #2e2e2e;
+    border: 1px solid #444;
+    border-radius: 8px 0 0 8px;
+    color: #f2f2f2;
+    font-size: 1rem;
+    border-right: none;
+    outline: none;
+}
+
+.chatbot-input input::placeholder {
+    color: #888;
+}
+
+.chatbot-input button {
+    background: #00ffcc;
+    color: #0e0e0e;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+        justify-content: center;
+    }
+
+.chatbot-input button:hover {
+    background: #00ccaa;
+}
+
+
+/* Mobile Chatbot Adjustments and General Mobile Responsiveness (Combined) */
+@media (max-width: 768px) {
+    /* Mobile navigation menu (re-positioned for fixed header) */
+    .nav-menu {
+      position: fixed;
+      top: 100px; /* Height of fixed header */
+      left: 0;
+      right: 0;
+      background: #111;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px 20px;
+      align-items: center; /* Center items vertically in column layout */
+        display: flex; /* Keep display flex even when hidden for transition */
+        transform: translateY(-100%); /* Start hidden above the viewport */
+      opacity: 0;
+        pointer-events: none; /* Disable interaction when hidden */
+      transition: transform 0.3s ease, opacity 0.3s ease;
+        z-index: 150; /* Above chatbot window */
+    }
+    /* Active state for mobile menu */
+    .nav-menu.active {
+        transform: translateY(0); /* Slide down into view */
+      opacity: 1;
+        pointer-events: auto; /* Enable interaction when active */
+    }
+  
+    .nav-menu li {
+      width: 100%;
+      text-align: center;
+    }
+    .nav-menu a {
+      display: block;
+      width: 100%;
+      padding: 15px 0;
+        font-size: 1.2rem;
+    }
+
+    /* Adjust main content padding to account for fixed header */
+     main {
+        padding-top: 70px; /* Add padding to main content */
+    }
+
+    /* Show hamburger button on mobile */
+    .nav-toggle {
+        display: block;
+    }
+
+    /* Other general mobile adjustments */
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    p { font-size: 1rem; }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card .price {
+        font-size: 1.2rem;
+    }
+
+    .calendly-wrapper {
+        padding: 15px;
+    }
+
+    /* Team page adjustments */
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        justify-content: center;
+    }
+
+    .team-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    /* Chatbot Mobile Specific Styles */
+    .chatbot-container {
+        position: fixed;
+        bottom: 10px; /* Distance from the bottom */
+        right: 10px; /* Distance from the right */
+        left: auto; /* Unset left */
+        top: auto; /* Unset top */
+        z-index: 1001; /* High z-index */
+        /* Transition on position might not be needed here, handled by window transform */
+    }
+
+    .chatbot-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .chatbot-window {
+        position: fixed; /* Fixed to viewport */
+        left: 0; /* Anchor to left edge */
+        right: 0; /* Anchor to right edge */
+        bottom: 0; /* Anchor to bottom edge */
+        width: 100%; /* Full width */
+        height: 60vh; /* Initial height */
+        max-height: 80vh; /* Max height allowing scroll */
+        border-radius: 16px 16px 0 0; /* Rounded top corners */
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.7); /* Shadow at the top */
+        transform: translateY(100%); /* Start hidden below the viewport */
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        z-index: 1000; /* Below nav menu */
+        display: none; /* Initially hidden */
+        opacity: 0;
+        flex-direction: column; /* Stack contents vertically */
+        overflow: hidden; /* Hide content outside rounded corners */
+        background: #1e1e1e; /* Darker background */
+        border: 1px solid #444; /* Border */
+    }
+
+    .chatbot-window.active {
+        transform: translateY(0); /* Slide up into view */
+        display: flex; /* Show as flexbox */
+        opacity: 1; /* Make visible */
+        /* Ensure these properties are not overridden by centering styles */
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 60vh; /* Maintain initial height */
+        max-height: 80vh; /* Maintain max height */
+    }
+
+    /* Ensure chat window hides and is non-interactive when nav is active */
+    body.nav-menu-active .chatbot-window.active {
+        display: none;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .chatbot-header {
+        padding: 10px;
+        flex-shrink: 0; /* Prevent header from shrinking */
+        background: #111; /* Darker header background */
+        border-bottom: 1px solid #444; /* Separator */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chatbot-header h3 {
+         font-size: 1rem; /* Smaller title on mobile */
+         margin: 0;
+         color: #00ffcc; /* Themed color */
+         text-shadow: 0 0 5px rgba(0, 255, 204, 0.4);
+         flex-grow: 1;
+         min-width: 0; /* Allow text to shrink */
+         text-align: left;
+         margin-right: 10px;
+    }
+
+    #clear-chat-button {
+         background: none;
+         border: 1px solid #444;
+         color: #f2f2f2;
+         font-size: 0.7rem; /* Smaller font */
+         padding: 3px 6px; /* Smaller padding */
+         border-radius: 4px; /* Smaller border-radius */
+         cursor: pointer;
+         transition: all 0.3s ease;
+         margin-right: 8px;
+         flex-shrink: 0;
+    }
+
+    #clear-chat-button:hover {
+         background-color: rgba(242, 242, 242, 0.1);
+         color: #00ffcc;
+         border-color: #00ffcc;
+    }
+
+    .chatbot-close {
+        background: none;
+        border: none;
+        color: #f2f2f2;
+        font-size: 16px; /* Smaller icon */
+        cursor: pointer;
+        padding: 4px; /* Smaller padding */
+        transition: color 0.2s ease;
+        border-radius: 50%;
+        width: 24px; /* Smaller size */
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
+        flex-shrink: 0;
+    }
+
+    .chatbot-close:hover {
+         color: #00ffcc;
+         background-color: rgba(0, 255, 204, 0.1);
+         box-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
+    }
+
+    #chatbot-messages {
+        flex: 1; /* Allow messages to take available space */
+        padding: 8px;
+        overflow-y: auto; /* Enable scrolling for messages */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: #888 #1e1e1e;
+    }
+
+     /* Custom scrollbar for Webkit browsers */
+     #chatbot-messages::-webkit-scrollbar {
+         width: 8px;
+     }
+
+     #chatbot-messages::-webkit-scrollbar-track {
+         background: #1e1e1e;
+     }
+
+     #chatbot-messages::-webkit-scrollbar-thumb {
+         background-color: #888;
+         border-radius: 4px;
+         border: 2px solid #1e1e1e;
+     }
+
+    .message {
+        padding: 8px 10px; /* Smaller padding */
+        border-radius: 16px; /* Slightly smaller border-radius */
+        max-width: 80%; /* Allow messages to be a bit wider on mobile */
+        word-wrap: break-word; /* Deprecated but widely supported */
+        overflow-wrap: break-word; /* Standard property */
+        display: flex;
+        align-items: center;
+    }
+
+     .user-message {
+         background: #00ffcc;
+         color: #0e0e0e;
+         align-self: flex-end;
+         border-bottom-right-radius: 4px;
+         margin-left: auto; /* Push user message to the right */
+     }
+
+     .bot-message {
+         background: #2e2e2e;
+         color: #f2f2f2;
+         align-self: flex-start;
+         border-bottom-left-radius: 4px;
+         margin-right: auto; /* Push bot message to the left */
+     }
+
+    .chatbot-input {
+        display: flex;
+        padding: 8px; /* Smaller padding */
+        border-top: 1px solid #444;
+        flex-shrink: 0; /* Prevent input area from shrinking */
+    }
+
+    .chatbot-input input {
+        flex: 1;
+        padding: 8px; /* Smaller padding */
+        background: #2e2e2e;
+        border: 1px solid #444;
+        border-radius: 8px 0 0 8px;
+        color: #f2f2f2;
+        font-size: 0.9rem;
+        border-right: none;
+        outline: none;
+    }
+
+     .chatbot-input input::placeholder {
+         color: #888;
+     }
+
+    .chatbot-input button {
+        background: #00ffcc;
+        color: #0e0e0e;
+        border: none;
+        padding: 8px 12px; /* Smaller padding */
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chatbot-input button:hover {
+        background: #00ccaa;
+    }
+
+    /* Add mobile responsiveness for Construction Tracker */
+    /* These are the styles specifically for the Construction Tracker page elements on mobile */
+    .construction-tracker-page .input-section,
+    .construction-tracker-page .output-section {
+        padding: 1rem; /* Reduce padding on mobile */
+    }
+
+    .task-row {
+        grid-template-columns: 1fr; /* Stack inputs on mobile */
+        gap: 10px; /* Reduce gap */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .task-row input[type="text"],
+    .task-row input[type="date"],
+    .task-row input[type="number"],
+    .progress-row input[type="number"],
+    .progress-row input[type="text"] { /* Added text type for potential future use in progress */
+        font-size: 0.9rem; /* Slightly smaller font */
+        padding: 8px; /* Reduce padding */
+        margin-bottom: 0; /* Remove margin between stacked inputs in a row */
+    }
+
+    .task-row .remove-task {
+        width: 100%; /* Full width button */
+        justify-self: stretch; /* Stretch across */
+    }
+
+    .progress-row {
+        flex-direction: column; /* Stack label and inputs */
+        gap: 10px; /* Reduce gap */
+        padding: 8px; /* Reduce padding */
+        align-items: stretch; /* Stretch items */
+    }
+
+     .progress-row label {
+         margin-bottom: 0; /* Remove margin below stacked label */
+         display: block; /* Ensure labels are displayed on mobile */
+     }
+
+    .box h4 {
+        font-size: 1.1rem; /* Adjust heading size */
+    }
+
+    .box p {
+        font-size: 0.9rem; /* Adjust paragraph size */
+    }
+
+    /* Ensure Plotly charts are responsive within their containers */
+    #gantt-chart,
+    #s-curve-chart {
+        width: 100% !important; /* Ensure containers take full width */
+        height: auto !important; /* Allow height to adjust */
+         /* Mobile specific styles for Gantt chart */
+    }
+
+    /* Further adjustments for Plotly elements within the chart */
+    #gantt-chart .plotly .modebar {
+        top: 10px !important; /* Adjust modebar position */
+        right: 10px !important;
+        left: auto !important;
+    }
+
+    #gantt-chart .plotly .ytick {
+        white-space: nowrap; /* Prevent task labels from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    }
+}
+
+/* Add a class to body when nav is active to control chat visibility */
+body.nav-menu-active {
+    overflow: hidden; /* Prevent scrolling behind nav */
+}
+
+/* Hide the chat toggle button when the nav menu is active */
+body.nav-menu-active .chatbot-toggle {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none; /* Disable interaction when hidden */
+}
+
+
+/* ─── RESPONSIVE DESIGN (General) ──────────────────────────── */
+/* These are existing responsive rules, ensure they are correctly placed */
+
+@media (max-width: 480px) {
+    section {
+        padding: 60px 15px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+
+    .nav-logo {
+        max-width: 120px;
+    }
+
+    .footer {
+        padding: 40px 15px;
+    }
+
+    .socials {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Further reduce chatbot size on very small screens if necessary */
+     .chatbot-window {
+        width: 95%; /* Even narrower on very small screens */
+        max-height: 70vh; /* Adjust max height */
+        height: auto; /* Allow height to fit content up to max-height */
+         bottom: 10px; /* Adjust position */
+         left: 2.5%; /* Center by left/right */
+         right: 2.5%;
+    }
+
+    .chatbot-toggle {
+        width: 45px; /* Slightly smaller toggle */
+        height: 45px;
+        font-size: 18px;
+    }
+}
+
+/* Add mobile responsiveness for Construction Tracker */
+@media (max-width: 768px) {
+    .construction-tracker-page .input-section,
+    .construction-tracker-page .output-section {
+        padding: 1rem; /* Reduce padding on mobile */
+    }
+
+    .task-row {
+        grid-template-columns: 1fr; /* Stack inputs on mobile */
+        gap: 10px; /* Reduce gap */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .task-row input[type="text"],
+    .task-row input[type="date"],
+    .task-row input[type="number"],
+    .progress-row input[type="number"],
+    .progress-row input[type="text"] {
+        font-size: 0.9rem; /* Slightly smaller font */
+        padding: 8px; /* Reduce padding */
+        margin-bottom: 0; /* Remove margin between stacked inputs in a row */
+    }
+
+    .task-row .remove-task {
+        width: 100%; /* Full width button */
+        justify-self: stretch; /* Stretch across */
+    }
+
+    .progress-row {
+        flex-direction: column; /* Stack label and inputs */
+        gap: 10px; /* Reduce gap */
+        padding: 8px; /* Reduce padding */
+        align-items: stretch; /* Stretch items */
+    }
+
+     .progress-row label {
+         margin-bottom: 0; /* Remove margin below stacked label */
+         display: block; /* Ensure labels are displayed on mobile */
+     }
+
+    .box h4 {
+        font-size: 1.1rem; /* Adjust heading size */
+    }
+
+    .box p {
+        font-size: 0.9rem; /* Adjust paragraph size */
+    }
+
+    /* Ensure Plotly charts are responsive within their containers */
+    #gantt-chart,
+    #s-curve-chart {
+        width: 100% !important; /* Ensure containers take full width */
+        height: auto !important; /* Allow height to adjust */
+         /* Mobile specific styles for Gantt chart */
+    }
+
+    /* Further adjustments for Plotly elements within the chart */
+    #gantt-chart .plotly .modebar {
+        top: 10px !important; /* Adjust modebar position */
+        right: 10px !important;
+        left: auto !important;
+    }
+
+    #gantt-chart .plotly .ytick {
+        white-space: nowrap; /* Prevent task labels from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    }
+}
+
+/* Add custom scrollbar styles for task textareas */
+.task-row textarea::-webkit-scrollbar {
+    width: 8px; /* Same width as chatbot scrollbar */
+}
+
+.task-row textarea::-webkit-scrollbar-track {
+    background: #282828; /* Match task row background */
+}
+
+.task-row textarea::-webkit-scrollbar-thumb {
+    background-color: #00ccaa; /* A themed color */
+    border-radius: 4px;
+    border: 2px solid #282828; /* Match track background */
+}
+
+/* Firefox scrollbar styles */
+.task-row textarea {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: #00ccaa #282828; /* thumb track */
+}
+
+#gantt-chart, #fullscreen-gantt-chart {
+    background-color: #1e1e1e;
+    width: 100%;
+    min-height: 600px;
+    display: block !important;
+    overflow: auto;
+}
+
+#gantt-results.hidden, #progress-section.hidden, #analysis-results.hidden {
+    display: none;
+}
+
+#gantt-results, #progress-section, #analysis-results {
+    display: block;
+}
+
+/* Make sure your site's navbar/header sits above the modal */
+.navbar,
+header.site-header {
+  position: relative;
+  z-index: 3000; /* higher than the modal's z-index */
+}
+
+/* Modal overlay: fixed, full‐screen, centered flex container */
+#gantt-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;               /* hidden by default */
+  align-items: center;         /* vertical centering */
+  justify-content: center;     /* horizontal centering */
+  z-index: 2000;               /* sits below the navbar (z-index:3000) */
+}
+
+/* When "active" class is applied, show the modal as a flexbox */
+#gantt-modal.active {
+  display: flex;
+}
+
+/* The "box" inside the overlay */
+#gantt-modal .modal-content {
+  position: relative;   /* so the close button can be absolute INSIDE this box */
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  z-index: 2100; /* sits above the overlay, but still under navbar if needed */
+}
+
+/* The "×" in top‐right of modal-content */
+#gantt-modal .close-modal {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 28px;
+  color: #ccc;
+  cursor: pointer;
+  z-index: 2200; /* above .modal-content's other children */
+}
+
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #ccc;
+    text-decoration: none;
+}
+
+/* Addictive Navigation Menu Styling */
+.nav-links a {
+    position: relative;
+    color: #fff; /* Or your primary link color */
+    text-decoration: none;
+    padding: 5px 0;
+    margin: 0 15px;
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+      width: 100%;
+    height: 2px;
+    background-color: #00f; /* Or an accent color */
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    color: #00f; /* Highlight color on hover/focus */
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.nav-links a:hover::before,
+.nav-links a:focus::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* ─── FULLSCREEN MODAL STYLES ────────────────────────────────── */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top (behind nav, above chatbot toggle) */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+.modal.active {
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #1e1e1e; /* Dark background */
+    margin: auto; /* Auto margin centers the modal */
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 12px;
+    width: 90%; /* Adjust width as needed */
+    max-width: 1000px; /* Max width for content */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    position: relative; /* Needed for close button absolute position */
+    /* Ensure content fits within max height on smaller screens */
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-modal {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #f2f2f2;
+    text-decoration: none;
+}
+
+#fullscreen-gantt-chart {
+    width: 100%; /* Ensure chart container fills modal width */
+    height:  calc(90vh - 40px); /* Adjust height to fit within modal content, accounting for padding/close button */
+    min-height: 400px; /* Minimum height */
+}
+
+/* Ensure Plotly chart inside modal is responsive */
+#fullscreen-gantt-chart .plotly {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+        max-height: 95vh;
+    }
+    
+    .close-modal {
+        font-size: 24px;
+        top: 5px;
+        right: 15px;
+    }
+
+    #fullscreen-gantt-chart {
+        height: calc(95vh - 30px); /* Adjust height for smaller padding */
+        min-height: 300px; /* Smaller minimum height */
+    }
+}
+
+/* ─── GANTT CHART CREDIT STYLES ────────────────────────────────── */
+.gantt-credit {
+    margin-bottom: 20px; /* Space below the credit block */
+}
+
+.gantt-credit .credit-title {
+    font-family: 'Orbitron', sans-serif; /* Match headings font */
+    font-size: 1.8rem;
+    color: #f2f2f2; /* Light color */
+    margin-bottom: 5px;
+}
+
+.gantt-credit .credit-group {
+    font-size: 1.2rem;
+    color: #ccc; /* Slightly muted color */
+    margin-bottom: 15px;
+}
+
+.gantt-credit .credit-description,
+.gantt-credit .credit-details {
+    font-size: 1rem;
+    color: #ccc; /* Slightly muted color */
+    margin-bottom: 5px;
+}
+
+.gantt-credit .credit-details {
+    font-style: italic; /* Match image style */
+}
+
+@media (max-width: 768px) {
+    .gantt-credit .credit-title {
+        font-size: 1.5rem;
+    }
+    .gantt-credit .credit-group {
+        font-size: 1rem;
+    }
+    .gantt-credit .credit-description,
+    .gantt-credit .credit-details {
+        font-size: 0.9rem;
+    }
+}
+
+/* ─── STATIC GANTT CHART PAGE STYLES ─────────────────────────────── */
+
+/* Header Styling */
+.static-gantt-header {
+    width: 100%;
+    background-color: rgb(255, 255, 255); /* Assuming white background for this specific header */
+    color: #000; /* Black text */
+    text-align: center;
+    padding: 20px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.static-gantt-header .logo {
+    width: 80px;
+    margin-bottom: 15px;
+}
+
+.static-gantt-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif; /* Use Arial as specified in the provided CSS */
+    color: #333; /* Match body text color as per provided CSS */
+}
+
+.static-gantt-header p {
+    font-size: 1rem;
+    margin: 5px 0;
+    font-family: Arial, sans-serif; /* Use Arial as specified in the provided CSS */
+    color: #333; /* Match body text color as per provided CSS */
+}
+
+/* Chart Container */
+.chart-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%; /* Ensures the container adapts dynamically */
+    max-width: 1200px; /* Prevents it from exceeding a set width */
+    padding: 20px;
+    margin: 20px auto; /* Center the container */
+    overflow: hidden; /* Ensures nothing spills out of the container */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 680px; /* Explicitly set a substantial height */
+}
+
+/* Chart itself */
+/* Specific overrides for the Plotly chart within this container */
+.chart-container #gantt-chart {
+    width: 100% !important;
+    height: 100% !important; /* Allow Plotly to manage height */
+     /* Ensure Plotly's background is handled by its layout config */
+     background-color: #1e1e1e; /* Explicitly set background to ensure visibility */
+     display: block !important; /* Ensure it's always displayed */
+}
+
+/* Footer Styling */
+/* Note: This might conflict with the existing .footer style. Using a more specific selector or a new class is recommended if different footer styles are needed. I will use the existing .footer but make sure the colors are specific if needed. */
+/* Since the provided CSS has a dark blue background for footer, I will add a more specific rule or assume this is intended for this page only. Let's assume it's specific to this page's layout. */
+.static-gantt-page .footer { /* Assuming a parent class for the page */
+    width: 100%;
+    text-align: center;
+    background-color: #003366; /* Dark blue from provided CSS */
+    color: white;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design for this page */
+@media (max-width: 768px) {
+    .static-gantt-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .static-gantt-header p {
+        font-size: 0.9rem;
+    }
+
+    .chart-container {
+        width: 95%;
+        padding: 10px;
+    }
+}
+
+/* ─── FOOTER TAGLINE STYLES ─────────────────────────────── */
+.footer-tagline {
+    color: #00ffcc; /* Highlight color */
+    font-size: 1rem; /* Slightly smaller than main paragraph */
+    margin: 10px 0; /* Space above and below */
+    font-family: 'Inter', sans-serif; /* Match body/other text font */
+}
+
+/* ─── FOOTER CTA TEXT STYLES ─────────────────────────────── */
+.footer-cta-text {
+    color: #f2f2f2; /* Standard text color */
+    font-size: 1rem; /* Match tagline size */
+    margin: 10px 0; /* Space above and below */
+    font-family: 'Inter', sans-serif; /* Match body/other text font */
+}
+
+/* Adjust existing footer paragraph margin if needed */
+.footer p {
+     margin: 5px 0; /* Reduce margin for tighter spacing */
+}
+
+/* Ensure results section visibility is controlled */
+#gantt-results.hidden {
+    display: none;
+}
+
+#gantt-results {
+    display: block; /* Default to block when not hidden */
+}
+
+/* ─── LOADING SPINNER STYLES ────────────────────────────────── */
+.loading-spinner {
+    border: 8px solid #1e1e1e; /* Light grey border */
+    border-top: 8px solid #00ffcc; /* Blue border on top */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto; /* Center the spinner */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ensure the container for the spinner is set up for centering */
+#gantt-chart.box {
+    position: relative; /* Needed for absolute positioning if used, but margin auto works for block */
+    min-height: 100px; /* Ensure there's space for the spinner */
+    display: flex; /* Use flexbox to potentially center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Initially hide the spinner */
+.loading-spinner.hidden {
+    display: none;
+}/* --- Styling for the collapsible task entries --- */
+@media (max-width: 768px) {
+    .task-entry-container {
+        border: 1px solid #333; /* Subtle border for each entry */
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #282828;
+        overflow: hidden; /* Hide overflow during collapse/expand transition */
+    }
+
+    .task-entry-header {
+        display: flex; /* Use flex to align task name and icon */
+        justify-content: space-between; /* Space out task name and icon */
+        align-items: center;
+        padding: 10px;
+        background-color: #3e3e3e; /* Slightly different background */
+        cursor: pointer;
+        font-weight: bold;
+        color: #f2f2f2;
+    }
+
+    .task-entry-header label {
+        margin: 0; /* Remove margin from label inside header */
+        font-size: 1rem; /* Larger font for task name in header */
+    }
+
+    /* Expand icon style is shared with progress entries */
+
+    .task-entry-content {
+        padding: 10px;
+        border-top: 1px solid #333; /* Separator between header and content */
+        /* The task-row class applied here defines the grid layout for inputs */
+    }
+
+    /* Hide content on mobile by default - handled by JS but good to have a CSS fallback */
+    .task-entry-content.hidden-mobile {
+        display: none; /* Hide content */
+    }
+}
+
+/* Desktop styles to show original grid and hide mobile-only header */
+@media (min-width: 769px) {
+    .task-entry-container .task-entry-header.mobile-only {
+        display: none !important; /* Hide mobile header on desktop */
+    }
+
+    /* Ensure the content (which has the task-row class) is displayed as grid on desktop */
+    .task-entry-content {
+        display: grid !important; /* Ensure grid is used on desktop */
+        padding: 0; /* Remove padding added for mobile collapsible content */
+        border-top: none; /* Remove border */
+    }
+
+     /* Reset task-row styles that were adjusted for mobile collapsible content */
+     .task-entry-content.task-row {
+         border: none; /* Remove border added for the container */
+         background-color: transparent; /* Remove background color */
+         margin-bottom: 0; /* Remove margin bottom */
+         padding: 0; /* Remove padding */
+     }
+}
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+
+/* Base button reset */
+.construction-tracker-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 
+      background-color 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.2s ease;
+  }
+  
+  /* Primary button */
+  .construction-tracker-btn.primary {
+    background-color: #00ffcc;
+    color: #0e0e0e;
+    border-color: #00e6b8;
+  }
+  
+  .construction-tracker-btn.primary:hover,
+  .construction-tracker-btn.primary:focus {
+    background-color: #00e6b8;
+    box-shadow: 0 0 12px rgba(0,255,204,0.5);
+    transform: translateY(-1px);
+  }
+  
+  /* Secondary button */
+  .construction-tracker-btn.secondary {
+    background-color: transparent;
+    color: #00ffcc;
+    border-color: #00ffcc;
+  }
+  
+  .construction-tracker-btn.secondary:hover,
+  .construction-tracker-btn.secondary:focus {
+    background-color: rgba(0,255,204,0.1);
+    box-shadow: 0 0 8px rgba(0,255,204,0.4);
+    transform: translateY(-1px);
+  }
+  
+  /* Full-width utility */
+  .construction-tracker-btn.w-full {
+    width: 100%;
+  }
+  
+  /* ─── TEXT INPUTS & TEXTAREAS ───────────────────────────── */
+  
+  /* Generic text inputs */
+  .construction-tracker-input-section input[type="text"],
+  .construction-tracker-input-section input[type="date"],
+  .construction-tracker-input-section input[type="number"],
+  .construction-tracker-input-section textarea,
+  .construction-tracker-project-name {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #f2f2f2;
+    background-color: #2e2e2e;
+    border: 1px solid #444;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* Placeholder styling */
+  .construction-tracker-input-section input::placeholder,
+  .construction-tracker-input-section textarea::placeholder,
+  .construction-tracker-project-name::placeholder {
+    color: #bbb;
+  }
+  
+  /* Focus state */
+  .construction-tracker-input-section input:focus,
+  .construction-tracker-input-section textarea:focus,
+  .construction-tracker-project-name:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 6px rgba(0,255,204,0.4);
+  }
+  
+  /* Error state */
+  .construction-tracker-error-message + input,
+  .construction-tracker-error-message + textarea,
+  input[style*="border-color: red"],
+  textarea[style*="border-color: red"] {
+    border-color: #e74c3c !important;
+  }
+  
+  /* Textareas should resize vertically */
+  .construction-tracker-input-section textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  /* Utility for hiding/showing validation colors on generate */
+  .construction-tracker-error-message {
+    font-size: 0.9rem;
+    color: #e74c3c;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* ──────────────────────────────────────────────────────────────── */
+/* LIVE DEMOS – FEATURED CARDS                                        */
+/* ──────────────────────────────────────────────────────────────── */
+
+.live-demos {
+    padding: 60px 20px;
+    background: #111;            /* Dark background for contrast */
+  }
+  
+  .live-demos h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    margin-bottom: 10px;
+    color: #00ffcc;
+  }
+  
+  .live-demos p {
+    margin-bottom: 30px;
+    color: #ccc;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+  
+  .live-demo-card {
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .live-demo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 255, 204, 0.2);
+    border-color: #00ffcc;
+  }
+  
+  .live-demo-card h3 {
+    color: #00ffcc;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    margin-bottom: 0.5rem;
+  }
+  
+  .live-demo-card p {
+    color: #ddd;
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  
+  .live-demo-btn {
+    font-size: 1rem;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #00ffcc;
+    color: #0e0e0e;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .live-demo-btn:hover {
+    background: #00eebb;
+    transform: scale(1.05);
+  }
+  
+  /* Ensure the two cards sit side-by-side on wider screens; stack on narrow screens */
+  .live-demos .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  /* ──────────────────────────────────────────────────────────────── */
+  /* VIDEO EMBEDS (16:9 RATIO)                                        */
+  /* ──────────────────────────────────────────────────────────────── */
+  
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+  }
+  
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .video-box {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+  }
+  
+  .video-box em {
+    display: block;
+    margin-top: 0.5rem;
+    color: #ccc;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  /* construction_tracker.html (in the <style> block or static/css/construction_tracker.css) */
+
+/* Base styles for the page */
+.construction-tracker-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    background: #1e1e1e; /* Dark background for contrast */
+    color: #f2f2f2; /* Light text */
+}
+
+/* Headings */
+.construction-tracker-glitch {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00a886; /* VibeOps green */
+    text-align: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.construction-tracker-task-heading,
+.construction-tracker-progress-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #00a886;
+    margin-bottom: 1rem;
+}
+
+/* Text alignment */
+.construction-tracker-text-center {
+    text-align: center;
+    color: #cccccc;
+    margin-bottom: 2rem;
+}
+
+/* Input section */
+.construction-tracker-input-section {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Project name input */
+.construction-tracker-project-name {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #f2f2f2;
+    font-size: 1rem;
+}
+
+.construction-tracker-project-name:focus {
+    outline: none;
+    border-color: #00a886;
+}
+
+/* Task list */
+.construction-tracker-task-list {
+    margin-top: 1.5rem;
+}
+
+.task-entry-container {
+    background: #333;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.task-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+.task-entry-header label {
+    font-weight: 500;
+    color: #f2f2f2;
+}
+
+.expand-icon {
+    font-size: 1.25rem;
+    color: #00a886;
+}
+
+.task-entry-content {
+    padding-top: 1rem;
+}
+
+.task-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr) 100px; /* Adjust for new fields and buttons */
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.task-row label.mobile-only {
+    display: none; /* Hidden on desktop */
+}
+
+.task-row input,
+.task-row textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #f2f2f2;
+    font-size: 0.9rem;
+}
+
+.task-row input:focus,
+.task-row textarea:focus {
+    outline: none;
+    border-color: #00a886;
+}
+
+.task-row textarea {
+    resize: vertical;
+    min-height: 40px;
+}
+
+@media (max-width: 768px) {
+    .task-row {
+        grid-template-columns: 1fr;
+    }
+    .task-row label.mobile-only {
+        display: block;
+        font-weight: 500;
+        color: #cccccc;
+        margin-top: 0.5rem;
+    }
+    .task-entry-content.collapsed {
+        display: none;
+    }
+}
+
+/* Buttons */
+.construction-tracker-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.construction-tracker-btn.primary {
+    background: #00a886;
+    color: #fff;
+    border: none;
+}
+
+.construction-tracker-btn.primary:hover {
+    background: #008f70;
+    transform: translateY(-2px);
+}
+
+.construction-tracker-btn.secondary {
+    background: #444;
+    color: #f2f2f2;
+    border: 1px solid #666;
+}
+
+.construction-tracker-btn.secondary:hover {
+    background: #555;
+    transform: translateY(-2px);
+}
+
+.remove-task,
+.save-task,
+.cancel-task {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Error message */
+.construction-tracker-error-message {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* Output section */
+.construction-tracker-output-section {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.construction-tracker-box {
+    background: #333;
+    border-radius: 6px;
+    padding: 1rem;
+    min-height: 300px;
+}
+
+/* Progress section */
+.construction-tracker-progress-list {
+    margin-top: 1rem;
+}
+
+.progress-entry-container {
+    background: #333;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.progress-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+.progress-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.progress-row.header {
+    font-weight: 600;
+    color: #cccccc;
+}
+
+.progress-row label.desktop-only {
+    display: block;
+}
+
+.progress-row input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #f2f2f2;
+    font-size: 0.9rem;
+}
+
+.progress-row input:focus {
+    outline: none;
+    border-color: #00a886;
+}
+
+@media (max-width: 768px) {
+    .progress-row {
+        grid-template-columns: 1fr;
+    }
+    .progress-row label.desktop-only {
+        display: none;
+    }
+    .progress-entry-content.collapsed {
+        display: none;
+    }
+    .desktop-only {
+        display: none;
+    }
+}
+
+/* Loading spinner */
+.construction-tracker-loading-spinner {
+    border: 4px solid #444;
+    border-top: 4px solid #00a886;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    background: #2a2a2a;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 1200px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #f2f2f2;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #00a886;
+}
+
+/* Chat modal (from existing styles) */
+#chatbot-messages .chat-modal {
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#chatbot-messages .chat-modal p {
+    margin-bottom: 0.5rem;
+    color: #f2f2f2;
+}
+
+#chatbot-messages .chat-modal .btn {
+    margin: 0.5rem 0.25rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Typing indicator */
+.typing-indicator span {
+    animation: blink 1s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #444;
+    border-radius: 4px;
+  }
+  
+  .table-scroll table {
+    width: 100%;
+    min-width: 600px; /* adjust as needed */
+    border-collapse: collapse;
+  }
+
+@keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* ─── CSS VARIABLES FOR CONSISTENCY ───────────────────────────────────── */
+:root {
+    --neon-glow: #00ffcc;
+    --neon-glow-secondary: #00ccaa;
+    --dark-bg: #0e0e0e;
+    --card-bg: #1e1e1e;
+    --input-bg: #2e2e2e;
+    --border-dark: #444;
+    --text-muted: #ccc;
+    --error-red: #e74c3c;
+    --shadow-glow: 0 0 12px rgba(0, 255, 204, 0.4);
+    --transition-ease: all 0.3s ease;
+  }
+  
+  /* ─── INTERACTIVE TOOLTIPS ────────────────────────────────────────────── */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  }
+  
+  .tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--card-bg);
+    color: var(--neon-glow);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-dark);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-ease), transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-12px);
+  }
+  
+  /* ─── ANIMATED UNDERLINE FOR LINKS ────────────────────────────────────── */
+  .animated-link {
+    position: relative;
+    text-decoration: none;
+    color: var(--neon-glow);
+    padding-bottom: 2px;
+  }
+  
+  .animated-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: var(--neon-glow);
+    transition: width 0.3s ease;
+  }
+  
+  .animated-link:hover::after {
+    width: 100%;
+  }
+  
+  /* ─── GLOWING BORDER ANIMATION ────────────────────────────────────────── */
+  .glow-border {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(0, 255, 204, 0.3),
+      transparent
+    );
+    animation: rotate-glow 4s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes rotate-glow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* ─── NEON PULSE ANIMATION FOR BUTTONS ────────────────────────────────── */
+  .neon-pulse {
+    animation: neon-pulse 2s infinite;
+  }
+  
+  @keyframes neon-pulse {
+    0%, 100% { box-shadow: var(--shadow-glow); }
+    50% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.8); }
+  }
+  
+  /* ─── FADE-IN ANIMATION FOR ELEMENTS ──────────────────────────────────── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in 0.8s ease-out forwards;
+  }
+  
+  @keyframes fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ─── SLIDE-IN ANIMATION FOR SECTIONS ─────────────────────────────────── */
+  .slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slide-in 1s ease-out forwards;
+  }
+  
+  .slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slide-in 1s ease-out forwards;
+  }
+  
+  @keyframes slide-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* ─── HOVER SCALE EFFECT ──────────────────────────────────────────────── */
+  .scale-hover {
+    transition: var(--transition-ease);
+  }
+  
+  .scale-hover:hover {
+    transform: scale(1.05);
+  }
+  
+  /* ─── ACCESSIBILITY HIGHLIGHT ─────────────────────────────────────────── */
+  .focus-highlight {
+    outline: 3px solid var(--neon-glow);
+    outline-offset: 2px;
+    transition: outline 0.2s ease;
+  }
+  
+  :focus-visible.focus-highlight {
+    outline: 3px solid var(--neon-glow-secondary);
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* ─── DARK MODE TOGGLE BUTTON ─────────────────────────────────────────── */
+  .dark-mode-toggle {
+    background: var(--input-bg);
+    border: 1px solid var(--border-dark);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-ease);
+  }
+  
+  .dark-mode-toggle:hover {
+    background: var(--neon-glow);
+    color: var(--dark-bg);
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* ─── PROGRESS BAR FOR TASKS ──────────────────────────────────────────── */
+  .task-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--input-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+  
+  .task-progress-bar::after {
+    content: '';
+    display: block;
+    height: 100%;
+    background: var(--neon-glow);
+    width: var(--progress, 0%);
+    transition: width 0.5s ease;
+  }
+  
+  /* ─── COLLAPSIBLE SECTION TOGGLE ──────────────────────────────────────── */
+  .collapsible-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    color: var(--neon-glow);
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .collapsible-toggle::after {
+    content: '▶';
+    transition: transform 0.3s ease;
+  }
+  
+  .collapsible-toggle.active::after {
+    transform: rotate(90deg);
+  }
+  
+  .collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    background: var(--input-bg);
+    border-radius: 8px;
+    padding: 0 1rem;
+  }
+  
+  .collapsible-content.active {
+    max-height: 500px; /* Adjust based on content */
+    padding: 1rem;
+  }
+  
+  /* ─── ERROR NOTIFICATION ──────────────────────────────────────────────── */
+  .error-notification {
+    background: var(--error-red);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem auto;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slide-in 0.5s ease-out;
+  }
+  
+  .error-notification::before {
+    content: '⚠';
+    font-size: 1.2rem;
+  }
+  
+  /* ─── SUCCESS NOTIFICATION ────────────────────────────────────────────── */
+  .success-notification {
+    background: var(--neon-glow);
+    color: var(--dark-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem auto;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slide-in 0.5s ease-out;
+  }
+  
+  .success-notification::before {
+    content: '✓';
+    font-size: 1.2rem;
+  }
+  
+  /* ─── SKELETON LOADING ANIMATION ──────────────────────────────────────── */
+  .skeleton {
+    background: var(--input-bg);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    animation: skeleton-shine 1.5s infinite;
+  }
+  
+  @keyframes skeleton-shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+  
+  /* ─── PARALLAX BACKGROUND EFFECT ──────────────────────────────────────── */
+  .parallax-section {
+    position: relative;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .parallax-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .parallax-section > * {
+    z-index: 2;
+  }
+  
+  /* ─── GLASSMORPHISM EFFECT ────────────────────────────────────────────── */
+  .glass-effect {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* ─── CUSTOM CURSOR ───────────────────────────────────────────────────── */
+  .custom-cursor {
+    cursor: none;
+  }
+  
+  .custom-cursor::after {
+    content: '';
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--neon-glow);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    z-index: 9999;
+  }
+  
+  /* ─── RESPONSIVE UTILITIES ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .tooltip::after {
+      white-space: normal;
+      width: 200px;
+      font-size: 0.8rem;
+    }
+  
+    .collapsible-content.active {
+      max-height: 1000px; /* Allow more content on mobile */
+    }
+  
+    .error-notification,
+    .success-notification {
+      width: 90%;
+      font-size: 0.9rem;
+    }
+  
+    .parallax-section {
+      background-attachment: scroll; /* Disable parallax on mobile */
+    }
+  }
+  
+  /* ─── ACCESSIBILITY PREFERENCES ───────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .neon-pulse,
+    .fade-in,
+    .slide-in-left,
+    .slide-in-right,
+    .glow-border::before,
+    .skeleton::after {
+      animation: none;
+    }
+  
+    .scale-hover:hover {
+      transform: none;
+    }
+  }
+  
+  /* ─── HIGH CONTRAST MODE ──────────────────────────────────────────────── */
+  @media (prefers-contrast: high) {
+    .tooltip::after {
+      background: #000;
+      color: #fff;
+      border-color: #fff;
+    }
+  
+    .animated-link::after {
+      background: #fff;
+    }
+  
+    .task-progress-bar::after {
+      background: #fff;
+    }
+  }
+
+  /* ─── MOBILE RESPONSES FOR CONSTRUCTION TRACKER ────────────────────────── */
+@media (max-width: 768px) {
+    /* Make the entire input/output sections more compact */
+    .construction-tracker-input-section,
+    .construction-tracker-output-section {
+      padding: 1rem !important;
+      margin: 1rem 0 !important;
+    }
+  
+    /* Wrap tables so they can scroll horizontally */
+    /* ==============================
+    TABLE HEADERS (WRAPPING / SIZING)
+    ============================== */
+    #tasks-table th,
+    #progress-table th {
+        /* allow wrapping */
+        white-space: normal;                  
+        word-break: break-word;           
+        font-size: 0.9rem;                 /* slightly smaller on mobile */
+        padding: 0.5rem 0.75rem;           
+    }
+    
+    /* Give each header a base min-width so that table overflows instead of overlapping */
+    #tasks-table th:nth-child(1) { min-width: 80px; }  /* "Task Name" */
+    #tasks-table th:nth-child(2) { min-width: 50px; }  /* "Phase" */
+    #tasks-table th:nth-child(3) { min-width: 80px; }  /* "Start Date" */
+    #tasks-table th:nth-child(4) { min-width: 90px; }  /* "Duration" */
+    #tasks-table th:nth-child(5) { min-width: 100px; } /* "Predecessors" */
+    #tasks-table th:nth-child(6) { min-width: 70px; }  /* "Crew ID" */
+    #tasks-table th:nth-child(7) { min-width: 60px; }  /* "Personnel" */
+    #tasks-table th:nth-child(8) { min-width: 70px; }  /* "Equipment" */
+    #tasks-table th:nth-child(9) { min-width: 80px; }  /* "Actions" */
+   
+    #progress-table td,
+    #progress-table th {
+      white-space: nowrap;
+      padding: 0.5rem !important;
+      font-size: 0.9rem !important;
+    }
+  
+    /* Stack action buttons full-width */
+    .construction-tracker-btn.w-full {
+      width: 100% !important;
+      margin-bottom: 0.75rem !important;
+    }
+  
+    /* Reduce font-sizes on headings/text */
+    .construction-tracker-glitch {
+      font-size: 1.8rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+    .construction-tracker-task-heading,
+    .construction-tracker-progress-heading {
+      font-size: 1.2rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+    .construction-tracker-text-center {
+      font-size: 0.95rem !important;
+      margin-bottom: 1.25rem !important;
+    }
+  
+    /* Adjust Project Name input */
+    .construction-tracker-project-name {
+      font-size: 0.95rem !important;
+      padding: 0.5rem !important;
+    }
+  
+    /* Collapse Gantt and histograms containers to full width */
+    #gantt-chart,
+    #s-curve-chart,
+    #personnel-histogram,
+    #equipment-histogram {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 200px !important;
+    }
+  
+    /* Insights panel text smaller and padded */
+    #insights-content {
+      font-size: 0.95rem !important;
+      padding: 0.75rem !important;
+    }
+  
+    /* Ensure hidden class still applies */
+    .hidden {
+      display: none !important;
+    }
+  }
+  
+  /* ─── VERY NARROW SCREENS (PHONES) ───────────────────────────────────── */
+  @media (max-width: 480px) {
+    /* Further reduce padding on all tracker sections */
+    .construction-tracker-input-section,
+    .construction-tracker-output-section {
+      padding: 0.75rem !important;
+    }
+  
+    /* Shrink table cell padding/font further */
+    #tasks-table td,
+    #tasks-table th,
+    #progress-table td,
+    #progress-table th {
+      padding: 0.4rem !important;
+      font-size: 0.85rem !important;
+    }
+  
+    /* Buttons full-width and slightly smaller */
+    .construction-tracker-btn {
+      padding: 0.5rem 1rem !important;
+      font-size: 0.9rem !important;
+    }
+  
+    /* Reduce chart container heights */
+    #gantt-chart,
+    #s-curve-chart,
+    #personnel-histogram,
+    #equipment-histogram {
+      min-height: 150px !important;
+    }
+  
+    /* Insight panel text tweaks */
+    #insights-content p {
+      font-size: 0.9rem !important;
+    }
+  }
+  
+  @media (max-width: 768px) {
+      .table-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+          border: 1px solid #ddd;
+          border-radius: 4px;
+      }
+      
+      #tasks-table,
+      #progress-table {
+          min-width: 600px; /* ensures table doesn't compress too much */
+      }
+  }
+
+  @media (max-width: 768px) {
+      .construction-tracker-button-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+      }
+      
+      .construction-tracker-btn.w-full {
+          flex: 1;
+          margin-bottom: 0 !important; /* remove if using gap */
+      }
+  }
+
+  @media (max-width: 768px) {
+      /* Increase touch targets */
+      .construction-tracker-btn {
+          min-height: 44px; /* Apple's recommended touch target */
+          touch-action: manipulation; /* prevents zoom on double-tap */
+      }
+      
+      /* Better input field sizing */
+      input, select, textarea {
+          font-size: 16px !important; /* prevents zoom on iOS */
+      }
+  }
+
+  @media (max-width: 480px) {
+      /* Better spacing for very small screens */
+      .construction-tracker-input-section + .construction-tracker-output-section {
+          margin-top: 1.5rem !important;
+      }
+      
+      /* Card-like sections */
+      .construction-tracker-input-section,
+      .construction-tracker-output-section {
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+  }
+  
+  
+  
+  
+/* ...existing code... */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.footer-links .footer-link {
+  color: #00ffcc;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.footer-links .footer-link:hover {
+  background: #00ffcc22;
+  color: #fff;
+}
+/* ...existing code... */
+
+/* styles.css */
+
+/* Desktop dropdown */
+.dropdown-menu.desktop-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #111; /* Adjust to match your theme */
+  border: 1px solid #00ffcc; /* VibeOps theme color */
+  border-radius: 4px;
+  padding: 8px 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-menu.desktop-dropdown.open {
+  display: block;
+}
+
+/* Mobile dropdown */
+.nav-apps-mobile .dropdown-menu {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #111;
+}
+
+.nav-apps-mobile .dropdown-menu.open {
+  display: block;
+}
+
+/* General dropdown item styling */
+.dropdown-menu li {
+  padding: 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a:focus {
+  background: #00ffcc;
+  color: #111;
+}
+
+/* Ensure nav-menu is responsive */
+.nav-menu {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100px; /* Adjust based on header height */
+    left: 0;
+    width: 100%;
+    background: #111;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-apps-desktop {
+    display: none; /* Hide desktop dropdown on mobile */
+  }
+
+  .nav-apps-mobile {
+    display: block; /* Show mobile dropdown on mobile */
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-apps-mobile {
+    display: none; /* Hide mobile dropdown on desktop */
+  }
+
+  .nav-apps-desktop {
+    display: block;
+  }
+}
+

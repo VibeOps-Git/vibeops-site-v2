@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VibeOps — AI-native automation, lean workflows, and rapid web solutions for teams that build fast, flex hard, and vibe always." />
+  <meta name="keywords" content="AI-native automation, lean workflows, rapid web development, CRM sync, startup tools, AI engineering" />
+  <meta name="author" content="VibeOps" />
+  <title>Custom Solutions Portfolio – VibeOps</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="nav-container">
+      <a href="/" class="nav-logo-link">
+        <img src="Logo-wht.png" alt="VibeOps Logo" class="nav-logo" />
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu">
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/team">Team</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/reviews">Reviews</a></li>
+        <li><a href="/app-demos">Service Demos</a></li>
+        <li><a href="/booking" class="btn primary">Let's Build</a></li>
+        <li id="auth-section" style="display: none;"><a href="/logout" class="btn secondary">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section
+      class="solutions-portfolio"
+      data-aos="fade-in"
+      data-aos-duration="1000"
+      style="padding: 4rem 1rem;"
+    >
+      <!-- Hero Section -->
+      <h2
+        class="glitch"
+        data-text="Proven Solutions, Custom-Built"
+        data-aos="fade-up"
+        data-aos-delay="100"
+        style="text-align:center; margin-bottom:1rem;"
+      >
+        Proven Solutions, Custom-Built
+      </h2>
+      <p
+        data-aos="fade-up"
+        data-aos-delay="200"
+        style="max-width:640px; margin:0 auto 2rem; text-align:center; line-height:1.6;"
+      >
+        Trusted by leading general contractors, engineering firms, and defense agencies, these live demos showcase the types of tools we design and deliver.  
+        Tweak inputs, watch real-time insights, and imagine this power fine-tuned to your workflow.
+      </p>
+
+      <!-- Demos Grid -->
+      <div
+        class="demo-grid"
+        data-aos="fade-up"
+        data-aos-delay="300"
+        style="
+          display:grid;
+          grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+          gap:1.5rem;
+          max-width:900px;
+          margin:0 auto;
+        "
+      >
+        <!-- 1. Automated Reporting Engine -->
+        <!-- <div
+          class="demo-card"
+          data-aos="fade-up"
+          data-aos-delay="350"
+          style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .2s;"
+          onmouseover="this.style.transform='translateY(-5px)';"
+          onmouseout="this.style.transform='translateY(0)';"
+        >
+          <h3
+            class="glitch"
+            data-text="Instant AI Reporting"
+            style="margin-bottom:.5rem; color:#00ffcc;"
+          >
+            Instant AI Reporting
+          </h3>
+          <p style="color:#ddd; font-size:.95rem; line-height:1.4; margin-bottom:1rem;">
+            Eliminate 90% of manual reporting: feed in your project data and our AI crafts compliance-grade Word/PDF briefs.
+          </p>
+          <a
+            href="/ai-report-generator"
+            class="btn primary"
+            style="width:100%; text-align:center;"
+          >
+            Try the Demo →
+          </a>
+        </div> -->
+
+        <!-- 2. Pipeline Cost Estimator -->
+        <div
+          class="demo-card"
+          data-aos="fade-up"
+          data-aos-delay="400"
+          style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .2s;"
+          onmouseover="this.style.transform='translateY(-5px)';"
+          onmouseout="this.style.transform='translateY(0)';"
+        >
+          <h3
+            class="glitch"
+            data-text="Rapid Cost Estimation"
+            style="margin-bottom:.5rem; color:#00ffcc;"
+          >
+            Rapid Cost Estimation
+          </h3>
+          <p style="color:#ddd; font-size:.95rem; line-height:1.4; margin-bottom:1rem;">
+            Compress days of quoting into seconds: enter length, diameter & terrain to get a detailed BOM and cost-per-mile breakdown. 
+          </p>
+          <a
+            href="/pipeline-estimator"
+            class="btn primary"
+            style="width:100%; text-align:center;"
+          >
+            Try the Demo →
+          </a>
+        </div>
+
+        <!-- 3. Project Tracker -->
+        <div
+          class="demo-card"
+          data-aos="fade-up"
+          data-aos-delay="450"
+          style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .2s;"
+          onmouseover="this.style.transform='translateY(-5px)';"
+          onmouseout="this.style.transform='translateY(0)';"
+        >
+          <h3
+            class="glitch"
+            data-text="Live Project Tracking"
+            style="margin-bottom:.5rem; color:#00ffcc;"
+          >
+            Live Project Tracking
+          </h3>
+          <p style="color:#ddd; font-size:.95rem; line-height:1.4; margin-bottom:1rem;">
+            Gain 24/7 visibility with interactive Gantt charts, S-curve analytics, and resource dashboards.
+          </p>
+          <a
+            href="/construction-tracker"
+            class="btn primary"
+            style="width:100%; text-align:center;"
+          >
+            Try the Demo →
+          </a>
+        </div>
+      </div>
+
+      <!-- Final CTA -->
+      <div
+        data-aos="fade-up"
+        data-aos-delay="500"
+        style="text-align:center; margin-top:3rem;"
+      >
+        <p style="max-width:640px; margin:0 auto 1rem; line-height:1.5;">
+          Limited pilot spots available this quarter: secure your free strategy session and see how a bespoke tool can drive your next project to success.
+        </p>
+        <a href="/booking" class="btn secondary">
+          Book Your Free Strategy Huddle →
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" data-aos="fade-in" data-aos-duration="1000">
+    <img src="Logo-wht.png" alt="VibeOps Footer Logo" class="footer-logo" data-aos="fade-up" data-aos-delay="100" />
+    <p class="footer-tagline" data-aos="fade-up" data-aos-delay="150">
+      <strong>VibeOps</strong>: Web Development & Engineering Collective
+    </p>
+    <p class="footer-cta-text" data-aos="fade-up" data-aos-delay="180">
+      Ready for your business to do what you never thought it could?<br>
+      <span style="color:#00ffcc;">Chat with our DevOps & engineering crew.</span>
+    </p>
+    <nav class="footer-links" data-aos="fade-up" data-aos-delay="220" style="margin: 16px 0;">
+      <a href="/services" class="footer-link">Services</a>
+      <a href="/team" class="footer-link">Team</a>
+      <a href="/reviews" class="footer-link">Reviews</a>
+      <a href="/booking" class="footer-link">Book a Call</a>
+    </nav>
+    <div class="socials" data-aos="fade-up" data-aos-delay="300">
+      <a
+        href="mailto:sales@vibeops.ca?cc=ceo@vibeops.ca&subject=Strategy%20Call%20Request&body=Hello%20VibeOps%20Team%2C%0A%0AI'm%20interested%20in%20a%2015–20%20minute%20strategy%20call%20to%20discuss%20AI%20automation%20and%20engineering%20solutions%20for%20our%20organization%20(%2410k%2Fmo%20engagement).%20Please%20share%20your%20availability.%0A%0ABest%20regards%2C%0A[Your%20Name]%20%7C%20[Company]"
+        class="btn primary"
+        style="color:#111;font-weight:700;"
+      >
+        Connect with Us!
+      </a>
+      <a href="https://www.linkedin.com/company/vibeops/" target="_blank" rel="noopener" aria-label="LinkedIn" class="btn secondary" style="margin-left:10px;">
+        <!-- Minimal LinkedIn SVG, VibeOps colors -->
+        <svg width="22" height="22" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:8px;" xmlns="http://www.w3.org/2000/svg">
+          <!-- dark square with rounded corners -->
+          <rect x="1" y="1" width="22" height="22" rx="4" fill="#111" stroke="#00ffcc" stroke-width="2"/>
+          <!-- single-path "in" logo -->
+          <path fill="#00ffcc" d="M8.34 17.34H5.24V9.25h3.10v8.09zM6.79 8.70a1.80 1.80 0 1 1 0-3.60 1.80 1.80 0 0 1 0 3.60zM18.76 17.34h-3.09v-4.36c0-1.04-.02-2.38-1.45-2.38-1.45 0-1.67 1.13-1.67 2.30v4.43h-3.09V9.25h2.97v1.10h.04c.41-.78 1.42-1.60 2.92-1.60 3.12 0 3.70 2.06 3.70 4.73v5.41z"/>
+        </svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/VibeOps-Git" target="_blank" rel="noopener" aria-label="GitHub" class="btn secondary" style="margin-left:10px;">
+        <!-- Minimal GitHub SVG, VibeOps colors -->
+        <svg width="22" height="22" viewBox="0 0 98 96" fill="none" style="vertical-align:middle;margin-right:8px;" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="49" cy="48" r="46" fill="#111" stroke="#00ffcc" stroke-width="3"/>
+          <path d="M48.854 15C32.1 15 18 29.1 18 46.217c0 14.756 9.5 27.172 22.7 31.59 1.65.33 2.25-.72 2.25-1.61 0-.78-.03-3.37-.05-6.09-9.22 1.99-11.18-4.31-11.18-4.31-1.5-3.92-3.73-4.97-3.73-4.97-3.05-2.09.23-2.05.23-2.05 3.37.23 5.14 3.46 5.14 3.46 3 5.14 7.87 3.66 9.8 2.8.3-2.17 1.17-3.66 2.13-4.5-7.36-.83-15.1-3.49-15.1-15.77 0-3.49 1.26-6.35 3.27-8.57-.32-.82-1.42-4.22.3-8.77 0 0 2.8-.89 9.1 3.45a31.97 31.97 0 0 1 8.27-1.1c2.8 0 5.6.38 8.27 1.1 6.3-4.34 9.1-3.45 9.1-3.45 1.72 4.55.62 7.95.3 8.77 2.03 2.22 3.27 5.08 3.27 8.57 0 12.32-7.76 14.93-15.14 15.75.96.83 1.83 2.47 1.83 4.98 0 3.6-.03 6.5-.03 7.39 0 .89.6 1.94 2.25 1.61C70.5 73.39 80 60.97 80 46.217 80 29.1 65.8 15 48.854 15z" fill="#00ffcc"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+    <p data-aos="fade-up" data-aos-delay="350" style="font-size:0.95em;color:#aaa;">
+      © 2025 VibeOps – AI Automation & Web Solutions. All rights reserved.
+    </p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Check authentication status
+    async function checkAuthStatus() {
+      try {
+        const response = await fetch('https://yrxldviz.up.railway.app/api/auth/status');
+        const data = await response.json();
+        
+        if (data.authenticated) {
+          const authSection = document.getElementById('auth-section');
+          if (authSection) {
+            authSection.style.display = 'inline-block';
+          }
+        }
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+      }
+    }
+
+    // Initialize
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-back',
+      once: true,
+      mirror: false,
+      offset: 100
+    });
+
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    navToggle.addEventListener('click', () => {
+      const isActive = navToggle.classList.toggle('active');
+      navMenu.classList.toggle('active', isActive);
+      navToggle.setAttribute('aria-expanded', isActive);
+      document.body.classList.toggle('nav-menu-active', isActive);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthStatus();
+    });
+  </script>
+</body>
+</html>
