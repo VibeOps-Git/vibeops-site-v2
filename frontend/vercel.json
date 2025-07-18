@@ -4,30 +4,6 @@
     {
       "src": "*.html",
       "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.png",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.jpg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.jpeg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.ico",
-      "use": "@vercel/static"
     }
   ],
   "rewrites": [
@@ -37,27 +13,11 @@
     },
     {
       "source": "/reviews",
-      "destination": "/reviews.html"
+      "destination": "/index.html"
     },
     {
-      "source": "/team",
-      "destination": "/team.html"
-    },
-    {
-      "source": "/services",
-      "destination": "/services.html"
-    },
-    {
-      "source": "/booking",
-      "destination": "/booking.html"
-    },
-    {
-      "source": "/app-demos",
-      "destination": "/app-demos.html"
-    },
-    {
-      "source": "/login",
-      "destination": "/login.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "redirects": [
