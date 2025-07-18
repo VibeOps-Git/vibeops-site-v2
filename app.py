@@ -21,16 +21,6 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
 
-# Redirect vibeops.ca to www.vibeops.ca
-@app.before_request
-def redirect_non_www():
-    host = request.host.lower()
-    if host == 'vibeops.ca':
-        # Construct the new URL with www prefix
-        new_url = request.url.replace('http://vibeops.ca', 'http://www.vibeops.ca')
-        new_url = new_url.replace('https://vibeops.ca', 'https://www.vibeops.ca')
-        return redirect(new_url, code=301)  # 301 = permanent redirect
-
 # Add context processor to make auth status available in templates
 @app.context_processor
 def inject_auth_status():
