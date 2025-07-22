@@ -301,6 +301,14 @@ def about():
 def services():
     return render_template('services.html')
 
+@app.route('/roof-demo')
+def roofdemo():
+    return render_template('roof-demo.html')
+
+# ─── ROOF ESTIMATOR LOGIC (import from roof.py) ──────────
+from roof import price_roof, validate_address, calculate_roof_cost
+app.add_url_rule('/price', view_func=price_roof, methods=['POST'])
+
 @app.route('/case-studies')
 def case_studies():
     return render_template('case_studies.html')
@@ -316,10 +324,6 @@ def booking():
 @app.route('/team')
 def team():
     return render_template('team.html')
-
-@app.route('/app-demos')
-def appdemo():
-    return render_template('app-demos.html')
 
 @app.route('/debug/db-test')
 def debug_db_test():
