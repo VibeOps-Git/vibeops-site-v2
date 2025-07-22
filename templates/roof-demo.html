@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block title %}Roof-Demo{% endblock %}
+
+{% block extra_head %}
+  <!-- 1. Leaflet CSS (first) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <!-- 2. Your custom CSS (after) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='roof.css') }}">
+  <!-- 3. Fonts and JS -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+{% endblock %}
+
+{% block content %}
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="{{ url_for('static', filename='Logo-wht.png') }}" alt="VibeOps Logo" style="height: 70px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+                <h1 style="font-size:2.2rem; font-family:'Poppins',sans-serif; font-weight:700; margin-bottom: 0;">VibeOps Roofing Estimator <span style="background:#FFD700;color:#1A1A1A;font-size:1rem;padding:4px 12px;border-radius:8px;vertical-align:middle;margin-left:10px;letter-spacing:1px;">DEMO</span></h1>
+                <p class="tagline" style="font-size:1.1rem; margin-top:8px;">A Sales Demo for Roofing Companies — Powered by VibeOps</p>
+            </div>
+            <div class="main-content">
+                <div class="sales-pitch">
+                    <strong>Welcome to the VibeOps Roofing Estimator Demo!</strong> <br>
+                    This interactive demo shows how VibeOps can help your roofing company win more jobs and close deals faster. <br>
+                    <span style="color:#178a2c;font-weight:600;">We customize and tune this estimator for your business, using your real unit costs, labor rates, and branding.</span> <br>
+                    <span style="font-size:0.98rem;">Ready to see your own branded estimator? <strong>Contact VibeOps</strong> for a full white-label version tailored to your workflow.</span>
+                </div>
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="address">Property Address:</label>
+                        <input type="text" id="address" placeholder="Enter address (e.g., 1234 West Broadway, Vancouver, BC)" size="50">
+                    </div>
+                    <button class="btn btn-primary" onclick="geocodeAddress()">Show Map</button>
+                </div>
+
+                <div class="instructions">
+                    <h3>How This Demo Works:</h3>
+                    <ol>
+                        <li>Enter any property address and click <strong>Show Map</strong>.</li>
+                        <li>Zoom in and trace the roof outline using the draw tool.</li>
+                        <li>Click <strong>Calculate Cost</strong> to see a sample estimate, bill of materials, and cost breakdown.</li>
+                        <li>Want to try again? Use the trash icon to clear and redraw.</li>
+                    </ol>
+                    <div style="margin-top:18px;font-size:1.05rem;color:#178a2c;font-family:'Poppins',sans-serif;font-weight:600;">
+                        <span style="background:#FFD700;color:#1A1A1A;padding:3px 10px;border-radius:6px;">DEMO ONLY</span> — This is a sample estimator. <br>
+                        <span style="color:#d5d5d5;font-weight:400;display:block;margin-top:20px;">VibeOps will tune, brand, and connect this tool to your real unit costs, labor rates, and workflow for your company.</span>
+                    </div>
+                </div>
+
+                <div class="map-section">
+                    <div id="map"></div>
+                </div>
+
+                <!-- Area display moved above the button group -->
+                <div id="area" class="area-display"></div>
+
+                <!-- Button Group - Only Calculate Cost button -->
+                <div class="btn-group">
+                    <button id="calculateCost" class="btn btn-primary" onclick="calculateCost()" disabled>Calculate Cost</button>
+                </div>
+
+                <!-- Overlay Container - All overlays below buttons -->
+                <div class="overlay-container">
+                    <div id="error" class="error-message"></div>
+                    <div class="results-section" id="results">
+                        <div class="result-item">
+                            <h4>Estimate Results</h4>
+                            <div id="result"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        const map = L.map('map', { zoomControl: true }).setView([49.2827, -123.1207], 12); // Default: Vancouver, BC
+        const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        const satelliteLayer = L.tileLayer('https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=sfuVh1bXJaWZbxblHBkD', {
+            attribution: '© <a href="https://www.maptiler.com/copyright/">MapTiler</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map); // Default to satellite
+
+        const baseLayers = {
+            "Street Map": streetLayer,
+            "Satellite": satelliteLayer
+        };
+        L.control.layers(baseLayers, null, { position: 'bottomright' }).addTo(map);
+
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+        let drawControl = new L.Control.Draw({
+            position: 'bottomright',
+            draw: {
+              polygon: {
+                shapeOptions: { color: '#00ffcc' },
+                allowIntersection: false,
+                showArea: true,
+                metric: true,      // ← show m²
+                imperial: true,    // ← show ft² (and acres when large)
+                precision: 2,      // ← two decimals
+                drawError: {
+                  color: '#b1b4b6',
+                  timeout: 2500
+                },
+                repeatMode: false
+              },
+              marker: false,
+              polyline: false,
+              rectangle: false,
+              circle: false,
+              circlemarker: false
+            },
+            edit: false
+        });
+        map.addControl(drawControl);          
+        let roofArea = 0;
+
+        // Enable polygon drawing with proper completion
+        map.on(L.Draw.Event.DRAWSTART, function(e) {
+            // Clear any existing polygons when starting a new one
+            drawnItems.clearLayers();
+        });
+
+        map.on(L.Draw.Event.CREATED, function(e) {
+            const layer = e.layer;
+            drawnItems.clearLayers();
+            drawnItems.addLayer(layer);
+            const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+            roofArea = area * 10.7639; // Convert square meters to square feet
+            const areaDiv = document.getElementById('area');
+            if (roofArea < 100) {
+                areaDiv.innerText = `Roof Area: ${roofArea.toFixed(2)} sq ft (Too small! Zoom in to 18–20 and draw a bigger roof shape.)`;
+                areaDiv.classList.add('show');
+                document.getElementById('calculateCost').disabled = true;
+            } else {
+                areaDiv.innerText = `Roof Area: ${roofArea.toFixed(2)} sq ft`;
+                areaDiv.classList.add('show');
+                document.getElementById('calculateCost').disabled = false;
+            }
+        });
+
+        // Add custom delete functionality
+        function clearPolygon() {
+            drawnItems.clearLayers();
+            const areaDiv = document.getElementById('area');
+            areaDiv.classList.remove('show');
+            document.getElementById('calculateCost').disabled = true;
+            roofArea = 0;
+        }
+
+        // Add delete button to the map
+        L.Control.DeleteButton = L.Control.extend({
+            onAdd: function(map) {
+                const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+                const button = L.DomUtil.create('a', 'leaflet-control-delete', container);
+                button.innerHTML = '🗑️';
+                button.title = 'Delete Polygon';
+                button.style.width = '32px';
+                button.style.height = '32px';
+                button.style.minHeight = '32px';
+                button.style.textAlign = 'center';
+                button.style.fontSize = '12px';
+                button.style.backgroundColor = '#ffebee';
+                button.style.color = '#d32f2f';
+                button.style.border = '2px solid #ef9a9a';
+                button.style.borderRadius = '4px';
+                button.style.marginBottom = '5px';
+                button.style.cursor = 'pointer';
+                button.style.display = 'flex';
+                button.style.alignItems = 'center';
+                button.style.justifyContent = 'center';
+                button.style.lineHeight = '1';
+                button.style.padding = '0';
+                button.style.verticalAlign = 'middle';
+                
+                L.DomEvent.on(button, 'click', function(e) {
+                    L.DomEvent.stopPropagation(e);
+                    clearPolygon();
+                });
+                
+                return container;
+            }
+        });
+        
+        new L.Control.DeleteButton({ position: 'bottomright' }).addTo(map);
+
+        async function geocodeAddress() {
+            const address = document.getElementById('address').value || 'Unknown';
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const areaDiv = document.getElementById('area');
+            const resultsSection = document.getElementById('results');
+            
+            resultDiv.innerText = '';
+            errorDiv.classList.remove('show');
+            areaDiv.classList.remove('show');
+            resultsSection.classList.remove('show');
+            
+            document.getElementById('calculateCost').disabled = true;
+            roofArea = 0;
+            map.eachLayer(layer => {
+                if (layer instanceof L.Marker && layer.options.icon.options.className === 'closing-marker') map.removeLayer(layer);
+            });
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`, {
+                    headers: { 'User-Agent': 'Fort-Roofing/1.0' }
+                });
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const result = data[0];
+                    map.setView([result.lat, result.lon], 18);
+                    map.eachLayer(layer => {
+                        if (layer instanceof L.Marker && layer.options.icon.options.className !== 'closing-marker') map.removeLayer(layer);
+                    });
+                    L.marker([result.lat, result.lon]).addTo(map);
+                } else {
+                    errorDiv.innerText = `Error: Invalid address\nAddress: ${address}`;
+                    errorDiv.classList.add('show');
+                }
+            } catch (error) {
+                errorDiv.innerText = `Error: ${error.message}\nAddress: ${address}`;
+                errorDiv.classList.add('show');
+            }
+        }
+
+        async function calculateCost() {
+            if (roofArea < 100) {
+                const errorDiv = document.getElementById('error');
+                errorDiv.innerText = 'Error: Roof area too small (< 100 sq ft). Zoom in and draw a larger shape.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            const address = document.getElementById('address').value || 'Unknown';
+            const response = await fetch('/price', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `address=${encodeURIComponent(address)}&roof_size=${roofArea}`
+            });
+            
+            const data = await response.json();
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const resultsSection = document.getElementById('results');
+            
+            if (response.ok) {
+                // Bill of Materials Table
+                let bomHtml = '';
+                if (data.bill_of_materials) {
+                    const bom = data.bill_of_materials;
+                    bomHtml += `<h5>Bill of Materials</h5>`;
+                    bomHtml += `<div class="table-wrapper"><table class="bom-table"><thead><tr><th>Item</th><th>Quantity</th><th>Rate</th><th>Cost</th></tr></thead><tbody>`;
+                    for (const mat of bom.materials) {
+                        bomHtml += `<tr><td>${mat.item}</td><td>${mat.quantity}</td><td>${mat.rate}</td><td>${mat.cost}</td></tr>`;
+                    }
+                    bomHtml += `</tbody></table></div>`;
+                    bomHtml += `<ul class="bom-labor-overhead">`;
+                    bomHtml += `<li><strong>Labor:</strong> ${bom.labor.description} — ${bom.labor.quantity} @ ${bom.labor.rate} = <strong>${bom.labor.cost}</strong></li>`;
+                    bomHtml += `<li><strong>Overhead:</strong> ${bom.overhead.description} (${bom.overhead.percentage}%): <strong>${bom.overhead.cost}</strong></li>`;
+                    bomHtml += `</ul>`;
+                    bomHtml += `<table class="bom-summary"><tbody>`;
+                    bomHtml += `<tr><td><strong>Materials Total</strong></td><td>${bom.summary.materials_total}</td></tr>`;
+                    bomHtml += `<tr><td><strong>Labor Total</strong></td><td>${bom.summary.labor_total}</td></tr>`;
+                    bomHtml += `<tr><td><strong>Overhead Total</strong></td><td>${bom.summary.overhead_total}</td></tr>`;
+                    bomHtml += `<tr><td><strong>Grand Total</strong></td><td><strong>${bom.summary.total_cost}</strong></td></tr>`;
+                    bomHtml += `</tbody></table>`;
+                }
+                resultDiv.innerHTML = `
+                    <p><strong>Address:</strong> ${data.address}</p>
+                    <p><strong>Roof Size:</strong> ${data.roof_size} sq ft</p>
+                    <p class="cost-highlight"><strong>Estimated Cost:</strong> $${data.total_cost.toLocaleString()}</p>
+                    ${bomHtml}
+                `;
+                resultsSection.classList.add('show');
+                errorDiv.classList.remove('show');
+            } else {
+                errorDiv.innerText = `Error: ${data.error}\nAddress: ${data.address}`;
+                errorDiv.classList.add('show');
+                resultsSection.classList.remove('show');
+            }
+        }
+        </script>
+    </body>
+    </html>
+{% endblock %}
