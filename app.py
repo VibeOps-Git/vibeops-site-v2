@@ -33,6 +33,14 @@ def inject_auth_status():
 def home():
     return render_template('index.html')
 
+@app.route('/robots.txt')
+def serve_robots():
+    return send_file('robots.txt', mimetype='text/plain')
+
+@app.route('/llms.txt')
+def serve_llms():
+    return send_file('llms.txt', mimetype='text/plain')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -320,6 +328,10 @@ def contact():
 @app.route('/booking')
 def booking():
     return render_template('booking.html')
+
+@app.route('/algo')
+def algo():
+    return render_template('lead_demo.html')
 
 @app.route('/team')
 def team():

@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /login
+Disallow: /logout
+Disallow: /reviews
+Disallow: /ai-report-generator
+Disallow: /generate-sample-reports
+Disallow: /debug/
+Disallow: /static/
+Allow: /about
+Allow: /services
+Allow: /case-studies
+Allow: /contact
+Allow: /team

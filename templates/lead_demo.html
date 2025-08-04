@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}VibeOps Lead Algorithm Demo{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='lead.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="lead-demo-container">
+  <div class="lead-demo-card">
+    <h3>VibeOps Vancouver Small-Biz Lead Generator Demo</h3>
+    <p>
+      Experience how VibeOps automates lead generation for Vancouver small businesses.
+      Select a keyword from the dropdown below, then hit <strong>Run Demo</strong>.
+      <em>Note: This is a front-end demo—actual client solutions run a custom Google Apps Script under the hood.</em>
+    </p>
+
+    <div class="lead-demo-controls">
+      <label for="keywordSelect">Choose keyword:</label>
+      <select id="keywordSelect" class="lead-demo-select">
+        <option value="">Select a keyword</option>
+        {% if keywords %}
+          {% for keyword in keywords %}
+            <option value="{{ keyword }}">{{ keyword }}</option>
+          {% endfor %}
+        {% else %}
+          <option value="Smoke Shop">Smoke Shop</option>
+          <option value="Liquor Store">Liquor Store</option>
+          <option value="Nail Salon">Nail Salon</option>
+          <option value="Hair Stylist">Hair Stylist</option>
+          <option value="Pet Groomer">Pet Groomer</option>
+          <option value="Landscaping">Landscaping</option>
+          <option value="Home Cleaning Service">Home Cleaning Service</option>
+          <option value="Photographer">Photographer</option>
+          <option value="Event Planner">Event Planner</option>
+          <option value="Tattoo Studio">Tattoo Studio</option>
+          <option value="Auto Repair">Auto Repair</option>
+          <option value="Coffee Shop">Coffee Shop</option>
+          <option value="Bakery">Bakery</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Yoga Studio">Yoga Studio</option>
+          <option value="Personal Trainer">Personal Trainer</option>
+        {% endif %}
+      </select>
+      <button id="runBtn" class="lead-demo-btn lead-demo-btn-primary">Run Demo</button>
+      <button id="resetBtn" class="lead-demo-btn lead-demo-btn-secondary">Reset</button>
+    </div>
+
+    <progress id="demoProgress" class="lead-demo-progress" max="100" value="0"></progress>
+
+    <div class="lead-demo-table-container">
+      <table id="resultsTable" class="lead-demo-table">
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Website</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+
+    <div id="demoLog" class="lead-demo-log"></div>
+
+    <div class="lead-demo-cta">
+      <p>Ready to automate your lead generation?</p>
+      <a href="{{ url_for('contact') }}">Contact us to deploy a custom solution!</a>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  'use strict';
+  
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLeadDemo);
+  } else {
+    initLeadDemo();
+  }
+  
+  function initLeadDemo() {
+    // Demo data (fictional entries)
+    const demoData = [
+      { name: "Fake Smoke Shop 1", type: "Smoke Shop", city: "Example City", address: "123 Fake St, Example City, BC V1A 1A1", website: "smokeshop1.example.com", email: "contact1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Smoke Shop 2", type: "Smoke Shop", city: "Example City", address: "456 Bogus Rd, Example City, BC V1A 1A2", website: "smokeshop2.example.com", email: "info2@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Liquor Store A", type: "Liquor Store", city: "Example City", address: "789 Imaginary Ave, Example City, BC V1A 1A3", website: "liquorstore1.example.com", email: "sales1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Liquor Store B", type: "Liquor Store", city: "Example City", address: "101 Fictitious Blvd, Example City, BC V1A 1A4", website: "liquorstore2.example.com", email: "info3@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Nail Salon X", type: "Nail Salon", city: "Example City", address: "202 Phony St, Example City, BC V1A 1A5", website: "nailsalon1.example.com", email: "book1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Nail Salon Y", type: "Nail Salon", city: "Example City", address: "303 Sham Rd, Example City, BC V1A 1A6", website: "nailsalon2.example.com", email: "nails1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Hair Studio 1", type: "Hair Stylist", city: "Example City", address: "404 Mirage Dr, Example City, BC V1A 1A7", website: "hairstudio1.example.com", email: "hello1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Hair Studio 2", type: "Hair Stylist", city: "Example City", address: "505 Dream St, Example City, BC V1A 1A8", website: "hairstudio2.example.com", email: "book2@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Pet Groomer A", type: "Pet Groomer", city: "Example City", address: "606 Illusion Ave, Example City, BC V1A 1A9", website: "petgroomer1.example.com", email: "contact2@example.com", phone: "(123) 456-7890" },
+      { name: "Example Pet Groomer B", type: "Pet Groomer", city: "Example City", address: "707 Fantasy Rd, Example City, BC V1A 1B1", website: "petgroomer2.example.com", email: "groom1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Landscape Co 1", type: "Landscaping", city: "Example City", address: "808 Mythical Blvd, Example City, BC V1A 1B2", website: "landscape1.example.com", email: "info4@example.com", phone: "(123) 456-7890" },
+      { name: "Example Landscape Co 2", type: "Landscaping", city: "Example City", address: "909 Unreal St, Example City, BC V1A 1B3", website: "landscape2.example.com", email: "contact3@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Cleaning Service X", type: "Home Cleaning Service", city: "Example City", address: "1010 Fable Rd, Example City, BC V1A 1B4", website: "cleaning1.example.com", email: "clean1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Cleaning Service Y", type: "Home Cleaning Service", city: "Example City", address: "1111 Mirage Ave, Example City, BC V1A 1B5", website: "cleaning2.example.com", email: "hello2@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Photo Studio 1", type: "Photographer", city: "Example City", address: "1212 Dream Dr, Example City, BC V1A 1B6", website: "photo1.example.com", email: "book3@example.com", phone: "(123) 456-7890" },
+      { name: "Example Photo Studio 2", type: "Photographer", city: "Example City", address: "1313 Phony Blvd, Example City, BC V1A 1B7", website: "photo2.example.com", email: "photos1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Event Planner A", type: "Event Planner", city: "Example City", address: "1414 Imaginary St, Example City, BC V1A 1B8", website: "event1.example.com", email: "events1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Event Planner B", type: "Event Planner", city: "Example City", address: "1515 Fictitious Rd, Example City, BC V1A 1B9", website: "event2.example.com", email: "plan1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Tattoo Parlor 1", type: "Tattoo Studio", city: "Example City", address: "1616 Fake Ave, Example City, BC V1A 1C1", website: "tattoo1.example.com", email: "art1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Tattoo Parlor 2", type: "Tattoo Studio", city: "Example City", address: "1717 Bogus St, Example City, BC V1A 1C2", website: "tattoo2.example.com", email: "ink1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Auto Shop X", type: "Auto Repair", city: "Example City", address: "1818 Sham Blvd, Example City, BC V1A 1C3", website: "auto1.example.com", email: "service1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Auto Shop Y", type: "Auto Repair", city: "Example City", address: "1919 Illusion Dr, Example City, BC V1A 1C4", website: "auto2.example.com", email: "fix1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Coffee Shop 1", type: "Coffee Shop", city: "Example City", address: "2020 Mythical Rd, Example City, BC V1A 1C5", website: "coffee1.example.com", email: "info5@example.com", phone: "(123) 456-7890" },
+      { name: "Example Coffee Shop 2", type: "Coffee Shop", city: "Example City", address: "2121 Unreal Ave, Example City, BC V1A 1C6", website: "coffee2.example.com", email: "coffee1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Bakery A", type: "Bakery", city: "Example City", address: "2222 Fable St, Example City, BC V1A 1C7", website: "bakery1.example.com", email: "orders1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Bakery B", type: "Bakery", city: "Example City", address: "2323 Fantasy Blvd, Example City, BC V1A 1C8", website: "bakery2.example.com", email: "bake1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Restaurant X", type: "Restaurant", city: "Example City", address: "2424 Phony Dr, Example City, BC V1A 1C9", website: "restaurant1.example.com", email: "reservations1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Restaurant Y", type: "Restaurant", city: "Example City", address: "2525 Mirage Rd, Example City, BC V1A 1D1", website: "restaurant2.example.com", email: "dine1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Yoga Studio 1", type: "Yoga Studio", city: "Example City", address: "2626 Imaginary Ave, Example City, BC V1A 1D2", website: "yoga1.example.com", email: "info6@example.com", phone: "(123) 456-7890" },
+      { name: "Example Yoga Studio 2", type: "Yoga Studio", city: "Example City", address: "2727 Fictitious St, Example City, BC V1A 1D3", website: "yoga2.example.com", email: "yoga1@example.com", phone: "(123) 456-7890" },
+      { name: "Fake Trainer Co 1", type: "Personal Trainer", city: "Example City", address: "2828 Fake Blvd, Example City, BC V1A 1D4", website: "trainer1.example.com", email: "train1@example.com", phone: "(123) 456-7890" },
+      { name: "Example Trainer Co 2", type: "Personal Trainer", city: "Example City", address: "2929 Bogus Rd, Example City, BC V1A 1D5", website: "trainer2.example.com", email: "fitness1@example.com", phone: "(123) 456-7890" }
+    ];
+
+    // Get DOM elements
+    const elements = {
+      keywordSelect: document.getElementById('keywordSelect'),
+      runBtn: document.getElementById('runBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      demoProgress: document.getElementById('demoProgress'),
+      resultsBody: document.getElementById('resultsBody'),
+      demoLog: document.getElementById('demoLog')
+    };
+
+    // Utility functions
+    function log(level, message) {
+      const timestamp = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.className = `lead-demo-log-${level.toLowerCase()}`;
+      line.textContent = `[${level}] [${timestamp}] ${message}`;
+      elements.demoLog.appendChild(line);
+      elements.demoLog.scrollTop = elements.demoLog.scrollHeight;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function clearResults() {
+      elements.resultsBody.innerHTML = '';
+      elements.demoLog.innerHTML = '';
+      elements.demoProgress.value = 0;
+    }
+
+    // Event handlers
+    elements.resetBtn.addEventListener('click', function() {
+      clearResults();
+      elements.keywordSelect.value = '';
+      log('INFO', 'Demo reset');
+    });
+
+    elements.runBtn.addEventListener('click', async function() {
+      try {
+        clearResults();
+        
+        const selectedKeyword = elements.keywordSelect.value;
+        if (!selectedKeyword) {
+          log('ERROR', 'Please select a keyword');
+          return;
+        }
+
+        log('INFO', `Starting pipeline for "${selectedKeyword}"`);
+        await sleep(500);
+
+        // Simulate processing steps
+        const steps = [
+          `Query OpenDataSoft API for "${selectedKeyword}"`,
+          `Parse API response`,
+          `Validate & clean contacts`,
+          `Deduplicate entries`,
+          `Append to sheet`,
+          `Setup continuation trigger`
+        ];
+
+        for (let i = 0; i < steps.length; i++) {
+          log('INFO', steps[i]);
+          elements.demoProgress.value = Math.round((i + 1) / steps.length * 100);
+          await sleep(400 + Math.random() * 400);
+
+          // Random warnings/errors for realism
+          if (i === 3 && Math.random() < 0.3) {
+            log('WARN', `Duplicate detected for a "${selectedKeyword}" business`);
+          } else if (i === 2 && Math.random() < 0.15) {
+            log('ERROR', `Invalid contact data for a "${selectedKeyword}" record`);
+          }
+        }
+
+        // Filter and display results
+        let matchingData = demoData.filter(item => item.type === selectedKeyword);
+        if (matchingData.length === 0) {
+          matchingData = [demoData[Math.floor(Math.random() * demoData.length)]];
+          log('WARN', `No exact match for "${selectedKeyword}", showing random sample`);
+        }
+
+        // Populate table
+        matchingData.forEach(business => {
+          const row = document.createElement('tr');
+          const cells = [
+            selectedKeyword,
+            business.name,
+            business.type,
+            business.city,
+            business.address,
+            business.website,
+            business.email,
+            business.phone
+          ];
+
+          cells.forEach(cellData => {
+            const cell = document.createElement('td');
+            cell.textContent = cellData;
+            row.appendChild(cell);
+          });
+
+          elements.resultsBody.appendChild(row);
+          log('INFO', `Added: ${business.name}`);
+        });
+
+        log('INFO', 'Demo complete — real setup uses Google Apps Script for full automation');
+      } catch (error) {
+        log('ERROR', `Demo failed: ${error.message}`);
+      }
+    });
+
+    log('INFO', 'Lead generation demo ready');
+  }
+})();
+</script>
+{% endblock %}
