@@ -33,12 +33,17 @@ const serviceDemos = [
   {
     title: 'Lead Generation Algorithm',
     caption: 'A visual respresentation of our vancouver business lead generation algorithm, ready to fine tune to your location and business?',
-    link: '/algo'
+    link: '/lead-algo'
   },
   {
     title: 'AI Reporting Prototype',
     caption: 'Preview an AI-driven solution that creates customized reports for various industries, using field notes, inspection data, or general inputs.',
     link: '/ai-report-generator'
+  },
+  {
+    title: 'SEO Algorithm Demo',
+    caption: 'A front-to-back demo of our AI-powered SEO pipeline: topic ideation, competitor research, and automated blog composition.',
+    link: '/seo-algo'
   },
   {
     title: 'Cost Estimation Prototype',

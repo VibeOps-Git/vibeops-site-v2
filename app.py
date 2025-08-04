@@ -329,9 +329,13 @@ def contact():
 def booking():
     return render_template('booking.html')
 
-@app.route('/algo')
-def algo():
+@app.route('/lead-algo')
+def algodemo():
     return render_template('lead_demo.html')
+
+@app.route('/seo-algo')
+def seodemo():
+    return render_template('seo_demo.html')
 
 @app.route('/team')
 def team():
