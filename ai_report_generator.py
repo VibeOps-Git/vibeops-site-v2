@@ -61,49 +61,71 @@ class AIReportGenerator:
         try:
             template = REPORT_TEMPLATES[report_type]
             table_headers = template['table_headers']
-            # Build prompt for AI to generate all sections and table data
+
+            # Determine which extra JSON fields to request
+            extra_fields = []
+            if report_type == 'defense_compliance':
+                extra_fields = ['compliance_summary: string', 'risk_assessment: string']
+            elif report_type == 'capital_planning':
+                extra_fields = ['risk_assessment: string', 'financial_analysis: string']
+            elif report_type == 'feasibility_study':
+                extra_fields = ['risk_assessment: string', 'findings: string']
+            elif report_type == 'construction_closeout':
+                extra_fields = ['project_review: string']
+
+            # Build the prompt
             prompt = f"""
-You are a VibeOps {report_type.replace('_', ' ')} expert. Generate a detailed report for {company_name} with project context: {project_context}.
+You are a VibeOps {report_type.replace('_', ' ')} expert.
+Generate a detailed report for {company_name} with project context: {project_context}.
 Return a JSON object with:
 - executive_summary: string
 - recommendations: list of strings
-- {'risk_assessment: string' if report_type in ['capital_planning', 'feasibility_study'] else 'project_review: string'}
-- {'financial_analysis: string' if report_type == 'capital_planning' else 'findings: string' if report_type == 'feasibility_study' else ''}
-- table_data: list of objects, each with keys {', '.join(table_headers)}
-Ensure table_data is realistic, aligns with the project context, and matches the report type.
-Use a professional, confident tone. Respond in valid JSON only.
 """
-            if self.use_new_client and self.client:
-                response = self.client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": "You are a professional analyst. Respond in valid JSON only."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=0.7,
-                    max_tokens=2000
-                )
-                content = json.loads(response.choices[0].message.content)
-                # Validate JSON structure
-                required_keys = ['executive_summary', 'recommendations', 'table_data']
-                if report_type == 'capital_planning':
-                    required_keys.extend(['risk_assessment', 'financial_analysis'])
-                elif report_type == 'feasibility_study':
-                    required_keys.extend(['risk_assessment', 'findings'])
-                elif report_type == 'closeout':
-                    required_keys.append('project_review')
-                if not all(key in content for key in required_keys):
-                    raise ValueError("Invalid JSON structure from AI response")
-                # Validate table_data keys
-                for row in content['table_data']:
-                    if not all(h in row for h in table_headers):
-                        raise ValueError("Table row missing required headers")
-                return content
-            else:
-                raise Exception("OpenAI client not initialized.")
+            for field in extra_fields:
+                prompt += f"- {field}\n"
+            prompt += f"- table_data: list of objects, each with keys {', '.join(table_headers)}\n\n"
+            prompt += "Ensure table_data is realistic, aligns with the project context, and matches the report type.\n"
+            prompt += "Use a professional, confident tone. Respond in valid JSON only."
+
+            # Call the OpenAI client
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a professional analyst. Respond in valid JSON only."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=2000
+            )
+
+            content = json.loads(response.choices[0].message.content)
+
+            # Validate that all required keys were returned
+            required_keys = ['executive_summary', 'recommendations', 'table_data']
+            if report_type == 'defense_compliance':
+                required_keys += ['compliance_summary', 'risk_assessment']
+            elif report_type == 'capital_planning':
+                required_keys += ['risk_assessment', 'financial_analysis']
+            elif report_type == 'feasibility_study':
+                required_keys += ['risk_assessment', 'findings']
+            elif report_type == 'construction_closeout':
+                required_keys.append('project_review')
+
+            missing = [k for k in required_keys if k not in content]
+            if missing:
+                raise ValueError(f"Missing keys in AI response: {missing}")
+
+            # Validate each row of table_data
+            for row in content['table_data']:
+                if not all(h in row for h in table_headers):
+                    raise ValueError("Table row missing required headers")
+
+            return content
+
         except Exception as e:
             logger.error(f"Error generating AI content: {e}")
             return self._get_fallback_sections(report_type)
+
 
     def _get_fallback_sections(self, report_type: str) -> dict:
         template = REPORT_TEMPLATES[report_type]
@@ -205,7 +227,7 @@ def add_hyperlink(paragraph, text, url):
     run.font.underline = True
     return run
 
-def create_ai_generated_report(company_name: str, industry: str, budget_range: str, 
+def create_ai_generated_report(report_type, company_name: str, industry: str, budget_range: str, 
                               focus_areas: List[str], include_ai_analysis: bool = True) -> str:
     """
     Create an AI-generated capital planning report
@@ -217,7 +239,7 @@ def create_ai_generated_report(company_name: str, industry: str, budget_range: s
 
     # Generate content
     if include_ai_analysis:
-        content = ai_generator.generate_report_content(company_name, industry, budget_range, focus_areas)
+        content = ai_generator.generate_report_sections(company_name, industry, budget_range, focus_areas)
     else:
         content = ai_generator._get_fallback_content(company_name, industry, budget_range, focus_areas)
 
@@ -606,9 +628,9 @@ def insert_logos(doc):
 
 # Update ai_generate_section to use AI for the main body sections
 ai_generator = AIReportGenerator()
-def ai_generate_section(prompt: str, company_name: str, project_context: str, report_template: str = None) -> dict:
-    if report_template:
-        return ai_generator.generate_report_sections(report_template, company_name, project_context)
+def ai_generate_section(prompt: str, company_name: str, project_context: str, report_type: str = None) -> dict:
+    if report_type:
+        return ai_generator.generate_report_sections(report_type, company_name, project_context)
     return {}
 
 # Backup AI section text for each template
@@ -638,8 +660,8 @@ AI_SECTION_FALLBACKS = {
     ),
 }
 
-def create_vibeops_report(report_template: str, company_name: str, project_context: str = "", logo_path: str = None) -> str:
-    template = REPORT_TEMPLATES[report_template]
+def create_vibeops_report(report_type: str, company_name: str, project_context: str = "", logo_path: str = None) -> str:
+    template = REPORT_TEMPLATES[report_type]
     company_name_input = company_name
     company_name = validate_input(company_name, "Unknown Company")
     project_context = validate_input(project_context, "General Project")
@@ -741,15 +763,15 @@ def create_vibeops_report(report_template: str, company_name: str, project_conte
     company_info.add_run(f"\nProject Context: {project_context}")
     company_info.paragraph_format.space_after = Pt(18)
     # --- AI Section Handling ---
-    ai_sections = ai_generate_section(template['ai_prompt'], company_name, project_context, report_template=report_template)
+    ai_sections = ai_generate_section(template['ai_prompt'], company_name, project_context, report_type=report_type)
     required_keys = ['executive_summary', 'recommendations', 'table_data']
-    if report_template == 'defense_compliance':
+    if report_type == 'defense_compliance':
         required_keys += ['compliance_summary', 'risk_assessment']
-    elif report_template == 'engineering_feasibility':
+    elif report_type == 'engineering_feasibility':
         required_keys += ['findings', 'risk_assessment']
-    elif report_template == 'utilities_estimate':
+    elif report_type == 'utilities_estimate':
         required_keys += ['cost_breakdown', 'project_scope']
-    elif report_template == 'construction_closeout':
+    elif report_type == 'construction_closeout':
         required_keys += ['project_review']
     fallback_sections = template.get('fallback_sections', {})
     for key in required_keys:
@@ -774,7 +796,7 @@ def create_vibeops_report(report_template: str, company_name: str, project_conte
     doc.add_paragraph('Executive Summary', style='EngSubtitle')
     doc.add_paragraph(ai_sections.get('executive_summary', template['intro']), style='EngBody')
     # --- Template-specific AI Sections ---
-    if report_template == 'defense_compliance':
+    if report_type == 'defense_compliance':
         doc.add_paragraph('Compliance Summary', style='EngSubtitle')
         doc.add_paragraph(ai_sections.get('compliance_summary', ''), style='EngBody')
         doc.add_paragraph('Risk Assessment', style='EngSubtitle')
@@ -783,7 +805,7 @@ def create_vibeops_report(report_template: str, company_name: str, project_conte
         for rec in ai_sections.get('recommendations', []):
             p = doc.add_paragraph(rec, style='List Bullet')
             p.style = 'EngBody'
-    elif report_template == 'engineering_feasibility':
+    elif report_type == 'engineering_feasibility':
         doc.add_paragraph('Findings', style='EngSubtitle')
         doc.add_paragraph(ai_sections.get('findings', ''), style='EngBody')
         doc.add_paragraph('Risk Assessment', style='EngSubtitle')
@@ -792,7 +814,7 @@ def create_vibeops_report(report_template: str, company_name: str, project_conte
         for rec in ai_sections.get('recommendations', []):
             p = doc.add_paragraph(rec, style='List Bullet')
             p.style = 'EngBody'
-    elif report_template == 'utilities_estimate':
+    elif report_type == 'utilities_estimate':
         doc.add_paragraph('Project Scope', style='EngSubtitle')
         doc.add_paragraph(ai_sections.get('project_scope', ''), style='EngBody')
         doc.add_paragraph('Cost Breakdown', style='EngSubtitle')
@@ -801,7 +823,7 @@ def create_vibeops_report(report_template: str, company_name: str, project_conte
         for rec in ai_sections.get('recommendations', []):
             p = doc.add_paragraph(rec, style='List Bullet')
             p.style = 'EngBody'
-    elif report_template == 'construction_closeout':
+    elif report_type == 'construction_closeout':
         doc.add_paragraph('Project Review', style='EngSubtitle')
         doc.add_paragraph(ai_sections.get('project_review', ''), style='EngBody')
         doc.add_paragraph('Recommendations', style='EngSubtitle')
@@ -870,6 +892,6 @@ def create_vibeops_report(report_template: str, company_name: str, project_conte
     doc.add_paragraph('Detailed cost breakdowns, risk assessments, and technical specifications are available upon request.', style='EngBody')
     # --- Save ---
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f'vibeops_{report_template}_report_{timestamp}.docx'
+    filename = f'vibeops_{report_type}_report_{timestamp}.docx'
     doc.save(filename)
     return filename 

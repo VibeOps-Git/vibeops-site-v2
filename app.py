@@ -248,6 +248,16 @@ def ai_report_generator():
     """VibeOps-branded AI-powered report generator"""
     if request.method == 'POST':
         try:
+            from werkzeug.utils import secure_filename
+            logo = request.files.get('logo_file')
+            logo_path = None
+            if logo and logo.filename:
+                filename = secure_filename(logo.filename)
+                upload_dir = os.path.join(app.root_path, 'tmp')
+                os.makedirs(upload_dir, exist_ok=True)
+                logo_path = os.path.join(upload_dir, filename)
+                logo.save(logo_path)
+                
             report_type = request.form.get('report_type')
             company_name = request.form.get('company_name')
             project_context = request.form.get('project_context', '')
@@ -258,7 +268,8 @@ def ai_report_generator():
             filename = create_vibeops_report(
                 report_type=report_type,
                 company_name=company_name,
-                project_context=project_context
+                project_context=project_context,
+                logo_path=logo_path
             )
             return send_file(
                 filename,
