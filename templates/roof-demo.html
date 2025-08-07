@@ -7,10 +7,64 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
   <!-- 2. Your custom CSS (after) -->
   <link rel="stylesheet" href="{{ url_for('static', filename='roof.css') }}">
-  <!-- 3. Fonts and JS -->
+  <!-- 3. Blog styling -->
+  <style>
+    /* each blog sits in its own scrollable “card” */
+    .blog-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: #1a1a1a;
+      border-radius: 8px;
+      border: 1px solid #333;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    /* typography inside the card */
+    .blog-container h1,
+    .blog-container h2,
+    .blog-container h3 {
+      font-family: 'Poppins', sans-serif;
+      color: #FFD700;
+      margin-top: 0;
+    }
+    .blog-container p,
+    .blog-container li {
+      font-family: 'Roboto', sans-serif;
+      color: #eee;
+      line-height: 1.5;
+    }
+    /* fade-out at bottom to hint scroll */
+    .blog-container::after {
+      content: '';
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3rem;
+      pointer-events: none;
+      background: linear-gradient(rgba(26,26,26,0), rgba(26,26,26,1));
+    }
+    /* nice indented lists */
+    .blog-container ul,
+    .blog-container ol {
+      margin: 1rem 0;
+      padding-left: 1.2rem;
+    }
+    .blog-container ul li {
+      list-style: disc inside;
+    }
+    .blog-container ol li {
+      list-style: decimal inside;
+    }
+  </style>
+
+  <!-- 4. Fonts and JS -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script src="https://cdn.rawgit.com/hayeswise/Leaflet.PointInPolygon/v1.0.0/wise-leaflet-pip.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -31,7 +85,8 @@
                 <div class="input-section">
                     <div class="input-group">
                         <label for="address">Property Address:</label>
-                        <input type="text" id="address" placeholder="Enter address (e.g., 1234 West Broadway, Vancouver, BC)" size="50">
+                        <input type="text" id="address" placeholder="Enter address (e.g., 1234 West Broadway, Vancouver, BC)" size="50" autocomplete="off">
+                        <div id="address-suggestions" class="suggestions"></div>
                     </div>
                     <button class="btn btn-primary" onclick="geocodeAddress()">Show Map</button>
                 </div>
@@ -39,7 +94,7 @@
                 <div class="instructions">
                     <h3>How This Demo Works:</h3>
                     <ol>
-                        <li>Enter any property address and click <strong>Show Map</strong>.</li>
+                        <li>Type an address (select from suggestions if shown) and click <strong>Show Map</strong>.</li>
                         <li>Zoom in and trace the roof outline using the draw tool.</li>
                         <li>Click <strong>Calculate Cost</strong> to see a sample estimate, bill of materials, and cost breakdown.</li>
                         <li>Want to try again? Use the trash icon to clear and redraw.</li>
@@ -72,6 +127,71 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="blog-container">
+                <h1>Canada Roofing Material Calculator: Inside Our Address-Based Estimator Tool</h1>
+                <p>If you're a contractor, homeowner, or DIY enthusiast in Canada, you know that estimating roofing materials accurately can save time and money. That's where VibeOps comes in with our innovative Canada Roofing Material Calculator. Designed with the unique needs of lean crews, solopreneurs, and local heroes in mind, our address-based estimator tool simplifies the roofing material calculation process, delivering precise estimates in minutes.</p>
+                <h2>Why Accurate Roofing Estimates Matter</h2>
+                <p>Getting the right amount of roofing materials is crucial for any project. Underestimating can lead to delays and increased costs, while overestimating can waste resources. Our Canada Roofing Material Calculator ensures you have the right figures at your fingertips, allowing you to plan better and execute projects smoothly.</p>
+                <h2>How Our Address-Based Estimator Tool Works</h2>
+                <p>Our calculator leverages AI technology to provide estimates based on the specific address you input. Here’s how it works:</p>
+                <ul>
+                <li><strong>Input Your Address:</strong> Simply enter the address of the property where the roofing work will take place.</li>
+                <li><strong>Data Analysis:</strong> The tool analyzes various factors such as roof size, pitch, and local building codes.</li>
+                <li><strong>Instant Estimates:</strong> Receive an accurate estimate of the materials required, including shingles, underlayment, and more.</li>
+                </ul>
+                <h3>Benefits of Using Our Calculator</h3>
+                <p>Using our Canada Roofing Material Calculator comes with numerous advantages:</p>
+                <ul>
+                <li><strong>Time-Saving:</strong> Get estimates in minutes instead of hours or days.</li>
+                <li><strong>Cost-Effective:</strong> Reduce material waste and budget overruns.</li>
+                <li><strong>Local Insights:</strong> Tailored estimates based on regional building conditions.</li>
+                </ul>
+                <h2>Who Can Benefit from Our Calculator?</h2>
+                <ul>
+                <li><strong>Contractors:</strong> Quickly generate estimates for multiple projects.</li>
+                <li><strong>Homeowners:</strong> Get a clearer idea of your roofing project costs.</li>
+                <li><strong>DIY Enthusiasts:</strong> Ensure you have the right materials before starting your project.</li>
+                </ul>
+                <h2>Getting Started with the Canada Roofing Material Calculator</h2>
+                <ol>
+                <li>Visit our website and navigate to the Canada Roofing Material Calculator.</li>
+                <li>Enter your project address and any specific details about your roofing needs.</li>
+                <li>Review your estimate and download the results for your records.</li>
+                </ol>
+                <h3>Book Your Free Vibe Check</h3>
+                <p>Ready to take your roofing project to the next level? <a href="/booking">Book Your Free Vibe Check</a> today! Our team at VibeOps is here to help you streamline your workflows and provide the tools you need to succeed.</p>
+                <h2>Frequently Asked Questions</h2>
+                <h3>Can I use the calculator for different types of roofing materials?</h3>
+                <p>Yes, our calculator can provide estimates for various roofing materials, including asphalt shingles, metal roofing, and tile. Just specify your material preferences when entering your project details.</p>
+                <h3>Is the calculator accurate for all regions in Canada?</h3>
+                <p>Our tool is designed to accommodate the unique roofing conditions across Canada. However, we recommend cross-referencing estimates with local suppliers to ensure complete accuracy.</p>
+                <h2>Conclusion</h2>
+                <p>Estimating roofing materials doesn't have to be a daunting task. With VibeOps' Canada Roofing Material Calculator, you can get precise estimates tailored to your needs in just minutes. Whether you're a contractor, homeowner, or DIY enthusiast, our tool is your AI-powered partner in achieving efficient and successful roofing projects. Don’t wait—try it today!</p>
+            </div>
+
+            <!-- BLOG SECTION: Slash Roofing Costs with AI Estimator -->
+            <div class="blog-container">
+                <h1>How Vancouver Contractors Slash Roofing Costs with AI Estimator Prototype</h1>
+                <p>In the competitive world of construction, every penny counts, especially for roofing contractors in Vancouver. With fluctuating material prices and labor costs, finding ways to streamline operations and reduce expenses is crucial. Enter the AI Estimator Prototype—a game-changing tool that allows contractors to slash roofing costs while enhancing accuracy and efficiency.</p>
+                <h2>Understanding the AI Estimator Prototype</h2>
+                <p>The AI Estimator Prototype leverages advanced algorithms to provide precise material estimates, labor calculations, and project timelines. Unlike traditional estimation methods that can be time-consuming and prone to human error, this innovative tool utilizes historical data and machine learning to deliver accurate projections in a fraction of the time. For Vancouver contractors, this means more reliable bids and improved profitability.</p>
+                <h3>Benefits of Using AI for Roofing Estimates</h3>
+                <ul>
+                <li><strong>Speed:</strong> The AI Estimator can generate estimates in minutes, allowing contractors to respond to bids faster and secure more projects.</li>
+                <li><strong>Accuracy:</strong> By analyzing past project data, the AI minimizes errors and discrepancies that can lead to costly overruns.</li>
+                <li><strong>Cost-Effectiveness:</strong> With precise estimates, contractors can avoid over-ordering materials or underestimating labor costs, ultimately reducing waste and maximizing margins.</li>
+                </ul>
+                <h2>Real-World Applications: Vancouver Success Stories</h2>
+                <p>Several Vancouver contractors have already adopted the AI Estimator Prototype, reporting significant savings and improved workflow. For instance, a local roofing company was able to reduce its estimation process from several days to just hours. This efficiency not only saved labor costs but also allowed them to take on additional projects, leading to increased revenue.</p>
+                <h3>Integrating AI into Existing Workflows</h3>
+                <p>Integrating the AI Estimator into existing business workflows is straightforward. Contractors can seamlessly incorporate the tool into their project management software, ensuring that all team members can access real-time data and updates. As a result, collaboration improves, and everyone stays on the same page, reducing miscommunication and project delays.</p>
+                <h2>Why Now is the Time to Adopt AI Estimation</h2>
+                <p>The construction industry is evolving, and staying ahead of the curve is essential. With advancements in AI technology, the opportunity to enhance efficiency and cut costs has never been more accessible. For Vancouver contractors, implementing the AI Estimator Prototype is not just a trend; it’s a necessary step towards sustainable growth.</p>
+                <h3>Getting Started with VibeOps</h3>
+                <p>Are you ready to transform your roofing business and take advantage of the AI Estimator Prototype? VibeOps is here to help! Our team specializes in AI automation and web solutions tailored for lean crews, solopreneurs, and local heroes. We can guide you through the implementation process, ensuring you maximize the benefits of this innovative tool.</p>
+                <h2>Book Your Free Vibe Check</h2>
+                <p>Don’t let outdated estimation methods hold your business back. <strong>Book your free Vibe Check</strong> today and discover how our AI-powered solutions can revolutionize your roofing estimates. With VibeOps as your partner, you can focus on what you do best—building and enhancing the Vancouver skyline.</p>
             </div>
         </div>
 
@@ -114,15 +234,77 @@
               circle: false,
               circlemarker: false
             },
-            edit: false
+            edit: {
+                featureGroup: drawnItems,
+                edit: true,
+                remove: false
+            }
         });
         map.addControl(drawControl);          
         let roofArea = 0;
+
+        let debounceTimer;
+            const addressInput = document.getElementById('address');
+            const suggestionsDiv = document.getElementById('address-suggestions');
+
+            async function fetchSuggestions(query) {
+                if (query.length < 3) {
+                suggestionsDiv.innerHTML = '';
+                suggestionsDiv.style.display = 'none';
+                return;
+                }
+                try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(query)}&addressdetails=1&countrycodes=ca,us`, {
+                    headers: { 'User-Agent': 'VibeOps-Roofing/1.0' }
+                });
+                const data = await response.json();
+                suggestionsDiv.innerHTML = '';
+                if (data && data.length > 0) {
+                    data.forEach(item => {
+                    const suggestion = document.createElement('div');
+                    suggestion.className = 'suggestion-item';
+                    suggestion.textContent = item.display_name;
+                    suggestion.addEventListener('click', () => {
+                        addressInput.value = item.display_name;
+                        suggestionsDiv.innerHTML = '';
+                        suggestionsDiv.style.display = 'none';
+                    });
+                    suggestionsDiv.appendChild(suggestion);
+                    });
+                    suggestionsDiv.style.display = 'block';
+                } else {
+                    suggestionsDiv.innerHTML = '<div class="suggestion-item">No results found</div>';
+                    suggestionsDiv.style.display = 'block';
+                }
+                } catch (error) {
+                suggestionsDiv.innerHTML = '<div class="suggestion-item">Error fetching suggestions</div>';
+                suggestionsDiv.style.display = 'block';
+                }
+            }
+
+            addressInput.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => fetchSuggestions(addressInput.value), 300);
+            });
+
+            addressInput.addEventListener('blur', () => {
+                setTimeout(() => {
+                suggestionsDiv.innerHTML = '';
+                suggestionsDiv.style.display = 'none';
+                }, 200);
+            });
 
         // Enable polygon drawing with proper completion
         map.on(L.Draw.Event.DRAWSTART, function(e) {
             // Clear any existing polygons when starting a new one
             drawnItems.clearLayers();
+        });
+
+        map.on('draw:editstart', function() {
+            if (drawnItems.getLayers().length === 0) {
+                alert('No polygon to edit. Draw a polygon first.');
+                drawControl._toolbars.edit._modes.edit.handler.disable();
+            }
         });
 
         map.on(L.Draw.Event.CREATED, function(e) {
@@ -141,6 +323,24 @@
                 areaDiv.classList.add('show');
                 document.getElementById('calculateCost').disabled = false;
             }
+        });
+    
+        map.on(L.Draw.Event.EDITED, function(e) {
+            const layers = e.layers;
+            layers.eachLayer(function(layer) {
+            const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+            roofArea = area * 10.7639; // Convert square meters to square feet
+            const areaDiv = document.getElementById('area');
+            if (roofArea < 100) {
+                areaDiv.innerText = `Roof Area: ${roofArea.toFixed(2)} sq ft (Too small! Zoom in to 18–20 and draw a bigger roof shape.)`;
+                areaDiv.classList.add('show');
+                document.getElementById('calculateCost').disabled = true;
+            } else {
+                areaDiv.innerText = `Roof Area: ${roofArea.toFixed(2)} sq ft`;
+                areaDiv.classList.add('show');
+                document.getElementById('calculateCost').disabled = false;
+            }
+            });
         });
 
         // Add custom delete functionality
@@ -202,29 +402,209 @@
             
             document.getElementById('calculateCost').disabled = true;
             roofArea = 0;
+            drawnItems.clearLayers();
             map.eachLayer(layer => {
-                if (layer instanceof L.Marker && layer.options.icon.options.className === 'closing-marker') map.removeLayer(layer);
+            if (layer instanceof L.Marker) map.removeLayer(layer);
             });
 
+            // Local cache for Overpass results
+            const cache = new Map();
+
             try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`, {
-                    headers: { 'User-Agent': 'Fort-Roofing/1.0' }
+            let attempts = 0;
+            const maxAttempts = 3;
+            let response, data;
+            while (attempts < maxAttempts) {
+                response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}&addressdetails=1&countrycodes=ca,us`, {
+                headers: { 'User-Agent': 'VibeOps-Roofing/1.0' }
                 });
-                const data = await response.json();
-                if (data && data.length > 0) {
-                    const result = data[0];
-                    map.setView([result.lat, result.lon], 18);
-                    map.eachLayer(layer => {
-                        if (layer instanceof L.Marker && layer.options.icon.options.className !== 'closing-marker') map.removeLayer(layer);
-                    });
-                    L.marker([result.lat, result.lon]).addTo(map);
-                } else {
-                    errorDiv.innerText = `Error: Invalid address\nAddress: ${address}`;
-                    errorDiv.classList.add('show');
+                if (response.status === 429) {
+                await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempts) * 1000)); // Exponential backoff
+                attempts++;
+                continue;
                 }
-            } catch (error) {
-                errorDiv.innerText = `Error: ${error.message}\nAddress: ${address}`;
+                data = await response.json();
+                break;
+            }
+            if (!data || data.length === 0) {
+                errorDiv.innerText = `Error: Could not find "${address}". Try including city and state/province (e.g., "1234 West Broadway, Vancouver, BC").`;
                 errorDiv.classList.add('show');
+                return;
+            }
+
+            const result = data[0];
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
+            console.log('Geocoded Coordinates:', { lat, lon, address: result.display_name }); // Debug log
+            map.setView([lat, lon], 18);
+            const marker = L.marker([lat, lon]).addTo(map);
+
+            // Fetch building outlines
+            async function fetchBuildings(radius) {
+                const cacheKey = `${lat},${lon},${radius}`;
+                if (cache.has(cacheKey)) {
+                console.log(`Using cached data for ${cacheKey}`);
+                return cache.get(cacheKey);
+                }
+                const overpassQuery = `
+                [out:json][timeout:30];
+                (
+                    way["building"](around:${radius},${lat},${lon});
+                    way["building:part"](around:${radius},${lat},${lon});
+                    way["man_made"](around:${radius},${lat},${lon});
+                    way["landuse"](around:${radius},${lat},${lon});
+                    relation["building"](around:${radius},${lat},${lon});
+                    relation["man_made"](around:${radius},${lat},${lon});
+                );
+                out geom;
+                `;
+                try {
+                const overpassResponse = await fetch(`https://overpass-api.de/api/interpreter`, {
+                    method: 'POST',
+                    body: overpassQuery,
+                    headers: { 'User-Agent': 'VibeOps-Roofing/1.0' }
+                });
+                const overpassData = await overpassResponse.json();
+                cache.set(cacheKey, overpassData);
+                return overpassData;
+                } catch (overpassError) {
+                console.error('Overpass Error:', overpassError);
+                return { elements: [] };
+                }
+            }
+
+            let overpassData;
+            for (const radius of [200, 500, 1000]) {
+                overpassData = await fetchBuildings(radius);
+                console.log(`Overpass Response (${radius}m):`, overpassData); // Debug log
+                if (overpassData.elements && overpassData.elements.length > 0) break;
+            }
+
+            if (overpassData.elements && overpassData.elements.length > 0) {
+                const pinPoint = turf.point([lon, lat]);
+                const candidates = [];
+                overpassData.elements.forEach(element => {
+                if (element.type === 'way' && element.geometry && element.geometry.length > 2) {
+                    const coords = element.geometry.map(point => [point.lat, point.lon]);
+                    if (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1]) {
+                    coords.push(coords[0]);
+                    }
+                    const geojsonFeature = {
+                    type: 'Feature',
+                    geometry: { type: 'Polygon', coordinates: [coords] },
+                    properties: { id: element.id, tags: element.tags }
+                    };
+                    try {
+                    const layer = L.polygon(coords, { color: '#00ffcc', weight: 2 });
+                    const centroid = turf.centroid(geojsonFeature);
+                    const distance = turf.distance(pinPoint, centroid, { units: 'meters' });
+                    candidates.push({ feature: geojsonFeature, layer, distance });
+                    } catch (turfError) {
+                    console.warn(`Turf.js error for element ${element.id}: ${turfError.message}`);
+                    }
+                } else if (element.type === 'relation' && element.members) {
+                    const coords = [];
+                    element.members.forEach(member => {
+                    if (member.type === 'way' && member.geometry && member.geometry.length > 2) {
+                        const wayCoords = member.geometry.map(point => [point.lat, point.lon]);
+                        if (wayCoords[0][0] !== wayCoords[wayCoords.length - 1][0] || wayCoords[0][1] !== wayCoords[wayCoords.length - 1][1]) {
+                        wayCoords.push(wayCoords[0]);
+                        }
+                        coords.push(wayCoords);
+                    }
+                    });
+                    if (coords.length > 0) {
+                    const geojsonFeature = {
+                        type: 'Feature',
+                        geometry: { type: 'MultiPolygon', coordinates: coords },
+                        properties: { id: element.id, tags: element.tags }
+                    };
+                    try {
+                        const layer = L.polygon(coords, { color: '#00ffcc', weight: 2 });
+                        const centroid = turf.centroid(geojsonFeature);
+                        const distance = turf.distance(pinPoint, centroid, { units: 'meters' });
+                        candidates.push({ feature: geojsonFeature, layer, distance });
+                    } catch (turfError) {
+                        console.warn(`Turf.js error for relation ${element.id}: ${turfError.message}`);
+                    }
+                    }
+                }
+                });
+                console.log('Candidates:', candidates.map(c => ({ id: c.feature.properties.id, distance: c.distance, tags: c.feature.properties.tags }))); // Debug log
+
+                if (candidates.length > 0) {
+                // Filter valid buildings (exclude non-building landuse like roads)
+                const validCandidates = candidates.filter(c => {
+                    const tags = c.feature.properties.tags || {};
+                    return tags.building || tags['building:part'] || tags.man_made === 'rooftop' || tags.landuse === 'residential';
+                });
+
+                if (validCandidates.length === 0) {
+                    errorDiv.innerText = `No valid building outlines found near "${result.display_name}". Draw the roof manually.`;
+                    errorDiv.classList.add('show');
+                    return;
+                }
+
+                // Prioritize polygons containing the point
+                const containing = validCandidates.filter(c => {
+                    try {
+                    return turf.booleanPointInPolygon(pinPoint, c.feature);
+                    } catch (turfError) {
+                    console.warn(`Point-in-polygon error for ID ${c.feature.properties.id}: ${turfError.message}`);
+                    return false;
+                    }
+                });
+
+                let selected = containing.length > 0 ? containing : validCandidates;
+                // Sort by area for containing polygons, distance for others
+                selected.sort((a, b) => {
+                    if (containing.length > 0) {
+                    const areaA = L.GeometryUtil.geodesicArea(a.layer.getLatLngs()[0]);
+                    const areaB = L.GeometryUtil.geodesicArea(b.layer.getLatLngs()[0]);
+                    return areaA - areaB; // Smallest area first
+                    } else {
+                    return a.distance - b.distance; // Closest centroid first
+                    }
+                });
+
+                // Select closest, reject if too far (>150m)
+                const closest = selected[0];
+                if (closest.distance > 150 && containing.length === 0) {
+                    errorDiv.innerText = `No building outlines found under or near "${result.display_name}". Draw the roof manually.`;
+                    errorDiv.classList.add('show');
+                    map.setView([lat, lon], 20); // Zoom in for manual drawing
+                    return;
+                }
+
+                drawnItems.clearLayers();
+                drawnItems.addLayer(closest.layer);
+                const area = L.GeometryUtil.geodesicArea(closest.layer.getLatLngs()[0]);
+                roofArea = area * 10.7639; // Convert square meters to square feet
+                const areaDiv = document.getElementById('area');
+                if (roofArea < 100) {
+                    areaDiv.innerText = `Roof Area: ${roofArea.toFixed(2)} sq ft (Too small! Zoom in to 18–20 and draw a bigger roof shape.)`;
+                    areaDiv.classList.add('show');
+                    document.getElementById('calculateCost').disabled = true;
+                } else {
+                    areaDiv.innerText = `Roof Area: ${roofArea.toFixed(2)} sq ft`;
+                    areaDiv.classList.add('show');
+                    document.getElementById('calculateCost').disabled = false;
+                }
+                map.fitBounds(closest.layer.getBounds());
+                } else {
+                errorDiv.innerText = `No building outlines found near "${result.display_name}". Draw the roof manually.`;
+                errorDiv.classList.add('show');
+                map.setView([lat, lon], 20); // Zoom in for manual drawing
+                }
+            } else {
+                errorDiv.innerText = `No building outlines found near "${result.display_name}". Draw the roof manually.`;
+                errorDiv.classList.add('show');
+                map.setView([lat, lon], 20); // Zoom in for manual drawing
+            }
+            } catch (error) {
+            console.error('Nominatim Error:', error);
+            errorDiv.innerText = `Error: ${error.message}. Please check the address format and try again.`;
+            errorDiv.classList.add('show');
             }
         }
 

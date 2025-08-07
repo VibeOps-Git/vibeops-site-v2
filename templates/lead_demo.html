@@ -3,78 +3,178 @@
 {% block title %}VibeOps Lead Algorithm Demo{% endblock %}
 
 {% block extra_head %}
+  <!-- Lead demo CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='lead.css') }}">
+
+  <!-- Tailwind CSS + Typography plugin -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- Tiny custom CSS for bottom fade hint on scrollable blog bodies -->
+  <style>
+    .blog-body {
+      position: relative;
+    }
+    .blog-body::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 3rem;
+      pointer-events: none;
+      background: linear-gradient(transparent, white);
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
-<div class="lead-demo-container">
-  <div class="lead-demo-card">
-    <h3>VibeOps Vancouver Small-Biz Lead Generator Demo</h3>
-    <p>
-      Experience how VibeOps automates lead generation for Vancouver small businesses.
-      Select a keyword from the dropdown below, then hit <strong>Run Demo</strong>.
-      <em>Note: This is a front-end demo—actual client solutions run a custom Google Apps Script under the hood.</em>
-    </p>
+  <!-- ===== VibeOps Lead Generator Demo ===== -->
+  <div class="lead-demo-container my-8 px-4">
+    <div class="lead-demo-card max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+      <h3 class="text-2xl font-semibold mb-4">VibeOps Vancouver Small-Biz Lead Generator Demo</h3>
+      <p class="mb-4">
+        Experience how VibeOps automates lead generation for Vancouver small businesses.
+        Select a keyword from the dropdown below, then hit <strong>Run Demo</strong>.
+        <em>Note: This is a front-end demo—actual client solutions run a custom Google Apps Script under the hood.</em>
+      </p>
 
-    <div class="lead-demo-controls">
-      <label for="keywordSelect">Choose keyword:</label>
-      <select id="keywordSelect" class="lead-demo-select">
-        <option value="">Select a keyword</option>
-        {% if keywords %}
-          {% for keyword in keywords %}
-            <option value="{{ keyword }}">{{ keyword }}</option>
-          {% endfor %}
-        {% else %}
-          <option value="Smoke Shop">Smoke Shop</option>
-          <option value="Liquor Store">Liquor Store</option>
-          <option value="Nail Salon">Nail Salon</option>
-          <option value="Hair Stylist">Hair Stylist</option>
-          <option value="Pet Groomer">Pet Groomer</option>
-          <option value="Landscaping">Landscaping</option>
-          <option value="Home Cleaning Service">Home Cleaning Service</option>
-          <option value="Photographer">Photographer</option>
-          <option value="Event Planner">Event Planner</option>
-          <option value="Tattoo Studio">Tattoo Studio</option>
-          <option value="Auto Repair">Auto Repair</option>
-          <option value="Coffee Shop">Coffee Shop</option>
-          <option value="Bakery">Bakery</option>
-          <option value="Restaurant">Restaurant</option>
-          <option value="Yoga Studio">Yoga Studio</option>
-          <option value="Personal Trainer">Personal Trainer</option>
-        {% endif %}
-      </select>
-      <button id="runBtn" class="lead-demo-btn lead-demo-btn-primary">Run Demo</button>
-      <button id="resetBtn" class="lead-demo-btn lead-demo-btn-secondary">Reset</button>
-    </div>
+      <div class="lead-demo-controls flex flex-wrap gap-4 mb-4">
+        <label for="keywordSelect" class="self-center">Choose keyword:</label>
+        <select id="keywordSelect" class="lead-demo-select border rounded px-3 py-2 flex-grow">
+          <option value="">Select a keyword</option>
+          {% if keywords %}
+            {% for keyword in keywords %}
+              <option value="{{ keyword }}">{{ keyword }}</option>
+            {% endfor %}
+          {% else %}
+            <!-- fallback options -->
+            {% for kw in ["Smoke Shop","Liquor Store","Nail Salon","Hair Stylist","Pet Groomer","Landscaping","Home Cleaning Service","Photographer","Event Planner","Tattoo Studio","Auto Repair","Coffee Shop","Bakery","Restaurant","Yoga Studio","Personal Trainer"] %}
+              <option value="{{ kw }}">{{ kw }}</option>
+            {% endfor %}
+          {% endif %}
+        </select>
+        <button id="runBtn" class="lead-demo-btn-primary bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Run Demo</button>
+        <button id="resetBtn" class="lead-demo-btn-secondary bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded">Reset</button>
+      </div>
 
-    <progress id="demoProgress" class="lead-demo-progress" max="100" value="0"></progress>
+      <progress id="demoProgress" class="lead-demo-progress w-full h-2 mb-4" max="100" value="0"></progress>
 
-    <div class="lead-demo-table-container">
-      <table id="resultsTable" class="lead-demo-table">
-        <thead>
-          <tr>
-            <th>Keyword</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>City</th>
-            <th>Address</th>
-            <th>Website</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody id="resultsBody"></tbody>
-      </table>
-    </div>
+      <div class="lead-demo-table-container overflow-x-auto mb-4">
+        <table id="resultsTable" class="lead-demo-table min-w-full table-auto border-collapse">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2 text-left">Keyword</th>
+              <th class="px-4 py-2 text-left">Name</th>
+              <th class="px-4 py-2 text-left">Type</th>
+              <th class="px-4 py-2 text-left">City</th>
+              <th class="px-4 py-2 text-left">Address</th>
+              <th class="px-4 py-2 text-left">Website</th>
+              <th class="px-4 py-2 text-left">Email</th>
+              <th class="px-4 py-2 text-left">Phone</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody" class="divide-y"></tbody>
+        </table>
+      </div>
 
-    <div id="demoLog" class="lead-demo-log"></div>
+      <div id="demoLog" class="lead-demo-log h-40 overflow-y-auto bg-gray-50 p-3 rounded mb-4 text-sm font-mono"></div>
 
-    <div class="lead-demo-cta">
-      <p>Ready to automate your lead generation?</p>
-      <a href="{{ url_for('contact') }}">Contact us to deploy a custom solution!</a>
+      <div class="lead-demo-cta text-center">
+        <p class="mb-2">Ready to automate your lead generation?</p>
+        <a href="{{ url_for('contact') }}" class="text-blue-600 hover:underline font-medium">Contact us to deploy a custom solution!</a>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- ===== Blog Grid ===== -->
+  <div class="max-w-7xl mx-auto px-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 my-12">
+      <!-- Blog #1 -->
+      <div class="bg-white border border-gray-200 rounded-lg shadow-md flex flex-col overflow-hidden">
+        <div class="bg-gray-800 text-white px-5 py-3 font-poppins text-lg font-semibold">
+          Vancouver Small Business Lead Generation: AI Algorithm Strategies That Work
+        </div>
+        <div class="blog-body prose p-5 overflow-y-auto max-h-80">
+          <p>In the bustling landscape of Vancouver’s small business scene, lead generation is the lifeblood that fuels growth and success. With the advent of artificial intelligence, small businesses can leverage advanced algorithms to streamline their lead generation processes, creating opportunities where traditional methods may fall short. In this blog post, we'll explore effective AI strategies tailored for Vancouver's unique market, enabling solopreneurs and lean teams to thrive.</p>
+          <h2>Understanding AI in Lead Generation</h2>
+          <p>Artificial Intelligence (AI) has revolutionized many industries, and lead generation is no exception. By utilizing data-driven algorithms, businesses can analyze customer behavior, preferences, and trends, allowing for personalized marketing strategies. For small businesses in Vancouver, deploying AI can lead to a more efficient allocation of resources, targeting the right audience at the right time.</p>
+          <h2>1. Data Analysis: The Heart of AI Strategies</h2>
+          <p>To effectively harness the power of AI, small businesses must focus on data analysis. Collecting and analyzing customer data helps in understanding market demands and tailoring services accordingly. Use AI tools to:</p>
+          <ul>
+            <li>Identify customer demographics</li>
+            <li>Analyze purchasing behavior</li>
+            <li>Predict future buying trends</li>
+          </ul>
+          <h2>2. Personalization Through AI Algorithms</h2>
+          <p>Vancouver’s diverse population presents a unique challenge for small business owners: how to cater to varied tastes and preferences. AI algorithms can analyze customer data to create personalized marketing messages, ensuring that your outreach resonates with potential leads. Implement techniques such as:</p>
+          <ul>
+            <li>Segmenting your audience based on behavior and preferences</li>
+            <li>Customizing email marketing campaigns</li>
+            <li>Utilizing chatbots for personalized customer interactions</li>
+          </ul>
+          <h2>3. Leveraging Social Media with AI</h2>
+          <p>Social media platforms are invaluable for lead generation, especially in a vibrant city like Vancouver. AI can enhance your social media strategy by analyzing trends, suggesting optimal posting times, and even curating content. Small businesses should consider:</p>
+          <ul>
+            <li>Utilizing AI tools to monitor engagement metrics</li>
+            <li>Analyzing competitor strategies for insights</li>
+            <li>Creating targeted ads based on user interests</li>
+          </ul>
+          <h2>4. Automating Workflows for Efficiency</h2>
+          <p>Time is precious for small business owners, and AI can help automate repetitive tasks, freeing up time for more strategic initiatives. Tools like VibeOps offer automation solutions for:</p>
+          <ul>
+            <li>Lead nurturing through automated email follow-ups</li>
+            <li>Scheduling social media posts</li>
+            <li>Tracking customer interactions</li>
+          </ul>
+          <h2>5. Continuous Improvement Through AI Insights</h2>
+          <p>One of the most compelling advantages of using AI in lead generation is the ability to continuously improve your strategies. AI algorithms can analyze the effectiveness of your campaigns, providing insights into what works and what doesn’t. Small businesses should:</p>
+          <ul>
+            <li>Regularly review performance metrics</li>
+            <li>Adjust strategies based on data-driven insights</li>
+            <li>Experiment with new approaches and technologies</li>
+          </ul>
+          <h2>Conclusion: Your Next Steps</h2>
+          <p>As a small business owner in Vancouver, leveraging AI for lead generation may seem daunting, but the rewards are significant. By implementing these strategies, you can attract and convert leads more effectively, driving growth for your business. Ready to take your lead generation to the next level? <strong>Book Your Free Vibe Check</strong> with VibeOps today and discover how our AI-powered solutions can transform your business!</p>
+        </div>
+      </div>
+
+      <!-- Blog #2 -->
+      <div class="bg-white border border-gray-200 rounded-lg shadow-md flex flex-col overflow-hidden">
+        <div class="bg-gray-800 text-white px-5 py-3 font-poppins text-lg font-semibold">
+          Canada B2B Lead Generation with AI: Demo of Our Vancouver Algorithm
+        </div>
+        <div class="blog-body prose p-5 overflow-y-auto max-h-80">
+          <p>In today's competitive landscape, generating high-quality leads is essential for B2B companies, especially in Canada. With the advent of artificial intelligence (AI), businesses can streamline their lead generation processes and enhance their outreach efforts. At VibeOps, we are excited to introduce our innovative Vancouver algorithm designed specifically for Canadian businesses. Let’s explore how this AI-powered tool can revolutionize your lead generation strategy.</p>
+          <h2>Understanding the Importance of B2B Lead Generation</h2>
+          <p>Lead generation is the foundation of any successful B2B business. It involves identifying and attracting potential clients who are interested in your products or services. In Canada, the B2B market is thriving, but with growth comes increased competition. Companies need to leverage advanced technologies, like AI, to stay ahead of the curve.</p>
+          <h3>Why AI for Lead Generation?</h3>
+          <p>AI technologies can analyze vast amounts of data, identify patterns, and automate repetitive tasks, significantly improving the lead generation process. With AI, businesses can:</p>
+          <ul>
+            <li>Target the right audience with precision.</li>
+            <li>Optimize marketing campaigns based on data-driven insights.</li>
+            <li>Reduce the time spent on lead qualification.</li>
+          </ul>
+          <h2>Introducing Our Vancouver Algorithm</h2>
+          <p>At VibeOps, we have developed a cutting-edge algorithm based in Vancouver that harnesses the power of AI to enhance B2B lead generation. Here’s how our Vancouver algorithm stands out:</p>
+          <h3>1. Local Market Insights</h3>
+          <p>Understanding the local market is crucial for effective lead generation. Our Vancouver algorithm is designed to analyze regional data, providing insights into industry trends and customer behavior specific to Canada. This means you can adapt your approach to meet the unique needs of your target audience.</p>
+          <h3>2. Enhanced Targeting Capabilities</h3>
+          <p>With AI-driven analytics, our algorithm identifies potential leads based on various criteria, including industry, company size, and purchasing behavior. This targeted approach ensures that your outreach efforts are focused on high-potential leads, increasing your chances of conversion.</p>
+          <h3>3. Automated Outreach</h3>
+          <p>The Vancouver algorithm automates outreach processes, allowing businesses to send personalized messages to leads at scale. This not only saves time but also ensures that your communications are relevant and engaging.</p>
+          <h2>Case Study: Success in Action</h2>
+          <p>Let’s take a look at a hypothetical case study of a local Canadian tech startup that implemented our Vancouver algorithm.</p>
+          <p>After integrating our AI solution, the startup saw a 50% increase in qualified leads within three months. The algorithm's ability to analyze local market data allowed them to tailor their messaging, resulting in higher engagement rates and ultimately, more conversions.</p>
+          <h2>Getting Started with VibeOps</h2>
+          <p>Are you ready to transform your lead generation strategy? At VibeOps, we believe in empowering lean crews, solopreneurs, and local heroes with the tools they need to succeed. Our Vancouver algorithm is just one of the many AI-powered solutions we offer to streamline your workflows and enhance your online presence.</p>
+          <h3>Book Your Free Vibe Check</h3>
+          <p>Curious to see how our Vancouver algorithm can work for you? <strong><a href="#">Book your Free Vibe Check</a></strong> today and let us help you unlock the full potential of AI in your lead generation efforts. Together, we can build a strategy that drives results and positions your business for success in the Canadian B2B landscape.</p>
+          <h2>Conclusion</h2>
+          <p>Lead generation is evolving, and with AI, businesses in Canada can gain a competitive edge. Our Vancouver algorithm is designed to simplify the process, delivering insights and automation that lead to tangible results. Don’t get left behind—embrace the future of B2B lead generation with VibeOps.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Demo Script ===== -->
 <script>
 (function() {
   'use strict';

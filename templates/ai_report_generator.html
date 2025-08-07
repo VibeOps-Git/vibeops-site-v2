@@ -2,9 +2,138 @@
 
 {% block title %}VibeOps AI Report Generator{% endblock %}
 
+{% block extra_head %}
+  <style>
+    /* VibeOps core variables */
+    :root {
+      --vibeops-accent: #00ffcc;
+      --vibeops-accent-dark: #00ccaa;
+      --vibeops-bg: #0e0e0e;
+      --vibeops-card-bg: #181c1f;
+      --vibeops-header-bg: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+      --vibeops-border: #222;
+      --vibeops-shadow: 0 4px 32px rgba(0,255,204,0.08);
+      --vibeops-radius: 18px;
+      --vibeops-font: 'Inter', 'Arial', sans-serif;
+      --vibeops-heading: 'Orbitron', 'Montserrat', Arial, sans-serif;
+    }
+
+    /* Blog Grid Styling */
+    .blogs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin: 4rem auto;
+      max-width: 1200px;
+    }
+
+    .blog-card {
+      background: var(--vibeops-card-bg);
+      border: 1px solid var(--vibeops-border);
+      border-radius: var(--vibeops-radius);
+      box-shadow: var(--vibeops-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 40px rgba(0,255,204,0.12);
+    }
+
+    .blog-card-header {
+      background: var(--vibeops-header-bg);
+      color: #fff;
+      padding: 1.5rem;
+      font-family: var(--vibeops-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      border-bottom: 2px solid var(--vibeops-accent-dark);
+    }
+
+    .blog-card-body {
+      position: relative;
+      padding: 2rem;
+      font-family: var(--vibeops-font);
+      color: #e6f9f7;
+      line-height: 1.8;
+      overflow-y: auto;
+      max-height: 400px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--vibeops-accent) var(--vibeops-card-bg);
+    }
+
+    .blog-card-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .blog-card-body::-webkit-scrollbar-track {
+      background: var(--vibeops-card-bg);
+    }
+
+    .blog-card-body::-webkit-scrollbar-thumb {
+      background: var(--vibeops-accent);
+      border-radius: 4px;
+    }
+
+    .blog-card-body::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4rem;
+      background: linear-gradient(transparent, var(--vibeops-card-bg));
+      pointer-events: none;
+    }
+
+    .blog-card-body h1 {
+      font-size: 1.8rem;
+      color: var(--vibeops-accent);
+      margin-bottom: 1rem;
+      font-family: var(--vibeops-heading);
+    }
+
+    .blog-card-body h2, .blog-card-body h3 {
+      margin: 1.5rem 0 0.75rem;
+      color: var(--vibeops-accent);
+      font-family: var(--vibeops-heading);
+    }
+
+    .blog-card-body p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .blog-card-body ul, .blog-card-body ol {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+
+    .blog-card-body li {
+      margin-bottom: 0.75rem;
+      font-size: 1.05rem;
+    }
+
+    .blog-card-body a {
+      color: var(--vibeops-accent);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .blog-card-body a:hover {
+      color: var(--vibeops-accent-dark);
+      text-decoration: underline;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
 <style>
-:root {
+  :root {
     --vibeops-accent: #00ffcc;
     --vibeops-accent-dark: #00ccaa;
     --vibeops-bg: #0e0e0e;
@@ -15,275 +144,490 @@
     --vibeops-radius: 18px;
     --vibeops-font: 'Inter', 'Arial', sans-serif;
     --vibeops-heading: 'Orbitron', 'Montserrat', Arial, sans-serif;
-}
+  }
 
-.vibeops-ai-container {
-    max-width: 700px;
+  .vibeops-ai-container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem 3rem 1rem;
-}
+    padding: 2rem 1.5rem 4rem;
+  }
 
-.vibeops-ai-hero {
+  .vibeops-ai-hero {
     background: var(--vibeops-header-bg);
     color: #fff;
-    border-radius: 0 0 var(--vibeops-radius) var(--vibeops-radius);
+    border-radius: var(--vibeops-radius);
     box-shadow: var(--vibeops-shadow);
-    margin-bottom: 2.5rem;
-    padding: 3.5rem 1rem 2.5rem 1rem;
+    margin-bottom: 3rem;
+    padding: 4rem 2rem;
     text-align: center;
-}
+    position: relative;
+    overflow: hidden;
+  }
 
-.vibeops-ai-title {
+  .vibeops-ai-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(0,255,204,0.1) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .vibeops-ai-title {
     font-family: var(--vibeops-heading);
-    font-size: 2.7rem;
+    font-size: 3rem;
     font-weight: 900;
     letter-spacing: -1px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     color: var(--vibeops-accent);
-    text-shadow: 0 2px 24px rgba(0,255,204,0.12);
-    border-bottom: 3px solid var(--vibeops-accent);
-    display: inline-block;
-    padding-bottom: 0.25rem;
+    text-shadow: 0 2px 24px rgba(0,255,204,0.2);
+    position: relative;
+    z-index: 1;
     background: linear-gradient(90deg, #00ffcc 0%, #2a5298 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
+  }
 
-.vibeops-ai-lead {
-    font-size: 1.25rem;
+  .vibeops-ai-lead {
+    font-size: 1.3rem;
     font-weight: 400;
-    opacity: 0.95;
+    opacity: 0.9;
     font-family: var(--vibeops-font);
     margin-bottom: 0;
-}
+    position: relative;
+    z-index: 1;
+  }
 
-.vibeops-ai-card {
+  .vibeops-ai-card {
     background: var(--vibeops-card-bg);
     border-radius: var(--vibeops-radius);
-    box-shadow: 0 2px 32px rgba(0,255,204,0.10);
-    border: 1.5px solid var(--vibeops-border);
-    margin-bottom: 2.5rem;
-    padding: 0;
-}
+    box-shadow: 0 4px 40px rgba(0,255,204,0.12);
+    border: 1px solid var(--vibeops-border);
+    margin-bottom: 3rem;
+    transition: transform 0.3s ease;
+  }
 
-.vibeops-ai-card-header {
+  .vibeops-ai-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .vibeops-ai-card-header {
     background: var(--vibeops-header-bg);
     color: #fff;
     border-radius: var(--vibeops-radius) var(--vibeops-radius) 0 0;
-    padding: 1.5rem 2rem 1.25rem 2rem;
+    padding: 1.75rem 2rem;
     font-family: var(--vibeops-heading);
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--vibeops-accent-dark);
-}
+    border-bottom: 2px solid var(--vibeops-accent-dark);
+  }
 
-.vibeops-ai-card-body {
-    padding: 2.5rem 2rem 2rem 2rem;
+  .vibeops-ai-card-body {
+    padding: 3rem 2.5rem;
     background: var(--vibeops-bg);
     border-radius: 0 0 var(--vibeops-radius) var(--vibeops-radius);
-}
+  }
 
-.vibeops-ai-form-label {
+  .vibeops-ai-form-label {
     font-weight: 700;
     color: var(--vibeops-accent);
     font-family: var(--vibeops-font);
-    margin-bottom: 0.5rem;
-}
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+  }
 
-.vibeops-ai-form-control, .vibeops-ai-form-select {
+  .vibeops-ai-form-control, .vibeops-ai-form-select {
     width: 100%;
-    padding: 0.85rem 1.1rem;
-    border-radius: 0.5rem;
-    border: 1.5px solid var(--vibeops-border);
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--vibeops-border);
     background: #181c1f;
     color: #fff;
-    font-size: 1.08rem;
+    font-size: 1.1rem;
     font-family: var(--vibeops-font);
-    margin-bottom: 1.2rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-.vibeops-ai-form-control:focus, .vibeops-ai-form-select:focus {
-    border-color: var(--vibeops-accent);
-    box-shadow: 0 0 0 2px rgba(0,255,204,0.15);
-    outline: none;
-}
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
 
-.vibeops-ai-btn {
+  .vibeops-ai-form-control:focus, .vibeops-ai-form-select:focus {
+    border-color: var(--vibeops-accent);
+    box-shadow: 0 0 0 3px rgba(0,255,204,0.2);
+    outline: none;
+  }
+
+  .vibeops-ai-btn {
     background: var(--vibeops-header-bg);
     color: #fff;
     font-weight: 800;
     border: none;
-    border-radius: 0.5rem;
-    padding: 0.85rem 2.2rem;
-    font-size: 1.15rem;
+    border-radius: 0.75rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
     font-family: var(--vibeops-heading);
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 16px rgba(0,255,204,0.10);
-    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
-    margin-top: 0.5rem;
-}
-.vibeops-ai-btn:hover {
+    box-shadow: 0 4px 20px rgba(0,255,204,0.15);
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+  }
+
+  .vibeops-ai-btn:hover {
     background: linear-gradient(90deg, #2a5298 0%, #00ffcc 100%);
     color: #181c1f;
-    box-shadow: 0 4px 24px rgba(0,255,204,0.18);
-}
+    box-shadow: 0 6px 28px rgba(0,255,204,0.25);
+    transform: translateY(-2px);
+  }
 
-.vibeops-ai-section-title {
-    font-size: 1.35rem;
+  .vibeops-ai-section-title {
+    font-size: 1.75rem;
     font-weight: 700;
     color: var(--vibeops-accent);
-    margin-bottom: 1.5rem;
+    margin: 2.5rem 0 1.5rem;
     text-align: center;
     font-family: var(--vibeops-heading);
     letter-spacing: 0.5px;
-}
+    text-shadow: 0 2px 12px rgba(0,255,204,0.1);
+  }
 
-.vibeops-ai-list {
+  .vibeops-ai-list {
     background: #181c1f;
-    border-radius: 0.75rem;
-    box-shadow: 0 1px 6px rgba(0,255,204,0.04);
-    padding: 1.1rem 1.5rem;
-    margin-bottom: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(0,255,204,0.06);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
     border: 1px solid var(--vibeops-border);
-}
-.vibeops-ai-list-item {
+  }
+
+  .vibeops-ai-list-item {
     display: flex;
     align-items: center;
-    font-size: 1.08rem;
-    padding: 0.5rem 0;
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
     border: none;
     background: none;
     color: #e6f9f7;
     font-family: var(--vibeops-font);
-}
-.vibeops-ai-list-item i {
+  }
+
+  .vibeops-ai-list-item i {
     color: var(--vibeops-accent);
-    margin-right: 0.75rem;
+    margin-right: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .usecase-card {
+    background: var(--vibeops-card-bg);
+    border-radius: var(--vibeops-radius);
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--vibeops-border);
+    transition: transform 0.3s ease;
+  }
+
+  .usecase-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,255,204,0.1);
+  }
+
+  .usecase-card h4 {
+    font-family: var(--vibeops-heading);
+    color: var(--vibeops-accent);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .usecase-card p {
+    color: #e6f9f7;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .trusted-logos {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .trusted-logos img {
+    max-height: 50px;
+    filter: grayscale(20%);
+    transition: filter 0.3s;
+  }
+
+  .trusted-logos img:hover {
+    filter: grayscale(0%);
+  }
+
+  .testimonials {
+    text-align: center;
     font-size: 1.2rem;
-}
-@media (max-width: 768px) {
-    .vibeops-ai-title { font-size: 2rem; }
-    .vibeops-ai-card-body { padding: 1.2rem; }
-    .vibeops-ai-section-title { font-size: 1.1rem; }
-    .vibeops-ai-card-header { font-size: 1.1rem; padding: 1rem 1.2rem; }
-}
-.vibeops-ai-error-message {
-    background: rgba(255, 60, 60, 0.12);
+    color: #e6f9f7;
+    margin: 2rem 0;
+    font-style: italic;
+  }
+
+  .roi-box {
+    text-align: center;
+    background: var(--vibeops-card-bg);
+    padding: 1.5rem;
+    border-radius: var(--vibeops-radius);
+    border: 1px solid var(--vibeops-border);
+    margin: 2rem 0;
+    font-size: 1.2rem;
+    color: #e6f9f7;
+  }
+
+  .roi-box .highlight {
+    color: var(--vibeops-accent);
+    font-weight: 700;
+  }
+
+  .final-cta {
+    text-align: center;
+    margin: 3rem 0;
+  }
+
+  .final-cta p {
+    font-size: 1.3rem;
+    color: #e6f9f7;
+    margin-bottom: 1.5rem;
+  }
+
+  .final-cta .btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-family: var(--vibeops-heading);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .final-cta .primary {
+    background: var(--vibeops-header-bg);
+    color: #fff;
+  }
+
+  .final-cta .primary:hover {
+    background: linear-gradient(90deg, #2a5298 0%, #00ffcc 100%);
+    color: #181c1f;
+  }
+
+  .final-cta .secondary {
+    background: transparent;
+    border: 2px solid var(--vibeops-accent);
+    color: var(--vibeops-accent);
+  }
+
+  .final-cta .secondary:hover {
+    background: var(--vibeops-accent);
+    color: #181c1f;
+  }
+
+  .vibeops-ai-error-message {
+    background: rgba(255, 60, 60, 0.15);
     color: #ff4d4d;
-    border: 1.5px solid #ff4d4d;
+    border: 1px solid #ff4d4d;
     border-radius: 0.75rem;
     font-family: var(--vibeops-font);
-    font-size: 1.08rem;
+    font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    box-shadow: 0 2px 12px rgba(255, 60, 60, 0.08);
-    letter-spacing: 0.2px;
-}
-.vibeops-ai-error-message i {
+    box-shadow: 0 2px 12px rgba(255, 60, 60, 0.1);
+  }
+
+  .vibeops-ai-error-message i {
     color: #ff4d4d;
-    font-size: 1.3rem;
-    margin-right: 0.5rem;
-}
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .vibeops-ai-title { font-size: 2.2rem; }
+    .vibeops-ai-card-body { padding: 1.5rem; }
+    .vibeops-ai-section-title { font-size: 1.4rem; }
+    .vibeops-ai-card-header { font-size: 1.3rem; padding: 1.25rem 1.5rem; }
+    .blogs-grid { grid-template-columns: 1fr; }
+    .blog-card-body { max-height: 350px; }
+  }
 </style>
 
 <div class="vibeops-ai-container">
-    <div class="vibeops-ai-hero">
-      <h1 class="vibeops-ai-title">Instant, Branded Project Reports</h1>
-      <p class="vibeops-ai-lead">
-        Join <strong>contractors & engineers</strong> who’ve slashed reporting time.  
-        Generate polished, compliance-ready reports in seconds: we use your templates, for less headaches.
-      </p>
-    </div>
-  
-    <div class="vibeops-ai-card">
-      <div class="vibeops-ai-card-header">
-        <i class="fas fa-rocket me-2"></i>Generate Your First Report
-      </div>
-      <div class="vibeops-ai-card-body">
-        {% with messages = get_flashed_messages() %}
-          {% for msg in messages %}
-            <div class="vibeops-ai-error-message">
-              <i class="fas fa-exclamation-circle"></i> {{ msg }}
-            </div>
-          {% endfor %}
-        {% endwith %}
-  
-        <form method="POST" action="{{ url_for('ai_report_generator') }}" enctype="multipart/form-data">
-          <label for="report_template" class="vibeops-ai-form-label">Choose Your Report Template *</label>
-          <select id="report_type" name="report_type" class="vibeops-ai-form-select" required>
-            <option value="">– Select Template –</option>
-            <option value="engineering_feasibility">Engineering Feasibility Study</option>
-            <option value="defense_compliance">Defense Compliance Report</option>
-            <option value="utilities_estimate">Utilities Infrastructure Estimate</option>
-            <option value="construction_closeout">Construction Closeout & Handover</option>
-          </select>
-  
-          <label for="company_name" class="vibeops-ai-form-label">Your Organization *</label>
-          <input type="text" id="company_name" name="company_name" class="vibeops-ai-form-control" placeholder="e.g. Acme Construction Co." required>
-  
-          <label for="project_context" class="vibeops-ai-form-label">
-            Project Brief <small>(optional, drives insights)</small>
-          </label>
-          <textarea id="project_context" name="project_context" class="vibeops-ai-form-control" rows="4" placeholder="Scope, goals, challenges…"></textarea>
-
-          <label for="logo_file" class="vibeops-ai-form-label">Upload Your Logo <small>(optional)</small></label>
-          <input type="file" id="logo_file" name="logo_file" class="vibeops-ai-form-control" accept="image/*">
-  
-          <button type="submit" class="vibeops-ai-btn btn-lg">
-            <i class="fas fa-magic me-2"></i>Generate My Report
-          </button>
-          <p style="font-size:.85rem; opacity:.7; margin-top:.5rem;">No credit card required.</p>
-        </form>
-      </div>
-    </div>
-  
-    <h3 class="vibeops-ai-section-title">What You’ll Get Instantly</h3>
-    <div class="usecase-grid">
-      <div class="usecase-card">
-        <h4>Engineering Feasibility</h4>
-        <p>Validate project viability in minutes, not weeks.</p>
-      </div>
-      <div class="usecase-card">
-        <h4>Defense Compliance</h4>
-        <p>Produce audit-ready packets that meet strict standards.</p>
-      </div>
-      <div class="usecase-card">
-        <h4>Utilities Estimate</h4>
-        <p>Auto-calculate BOM & cost for pipelines, grids, and networks.</p>
-      </div>
-      <div class="usecase-card">
-        <h4>Project Closeout</h4>
-        <p>Generate polished handover docs with lessons learned.</p>
-      </div>
-    </div>
-
-    <div class="trusted-logos">
-      <img src="/static/logo-acme.svg" alt="ACME Construction">
-      <img src="/static/logo-skyline.svg" alt="Skyline Engineering">
-      <img src="/static/logo-defense.svg" alt="Gov DefenseDept">
-    </div>
-    <p class="testimonials">
-      “VibeOps cut our compliance reporting from 5 days to 2 hours.”—<strong>Skyline Engineering</strong>
+  <div class="vibeops-ai-hero">
+    <h1 class="vibeops-ai-title">Instant, Branded Project Reports</h1>
+    <p class="vibeops-ai-lead">
+      Join <strong>contractors & engineers</strong> who’ve slashed reporting time.  
+      Generate polished, compliance-ready reports in seconds: we use your templates, for less headaches.
     </p>
+  </div>
 
-    <div class="roi-box">
-      <strong>ROI Snapshot:</strong> Save up to <span class="highlight">200 man-hours/month</span> on reporting.
+  <div class="vibeops-ai-card">
+    <div class="vibeops-ai-card-header">
+      <i class="fas fa-rocket me-2"></i>Generate Your First Report
     </div>
+    <div class="vibeops-ai-card-body">
+      {% with messages = get_flashed_messages() %}
+        {% for msg in messages %}
+          <div class="vibeops-ai-error-message">
+            <i class="fas fa-exclamation-circle"></i> {{ msg }}
+          </div>
+        {% endfor %}
+      {% endwith %}
 
-    <div class="final-cta">
-      <p>Ready to automate your team’s reporting?</p>
-      <a href="/booking" class="btn secondary cta-audit">
-        Book Your Free Template Audit →
-      </a>
-      <a href="/upload-template" class="btn primary" style="margin-left:1rem;">
-        Upload Your Template →
-      </a>
+      <form method="POST" action="{{ url_for('ai_report_generator') }}" enctype="multipart/form-data">
+        <label for="report_template" class="vibeops-ai-form-label">Choose Your Report Template *</label>
+        <select id="report_type" name="report_type" class="vibeops-ai-form-select" required>
+          <option value="">– Select Template –</option>
+          <option value="engineering_feasibility">Engineering Feasibility Study</option>
+          <option value="defense_compliance">Defense Compliance Report</option>
+          <option value="utilities_estimate">Utilities Infrastructure Estimate</option>
+          <option value="construction_closeout">Construction Closeout & Handover</option>
+        </select>
+
+        <label for="company_name" class="vibeops-ai-form-label">Your Organization *</label>
+        <input type="text" id="company_name" name="company_name" class="vibeops-ai-form-control" placeholder="e.g. Acme Construction Co." required>
+
+        <label for="project_context" class="vibeops-ai-form-label">
+          Project Brief <small>(optional, drives insights)</small>
+        </label>
+        <textarea id="project_context" name="project_context" class="vibeops-ai-form-control" rows="4" placeholder="Scope, goals, challenges…"></textarea>
+
+        <label for="logo_file" class="vibeops-ai-form-label">Upload Your Logo <small>(optional)</small></label>
+        <input type="file" id="logo_file" name="logo_file" class="vibeops-ai-form-control" accept="image/*">
+
+        <button type="submit" class="vibeops-ai-btn btn-lg">
+          <i class="fas fa-magic me-2"></i>Generate My Report
+        </button>
+        <p style="font-size:.85rem; opacity:.7; margin-top:.5rem;">No credit card required.</p>
+      </form>
     </div>
   </div>
-  {% endblock %}
-  
+
+  <h3 class="vibeops-ai-section-title">What You’ll Get Instantly</h3>
+  <div class="usecase-grid">
+    <div class="usecase-card">
+      <h4>Engineering Feasibility</h4>
+      <p>Validate project viability in minutes, not weeks.</p>
+    </div>
+    <div class="usecase-card">
+      <h4>Defense Compliance</h4>
+      <p>Produce audit-ready packets that meet strict standards.</p>
+    </div>
+    <div class="usecase-card">
+      <h4>Utilities Estimate</h4>
+      <p>Auto-calculate BOM & cost for pipelines, grids, and networks.</p>
+    </div>
+    <div class="usecase-card">
+      <h4>Project Closeout</h4>
+      <p>Generate polished handover docs with lessons learned.</p>
+    </div>
+  </div>
+
+  <div class="roi-box">
+    <strong>ROI Snapshot:</strong> Save up to <span class="highlight">200 man-hours/month</span> on reporting.
+  </div>
+
+  <div class="final-cta">
+    <p>Ready to automate your team’s reporting?</p>
+    <a href="/booking" class="btn secondary cta-audit">
+      Book Your Free Template Audit →
+    </a>
+  </div>
+
+  <h3 class="vibeops-ai-section-title">Insights & Prototype Reveals</h3>
+  <div class="blogs-grid">
+    <!-- Blog 1 -->
+    <div class="blog-card">
+      <div class="blog-card-header">Automated Reporting for Vancouver Industries: AI Prototype Revealed</div>
+      <div class="blog-card-body">
+        <h1>Canada AI Reporting Tools: From Field Notes to Comprehensive Business Reports</h1>
+        <p>In today's fast-paced business environment, data is king. For solopreneurs, lean crews, and local heroes, the ability to quickly transform field notes into comprehensive business reports can set you apart from the competition. Enter AI reporting tools—your new best friends in navigating the complexities of data management and report generation.</p>
+        <h2>What Are AI Reporting Tools?</h2>
+        <p>AI reporting tools leverage artificial intelligence to automate the collection, analysis, and presentation of data. These systems can take raw data from various sources, including field notes, and convert it into actionable insights through easy-to-read reports. Whether you’re in retail, construction, or any other industry, AI reporting tools can streamline your workflow and enhance decision-making.</p>
+        <h2>Benefits of Using AI Reporting Tools</h2>
+        <h3>1. Time Efficiency</h3>
+        <p>One of the most significant advantages of AI reporting tools is time efficiency. Instead of spending hours sifting through data and formatting reports, AI can generate these in minutes. Imagine the freedom of focusing on what you do best while your AI tool handles the tedious tasks.</p>
+        <h3>2. Enhanced Accuracy</h3>
+        <p>Human error is a common pitfall in data reporting. AI tools minimize this risk by performing calculations and data analysis with precision. This means that your reports will be more accurate, helping you make better-informed decisions.</p>
+        <h3>3. Scalability</h3>
+        <p>As your business grows, so does the amount of data you collect. AI reporting tools can easily scale with your business needs, ensuring that you can keep up with the increasing volume of information without compromising on quality.</p>
+        <h2>How to Choose the Right AI Reporting Tool in Canada</h2>
+        <p>With a plethora of options available in the Canadian market, selecting the right AI reporting tool can be daunting. Here are some key factors to consider:</p>
+        <h3>1. Features</h3>
+        <p>Look for tools that offer features tailored to your specific needs. Whether you need customizable templates, integration with existing software, or real-time data analysis, ensure the tool aligns with your goals.</p>
+        <h3>2. User-Friendliness</h3>
+        <p>The best AI reporting tools are intuitive and easy to navigate. A user-friendly interface can significantly reduce the learning curve and enhance productivity.</p>
+        <h3>3. Customer Support</h3>
+        <p>Reliable customer support is crucial. Opt for tools that offer comprehensive support, including tutorials, FAQs, and direct assistance, to help you troubleshoot issues as they arise.</p>
+        <h2>Top AI Reporting Tools Available in Canada</h2>
+        <p>Here are some of the leading AI reporting tools that can help you transform your field notes into comprehensive reports:</p>
+        <h3>1. Tableau</h3>
+        <p>Tableau is renowned for its powerful data visualization capabilities. It allows users to create interactive dashboards and reports, making it easier to interpret complex datasets.</p>
+        <h3>2. Power BI</h3>
+        <p>Microsoft’s Power BI is an excellent choice for those already using Microsoft products. It integrates seamlessly with other Microsoft tools and provides robust reporting features.</p>
+        <h3>3. Google Data Studio</h3>
+        <p>This free tool from Google is perfect for small businesses and solopreneurs. It transforms your data into informative reports and dashboards that are easy to share.</p>
+        <h2>Transforming Field Notes into Actionable Insights</h2>
+        <p>Once you've selected the right AI reporting tool, the next step is effectively utilizing it to convert your field notes into actionable insights. Here’s how:</p>
+        <h3>1. Streamline Data Entry</h3>
+        <p>Ensure that your field notes are well-structured and easy to input into the reporting tool. Consistency in data entry will enhance the accuracy of your reports.</p>
+        <h3>2. Utilize Templates</h3>
+        <p>Many AI reporting tools offer customizable templates that can save you time. Tailor these templates to fit your specific reporting needs and ensure uniformity across reports.</p>
+        <h3>3. Regularly Review Reports</h3>
+        <p>Set aside time to regularly review your AI-generated reports. This practice can help you identify trends, make informed decisions, and adjust your business strategies accordingly.</p>
+        <h2>Conclusion</h2>
+        <p>AI reporting tools are transforming the way businesses in Canada manage their data and generate reports. By automating the reporting process, these tools save time, enhance accuracy, and provide scalability, making them essential for solopreneurs and small teams. Ready to elevate your business reporting? <strong>Book Your Free Vibe Check</strong> today and discover how VibeOps can empower your workflow with AI automation and web solutions!</p>
+      </div>
+    </div>
+
+    <!-- Blog 2 -->
+    <div class="blog-card">
+      <div class="blog-card-header">Canada AI Reporting Tools: From Field Notes to Comprehensive Reports</div>
+      <div class="blog-card-body">
+        <h1>Automated Reporting for Vancouver Industries: AI Prototype Revealed</h1>
+        <p>In the fast-paced world of Vancouver's industries, staying ahead requires more than just hard work; it demands smart solutions. Enter automated reporting—an innovative approach that leverages AI technology to streamline processes and enhance efficiency. At VibeOps, we are excited to unveil our latest AI prototype designed specifically for local businesses, solopreneurs, and lean teams.</p>
+        <h2>Understanding Automated Reporting</h2>
+        <p>Automated reporting simplifies the data collection process, allowing businesses to generate insights without the manual effort traditionally required. By integrating AI, we enable industries to automate mundane tasks, freeing up valuable time for strategic decision-making.</p>
+        <h3>Why Automated Reporting Matters for Vancouver Industries</h3>
+        <p>Vancouver is home to a diverse range of industries, from tech startups to hospitality. Each sector faces unique challenges regarding data management and reporting. Automated reporting can help:</p>
+        <ul>
+          <li><strong>Increase Efficiency:</strong> Automate data collection and reporting to reduce time spent on administrative tasks.</li>
+          <li><strong>Enhance Accuracy:</strong> Minimize human error in data analysis, ensuring more reliable insights.</li>
+          <li><strong>Drive Decision-Making:</strong> Access real-time data to make informed decisions quickly.</li>
+        </ul>
+        <h2>Introducing Our AI Prototype</h2>
+        <p>Our AI prototype is designed to revolutionize how Vancouver industries handle reporting. By utilizing machine learning algorithms, our tool can analyze data patterns, generate reports, and present insights tailored to specific industry needs.</p>
+        <h3>Key Features of the AI Prototype</h3>
+        <ul>
+          <li><strong>Customizable Dashboards:</strong> Users can design their dashboards to highlight the most relevant metrics for their business.</li>
+          <li><strong>Real-Time Insights:</strong> Receive immediate updates on key performance indicators, enabling proactive management.</li>
+          <li><strong>Seamless Integrations:</strong> Our prototype easily connects with existing tools and platforms, ensuring a smooth transition.</li>
+        </ul>
+        <h2>Benefits for Vancouver's Local Heroes</h2>
+        <p>For solopreneurs and small businesses in Vancouver, the benefits are profound. With limited resources, having access to automated reporting can level the playing field. Here’s how:</p>
+        <ul>
+          <li><strong>Cost-Effective Solutions:</strong> Reduce operational costs by automating tasks that would otherwise require multiple staff members.</li>
+          <li><strong>Focus on Growth:</strong> With administrative duties handled by AI, entrepreneurs can prioritize business growth and customer engagement.</li>
+        </ul>
+        <h2>Getting Started with VibeOps</h2>
+        <p>Ready to transform your reporting process? At VibeOps, we believe in empowering local heroes with cutting-edge AI solutions. Our automated reporting prototype is just the beginning. Whether you’re a tech startup, a local restaurant, or a service provider, our tools are built to cater to your unique needs.</p>
+        <h3>Book Your Free Vibe Check</h3>
+        <p>Curious about how our AI prototype can work for you? <a href="#">Book your free Vibe Check</a> today! Our team will assess your current processes and demonstrate how our solutions can streamline your reporting and enhance your business efficiency.</p>
+        <h2>Conclusion</h2>
+        <p>Automated reporting is no longer a luxury; it’s a necessity for Vancouver’s industries striving to remain competitive. With our AI prototype, VibeOps is here to help your business thrive in the era of automation. Join us on this journey to redefine the future of reporting in Vancouver.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
