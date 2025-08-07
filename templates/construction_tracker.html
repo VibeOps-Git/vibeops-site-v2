@@ -4,6 +4,80 @@
 {% block extra_head %}
   <!-- Plotly (for Gantt, histograms, S-curves, etc.) -->
   <script src="https://cdn.plot.ly/plotly-2.18.1.min.js"></script>
+
+    <!-- Blog cards styling -->
+    <!-- Full‐blog card styling -->
+  <style>
+    /* wrapper for featured blogs */
+    .construction-tracker-page .blogs-section {
+      margin-top: 3rem;
+    }
+    /* individual blog container */
+    .construction-tracker-page .blog-container {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      /* enforce same height for both cards */
+      height: 70vh;
+      overflow: hidden;
+    }
+    /* header bar */
+    .construction-tracker-page .blog-header {
+      background-color: #1f2937;
+      color: #ffffff;
+      padding: 1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    /* scrollable body (flexes to fill) */
+    .construction-tracker-page .blog-body {
+      padding: 1rem;
+      font-family: 'Roboto', sans-serif;
+      color: #374151;
+      line-height: 1.6;
+      flex: 1 1 auto;
+      overflow-y: auto;
+    }
+    .construction-tracker-page .blog-body h2,
+    .construction-tracker-page .blog-body h3 {
+      margin-top: 1.5rem;
+      font-family: 'Poppins', sans-serif;
+      color: #111827;
+    }
+    .construction-tracker-page .blog-body ul,
+    .construction-tracker-page .blog-body ol {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+    .construction-tracker-page .blog-body ul li {
+      list-style: disc;
+    }
+    .construction-tracker-page .blog-body ol li {
+      list-style: decimal;
+    }
+    .construction-tracker-page .blog-body a {
+      color: var(--vibeops-accent);
+      text-decoration: none;
+    }
+    .construction-tracker-page .blog-body a:hover {
+      text-decoration: underline;
+    }
+    /* optional: custom scrollbar for webkit */
+    .construction-tracker-page .blog-body::-webkit-scrollbar {
+      width: 8px;
+    }
+    .construction-tracker-page .blog-body::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+  </style>
+
+
+
 {% endblock %}
 
 {% block content %}
@@ -249,6 +323,90 @@
       </div>
     </div>
   </section>
+
+    <!-- ===== Featured Guides & Case Studies ===== -->
+  <section class="blogs-section max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Blog #1 -->
+    <div class="blog-container">
+      <div class="blog-header">Canada Construction Management: Interactive Gantt & Analytics Dashboard Demo</div>
+      <div class="blog-body prose dark:prose-invert">
+        <p>In the fast-paced world of construction management, staying organized and efficient is more critical than ever. For contractors and project managers in Canada, utilizing advanced tools can significantly enhance productivity and ensure timely project delivery. In this blog, we’ll explore how VibeOps’ Interactive Gantt & Analytics Dashboard can streamline your construction management process, offering insights that are crucial for your success.</p>
+
+        <h2>What is an Interactive Gantt Chart?</h2>
+        <p>A Gantt chart is a powerful project management tool that visually represents a project schedule. It allows construction teams to map out tasks, set timelines, and track progress in a single view. With VibeOps’ Interactive Gantt Chart, you can create a dynamic project timeline that adapts as your project evolves, ensuring that all team members remain informed and aligned.</p>
+
+        <h2>Key Features of Our Gantt & Analytics Dashboard</h2>
+        <h3>1. Visual Project Tracking</h3>
+        <p>Our interactive Gantt chart offers a straightforward visual representation of all tasks involved in your construction projects. Easily monitor the progress of each phase, identify bottlenecks, and adjust timelines as necessary. This feature is essential for keeping your project on track and ensuring all stakeholders are updated.</p>
+        <h3>2. Real-Time Collaboration</h3>
+        <p>With VibeOps, collaboration is seamless. Allow team members to update their progress in real-time, ensuring everyone is on the same page. This functionality is particularly beneficial for lean crews and solopreneurs who need to manage multiple aspects of their projects without the hassle of traditional communication methods.</p>
+        <h3>3. Advanced Analytics</h3>
+        <p>Data-driven decisions are at the heart of effective project management. Our analytics dashboard provides insights into your project’s performance, helping you identify trends, resource allocation efficiency, and potential risks. Use this data to optimize your workflows and enhance overall project outcomes.</p>
+        <h3>4. Customizable Templates</h3>
+        <p>Every construction project is unique. Our platform offers customizable Gantt chart templates that cater specifically to the Canadian construction landscape. Tailor your dashboard to fit the specific needs of your projects, whether you’re working on residential, commercial, or industrial construction.</p>
+
+        <h2>Benefits of Using VibeOps for Canada Construction Management</h2>
+        <ul>
+          <li><strong>Increased Efficiency:</strong> Streamline your workflows to save time and effort.</li>
+          <li><strong>Improved Communication:</strong> Foster better communication among team members and stakeholders.</li>
+          <li><strong>Data-Driven Decisions:</strong> Make informed choices backed by analytics and insights.</li>
+          <li><strong>Enhanced Accountability:</strong> Ensure that every team member is accountable for their tasks and deadlines.</li>
+        </ul>
+
+        <h2>How to Get Started with VibeOps</h2>
+        <p>Ready to take your construction management to the next level? Getting started with VibeOps is simple. Sign up for a free demo of our Interactive Gantt & Analytics Dashboard and see firsthand how it can revolutionize your project management approach. Our friendly team is here to assist you every step of the way and answer any questions you may have.</p>
+
+        <h2>Book Your Free Vibe Check Today!</h2>
+        <p>Don't let inefficiencies hold your projects back. Experience the power of VibeOps in Canada construction management by booking your free Vibe Check today. Discover how our AI-powered solutions can build your website, streamline your workflows, and enhance your tools—all in days, not weeks.</p>
+        <p>Join the community of lean crews and local heroes who trust VibeOps for their web solutions and automation needs. Together, let’s construct a brighter, more efficient future for your projects!</p>
+      </div>
+    </div>
+
+    <!-- Blog #2 -->
+    <div class="blog-container">
+      <div class="blog-header">Canada Cost Breakdown Software: The Customizable Estimator You Need</div>
+      <div class="blog-body prose dark:prose-invert">
+        <p>In the fast-paced world of construction, having an accurate and customizable cost breakdown is crucial for the success of any building project. Whether you’re a solopreneur, part of a lean crew, or a local hero tackling community projects, Canada cost breakdown software can significantly enhance your workflow and project management capabilities. In this blog post, we’ll explore how VibeOps' AI-powered solutions can help you streamline your estimating process and ensure that your projects stay on budget.</p>
+
+        <h2>Why You Need Customizable Estimating Software</h2>
+        <p>Building projects often involve numerous variables that can affect cost, from labor and materials to unforeseen challenges. A customizable estimator allows you to adapt to these changes and provides a clear picture of your project’s financial landscape. Here are a few reasons why you should adopt this technology:</p>
+        <ul>
+          <li><strong>Flexibility:</strong> Modify estimates in real-time based on project updates or client requests.</li>
+          <li><strong>Accuracy:</strong> Reduce human error by automating calculations and leveraging data.</li>
+          <li><strong>Time-Saving:</strong> Generate comprehensive estimates in minutes instead of days.</li>
+        </ul>
+
+        <h2>Key Features of Canada Cost Breakdown Software</h2>
+        <h3>1. Tailored Templates</h3>
+        <p>With VibeOps, you can create tailored estimating templates that reflect your specific project needs. Whether it’s residential construction, commercial buildings, or renovations, our software lets you input unique parameters to generate precise estimates.</p>
+        <h3>2. Real-Time Collaboration</h3>
+        <p>In the construction industry, collaboration is key. VibeOps’ platform offers real-time collaboration tools, allowing your team to work together efficiently. Share updates, make adjustments, and ensure everyone is on the same page, no matter where they are.</p>
+        <h3>3. Integrated Cost Libraries</h3>
+        <p>Our software comes equipped with extensive cost libraries, providing you with access to current pricing data for materials and labor across Canada. This feature helps you stay competitive and ensures your estimates are based on up-to-date information.</p>
+        <h3>4. Automated Reporting</h3>
+        <p>Generate detailed reports effortlessly. With just a few clicks, you can create professional estimates and invoices, saving you precious time and allowing you to focus on what you do best—building!</p>
+
+        <h2>How to Implement Canada Cost Breakdown Software</h2>
+        <ol>
+          <li><strong>Sign Up:</strong> Visit our website and book your free Vibe Check to see how our solutions can fit your needs.</li>
+          <li><strong>Customize:</strong> Tailor the software settings to match your project requirements and industry standards.</li>
+          <li><strong>Train Your Team:</strong> Conduct training sessions to ensure your team is comfortable using the software and maximizing its potential.</li>
+          <li><strong>Start Estimating:</strong> Begin creating accurate estimates and watch your efficiency soar!</li>
+        </ol>
+
+        <h2>Success Stories: Builders Who Transformed Their Workflow</h2>
+        <blockquote>
+          <p>“Since implementing VibeOps’ cost breakdown software, our estimation time has decreased by 50%. We can now focus more on building and less on paperwork!” – Alex, General Contractor</p>
+        </blockquote>
+
+        <h2>Conclusion</h2>
+        <p>In a competitive industry like construction, having the right tools can make all the difference. VibeOps’ Canada cost breakdown software offers the flexibility, accuracy, and efficiency you need to thrive. Say goodbye to outdated estimating methods and embrace a future where your projects run smoothly and stay on budget.</p>
+        <p><strong><a href="/booking">Book Your Free Vibe Check</a></strong> today and see how our customizable estimator can transform your workflow!</p>
+      </div>
+    </div>
+  </section>
+
+
 {% endblock %}
 
 

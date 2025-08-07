@@ -1,150 +1,344 @@
 {% extends "base.html" %}
 {% block title %}Pipeline Cost Estimator Demo{% endblock %}
 
+{% block extra_head %}
+  <!-- TailwindCSS for utility classes -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+
+.input-section {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  border: 1px solid #444;
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease;
+}
+.input-section:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+}
+.input-section input, .input-section select {
+  background: #222;
+  color: #e6f9f7;
+  border-color: #555;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.input-section input:focus, .input-section select:focus {
+  border-color: #00ffcc;
+  box-shadow: 0 0 0 3px rgba(0, 255, 204, 0.2);
+  outline: none;
+}
+.input-section button {
+  background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+  transition: all 0.3s ease;
+}
+.input-section button:hover {
+  background: linear-gradient(90deg, #2a5298 0%, #00ffcc 100%);
+  color: #1a1a1a;
+}
+
+.output-section {
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+.output-section .box {
+  background: #222;
+  border: 1px solid #555;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+.output-section .box:hover {
+  background: #2c2c2c;
+}
+.output-section h4 {
+  color: #00ffcc;
+  font-weight: 600;
+}
+
+.pipeline-estimator-page {
+  max-width: 48rem; /* Equivalent to Tailwind's max-w-3xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 3rem; /* Equivalent to py-12 */
+  padding-left: 1rem; /* Equivalent to px-4 */
+  padding-right: 1rem; /* Equivalent to px-4 */
+  color: #fff;
+  background: #1a1a1a; /* Optional dark background to complement text color */
+  border-radius: 12px; /* Optional for a modern look */
+  transition: box-shadow 0.3s ease; /* Optional hover effect */
+}
+
+.pipeline-estimator-page:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); /* Optional neon glow on hover */
+}
+
+.blog-card {
+  max-height: 75vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00ffcc #444;
+}
+.blog-card::-webkit-scrollbar {
+  width: 8px;
+}
+.blog-card::-webkit-scrollbar-track {
+  background: #444;
+}
+.blog-card::-webkit-scrollbar-thumb {
+  background: #00ffcc;
+  border-radius: 4px;
+}
+.blog-card h1 {
+  color: #00ffcc;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+.blog-card h2, .blog-card h3 {
+  color: #00ffcc;
+  margin: 1.5rem 0 0.75rem;
+}
+.blog-card p {
+  color: #e6f9f7;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.blog-card ul {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+.blog-card li {
+  color: #e6f9f7;
+  margin-bottom: 0.5rem;
+}
+.blog-card a {
+  color: #00ffcc;
+  text-decoration: underline;
+}
+.blog-card a:hover {
+  color: #00ccaa;
+}
+.blog-card blockquote {
+  border-left: 4px solid #00ffcc;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #e6f9f7;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .pipeline-estimator-page { padding: 1rem; }
+  .glitch { font-size: 2.5rem; }
+  .input-section { padding: 1rem; }
+  .input-section button { font-size: 1rem; }
+  .output-section { padding: 1rem; }
+  .blog-card { max-height: 60vh; }
+}
+
+  </style>
+
+{% endblock %}
+
 {% block content %}
-    <section class="pipeline-estimator-page">
-        <h2 data-aos="fade-up" data-aos-delay="100" class="glitch" data-text="Pipeline Estimator">Pipeline Cost Estimator Demo</h2>
+<section class="pipeline-estimator-page max-w-3xl mx-auto py-12 px-4">
+  <h2 data-aos="fade-up" data-aos-delay="100" class="glitch text-4xl font-bold text-center mb-6" data-text="Pipeline Estimator">
+    Pipeline Cost Estimator Demo
+  </h2>
 
-        <!-- Demo Intro Copy -->
-        <p data-aos="fade-up" data-aos-delay="200" class="text-center">
-            This is a live portfolio demo of our custom-built pipeline cost engine.  
-            Tweak the parameters below or hit “Load Demo Data” to see how we generate  
-            a Bill of Materials and cost breakdown on the fly.
-        </p>
+  <p data-aos="fade-up" data-aos-delay="200" class="text-center text-gray-600 mb-2">
+    This is a live portfolio demo of our custom-built pipeline cost engine.  
+    Tweak the parameters below to see how we generate  
+    a Bill of Materials and cost breakdown on the fly.
+  </p>
+  <p data-aos="fade-up" data-aos-delay="200" class="text-center text-gray-600 mb-8">
+    Enter pipeline details to get an estimated Bill of Materials and cost.
+  </p>
 
-        <p data-aos="fade-up" data-aos-delay="200" class="text-center">Enter pipeline details to get an estimated Bill of Materials and cost.</p>
+  <div class="input-section bg-white border border-gray-200 rounded-lg p-6 shadow mb-8" data-aos="fade-up" data-aos-delay="300">
+    <form id="estimationForm" class="space-y-6">
+      <div>
+        <label for="length" class="block font-medium mb-1">Pipeline Length (km)</label>
+        <input type="number" name="length" id="length" step="any" required
+               placeholder="e.g., 10.5"
+               class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+      </div>
+      <div>
+        <label for="diameter" class="block font-medium mb-1">Pipeline Diameter (inches)</label>
+        <input type="number" name="diameter" id="diameter" step="any" required
+               placeholder="e.g., 24"
+               class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+      </div>
+      <div>
+        <label for="terrain" class="block font-medium mb-1">Terrain Type</label>
+        <select id="terrain" name="terrain" required
+                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          <option value="">Select Terrain</option>
+          <option value="flat">Flat</option>
+          <option value="hilly">Hilly</option>
+          <option value="mountainous">Mountainous</option>
+          <option value="swampy">Swampy</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition">
+          Get Estimate
+        </button>
+      </div>
+    </form>
+    <div id="form-error-message" class="text-center text-red-600 mt-4"></div>
+  </div>
 
-        <div class="input-section" data-aos="fade-up" data-aos-delay="300">
-            <form id="estimationForm" class="space-y-6">
-                <div>
-                    <label for="length">Pipeline Length (km)</label>
-                    <input type="number" name="length" id="length" step="any" class="pipe-length" required placeholder="e.g., 10.5">
-                </div>
+  <div id="results" class="output-section hidden" data-aos="fade-up" data-aos-delay="400">
+    <h2 class="text-2xl font-semibold mb-4">Estimation Results</h2>
+    <div id="bom" class="box bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4"></div>
+    <div id="cost" class="box bg-gray-50 border border-gray-200 rounded-lg p-4"></div>
+  </div>
+</section>
 
-                <div>
-                    <label for="diameter">Pipeline Diameter (inches)</label>
-                    <input type="number" name="diameter" id="diameter" class="pipe-diameter" step="any" required placeholder="e.g., 24">
-                </div>
+<!-- ===== Featured Guides & Case Studies ===== -->
+<section class="max-w-7xl mx-auto px-4 mt-16">
+    <h2 class="text-3xl font-bold mb-6 text-center">Featured Guides & Case Studies</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Blog #1 -->
+    <article class="blog-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-6 overflow-y-auto max-h-[75vh] prose dark:prose-invert">
+        <h1>Vancouver Construction Cost Estimation: Rapid Quote Prototype in Action</h1>
+        <p>In the fast-paced world of construction, accurate cost estimation is crucial for project success. For contractors and solopreneurs in Vancouver, the time it takes to generate a quote can make or break a deal. That’s where VibeOps steps in with our Rapid Quote Prototype—a game-changing solution that harnesses the power of AI to streamline the construction cost estimation process.</p>
+        <h2>Why Accurate Cost Estimation Matters</h2>
+        <p>In Vancouver's competitive construction market, providing accurate quotes is essential for winning bids and maintaining client trust. A well-considered estimate reflects not only the cost of materials and labor but also addresses potential challenges and ensures a project stays within budget. However, traditional methods of estimation can be time-consuming and prone to human error.</p>
+        <h2>Introducing VibeOps' Rapid Quote Prototype</h2>
+        <p>VibeOps has developed an AI-powered Rapid Quote Prototype designed to assist lean crews, solopreneurs, and local heroes in producing accurate and timely cost estimates. This innovative tool allows users to generate comprehensive quotes in a matter of days—significantly faster than conventional methods.</p>
+        <h3>How It Works</h3>
+        <p>The Rapid Quote Prototype utilizes a user-friendly interface that guides you through the estimation process. Users input project details, including the scope of work, materials required, and any unique project specifications. The AI then analyzes this information and cross-references it with a database of current material costs, labor rates, and industry standards to produce a detailed quote.</p>
+        <h3>Key Features of the Rapid Quote Prototype</h3>
+        <ul>
+        <li><strong>Speed:</strong> Generate quotes in days, not weeks.</li>
+        <li><strong>Accuracy:</strong> Reduce the risk of human error with AI-driven calculations.</li>
+        <li><strong>Customization:</strong> Tailor estimates based on specific project requirements.</li>
+        <li><strong>Scalability:</strong> Easily adjust estimates for projects of any size.</li>
+        </ul>
+        <h2>Benefits for Vancouver Contractors</h2>
+        <p>By adopting VibeOps' Rapid Quote Prototype, Vancouver contractors can experience numerous benefits:</p>
+        <h3>1. Increased Efficiency</h3>
+        <p>Time is money in the construction industry. The Rapid Quote Prototype frees up valuable hours that can be redirected towards project execution or business development. No more waiting weeks for estimates—immediate, reliable quotes empower contractors to make quicker decisions.</p>
+        <h3>2. Enhanced Competitiveness</h3>
+        <p>In a market as vibrant as Vancouver's, being able to provide fast and accurate estimates gives contractors a competitive edge. With the Rapid Quote Prototype, you can respond swiftly to inquiries and secure more projects.</p>
+        <h3>3. Improved Client Relationships</h3>
+        <p>Transparency is key to building trust with clients. The detailed reports generated by the Rapid Quote Prototype not only clarify your pricing but also help clients understand the breakdown of costs, fostering a sense of confidence in your work.</p>
+        <h2>Real-World Application: A Case Study</h2>
+        <p>Consider a recent project undertaken by a local contractor in Vancouver. Using the Rapid Quote Prototype, they were able to estimate the cost for a residential renovation in just three days. The AI provided detailed insights into material costs and labor rates, allowing the contractor to present a competitive quote that won the project. The contractor reported an increase in client satisfaction and a noticeable reduction in the time spent on estimating future projects.</p>
+        <h2>Get Started with VibeOps Today!</h2>
+        <p>Are you ready to transform the way you approach construction cost estimation? The VibeOps Rapid Quote Prototype is here to revolutionize your workflow and help you win more projects. Don’t let outdated processes hold you back!</p>
+        <p><strong>Book Your Free Vibe Check</strong> today and discover how our AI-powered solutions can elevate your construction business in Vancouver!</p>
+    </article>
 
-                <div>
-                    <label for="terrain">Terrain Type</label>
-                    <select id="terrain" class="pipe-terrain" name="terrain" required>
-                        <option value="">Select Terrain</option>
-                        <option value="flat">Flat</option>
-                        <option value="hilly">Hilly</option>
-                        <option value="mountainous">Mountainous</option>
-                        <option value="swampy">Swampy</option>
-                    </select>
-                </div>
+    <!-- Blog #2 -->
+    <article class="blog-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-6 overflow-y-auto max-h-[75vh] prose dark:prose-invert">
+        <h1>Canada Cost Breakdown Software: The Customizable Estimator You Need</h1>
+        <p>In the fast-paced world of construction, having an accurate and customizable cost breakdown is crucial for the success of any building project. Whether you’re a solopreneur, part of a lean crew, or a local hero tackling community projects, Canada cost breakdown software can significantly enhance your workflow and project management capabilities. In this blog post, we’ll explore how VibeOps' AI-powered solutions can help you streamline your estimating process and ensure that your projects stay on budget.</p>
+        <h2>Why You Need Customizable Estimating Software</h2>
+        <p>Building projects often involve numerous variables that can affect cost, from labor and materials to unforeseen challenges. A customizable estimator allows you to adapt to these changes and provides a clear picture of your project’s financial landscape. Here are a few reasons why you should adopt this technology:</p>
+        <ul>
+        <li><strong>Flexibility:</strong> Modify estimates in real-time based on project updates or client requests.</li>
+        <li><strong>Accuracy:</strong> Reduce human error by automating calculations and leveraging data.</li>
+        <li><strong>Time-Saving:</strong> Generate comprehensive estimates in minutes instead of days.</li>
+        </ul>
+        <h2>Key Features of Canada Cost Breakdown Software</h2>
+        <p>When searching for the right cost breakdown software, consider the following essential features:</p>
+        <h3>1. Tailored Templates</h3>
+        <p>With VibeOps, you can create tailored estimating templates that reflect your specific project needs. Whether it’s residential construction, commercial buildings, or renovations, our software lets you input unique parameters to generate precise estimates.</p>
+        <h3>2. Real-Time Collaboration</h3>
+        <p>In the construction industry, collaboration is key. VibeOps’ platform offers real-time collaboration tools, allowing your team to work together efficiently. Share updates, make adjustments, and ensure everyone is on the same page, no matter where they are.</p>
+        <h3>3. Integrated Cost Libraries</h3>
+        <p>Our software comes equipped with extensive cost libraries, providing you with access to current pricing data for materials and labor across Canada. This feature helps you stay competitive and ensures your estimates are based on up-to-date information.</p>
+        <h3>4. Automated Reporting</h3>
+        <p>Generate detailed reports effortlessly. With just a few clicks, you can create professional estimates and invoices, saving you precious time and allowing you to focus on what you do best—building!</p>
+        <h2>How to Implement Canada Cost Breakdown Software</h2>
+        <ol>
+        <li><strong>Sign Up:</strong> Visit our website and book your free Vibe Check to see how our solutions can fit your needs.</li>
+        <li><strong>Customize:</strong> Tailor the software settings to match your project requirements and industry standards.</li>
+        <li><strong>Train Your Team:</strong> Conduct training sessions to ensure your team is comfortable using the software and maximizing its potential.</li>
+        <li><strong>Start Estimating:</strong> Begin creating accurate estimates and watch your efficiency soar!</li>
+        </ol>
+        <h2>Success Stories: Builders Who Transformed Their Workflow</h2>
+        <blockquote>
+        <p>“Since implementing VibeOps’ cost breakdown software, our estimation time has decreased by 50%. We can now focus more on building and less on paperwork!” – Alex, General Contractor</p>
+        </blockquote>
+        <h2>Conclusion</h2>
+        <p>In a competitive industry like construction, having the right tools can make all the difference. VibeOps’ Canada cost breakdown software offers the flexibility, accuracy, and efficiency you need to thrive. Say goodbye to outdated estimating methods and embrace a future where your projects run smoothly and stay on budget.</p>
+        <p><strong><a href="/booking">Book Your Free Vibe Check</a></strong> today and see how our customizable estimator can transform your workflow!</p>
+    </article>
+    </div>
+</section>
+{% endblock %}
 
-                <div>
-                    <button type="submit" class="btn primary w-full flex justify-center">
-                        Get Estimate
-                    </button>
-                </div>
-            </form>
-             <div id="form-error-message" class="text-center" style="color: red; margin-top: 1rem;"></div>
-        </div>
+{% block extra_scripts %}
+<script>
+document.getElementById('estimationForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = Object.fromEntries(new FormData(form).entries());
 
-        <div id="results" class="output-section hidden" data-aos="fade-up" data-aos-delay="400">
-            <h2>Estimation Results</h2>
-            <div id="bom" class="box mb-4"></div>
-            <div id="cost" class="box"></div>
-        </div>
-    </section>
+  // clear old
+  const resultsDiv = document.getElementById('results');
+  const bomDiv = document.getElementById('bom');
+  const costDiv = document.getElementById('cost');
+  const errorDiv = document.getElementById('form-error-message');
+  resultsDiv.classList.add('hidden');
+  bomDiv.textContent = '';
+  costDiv.textContent = '';
+  errorDiv.textContent = '';
 
-    {% block extra_scripts %}
-    <script>
-        document.getElementById('estimationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+  // show loaders
+  resultsDiv.classList.remove('hidden');
+  bomDiv.textContent = 'Calculating BOM...';
+  costDiv.textContent = 'Estimating cost...';
 
-            const form = event.target;
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
+  try {
+    const response = await fetch('/pipeline-estimator', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(()=>({error:`HTTP ${response.status}`}));
+      throw new Error(err.error || `HTTP ${response.status}`);
+    }
+    const result = await response.json();
 
-            console.log('Form submitted with data:', data);
+    // render BOM
+    if (result.bom) {
+      let html = '<h4 class="font-semibold text-green-600 mb-2">Bill of Materials:</h4><ul class="list-disc pl-5">';
+      for (const [item, qty] of Object.entries(result.bom)) {
+        html += `<li><strong>${item}:</strong> ${qty}</li>`;
+      }
+      html += '</ul>';
+      bomDiv.innerHTML = html;
+    } else {
+      bomDiv.innerHTML = '<h4 class="font-semibold text-green-600 mb-2">Bill of Materials:</h4><p>None provided.</p>';
+    }
 
-            // Clear previous results and errors
-            const resultsDiv = document.getElementById('results');
-            const bomDiv = document.getElementById('bom');
-            const costDiv = document.getElementById('cost');
-            const errorMessageDiv = document.getElementById('form-error-message');
+    // render Cost
+    if (result.cost) {
+      let html = '<h4 class="font-semibold text-green-600 mb-2">Estimated Cost Breakdown:</h4><ul class="list-disc pl-5">';
+      html += `<li><strong>Total Cost:</strong> $${result.cost.total_cost.toLocaleString()}</li>`;
+      html += `<li><strong>Material Cost:</strong> $${result.cost.material_cost.toLocaleString()}</li>`;
+      html += `<li><strong>Labor Cost:</strong> $${result.cost.labor_cost.toLocaleString()}</li>`;
+      html += `<li><strong>Right-of-Way Cost:</strong> $${result.cost.row_cost.toLocaleString()}</li>`;
+      html += `<li><strong>Miscellaneous Cost:</strong> $${result.cost.misc_cost.toLocaleString()}</li>`;
+      html += '</ul>';
+      costDiv.innerHTML = html;
+    } else {
+      costDiv.innerHTML = '<h4 class="font-semibold text-green-600 mb-2">Estimated Cost:</h4><p>No data.</p>';
+    }
 
-            resultsDiv.classList.add('hidden');
-            bomDiv.innerHTML = '';
-            costDiv.innerHTML = '';
-            errorMessageDiv.textContent = '';
-
-            // Show loading messages in the results area
-            resultsDiv.classList.remove('hidden');
-            bomDiv.innerHTML = 'Calculating BOM...';
-            costDiv.innerHTML = 'Estimating cost...';
-
-            // Send data to backend Flask route
-            fetch('/pipeline-estimator', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    // If response is not OK, try to read the error message from backend
-                    return response.json().then(data => {
-                        throw new Error(data.error || `HTTP error! status: ${response.status}`);
-                    }).catch(() => {
-                         // If json parsing fails, throw generic error
-                         throw new Error(`HTTP error! status: ${response.status}`);
-                    });
-                }
-                return response.json();
-            })
-            .then(result => {
-                console.log('Backend response:', result);
-
-                // Clear loading messages
-                bomDiv.innerHTML = '';
-                costDiv.innerHTML = '';
-
-                if (result.bom) {
-                    // Format BOM as a list for better readability
-                    let bomHtml = '<h4 class="font-semibold" style="color: #00ffcc;">Bill of Materials:</h4><ul>';
-                    Object.entries(result.bom).forEach(([item, quantity]) => {
-                        bomHtml += `<li><strong>${item}:</strong> ${quantity}</li>`;
-                    });
-                    bomHtml += '</ul>';
-                    bomDiv.innerHTML = bomHtml;
-                } else {
-                     bomDiv.innerHTML = '<h4 class="font-semibold" style="color: #00ffcc;">Bill of Materials:</h4> Calculation failed or no BOM provided.';
-                }
-
-                if (result.cost) {
-                    // Format cost breakdown
-                    let costHtml = '<h4 class="font-semibold" style="color: #00ffcc;">Estimated Cost Breakdown:</h4><ul>';
-                    costHtml += `<li><strong>Total Cost:</strong> $${result.cost.total_cost.toLocaleString()}</li>`;
-                    costHtml += `<li><strong>Material Cost:</strong> $${result.cost.material_cost.toLocaleString()}</li>`;
-                    costHtml += `<li><strong>Labor Cost:</strong> $${result.cost.labor_cost.toLocaleString()}</li>`;
-                    costHtml += `<li><strong>Right-of-Way Cost:</strong> $${result.cost.row_cost.toLocaleString()}</li>`;
-                    costHtml += `<li><strong>Miscellaneous Cost:</strong> $${result.cost.misc_cost.toLocaleString()}</li>`;
-                    costHtml += '</ul>';
-
-                    costDiv.innerHTML = costHtml;
-                } else {
-                    costDiv.innerHTML = '<h4 class="font-semibold" style="color: #00ffcc;">Estimated Cost:</h4> Estimation failed or no cost provided.';
-                }
-            })
-            .catch(error => {
-                console.error('Error during fetch:', error);
-                 // Display error message prominently
-                errorMessageDiv.textContent = `Error: ${error.message || 'Failed to get estimation.'}`;
-                // Clear results content if there was an error after loading
-                bomDiv.innerHTML = '';
-                costDiv.innerHTML = '';
-                // Optionally hide the results section again if no valid data was ever received
-                // resultsDiv.classList.add('hidden');
-            });
-        });
-    </script>
-    {% endblock %}
+  } catch (err) {
+    console.error(err);
+    errorDiv.textContent = `Error: ${err.message}`;
+    bomDiv.textContent = '';
+    costDiv.textContent = '';
+  }
+});
+</script>
 {% endblock %}

@@ -5,6 +5,55 @@
 {% block extra_head %}
   <link rel="stylesheet" href="{{ url_for('static', filename='seo.css') }}">
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Blog Styling -->
+  <style>
+    .blogs-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 640px) {
+      .blogs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .blog-container {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .blog-header {
+      background-color: #1f2937;
+      color: #ffffff;
+      padding: 1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .blog-body {
+      padding: 1rem;
+      font-family: 'Roboto', sans-serif;
+      color: #374151;
+      line-height: 1.6;
+      overflow-y: auto;
+      max-height: 600px;
+      position: relative;
+    }
+    .blog-body::after {
+      content: '';
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3rem;
+      pointer-events: none;
+      background: linear-gradient(transparent, white);
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -65,6 +114,68 @@
       <a href="{{ url_for('booking') }}">Get Your Custom Website Pages!</a>
     </div>
   </div>
+
+  <!-- Latest Blogs -->
+  <section class="max-w-7xl mx-auto px-4 mt-12">
+    <div class="blogs-grid">
+      <!-- Blog #1 -->
+      <div class="blog-container">
+        <div class="blog-header">Boost Vancouver Website Rankings with AI-Powered SEO Pipeline Demo</div>
+        <div class="blog-body prose">
+          <h1>Boost Vancouver Website Rankings with AI-Powered SEO Pipeline Demo</h1>
+          <p>In the digital landscape, standing out is essential. For Vancouver businesses, optimizing your website for search engines can be the key to attracting local customers.…</p>
+          <h2>Understanding the Importance of SEO for Vancouver Websites</h2>
+          <p>Search Engine Optimization (SEO) is vital for any business looking to thrive online.…</p>
+          <h2>Introducing the AI-Powered SEO Pipeline</h2>
+          <p>Our SEO pipeline leverages advanced AI technology to analyze your website and identify key areas for improvement. With this tool, you can:</p>
+          <ul>
+            <li><strong>Conduct Comprehensive Keyword Research:</strong> Discover high-value keywords that your target audience is searching for.</li>
+            <li><strong>Optimize Your Content:</strong> Get actionable insights on how to enhance existing content and create new, engaging material that resonates with your audience.</li>
+            <li><strong>Improve Site Structure:</strong> Identify technical SEO issues that could be hindering your website’s performance.</li>
+            <li><strong>Monitor Performance:</strong> Continuously track your website’s rankings and receive regular updates on your SEO progress.</li>
+          </ul>
+          <h3>Why Choose VibeOps for Your SEO Needs?</h3>
+          <p>VibeOps is more than just a solution provider; we’re your AI-powered partner.…</p>
+          <h2>How to Get Started with Our SEO Pipeline Demo</h2>
+          <p>Ready to take your Vancouver website to new heights? Getting started is easy! Simply <a href="#">Book Your Free Vibe Check</a> today.…</p>
+          <h3>Success Stories: Vancouver Businesses Thriving with VibeOps</h3>
+          <p>Don’t just take our word for it—see how local heroes in Vancouver have benefited from our services.…</p>
+          <h2>Conclusion: Elevate Your Online Presence Today</h2>
+          <p>In today’s digital age, your website is often the first impression potential customers have of your business.…</p>
+        </div>
+      </div>
+
+      <!-- Blog #2 -->
+      <div class="blog-container">
+        <div class="blog-header">Canada 2025 SEO Trends: Tour Our Automated Topic Ideation & Blog Composition</div>
+        <div class="blog-body prose">
+          <h1>Canada 2025 SEO Trends: Tour Our Automated Topic Ideation & Blog Composition</h1>
+          <p>As we approach 2025, the digital landscape in Canada is evolving rapidly, and so are the strategies to keep your content relevant and engaging.…</p>
+          <h2>Understanding the SEO Landscape in Canada</h2>
+          <p>The SEO landscape is constantly shifting, driven by changes in user behavior, advancements in technology, and the evolving algorithms of search engines.…</p>
+          <h3>1. Voice Search Optimization</h3>
+          <p>With the rise of smart speakers and voice-activated assistants, optimizing for voice search is more important than ever.…</p>
+          <h3>2. AI-Driven Content Creation</h3>
+          <p>As artificial intelligence continues to evolve, so does its role in content creation.…</p>
+          <h3>3. Local SEO Focus</h3>
+          <p>For businesses serving specific regions in Canada, local SEO will remain a critical factor in driving traffic and conversions.…</p>
+          <h3>4. Video Content Engagement</h3>
+          <p>Video content is becoming increasingly popular among consumers, and by 2025, it is expected to dominate search results.…</p>
+          <h2>Automated Topic Ideation & Blog Composition with VibeOps</h2>
+          <p>At VibeOps, we understand that creating high-quality content that aligns with current SEO trends is essential for your success.…</p>
+          <h3>Efficient Topic Ideation</h3>
+          <p>Our automated topic ideation feature utilizes AI to analyze trending topics within your niche.…</p>
+          <h3>Seamless Blog Composition</h3>
+          <p>Once you’ve identified your topics, our blog composition tool takes over.…</p>
+          <h2>Why Choose VibeOps?</h2>
+          <p>VibeOps is your AI-powered partner for websites, workflows, and tools—built in days, not weeks.…</p>
+          <h2>Get Started Today!</h2>
+          <p>Don’t let the fast-paced changes in SEO leave you behind. Stay ahead of the curve with VibeOps’ automated solutions.…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 <script>
 (function() {
