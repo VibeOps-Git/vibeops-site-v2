@@ -1,0 +1,782 @@
+{
+  "doc_id": "cac2c4a2-e253-481d-83a7-6e7fd1169281",
+  "filename": "Incorperation_Agreement_Appendix_A_-_ZD_HR_GC.docx",
+  "upload_path": "uploads/cac2c4a2-e253-481d-83a7-6e7fd1169281_Incorperation_Agreement_Appendix_A_-_ZD_HR_GC.docx",
+  "strip_existing": true,
+  "include_in_context": false,
+  "structure": [
+    {
+      "id": "fc6f6462-5418-4e56-bbc9-b2d77a251d39",
+      "title": "INCORPORATION AGREEMENT",
+      "level": 1,
+      "style_name": "Heading 1",
+      "blocks": []
+    },
+    {
+      "id": "af4763d5-31b4-4848-aaea-7e2febf141a4",
+      "title": "Part 1 \u2014 Interpretation",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "3e32da9a-394f-427b-b7be-96309a198c03",
+      "title": "Definitions",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "5ae73dab-7500-47bf-8522-1f6302d0a80b",
+      "title": "Conflict in definitions",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "fff19cd2-32e4-4d90-b394-e266d031e294",
+      "title": "Conflict between articles and legislation",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "d2e30496-b9c3-49b1-bf93-046aea3db8ed",
+      "title": "Part 2 \u2014 Shares and Share Certificates",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "28ed8f72-81cf-454b-a25c-5e264014e175",
+      "title": "Form of share certificate",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "3d0c00af-284c-415f-9213-39a86aa8e190",
+      "title": "Right to share certificate",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "76ecf010-0da1-48bd-a763-bf777626e513",
+      "title": "Sending of share certificate",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "e9c695f1-1352-4bd8-b703-7bd7ce8d1d5b",
+      "title": "Replacement of worn out or defaced certificate",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "d337fb85-fbcb-40c3-b1c5-f7bffdb19009",
+      "title": "Replacement of lost, destroyed or wrongfully taken certificate",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "e52fd6fd-af4c-465a-9c03-058d154dc5d2",
+      "title": "Certificate not to be replaced after registration of transfer",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "45ffcc8c-9a97-4c9a-8325-3309244b8a8c",
+      "title": "Splitting share certificates",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "5a3da849-fe0c-454f-b4cb-bd1a2d630b7d",
+      "title": "Part 3 \u2014 Issue of Shares",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "c7415889-2028-4915-be7a-875a9ed44712",
+      "title": "Directors authorized to issue shares",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "e07ae83f-a46a-4eb8-8dd3-f3f91d4e12b6",
+      "title": "Company need not recognize unregistered interests",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "90021087-7136-4737-9462-7458bec4a21b",
+      "title": "Part 4 \u2014 Share Transfers",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "0fb9d260-ac0b-41dc-b014-c458159f958a",
+      "title": "Registering transfers",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "0b1e1bd9-98ad-45d5-8666-fe91e8a13a63",
+      "title": "Transfer fee",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "7e6c7690-fe0f-4a78-8cbf-c3dfa0a5f3f6",
+      "title": "Part 5 \u2014 Purchase of Shares",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "0121051c-7e61-4731-869f-be231d99e980",
+      "title": "Company authorized to purchase shares",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "218afe58-1b44-4d8d-88c6-1e96d0bae3f6",
+      "title": "Powers of directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "9aa02a79-9d25-45ee-bbe8-3f2b7ec9d050",
+      "title": "Part 7 \u2014 General Meetings",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "b9d3ebce-3028-43bd-94eb-2d9d5c781a30",
+      "title": "Annual general meetings",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "7de763d4-f461-4cc1-a136-dae1594f22dc",
+      "title": "When annual general meeting is deemed to have been held",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b15a1368-2b2b-41cc-9a06-6d4533ecbcfd",
+      "title": "Special business",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "ed365a85-d4bc-4947-856d-69e28529d556",
+      "title": "Special business",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "63db62dd-8d72-4f73-a04a-867777f1b1a2",
+      "title": "Quorum",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "37bd82c6-b4e4-412c-89e5-448bfa8cc769",
+      "title": "One shareholder may constitute quorum",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "9f79e734-3e46-4214-a90d-27ae7546002c",
+      "title": "Other persons may attend",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "88e9691c-7e96-40ca-baa7-1083231ff4bf",
+      "title": "Requirement of quorum",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "71560792-61ba-49ae-883b-a2b8abc0dd55",
+      "title": "Lack of quorum",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "96301379-4d98-4488-8d30-51441f9b0a40",
+      "title": "Lack of quorum at succeeding meeting",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "0549f482-4225-425f-9d9d-2601466f4e99",
+      "title": "Chair",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "d36f549b-9c11-49be-b643-46d233258636",
+      "title": "Alternate chair",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "88875fba-078d-4f13-8f80-96901b32a629",
+      "title": "Adjournments",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "7bd37c1f-545e-4d7e-b8eb-ead6614df548",
+      "title": "Notice of adjourned meeting",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "562280de-9cb9-4ffd-ad49-a82bdafd400b",
+      "title": "Motion need not be seconded",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "f421c8f0-a9d8-41b5-9b43-ac20cd699b6a",
+      "title": "Manner of taking a poll",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "654e18ab-c8c9-455c-8137-8a178d69da9e",
+      "title": "Demand for a poll on adjournment",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "5e3472d0-e0a6-4318-9b34-f149a1445a23",
+      "title": "Demand for a poll not to prevent continuation of meeting",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "10e2ab9a-b7b7-451e-896c-31c3cfa1a21b",
+      "title": "Chair must resolve dispute",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b37f945d-f6d6-404c-bab9-1fc876ccf3ec",
+      "title": "Chair has no second vote",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "46565ebd-b56d-4178-b309-db3595759484",
+      "title": "Declaration of result",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "54821230-559d-4241-9d32-62779b30c76c",
+      "title": "Part 9 \u2014 Votes of Shareholders",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "ba0e72d0-37a2-4b82-9a95-17bde9492680",
+      "title": "Voting rights",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "69b27a27-d69d-424a-bc58-4039ab74f599",
+      "title": "Trustee of shareholder may vote",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "94419cee-3f2c-4e7f-b430-9391769d0572",
+      "title": "Votes by joint shareholders",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b2ec09ea-9cd4-4ced-b8a6-2f62f64dfcd6",
+      "title": "Trustees as joint shareholders",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b8fa73dd-c535-42ad-94ff-fd131f1b0197",
+      "title": "Representative of a corporate shareholder",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "4656553d-cd65-45bd-b83c-4f7fd9e7d329",
+      "title": "Proxy provisions do not apply to all companies",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "adad65cb-57e4-4479-b782-d8076461bc1b",
+      "title": "Appointment of proxy holder",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "d21d7152-3403-4975-b8a5-19f5fbbf22b7",
+      "title": "When proxy holder need not be shareholder",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "c7e18a3d-7601-4a84-83c0-827016ab9bcd",
+      "title": "Form of proxy",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "fdda3624-0410-4a8f-8891-8b6664205978",
+      "title": "Provision of proxies",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "49bac1bf-6870-4ebb-9147-e47a647210bd",
+      "title": "Revocation of proxies",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "bbc423c6-f1ed-490d-be47-dcb4a1bf0499",
+      "title": "Revocation of proxies must be signed",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "e588734f-4e8b-4a05-9fc9-68aa53fbb81c",
+      "title": "Validity of proxy votes",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "9e939350-e5b7-4f66-97c1-0fb373874751",
+      "title": "Production of evidence of authority to vote",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b5010df3-cea4-4487-bb82-54588382cd29",
+      "title": "Part 10 \u2014 Election and Removal of Directors",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "5dd6c4bf-23e5-4e5c-84cd-c6fdd3f4ea2b",
+      "title": "Number of directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "d05d10cf-7d3b-40f9-86d2-7097e7b6bae7",
+      "title": "Change in number of directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "25c4b6fd-71ca-4bef-8b6e-6851bd846b0d",
+      "title": "Election of directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "098ab995-77fe-4e7d-a8c9-3c6642d1cf0d",
+      "title": "Failure to elect or appoint directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "9106fc23-d4b3-4e41-acdd-9aaa2673007a",
+      "title": "Additional directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "32d9f904-bae3-4515-9c6b-7f894df9d3dd",
+      "title": "Directors\u2019 acts valid despite vacancy",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "5ad1acf6-3c8c-4276-ac66-c64c5e7e2d20",
+      "title": "Part 11 \u2014 Proceedings of Directors",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "4297fec6-4e6c-4778-9999-7a4020f6121d",
+      "title": "Meetings of directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "f56bbfe3-3bb6-47be-b7ef-c701d4c2487d",
+      "title": "Chair of meetings",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "c3ac59fd-165c-48c6-b439-3d2f56b17386",
+      "title": "Voting at meetings",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "2fd357b5-b1c8-4b93-9c58-11a7ea3bf887",
+      "title": "Notice of extraordinary meetings",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "50e47318-421d-4bbc-9bd7-df3902578e1e",
+      "title": "When notice not required",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "2c2ef650-beb0-485c-baca-d47761002952",
+      "title": "Meeting valid despite failure to give notice",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "7cc0188b-ca30-474e-87b1-1d195c118da5",
+      "title": "Waiver of notice of meetings",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "522da95f-9c00-455f-8d76-4d24307fd427",
+      "title": "Effect of waiver",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "5cc2d1d2-2b57-4e15-a11c-de30b1d20a83",
+      "title": "Quorum",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "202f9d64-fda2-4a1a-a7b8-7a7081fe258f",
+      "title": "If only one director",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "dfe925ca-7657-4c7d-bd8f-c56284908f70",
+      "title": "Appointment of committees",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "9e5b3d13-05f1-43ab-8c33-d2ea323ea6b9",
+      "title": "Obligations of committee",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "03f654e0-a8e2-4b3c-b686-c268a9575403",
+      "title": "Powers of board",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "1ef09dc1-1092-46f9-a2dc-a2361737b5d3",
+      "title": "Committee meetings",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b9deac4f-64ef-491d-967d-2f948a5b0bd5",
+      "title": "Part 13 \u2014 Officers",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "fb09ec68-1ad4-4086-9648-7d96115a4406",
+      "title": "Appointment of officers",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "a62d4895-37e7-4e51-a73c-934709bb3c6e",
+      "title": "Functions, duties and powers of officers",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "1b13f0a7-81d0-4b3b-bc4d-34ee1667b88e",
+      "title": "Remuneration",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "fc8546d6-c36c-4266-9ddd-3f7c8cf22f24",
+      "title": "Part 14 \u2014 Disclosure of Interest of Directors",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "c8f82345-722a-4497-9fe4-e6491c1eac96",
+      "title": "Other office of director",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "d489f5ee-758e-49a1-b156-fc90cc5fc9bd",
+      "title": "No disqualification",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "e32adc04-bb93-46ab-84a5-58f7ff813189",
+      "title": "Professional services by director or officer",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "5eb4f354-9b4c-4154-9567-8ab2ba79942a",
+      "title": "Accountability",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "db2bf0fc-384d-4cfd-8abd-44ddf99c741b",
+      "title": "Indemnification of directors",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "7f5ae5ae-857e-478d-ba68-2a0504c47776",
+      "title": "Deemed contract",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "8d0227ec-e541-40d3-a129-ef7a56fc3c26",
+      "title": "Part 16 \u2014 Dividends",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "f0c98400-0889-4896-adf8-31b209f82cbb",
+      "title": "Declaration of dividends",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "cf143bf0-5afa-4cf5-bea3-c3952488ede0",
+      "title": "Dividends to be paid in accordance with number of shares",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "7d0b9333-90f2-4ddc-a892-f723d4634664",
+      "title": "Manner of paying dividend",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "0b93e457-01e8-4bc5-86ca-3f7a79d89c15",
+      "title": "Fractional dividends",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "8c71577f-d7cd-4820-bdf9-d577c91c4c07",
+      "title": "Payment of dividends",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "956cb87c-95bf-4a20-bd25-8201c59cd555",
+      "title": "Receipt by joint shareholders",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "6607963d-bbbb-4b97-a6ba-554af946cc5b",
+      "title": "Part 17 \u2014 Accounting Records",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "cf10cb74-190a-41c8-9ed5-f41449903b1d",
+      "title": "Recording of financial affairs",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "f2fa23d4-f897-429a-99ef-ad7718dcd985",
+      "title": "Part 18 \u2014 Execution of Instruments under Seal",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "1f72cee1-0ba0-47e6-b3c3-16b461896cfa",
+      "title": "Who may attest seal",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "eea8bd7d-815e-449b-84a4-873dc732cf4e",
+      "title": "Sealing copies",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "340a0b68-d441-4326-98fd-2e06f28b9d78",
+      "title": "Part 19 \u2014 Notices",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "8b7aa88d-f197-4077-b4aa-bd8913edaf87",
+      "title": "Notice to joint shareholders",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "b2698126-7f90-40fd-9e99-174335b32213",
+      "title": "Notice to trustees",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "3cdbb255-e294-49bf-ab9f-7d2bdabfd6af",
+      "title": "Part 20 \u2014 Restriction on Share Transfer",
+      "level": 2,
+      "style_name": "Heading 2",
+      "blocks": []
+    },
+    {
+      "id": "bb2977b7-cc99-4601-96d6-9d38b98298f9",
+      "title": "Application",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    },
+    {
+      "id": "275b8237-0c53-49ce-83e3-73c36a15bd49",
+      "title": "Consent required for transfer",
+      "level": 3,
+      "style_name": "Heading 3",
+      "blocks": []
+    }
+  ],
+  "messages": [],
+  "html_outline": "<p>APPENDIX A</p>\n<p>SAMPLE OF AN</p>\n<p>INCORPORATION AGREEMENT</p>\n<p>ADOPTING THE</p>\n<p>TABLE 1 ARTICLES</p>\n<h1>INCORPORATION AGREEMENT</h1>\n<p>We propose to form a company under the Business Corporations Act (BC) under the name of</p>\n<p>VibeOps Technologies Inc. (the \u201cCompany\u201d).</p>\n<p>We agree to take the number of shares in the Company set opposite our names:</p>\n<p>The Company has as its Articles the Table 1 Articles under the Business Corporations Act (BC).</p>\n<p>SAMPLE OF</p>\n<p>TABLE 1 ARTICLES</p>\n<p>VIBEOPS TECHNOLOGIES INC. (\u201cThe Company\u201d)</p>\n<p>Incorporation Number: ??????</p>\n<p>The Company has as its articles the following articles.</p>\n<p>Table 1</p>\n<p>[am. B.C. Reg.s 315/2004, ss. 5 to 9; 186/2007.]</p>\n<p>Articles</p>\n<h2>Part 1 \u2014 Interpretation</h2>\n<h3>Definitions</h3>\n<p>1.1 Without limiting Article 1.2, in these articles, unless the context requires otherwise:</p>\n<p>\u201cadjourned meeting\u201d means the meeting to which a meeting is adjourned under Article 8.6 or 8.10;</p>\n<p>\u201cappropriate person\u201d has the same meaning as in the Securities Transfer Act;</p>\n<p>\u201cboard\u201d and \u201cdirectors\u201d mean the directors or sole director of the Company for the time being;</p>\n<p>\u201cBusiness Corporations Act\u201d means the Business Corporations Act, S.B.C. 2002, c.57, and includes its regulations;</p>\n<p>\u201cInterpretation Act\u201d means the Interpretation Act, R.S.B.C. 1996, c. 238;</p>\n<p>\u201cprotected purchaser\u201d has the same meaning as in the Securities Transfer Act;</p>\n<p>\u201ctrustee\u201d, in relation to a shareholder, means the personal or other legal representative of the shareholder, and includes a trustee in bankruptcy of the shareholder.</p>\n<p>Business Corporations Act definitions apply</p>\n<p>1.2 The definitions in the Business Corporations Act apply to these articles.</p>\n<p>Interpretation Act applies</p>\n<p>1.3 The Interpretation Act applies to the interpretation of these articles as if these articles were an enactment.</p>\n<h3>Conflict in definitions</h3>\n<p>1.4 If there is a conflict between a definition in the Business Corporations Act and a definition or rule in the Interpretation Act relating to a term used in these articles, the definition in the Business Corporations Act will prevail in relation to the use of the term in these articles.</p>\n<h3>Conflict between articles and legislation</h3>\n<p>1.5 If there is a conflict between these articles and the Business Corporations Act, the Business Corporations Act will prevail.</p>\n<h2>Part 2 \u2014 Shares and Share Certificates</h2>\n<h3>Form of share certificate</h3>\n<p>2.1 Each share certificate issued by the Company must comply with, and be signed as required by, the Business Corporations Act.</p>\n<h3>Right to share certificate</h3>\n<p>2.2 Each shareholder is entitled, without charge, to one certificate representing the share or shares of each class or series of shares held by the shareholder.</p>\n<h3>Sending of share certificate</h3>\n<p>2.3 Any share certificate to which a shareholder is entitled may be sent to the shareholder by mail and neither the Company nor any agent is liable for any loss to the shareholder because the certificate sent is lost in the mail or stolen.</p>\n<h3>Replacement of worn out or defaced certificate</h3>\n<p>2.4 If the directors are satisfied that a share certificate is worn out or defaced, they must, on production to them of the certificate and on such other terms, if any, as they think fit, (a) order the certificate to be cancelled, and (b) issue a replacement share certificate.</p>\n<h3>Replacement of lost, destroyed or wrongfully taken certificate</h3>\n<p>2.5 If a person entitled to a share certificate claims that the share certificate has been lost, destroyed or wrongfully taken, the Company must issue a new share certificate, if the person</p>\n<p>so requests before the Company has notice that the lost, destroyed or wrongfully taken share certificate has been acquired by a protected purchaser,</p>\n<p>provides the Company with an indemnity bond sufficient, in the judgment of the directors, to protect the Company from any loss that the Company may suffer by issuing a new certificate, and (c) satisfies any other reasonable requirements imposed by the Company.</p>\n<h3>Certificate not to be replaced after registration of transfer</h3>\n<p>2.51 A person entitled to a share certificate may not assert against the Company a claim for a new share certificate under Article 2.5 if</p>\n<p>the share certificate has been lost, apparently destroyed or wrongfully taken and the person fails to notify the Company of that fact within a reasonable time after the person has notice of it, and</p>\n<p>the Company registers a transfer of the shares represented by the certificate before receiving a notice of the loss, apparent destruction or wrongful taking of the share certificate.</p>\n<h3>Splitting share certificates</h3>\n<p>2.6 If a shareholder surrenders a share certificate to the Company with a written request that the Company issue in the shareholder\u2019s name 2 or more certificates, each representing a specified number of shares and in the aggregate representing the same number of shares as the certificate so surrendered, the Company must cancel the surrendered certificate and issue replacement share certificates in accordance with that request.</p>\n<h2>Part 3 \u2014 Issue of Shares</h2>\n<h3>Directors authorized to issue shares</h3>\n<p>3.1 The directors may, subject to the rights of the holders of the issued shares of the Company, issue, allot, sell, grant options on or otherwise dispose of the unissued shares, and issued shares held by the</p>\n<p>Company, at the times, to the persons, including directors, in the manner, on the terms and conditions and for the issue prices that the directors, in their absolute discretion, may determine.</p>\n<h3>Company need not recognize unregistered interests</h3>\n<p>3.2 Except as required by law or these articles, the Company need not recognize or provide for any person\u2019s interests in or rights to a share unless that person is the shareholder of the share.</p>\n<h2>Part 4 \u2014 Share Transfers</h2>\n<h3>Registering transfers</h3>\n<p>4.1 If the Company has issued, or may be required to issue, a share certificate in respect of a share of the Company, a transfer of that share must not be registered unless the Company, or the transfer agent or registrar for the applicable class or series of shares, has received</p>\n<p>the share certificate, if any,</p>\n<p>a written instrument of transfer, which instrument of transfer may be on a separate document or on the share certificate, endorsed by</p>\n<p>the shareholder,</p>\n<p>any other appropriate person, or</p>\n<p>an agent who has actual authority to act on behalf of the shareholder or appropriate person, and</p>\n<p>any other evidence reasonably required by the Company, or by the transfer agent or registrar for the applicable class or series of shares, to prove (i) the title of the transferor,</p>\n<p>the transferor\u2019s right to transfer the share</p>\n<p>that the endorsement is genuine and authorized, or (iv) that the transfer is rightful or is to a protected purchaser.</p>\n<p>4.2 and 4.3 Repealed. [B.C. Reg. 186/2007, s.c.]</p>\n<h3>Transfer fee</h3>\n<p>4.4 There must be paid to the Company, in relation to the registration of any transfer, the amount determined by the directors.</p>\n<h2>Part 5 \u2014 Purchase of Shares</h2>\n<h3>Company authorized to purchase shares</h3>\n<p>5.1 Subject to the special rights and restrictions attached to any class or series of shares, the Company may, if it is authorized to do so by the directors, purchase or otherwise acquire any of its shares. Part 6 \u2014 Borrowing Powers</p>\n<h3>Powers of directors</h3>\n<p>6.1 The directors may from time to time on behalf of the Company</p>\n<p>borrow money in the manner and amount, on the security, from the sources and on the terms and conditions that they consider appropriate,</p>\n<p>issue bonds, debentures and other debt obligations either outright or as security for any liability or obligation of the Company or any other person,</p>\n<p>guarantee the repayment of money by any other person or the performance of any obligation of any other person, and</p>\n<p>mortgage or charge, whether by way of specific or floating charge, or give other security on the whole or any part of the present and future undertaking of the Company.</p>\n<h2>Part 7 \u2014 General Meetings</h2>\n<h3>Annual general meetings</h3>\n<p>7.1 Unless an annual general meeting is deferred or waived in accordance with section 182 (2) (a) or (c) of the Business Corporations Act, the Company must hold its first annual general meeting within 18 months after the date on which it was incorporated or otherwise recognized, and after that must hold an annual general meeting at least once in each calendar year and not more than 15 months after the last annual general meeting.</p>\n<h3>When annual general meeting is deemed to have been held</h3>\n<p>7.2 If all of the shareholders who are entitled to vote at an annual general meeting consent by a unanimous resolution under section 182 (2) (b) of the Business Corporations Act to all of the business that is required to be transacted at that annual general meeting, the annual general meeting is deemed to have been held on the date selected, under section 182 (3) of the Business Corporations Act, in the unanimous resolution.</p>\n<p>Calling of shareholder meetings</p>\n<p>7.3 The directors may, whenever they think fit, call a meeting of shareholders.</p>\n<h3>Special business</h3>\n<p>7.4 If a meeting of shareholders is to consider special business within the meaning of Article 8.1, the notice of meeting must</p>\n<p>state the general nature of the special business, and</p>\n<p>if the special business includes considering, approving, ratifying, adopting or authorizing any document or the signing of or giving of effect to any document, have attached to it a copy of the document or state that a copy of the document will be available for inspection by shareholders</p>\n<p>at the Company\u2019s records office, or at such other reasonably accessible location in British Columbia as is specified by the notice, and</p>\n<p>during statutory business hours on any one or more specified days before the day set for the holding of the meeting.</p>\n<p>Part 8 \u2014 Proceedings at Meetings of Shareholders</p>\n<h3>Special business</h3>\n<p>8.1 At a meeting of shareholders, the following business is special business:</p>\n<p>at a meeting of shareholders that is not an annual general meeting, all business is special business except business relating to the conduct of or voting at the meeting;</p>\n<p>at an annual general meeting, all business is special business except for the following: (i) business relating to the conduct of, or voting at, the meeting;</p>\n<p>consideration of any financial statements of the Company presented to the meeting;</p>\n<p>consideration of any reports of the directors or auditor;</p>\n<p>the setting or changing of the number of directors;</p>\n<p>the election or appointment of directors;</p>\n<p>the appointment of an auditor;</p>\n<p>the setting of the remuneration of an auditor;</p>\n<p>business arising out of a report of the directors not requiring the passing of a special resolution or an exceptional resolution.</p>\n<h3>Quorum</h3>\n<p>8.2 Subject to the special rights and restrictions attached to the shares of any class or series of shares, the quorum for the transaction of business at a meeting of shareholders is 2 persons who are, or who represent by proxy, shareholders who, in the aggregate, hold at least 1/20 of the issued shares entitled to be voted at the meeting.</p>\n<h3>One shareholder may constitute quorum</h3>\n<p>8.3 If there is only one shareholder entitled to vote at a meeting of shareholders,</p>\n<p>(a) the quorum is one person who is, or who represents by proxy, that shareholder, and (b) that shareholder, present in person or by proxy, may constitute the meeting.</p>\n<h3>Other persons may attend</h3>\n<p>8.4 The directors, the president, if any, the secretary, if any, and any lawyer or auditor for the Company are entitled to attend any meeting of shareholders, but if any of those persons does attend a meeting of shareholders, that person is not to be counted in the quorum, and is not entitled to vote at the meeting, unless that person is a shareholder or proxy holder entitled to vote at the meeting.</p>\n<h3>Requirement of quorum</h3>\n<p>8.5 No business, other than the election of a chair of the meeting and the adjournment of the meeting, may be transacted at any meeting of shareholders unless a quorum of shareholders entitled to vote is present at the commencement of the meeting.</p>\n<h3>Lack of quorum</h3>\n<p>8.6 If, within 1/2 hour from the time set for the holding of a meeting of shareholders, a quorum is not present,</p>\n<p>in the case of a general meeting convened by requisition of shareholders, the meeting is dissolved, and</p>\n<p>in the case of any other meeting of shareholders, the meeting stands adjourned to the same day in the next week at the same time and place.</p>\n<h3>Lack of quorum at succeeding meeting</h3>\n<p>8.7 If, at the meeting to which the first meeting referred to in Article 8.6 was adjourned, a quorum is not present within 1/2 hour from the time set for the holding of the meeting, the persons present and being, or representing by proxy, shareholders entitled to attend and vote at the meeting constitute a quorum.</p>\n<h3>Chair</h3>\n<p>8.8 The following individual is entitled to preside as chair at a meeting of shareholders:</p>\n<p>the chair of the board, if any;</p>\n<p>if the chair of the board is absent or unwilling to act as chair of the meeting, the president, if any.</p>\n<h3>Alternate chair</h3>\n<p>8.9 If, at any meeting of shareholders, there is no chair of the board or president present within 15 minutes after the time set for holding the meeting, or if the chair of the board and the president are unwilling to act as chair of the meeting, or if the chair of the board and the president have advised the secretary, if any, or any director present at the meeting, that they will not be present at the meeting, the directors present must choose one of their number to be chair of the meeting or if all of the directors present decline to take the chair or fail to so choose or if no director is present, the shareholders present in person or by proxy must choose any person present at the meeting to chair the meeting.</p>\n<h3>Adjournments</h3>\n<p>8.10 The chair of a meeting of shareholders may, and if so directed by the meeting must, adjourn the meeting from time to time and from place to place, but no business may be transacted at any adjourned meeting other than the business left unfinished at the meeting from which the adjournment took place.</p>\n<h3>Notice of adjourned meeting</h3>\n<p>8.11 It is not necessary to give any notice of an adjourned meeting or of the business to be transacted at an adjourned meeting of shareholders except that, when a meeting is adjourned for 30 days or more, notice of the adjourned meeting must be given as in the case of the original meeting.</p>\n<h3>Motion need not be seconded</h3>\n<p>8.12 No motion proposed at a meeting of shareholders need be seconded unless the chair of the meeting rules otherwise, and the chair of any meeting of shareholders is entitled to propose or second a motion.</p>\n<h3>Manner of taking a poll</h3>\n<p>8.13 Subject to Article 8.14, if a poll is duly demanded at a meeting of shareholders,</p>\n<p>the poll must be taken</p>\n<p>at the meeting, or within 7 days after the date of the meeting, as the chair of the meeting directs, and</p>\n<p>in the manner, at the time and at the place that the chair of the meeting directs,</p>\n<p>the result of the poll is deemed to be a resolution of and passed at the meeting at which the poll is demanded, and</p>\n<p>the demand for the poll may be withdrawn.</p>\n<h3>Demand for a poll on adjournment</h3>\n<p>8.14 A poll demanded at a meeting of shareholders on a question of adjournment must be taken immediately at the meeting.</p>\n<h3>Demand for a poll not to prevent continuation of meeting</h3>\n<p>8.15 The demand for a poll at a meeting of shareholders does not, unless the chair of the meeting so rules, prevent the continuation of a meeting for the transaction of any business other than the question on which a poll has been demanded.</p>\n<p>Poll not available in respect of election of chair</p>\n<p>8.16 No poll may be demanded in respect of the vote by which a chair of a meeting of shareholders is elected.</p>\n<p>Casting of votes on poll</p>\n<p>8.17 On a poll, a shareholder entitled to more than one vote need not cast all the votes in the same way.</p>\n<h3>Chair must resolve dispute</h3>\n<p>8.18 In the case of any dispute as to the admission or rejection of a vote given on a poll, the chair of the meeting must determine the same, and his or her determination made in good faith is final and conclusive.</p>\n<h3>Chair has no second vote</h3>\n<p>8.19 In case of an equality of votes, the chair of a meeting of shareholders does not, either on a show of hands or on a poll, have a casting or second vote in addition to the vote or votes to which the chair may be entitled as a shareholder.</p>\n<h3>Declaration of result</h3>\n<p>8.20 The chair of a meeting of shareholders must declare to the meeting the decision on every question in accordance with the result of the show of hands or the poll, as the case may be, and that decision must be entered in the minutes of the meeting.</p>\n<h2>Part 9 \u2014 Votes of Shareholders</h2>\n<h3>Voting rights</h3>\n<p>9.1 Subject to any special rights or restrictions attached to any shares and to the restrictions imposed on joint registered holders of shares under Article 9.3,</p>\n<p>on a vote by show of hands, every person present who is a shareholder or proxy holder and entitled to vote at the meeting has one vote, and</p>\n<p>on a poll, every shareholder entitled to vote has one vote in respect of each share held by that shareholder that carries the right to vote on that poll and may exercise that vote either in person or by proxy.</p>\n<h3>Trustee of shareholder may vote</h3>\n<p>9.2 A person who is not a shareholder may vote on a resolution at a meeting of shareholders, whether on a show of hands or on a poll, and may appoint a proxy holder to act at the meeting in relation to that resolution, if, before doing so, the person satisfies the chair of the meeting at which the resolution is to be considered, or the directors, that the person is a trustee for a shareholder who is entitled to vote on the resolution.</p>\n<h3>Votes by joint shareholders</h3>\n<p>9.3 If there are joint shareholders registered in respect of any share,</p>\n<p>any one of the joint shareholders may vote at any meeting, either personally or by proxy, in respect of the share as if that joint shareholder were solely entitled to it, or</p>\n<p>if more than one of the joint shareholders is present at any meeting, personally or by proxy, the joint shareholder present whose name stands first on the central securities register in respect of the share is alone entitled to vote in respect of that share.</p>\n<h3>Trustees as joint shareholders</h3>\n<p>9.4 Two or more trustees of a shareholder in whose sole name any share is registered are, for the purposes of Article 9.3, deemed to be joint shareholders.</p>\n<h3>Representative of a corporate shareholder</h3>\n<p>9.5 If a corporation that is not a subsidiary of the Company is a shareholder, that corporation may appoint a person to act as its representative at any meeting of shareholders of the Company, and,</p>\n<p>for that purpose, the instrument appointing a representative must</p>\n<p>be received at the registered office of the Company or at any other place specified, in the notice calling the meeting, for the receipt of proxies, at least 2 business days before the day set for the holding of the meeting, or</p>\n<p>be provided, at the meeting, to the chair of the meeting, and</p>\n<p>if a representative is appointed under this Article,</p>\n<p>the representative is entitled to exercise in respect of and at that meeting the same rights on behalf of the corporation that the representative represents as that corporation could exercise if it were a shareholder who is an individual, including, without limitation, the right to appoint a proxy holder, and</p>\n<p>the representative, if present at the meeting, is to be counted for the purpose of forming a quorum and is deemed to be a shareholder present in person at the meeting.</p>\n<h3>Proxy provisions do not apply to all companies</h3>\n<p>9.6 Articles 9.7 to 9.13 do not apply to the Company if and for so long as it is a public company or a pre-existing reporting company.</p>\n<h3>Appointment of proxy holder</h3>\n<p>9.7 Every shareholder of the Company, including a corporation that is a shareholder but not a subsidiary of the Company, entitled to vote at a meeting of shareholders of the Company may, by proxy, appoint a proxy holder to attend and act at the meeting in the manner, to the extent and with the powers conferred by the proxy.</p>\n<p>Alternate proxy holders</p>\n<p>9.8 A shareholder may appoint one or more alternate proxy holders to act in the place of an absent proxy holder.</p>\n<h3>When proxy holder need not be shareholder</h3>\n<p>9.9 A person must not be appointed as a proxy holder unless the person is a shareholder, although a person who is not a shareholder may be appointed as a proxy holder if</p>\n<p>the person appointing the proxy holder is a corporation or a representative of a corporation appointed under Article 9.5,</p>\n<p>the Company has at the time of the meeting for which the proxy holder is to be appointed only one shareholder entitled to vote at the meeting, or</p>\n<p>the shareholders present in person or by proxy at and entitled to vote at the meeting for which the proxy holder is to be appointed, by a resolution on which the proxy holder is not entitled to vote but in respect of which the proxy holder is to be counted in the quorum, permit the proxy holder to attend and vote at the meeting.</p>\n<h3>Form of proxy</h3>\n<p>9.10 A proxy, whether for a specified meeting or otherwise, must be either in the following form or in any other form approved by the directors or the chair of the meeting:</p>\n<p>(VibeOps Technologies Inc.)</p>\n<p>The undersigned, being a shareholder of the above named Company, hereby appoints</p>\n<p>......................................, or, failing that person, ..........................................., as proxy holder for the</p>\n<p>undersigned to attend, act and vote for and on behalf of the undersigned at the meeting of shareholders to be held on the ........... day of........................, ........... and at any adjournment of that meeting. Signed this ........... day of ..............., ...........</p>\n<p>.........................................................................</p>\n<p>Signature of shareholder</p>\n<h3>Provision of proxies</h3>\n<p>9.11 A proxy for a meeting of shareholders must</p>\n<p>(a) be received at the registered office of the Company or at any other place specified, in the notice calling the meeting, for the receipt of proxies, at least the number of business days specified in the notice, or if no number of days is specified, 2 business days, before the day set for the holding of the meeting, or (b) unless the notice provides otherwise, be provided, at the meeting, to the chair of the meeting.</p>\n<h3>Revocation of proxies</h3>\n<p>9.12 Subject to Article 9.13, every proxy may be revoked by an instrument in writing that is</p>\n<p>(a) received at the registered office of the Company at any time up to and including the last business day before the day set for the holding of the meeting at which the proxy is to be used, or (b) provided at the meeting to the chair of the meeting.</p>\n<h3>Revocation of proxies must be signed</h3>\n<p>9.13 An instrument referred to in Article 9.12 must be signed as follows:</p>\n<p>if the shareholder for whom the proxy holder is appointed is an individual, the instrument must be signed by the shareholder or his or her trustee;</p>\n<p>if the shareholder for whom the proxy holder is appointed is a corporation, the instrument must be signed by the corporation or by a representative appointed for the corporation under Article 9.5.</p>\n<h3>Validity of proxy votes</h3>\n<p>9.14 A vote given in accordance with the terms of a proxy is valid despite the death or incapacity of the shareholder giving the proxy and despite the revocation of the proxy or the revocation of the authority under which the proxy is given, unless notice in writing of that death, incapacity or revocation is received</p>\n<p>(a) at the registered office of the Company, at any time up to and including the last business day before the day set for the holding of the meeting at which the proxy is to be used, or (b) by the chair of the meeting, before the vote is taken.</p>\n<h3>Production of evidence of authority to vote</h3>\n<p>9.15 The chair of any meeting of shareholders may, but need not, inquire into the authority of any person to vote at the meeting and may, but need not, demand from that person production of evidence as to the existence of the authority to vote.</p>\n<h2>Part 10 \u2014 Election and Removal of Directors</h2>\n<h3>Number of directors</h3>\n<p>10.1 The Company must have a board of directors consisting of</p>\n<p>subject to paragraph (b), the number of directors that is equal to the number of the Company\u2019s first directors, or</p>\n<p>the number of directors set by ordinary resolution of the shareholders.</p>\n<h3>Change in number of directors</h3>\n<p>10.2 If the number of directors is changed by the shareholders under Article 10.1 (b),</p>\n<p>the change is effective whether or not previous notice of the resolution was given, and</p>\n<p>the shareholders may elect, or appoint by ordinary resolution, the directors needed to fill any vacancies in the board of directors that result from that change.</p>\n<h3>Election of directors</h3>\n<p>10.3 At every annual general meeting,</p>\n<p>the shareholders entitled to vote at the annual general meeting for the election or appointment of directors must elect or appoint a board of directors consisting of the number of directors for the time being required under these articles, and</p>\n<p>all the directors cease to hold office immediately before the election or appointment of directors under paragraph (a), but are eligible for re-election or reappointment.</p>\n<h3>Failure to elect or appoint directors</h3>\n<p>10.4 If the Company fails to hold an annual general meeting in accordance with the Business Corporations Act or fails, at an annual general meeting, to elect or appoint any directors, the directors then in office continue to hold office until the earlier of</p>\n<p>the date on which the failure is remedied, and</p>\n<p>the date on which they otherwise cease to hold office under the Business Corporations Act or these articles.</p>\n<h3>Additional directors</h3>\n<p>10.5 Despite Articles 10.1 and 10.2, the directors may appoint one or more additional directors, but the number of additional directors appointed under this Article must not at any time exceed</p>\n<p>1/3 of the number of first directors, if, at the time of the appointments, one or more of the first directors have not yet completed their first term of office, or</p>\n<p>in any other case, 1/3 of the number of the current directors who were elected or appointed as directors other than under this Article.</p>\n<h3>Directors\u2019 acts valid despite vacancy</h3>\n<p>10.6 An act or proceeding of the directors is not invalid merely because fewer than the number of directors required by Article 10.1 are in office.</p>\n<h2>Part 11 \u2014 Proceedings of Directors</h2>\n<h3>Meetings of directors</h3>\n<p>11.1 The directors may meet together for the conduct of business, adjourn and otherwise regulate their meetings as they think fit, and meetings of the board held at regular intervals may be held at the place, at the time and on the notice, if any, that the board may by resolution from time to time determine.</p>\n<h3>Chair of meetings</h3>\n<p>11.2 Meetings of directors are to be chaired by</p>\n<p>the chair of the board, if any,</p>\n<p>in the absence of the chair of the board, the president, if any, if the president is a director, or(c) any other director chosen by the directors if</p>\n<p>neither the chair of the board nor the president, if a director, is present at the meeting within 15 minutes after the time set for holding the meeting,</p>\n<p>neither the chair of the board nor the president, if a director, is willing to chair the meeting, or</p>\n<p>the chair of the board and the president, if a director, have advised the secretary, if any, or any other director, that they will not be present at the meeting.</p>\n<h3>Voting at meetings</h3>\n<p>11.3 Questions arising at any meeting of directors are to be decided by a majority of votes and, in the case of an equality of votes, the chair of the meeting does not have a second or casting vote.</p>\n<p>Who may call extraordinary meetings</p>\n<p>11.4 A director may, and the secretary, if any, on request of a director must, call a meeting of the board at any time.</p>\n<h3>Notice of extraordinary meetings</h3>\n<p>11.5 Subject to Articles 11.6 and 11.7, if a meeting of the board is called under Article 11.4, reasonable notice of that meeting, specifying the place, date and time of that meeting, must be given to each of the directors</p>\n<p>by mail addressed to the director\u2019s address as it appears on the books of the Company or to any other address provided to the Company by the director for this purpose,</p>\n<p>by leaving it at the director\u2019s prescribed address or at any other address provided to the Company by the director for this purpose, or</p>\n<p>orally, by delivery of written notice or by telephone, voice mail, e-mail, fax or any other method of legibly transmitting messages.</p>\n<h3>When notice not required</h3>\n<p>11.6 It is not necessary to give notice of a meeting of the directors to a director if</p>\n<p>(a) the meeting is to be held immediately following a meeting of shareholders at which that director was elected or appointed or is the meeting of the directors at which that director is appointed, or (b) the director has filed a waiver under Article 11.8.</p>\n<h3>Meeting valid despite failure to give notice</h3>\n<p>11.7 The accidental omission to give notice of any meeting of directors to any director, or the non-receipt of any notice by any director, does not invalidate any proceedings at that meeting.</p>\n<h3>Waiver of notice of meetings</h3>\n<p>11.8 Any director may file with the Company a document signed by the director waiving notice of any past, present or future meeting of the directors and may at any time withdraw that waiver with respect to meetings of the directors held after that withdrawal.</p>\n<h3>Effect of waiver</h3>\n<p>11.9 After a director files a waiver under Article 11.8 with respect to future meetings of the directors, and until that waiver is withdrawn, notice of any meeting of the directors need not be given to that director unless the director otherwise requires in writing to the Company.</p>\n<h3>Quorum</h3>\n<p>11.10 The quorum necessary for the transaction of the business of the directors may be set by the directors and, if not so set, is a majority of the directors.</p>\n<h3>If only one director</h3>\n<p>11.11 If, in accordance with Article 10.1, the number of directors is one, the quorum necessary for the transaction of the business of the directors is one director, and that director may constitute a meeting. Part 12 \u2014 Committees of Directors</p>\n<h3>Appointment of committees</h3>\n<p>12.1 The directors may, by resolution,</p>\n<p>(a) appoint one or more committees consisting of the director or directors that they consider appropriate, (b) delegate to a committee appointed under paragraph (a) any of the directors\u2019 powers, except</p>\n<p>the power to fill vacancies in the board,</p>\n<p>the power to change the membership of, or fill vacancies in, any committee of the board, and</p>\n<p>(iii)the power to appoint or remove officers appointed by the board, and</p>\n<p>(c) make any delegation referred to in paragraph (b) subject to the conditions set out in the resolution.</p>\n<h3>Obligations of committee</h3>\n<p>12.2 Any committee formed under Article 12.1, in the exercise of the powers delegated to it, must</p>\n<p>conform to any rules that may from time to time be imposed on it by the directors, and</p>\n<p>report every act or thing done in exercise of those powers to the earliest meeting of the directors to beheld after the act or thing has been done.</p>\n<h3>Powers of board</h3>\n<p>12.3 The board may, at any time,</p>\n<p>revoke the authority given to a committee, or override a decision made by a committee, except as to acts done before such revocation or overriding,</p>\n<p>terminate the appointment of, or change the membership of, a committee, and(c) fill vacancies in a committee.</p>\n<h3>Committee meetings</h3>\n<p>12.4 Subject to Article 12.2 (a),</p>\n<p>the members of a directors\u2019 committee may meet and adjourn as they think proper,</p>\n<p>a directors\u2019 committee may elect a chair of its meetings but, if no chair of the meeting is elected, or if at any meeting the chair of the meeting is not present within 15 minutes after the time set for holding the meeting, the directors present who are members of the committee may choose one of their number to chair the meeting,</p>\n<p>a majority of the members of a directors\u2019 committee constitutes a quorum of the committee, and</p>\n<p>questions arising at any meeting of a directors\u2019 committee are determined by a majority of votes of the members present, and in case of an equality of votes, the chair of the meeting has no second or casting vote.</p>\n<h2>Part 13 \u2014 Officers</h2>\n<h3>Appointment of officers</h3>\n<p>13.1 The board may, from time to time, appoint a president, secretary or any other officers that it considers necessary, and none of the individuals appointed as officers need be a member of the board.</p>\n<h3>Functions, duties and powers of officers</h3>\n<p>13.2 The board may, for each officer,</p>\n<p>determine the functions and duties the officer is to perform,</p>\n<p>entrust to and confer on the officer any of the powers exercisable by the directors on such terms and conditions and with such restrictions as the directors think fit, and</p>\n<p>from time to time revoke, withdraw, alter or vary all or any of the functions, duties and powers of the officer.</p>\n<h3>Remuneration</h3>\n<p>13.3 All appointments of officers are to be made on the terms and conditions and at the remuneration (whether by way of salary, fee, commission, participation in profits or otherwise) that the board thinks fit and are subject to termination at the pleasure of the board.</p>\n<h2>Part 14 \u2014 Disclosure of Interest of Directors</h2>\n<h3>Other office of director</h3>\n<p>14.1 A director may hold any office or place of profit with the Company (other than the office of auditor of the Company) in addition to his or her office of director for the period and on the terms (as to remuneration or otherwise) that the directors may determine.</p>\n<h3>No disqualification</h3>\n<p>14.2 No director or intended director is disqualified by his or her office from contracting with the Company either with regard to the holding of any office or place of profit the director holds with the Company or as vendor, purchaser or otherwise.</p>\n<h3>Professional services by director or officer</h3>\n<p>14.3 Subject to compliance with the provisions of the Business Corporations Act, a director or officer of the Company, or any corporation or firm in which that individual has an interest, may act in a professional capacity for the Company, except as auditor of the Company, and the director or officer or such corporation or firm is entitled to remuneration for professional services as if that individual were not a director or officer.</p>\n<h3>Accountability</h3>\n<p>14.4 A director or officer may be or become a director, officer or employee of, or may otherwise be or become interested in, any corporation, firm or entity in which the Company may be interested as a shareholder or otherwise, and, subject to compliance with the provisions of the Business Corporations Act, the director or officer is not accountable to the Company for any remuneration or other benefits received by him or her as director, officer or employee of, or from his or her interest in, such other corporation, firm or entity. Part 15 \u2014 Indemnification</p>\n<h3>Indemnification of directors</h3>\n<p>15.1 The directors must cause the Company to indemnify its directors and former directors, and their respective heirs and personal or other legal representatives to the greatest extent permitted by Division 5 of Part 5 of the Business Corporations Act.</p>\n<h3>Deemed contract</h3>\n<p>15.2 Each director is deemed to have contracted with the Company on the terms of the indemnity referred to in Article 15.1.</p>\n<h2>Part 16 \u2014 Dividends</h2>\n<h3>Declaration of dividends</h3>\n<p>16.1 Subject to the rights, if any, of shareholders holding shares with special rights as to dividends, the directors may from time to time declare and authorize payment of any dividends the directors consider appropriate.</p>\n<p>No notice required</p>\n<p>16.2 The directors need not give notice to any shareholder of any declaration under Article 16.1.</p>\n<p>Directors may determine when dividend payable</p>\n<p>16.3 Any dividend declared by the directors may be made payable on such date as is fixed by the directors.</p>\n<h3>Dividends to be paid in accordance with number of shares</h3>\n<p>16.4 Subject to the rights of shareholders, if any, holding shares with special rights as to dividends, all dividends on shares of any class or series of shares must be declared and paid according to the number of such shares held.</p>\n<h3>Manner of paying dividend</h3>\n<p>16.5 A resolution declaring a dividend may direct payment of the dividend wholly or partly by the distribution of specific assets or of paid up shares or fractional shares, bonds, debentures or other debt obligations of the Company, or in any one or more of those ways, and, if any difficulty arises in regard to the distribution, the directors may settle the difficulty as they consider expedient, and, in particular, may set the value for distribution of specific assets.</p>\n<p>Dividend bears no interest</p>\n<p>16.6 No dividend bears interest against the Company.</p>\n<h3>Fractional dividends</h3>\n<p>16.7 If a dividend to which a shareholder is entitled includes a fraction of the smallest monetary unit of the currency of the dividend, that fraction may be disregarded in making payment of the dividend and that payment represents full payment of the dividend.</p>\n<h3>Payment of dividends</h3>\n<p>16.8 Any dividend or other distribution payable in cash in respect of shares may be paid by cheque, made payable to the order of the person to whom it is sent, and mailed</p>\n<p>subject to paragraphs (b) and (c), to the address of the shareholder,</p>\n<p>subject to paragraph (c), in the case of joint shareholders, to the address of the joint shareholder whose name stands first on the central securities register in respect of the shares, or</p>\n<p>to the person and to the address as the shareholder or joint shareholders may direct in writing.</p>\n<h3>Receipt by joint shareholders</h3>\n<p>16.9 If several persons are joint shareholders of any share, any one of them may give an effective receipt for any dividend, bonus or other money payable in respect of the share.</p>\n<h2>Part 17 \u2014 Accounting Records</h2>\n<h3>Recording of financial affairs</h3>\n<p>17.1 The board must cause adequate accounting records to be kept to record properly the financial affairs and condition of the Company and to comply with the provisions of the Business Corporations Act.</p>\n<h2>Part 18 \u2014 Execution of Instruments under Seal</h2>\n<h3>Who may attest seal</h3>\n<p>18.1 The Company\u2019s seal, if any, must not be impressed on any record except when that impression is attested by the signature or signatures of</p>\n<p>any 2 directors,</p>\n<p>any officer, together with any director,</p>\n<p>if the Company only has one director, that director, or</p>\n<p>any one or more directors or officers or persons as may be determined by resolution of the directors.</p>\n<h3>Sealing copies</h3>\n<p>18.2 For the purpose of certifying under seal a true copy of any resolution or other document, the seal must be impressed on that copy and, despite Article 18.1, may be attested by the signature of any director or officer.</p>\n<h2>Part 19 \u2014 Notices</h2>\n<h3>Notice to joint shareholders</h3>\n<p>19.1 A notice, statement, report or other record may be provided by the Company to the joint registered shareholders of a share by providing the notice to the joint registered shareholder whose name stands first on the central securities register in respect of the share.</p>\n<h3>Notice to trustees</h3>\n<p>19.2 If a person becomes entitled to a share as a result of the death, bankruptcy or incapacity of a shareholder, the Company may provide a notice, statement, report or other record to that person by</p>\n<p>mailing the record, addressed to that person</p>\n<p>by name, by the title of representative of the deceased or incapacitated shareholder, by the title of trustee of the bankrupt shareholder or by any similar description, and</p>\n<p>at the address, if any, supplied to the Company for that purpose by the person claiming to be so entitled, or</p>\n<p>if an address referred to in paragraph (a) (ii) has not been supplied to the Company, by giving the notice in a manner in which it might have been given if the death, bankruptcy or incapacity had not occurred.</p>\n<h2>Part 20 \u2014 Restriction on Share Transfer</h2>\n<h3>Application</h3>\n<p>20.1 Article 20.2 does not apply to the Company if and for so long as it is a public company or a pre-existing reporting company.</p>\n<h3>Consent required for transfer</h3>\n<p>20.2 No shares may be sold, transferred or otherwise disposed of without the consent of the directors and the directors are not required to give any reason for refusing to consent to any such sale, transfer or other disposition.</p>",
+  "composed_path": null
+}

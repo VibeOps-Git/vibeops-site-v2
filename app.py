@@ -352,6 +352,39 @@ def seodemo():
 def team():
     return render_template('team.html')
 
+import reportly
+@app.route("/reportly", methods=["GET", "POST"])
+def reportly_home():
+    if request.method == "POST":
+        return reportly.handle_upload()
+    return reportly.render_template("reportly.html", state=None)
+
+@app.route("/reportly/edit/<doc_id>", methods=["GET"])
+def reportly_edit(doc_id):
+    # read-only (no longer POST form here) — chat drives updates
+    return reportly.handle_edit(doc_id)
+
+@app.route("/reportly/compose/<doc_id>", methods=["POST"])
+def reportly_compose(doc_id):
+    return reportly.handle_compose(doc_id)
+
+@app.route("/reportly/download/<doc_id>", methods=["GET"])
+def reportly_download(doc_id):
+    return reportly.handle_download(doc_id)
+
+@app.route("/reportly/preview/<doc_id>", methods=["GET"])
+def reportly_preview(doc_id):
+    return reportly.handle_preview(doc_id)
+
+@app.route("/reportly/state/<doc_id>", methods=["POST"])
+def reportly_state_update(doc_id):
+    return reportly.handle_state_update(doc_id)
+
+@app.route("/reportly/chat/<doc_id>", methods=["POST"])
+def reportly_chat(doc_id):
+    return reportly.handle_chat(doc_id)
+
+
 @app.route('/debug/db-test')
 def debug_db_test():
     """Debug route to test database connectivity"""

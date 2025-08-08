@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "5008:5008"
+    environment:
+      - FLASK_DEBUG=false
+      - PORT=5008
+      - GOTENBERG_URL=http://gotenberg:3000
+    depends_on:
+      - gotenberg
+    volumes:
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+      - ./state:/app/state
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: unless-stopped

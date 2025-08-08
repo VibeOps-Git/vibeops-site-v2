@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Reportly — Chat → Word (pixel-true){% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='reportly.css') }}">
+  <style>
+    /* tiny local tweaks */
+    details.debug { margin-top: 14px; }
+    details.debug summary { cursor: pointer; color:#9aa3af; }
+    .debug-grid { display:grid; gap:10px; grid-template-columns: 1fr; }
+    .debug-box { background:#0c0f14; border:1px solid var(--border, #252a36); border-radius:8px; padding:10px; }
+    .debug-box pre { margin:0; max-height:320px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+    .hero-title { font-family: Inter, ui-sans-serif, system-ui; font-weight: 700; }
+    .chat-log { min-height: 140px; }
+  </style>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero" style="padding:24px 0;">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 16px;">
+    <h1 class="hero-title" style="margin:0 0 8px;">Reportly</h1>
+    <p class="hero-sub" style="margin:0;color:#9aa3af;">
+      Chat-first report generation into your Word template — live, pixel-true preview.
+      {% if state and state.filename %}
+        <span style="margin-left:10px; padding:3px 8px; border:1px solid #2a2a2a; border-radius:999px;">{{ state.filename }}</span>
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+<div class="row chat-layout">
+  <!-- LEFT: Chat + toggles + upload -->
+  <div class="col left">
+    <div class="card chat-card" data-aos="fade-up">
+      <h2 style="margin-top:0;">Chat</h2>
+
+      {% if state %}
+      <!-- Chat log -->
+      <div id="chatLog" class="chat-log">
+        {% for m in state.messages %}
+        <div class="chat-msg {{ 'user' if m.role=='user' else 'assistant' }}">
+          <div class="bubble">{{ m.content }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Chat form -->
+      <form id="chatForm" class="chat-form" action="javascript:void(0);" novalidate>
+        <div class="chat-row">
+          <textarea id="chatInput" name="message" rows="3"
+            placeholder="e.g., “Generate an executive summary, risks, and 3 recommendations tailored to this template.”"></textarea>
+        </div>
+        <div class="chat-controls">
+          <label>Length:
+            <select name="length_mode" id="lengthMode">
+              <option value="concise">Concise</option>
+              <option value="standard" selected>Standard</option>
+              <option value="detailed">Detailed</option>
+              <option value="custom">Custom (words)</option>
+            </select>
+          </label>
+          <input type="number" min="50" step="50" id="customWords" name="custom_words" placeholder="Words" style="display:none;">
+          <button class="btn" type="submit">Send</button>
+        </div>
+      </form>
+
+      <div class="divider"></div>
+
+      <!-- Toggles -->
+      <form id="stateForm" class="state-form" action="javascript:void(0);">
+        <label class="checkbox">
+          <input type="checkbox" name="include_in_context" id="includeInContext"
+                 {% if state.include_in_context %}checked{% endif %}>
+          Include uploaded document text as AI context (not just a template)
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="strip_existing" id="stripExisting"
+                 {% if state.strip_existing %}checked{% endif %}>
+          Strip existing body text when composing (preserve headers/footers/styles)
+        </label>
+      </form>
+
+      <div class="divider"></div>
+
+      <!-- Upload under chat -->
+      <h3>Upload / Replace Template (.docx)</h3>
+      <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form under-chat">
+        <label class="file">
+          <span class="file-cta">Choose .docx</span>
+          <input type="file" name="file" accept=".docx" required>
+        </label>
+        <button class="btn" type="submit">Upload</button>
+      </form>
+
+      <!-- Compose button -->
+      <form class="inline" action="{{ url_for('reportly_compose', doc_id=state.doc_id) }}" method="post" style="margin-top:12px;">
+        <button class="btn btn-accent" type="submit">Compose & Download DOCX</button>
+      </form>
+
+      <!-- Collapsible debug logs -->
+      <details class="debug" style="margin-top:14px;">
+        <summary>Debug logs (last LLM call)</summary>
+        <div class="debug-grid" style="margin-top:10px;">
+          <div class="debug-box">
+            <strong>Request payload</strong>
+            <pre>{{ state.last_llm_payload or '—' }}</pre>
+          </div>
+          <div class="debug-box">
+            <strong>Parsed response (JSON)</strong>
+            <pre>{{ state.last_llm_raw or '—' }}</pre>
+          </div>
+        </div>
+      </details>
+
+      {% else %}
+      <!-- First load: prompt upload -->
+      <p class="muted">Upload a Word template to start. Then chat to populate content and see a pixel-true preview.</p>
+      <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form">
+        <label class="file">
+          <span class="file-cta">Choose .docx</span>
+          <input type="file" name="file" accept=".docx" required>
+        </label>
+        <button class="btn" type="submit">Upload</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- RIGHT: Exact PDF preview -->
+  <div class="col right">
+    <div class="card sticky" data-aos="fade-up" data-aos-delay="50">
+      <div class="editor-head">
+        <h2>Preview (Exact, PDF)</h2>
+      </div>
+
+      {% if state %}
+      <iframe id="pdfFrame"
+              title="Exact Preview"
+              style="width:100%; height:80vh; border:1px solid var(--border, #252a36); border-radius:12px; background:#0a0d12;"
+              src="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?_ts={{ range(1)|list|first }}">
+      </iframe>
+      <p class="muted" style="margin-top:8px;">
+        First preview shows your original uploaded document exactly. After chat updates,
+        the preview swaps to the composed version automatically.
+      </p>
+      {% else %}
+      <div class="outline">
+        <p class="muted">Upload a document to see its preview here.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+  {% if state %}
+  <script>
+    const docId = "{{ state.doc_id }}";
+    (function(){
+      if (!docId) return;
+
+      const chatForm = document.getElementById("chatForm");
+      const chatLog = document.getElementById("chatLog");
+      const chatInput = document.getElementById("chatInput");
+      const lengthMode = document.getElementById("lengthMode");
+      const customWords = document.getElementById("customWords");
+      const includeInContext = document.getElementById("includeInContext");
+      const stripExisting = document.getElementById("stripExisting");
+      const stateForm = document.getElementById("stateForm");
+      const pdfFrame = document.getElementById("pdfFrame");
+
+      function updateCustomVisibility(){
+        if (!lengthMode || !customWords) return;
+        customWords.style.display = (lengthMode.value === "custom") ? "inline-block" : "none";
+      }
+      if (lengthMode){
+        lengthMode.addEventListener("change", updateCustomVisibility);
+        updateCustomVisibility();
+      }
+
+      function appendMsg(role, content){
+        if (!chatLog) return;
+        const wrap = document.createElement("div");
+        wrap.className = "chat-msg " + (role === "user" ? "user" : "assistant");
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.textContent = content;
+        wrap.appendChild(bubble);
+        chatLog.appendChild(wrap);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      function refreshPDF(){
+        if (!pdfFrame) return;
+        const base = pdfFrame.src.split("?")[0];
+        pdfFrame.src = base + "?_ts=" + Date.now();
+      }
+
+      async function postForm(url, data){
+        const res = await fetch(url, { method: "POST", body: data });
+        let j = null;
+        try{ j = await res.json(); }catch(e){}
+        if (!res.ok){
+          const err = (j && j.error) ? j.error : ("HTTP " + res.status);
+          throw new Error(err);
+        }
+        return j || {};
+      }
+
+      if (chatForm){
+        chatForm.addEventListener("submit", async (e)=>{
+          e.preventDefault();
+          const msg = (chatInput.value || "").trim();
+          if (!msg) return;
+          appendMsg("user", msg);
+
+          const fd = new FormData();
+          fd.append("message", msg);
+          fd.append("length_mode", lengthMode ? lengthMode.value : "standard");
+          if (customWords && customWords.value && lengthMode && lengthMode.value === "custom"){
+            fd.append("custom_words", customWords.value);
+          }
+
+          chatInput.value = "";
+          try{
+            const resp = await postForm(`/reportly/chat/${docId}`, fd);
+            appendMsg("assistant", resp.assistant_message || "Updated the document content.");
+            refreshPDF();
+          }catch(err){
+            appendMsg("assistant", "⚠︎ " + err.message);
+          }
+        });
+      }
+
+      async function pushState(){
+        if (!stateForm) return;
+        const fd = new FormData();
+        fd.append("include_in_context", includeInContext && includeInContext.checked ? "1" : "0");
+        fd.append("strip_existing", stripExisting && stripExisting.checked ? "1" : "0");
+        try{
+          await postForm(`/reportly/state/${docId}`, fd);
+          refreshPDF();
+        }catch(e){
+          console.warn("state update failed", e);
+        }
+      }
+      if (includeInContext) includeInContext.addEventListener("change", pushState);
+      if (stripExisting) stripExisting.addEventListener("change", pushState);
+
+      if (chatInput) chatInput.focus();
+    })();
+  </script>
+  {% endif %}
+{% endblock %}
