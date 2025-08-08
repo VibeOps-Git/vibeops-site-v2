@@ -1,29 +1,39 @@
 {% extends "base.html" %}
-
 {% block title %}Reportly — Chat → Word (pixel-true){% endblock %}
 
 {% block extra_head %}
   <link rel="stylesheet" href="{{ url_for('static', filename='reportly.css') }}">
   <style>
-    /* tiny local tweaks */
-    details.debug { margin-top: 14px; }
-    details.debug summary { cursor: pointer; color:#9aa3af; }
-    .debug-grid { display:grid; gap:10px; grid-template-columns: 1fr; }
-    .debug-box { background:#0c0f14; border:1px solid var(--border, #252a36); border-radius:8px; padding:10px; }
-    .debug-box pre { margin:0; max-height:320px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
-    .hero-title { font-family: Inter, ui-sans-serif, system-ui; font-weight: 700; }
-    .chat-log { min-height: 140px; }
+    /* .print modal (light theme inside modal) */
+    #print-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999}
+    #print-modal .box{max-width:980px;margin:5vh auto;background:#fff;border-radius:14px;padding:16px;box-shadow:0 20px 90px rgba(0,0,0,.35)}
+    #print-modal .row{display:flex;gap:12px;align-items:center;margin:8px 0 12px}
+    #print-modal .row.between{justify-content:space-between}
+    #print-modal textarea{width:100%;height:220px;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+    #print-modal details{margin-top:10px}
+    #print-modal summary{cursor:pointer}
+    .btn.secondary{background:#f4f4f5;border:1px solid #e5e7eb;color:#111827}
+    .btn.inline{margin-left:8px}
+    .muted{color:#6b7280}
+
+    /* PDF viewer */
+    .viewer-bar{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:8px}
+    .viewer-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .preview-wrap{position:relative}
+    .preview-frame{width:100%;height:760px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+    .loading-veil{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.6)}
+    .loading-veil.on{display:flex}
   </style>
 {% endblock %}
 
 {% block content %}
-<section class="page-hero" style="padding:24px 0;">
-  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 16px;">
-    <h1 class="hero-title" style="margin:0 0 8px;">Reportly</h1>
-    <p class="hero-sub" style="margin:0;color:#9aa3af;">
-      Chat-first report generation into your Word template — live, pixel-true preview.
+<section class="page-hero page-hero--slim">
+  <div class="hero-container">
+    <h1 class="hero-title">Reportly</h1>
+    <p class="hero-sub">
+      Chat-first report generation into your Word (or PDF → Word) template — live, pixel-true preview.
       {% if state and state.filename %}
-        <span style="margin-left:10px; padding:3px 8px; border:1px solid #2a2a2a; border-radius:999px;">{{ state.filename }}</span>
+        <span class="doc-pill">{{ state.filename }}</span>
       {% endif %}
     </p>
   </div>
@@ -33,10 +43,9 @@
   <!-- LEFT: Chat + toggles + upload -->
   <div class="col left">
     <div class="card chat-card" data-aos="fade-up">
-      <h2 style="margin-top:0;">Chat</h2>
+      <h2 class="card-title">Chat</h2>
 
       {% if state %}
-      <!-- Chat log -->
       <div id="chatLog" class="chat-log">
         {% for m in state.messages %}
         <div class="chat-msg {{ 'user' if m.role=='user' else 'assistant' }}">
@@ -45,12 +54,18 @@
         {% endfor %}
       </div>
 
-      <!-- Chat form -->
-      <form id="chatForm" class="chat-form" action="javascript:void(0);" novalidate>
+      <form id="chatForm" class="chat-form" action="javascript:void(0);">
         <div class="chat-row">
           <textarea id="chatInput" name="message" rows="3"
-            placeholder="e.g., “Generate an executive summary, risks, and 3 recommendations tailored to this template.”"></textarea>
+            placeholder="e.g., “Replace Executive Summary with 2 paragraphs and a 3-row table.”"></textarea>
         </div>
+
+        <div class="quick-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin:.3rem 0 .2rem">
+          <button type="button" class="btn secondary" onclick="preset('Generate full report content aligned to the template.')">Generate all</button>
+          <button type="button" class="btn secondary" onclick="preset('Only update Executive Summary with risks and 3 recommendations.')">Only Exec Summary</button>
+          <button type="button" class="btn secondary" onclick="preset('Replace Findings section with a detailed analysis and a 5-row table.')">Replace Findings</button>
+        </div>
+
         <div class="chat-controls">
           <label>Length:
             <select name="length_mode" id="lengthMode">
@@ -60,66 +75,52 @@
               <option value="custom">Custom (words)</option>
             </select>
           </label>
-          <input type="number" min="50" step="50" id="customWords" name="custom_words" placeholder="Words" style="display:none;">
-          <button class="btn" type="submit">Send</button>
+          <input type="number" min="50" step="50" id="customWords" name="custom_words" placeholder="Words" class="custom-words" style="display:none;width:110px;">
+          <button class="btn" type="submit">Apply</button>
+          <button type="button" id="print-open" class="btn secondary inline">.print</button>
         </div>
       </form>
 
       <div class="divider"></div>
 
-      <!-- Toggles -->
       <form id="stateForm" class="state-form" action="javascript:void(0);">
         <label class="checkbox">
           <input type="checkbox" name="include_in_context" id="includeInContext"
                  {% if state.include_in_context %}checked{% endif %}>
-          Include uploaded document text as AI context (not just a template)
+          Include uploaded document text as AI context
         </label>
         <label class="checkbox">
           <input type="checkbox" name="strip_existing" id="stripExisting"
                  {% if state.strip_existing %}checked{% endif %}>
-          Strip existing body text when composing (preserve headers/footers/styles)
+          Strip existing body when composing (use “off” to <strong>edit in place</strong>)
         </label>
       </form>
 
       <div class="divider"></div>
 
-      <!-- Upload under chat -->
-      <h3>Upload / Replace Template (.docx)</h3>
+      <h3 class="subheading">Upload / Replace Template (.docx or .pdf)</h3>
       <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form under-chat">
         <label class="file">
-          <span class="file-cta">Choose .docx</span>
-          <input type="file" name="file" accept=".docx" required>
+          <span class="file-cta">Choose .docx or .pdf</span>
+          <input type="file" name="file" accept=".docx,.pdf" required>
         </label>
         <button class="btn" type="submit">Upload</button>
       </form>
 
-      <!-- Compose button -->
-      <form class="inline" action="{{ url_for('reportly_compose', doc_id=state.doc_id) }}" method="post" style="margin-top:12px;">
-        <button class="btn btn-accent" type="submit">Compose & Download DOCX</button>
-      </form>
-
-      <!-- Collapsible debug logs -->
-      <details class="debug" style="margin-top:14px;">
-        <summary>Debug logs (last LLM call)</summary>
-        <div class="debug-grid" style="margin-top:10px;">
-          <div class="debug-box">
-            <strong>Request payload</strong>
-            <pre>{{ state.last_llm_payload or '—' }}</pre>
-          </div>
-          <div class="debug-box">
-            <strong>Parsed response (JSON)</strong>
-            <pre>{{ state.last_llm_raw or '—' }}</pre>
-          </div>
-        </div>
-      </details>
-
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="btn secondary" href="{{ url_for('reportly_download_current', doc_id=state.doc_id) }}">
+          Download current DOCX
+        </a>
+        <a class="btn secondary" href="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?download=1">
+          Download PDF ({{ state.basename if state and state.basename else (state.filename.rsplit('.',1)[0] if state and state.filename else 'document') }}.pdf)
+        </a>
+      </div>
       {% else %}
-      <!-- First load: prompt upload -->
-      <p class="muted">Upload a Word template to start. Then chat to populate content and see a pixel-true preview.</p>
+      <p class="muted">Upload a Word or PDF template to start. Then chat to update it with live preview.</p>
       <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form">
         <label class="file">
-          <span class="file-cta">Choose .docx</span>
-          <input type="file" name="file" accept=".docx" required>
+          <span class="file-cta">Choose .docx or .pdf</span>
+          <input type="file" name="file" accept=".docx,.pdf" required>
         </label>
         <button class="btn" type="submit">Upload</button>
       </form>
@@ -127,22 +128,46 @@
     </div>
   </div>
 
-  <!-- RIGHT: Exact PDF preview -->
+  <!-- RIGHT: Preview + Review -->
   <div class="col right">
     <div class="card sticky" data-aos="fade-up" data-aos-delay="50">
       <div class="editor-head">
-        <h2>Preview (Exact, PDF)</h2>
+        <h2 class="card-title">Preview (Exact, PDF)</h2>
       </div>
 
       {% if state %}
-      <iframe id="pdfFrame"
-              title="Exact Preview"
-              style="width:100%; height:80vh; border:1px solid var(--border, #252a36); border-radius:12px; background:#0a0d12;"
-              src="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?_ts={{ range(1)|list|first }}">
-      </iframe>
+      <!-- Review bar -->
+      <div class="review-bar">
+        <div class="review-title">Pending changes</div>
+        <div id="review-list" class="review-list empty">
+          <span class="muted">No pending changes.</span>
+        </div>
+        <div class="review-actions">
+          <button id="accept-all" class="btn secondary" type="button">Accept all</button>
+          <button id="reject-all" class="btn secondary" type="button">Reject all</button>
+        </div>
+      </div>
+
+      <div class="viewer-bar">
+        <div class="muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%;">
+          {{ state.filename }} → PDF
+        </div>
+        <div class="viewer-controls">
+          <a class="btn secondary" id="pv-open" target="_blank"
+             href="{{ url_for('reportly_preview', doc_id=state.doc_id) }}">Open</a>
+        </div>
+      </div>
+
+      <div class="preview-wrap">
+        <div class="loading-veil" id="pv-loading"><span class="muted">Rendering…</span></div>
+        <iframe id="pdfFrame"
+                class="preview-frame"
+                title="Exact Preview"
+                src="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?_ts={{ range(1)|list|first }}">
+        </iframe>
+      </div>
       <p class="muted" style="margin-top:8px;">
-        First preview shows your original uploaded document exactly. After chat updates,
-        the preview swaps to the composed version automatically.
+        New AI text is highlighted in green until you Accept. Reject removes it from the queue.
       </p>
       {% else %}
       <div class="outline">
@@ -152,15 +177,82 @@
     </div>
   </div>
 </div>
+
+<!-- .print modal -->
+<div id="print-modal" aria-hidden="true">
+  <div class="box">
+    <div class="row between">
+      <h3 class="box-title">Collect input materials (.print)</h3>
+      <button id="print-close" class="btn secondary" type="button">Close</button>
+    </div>
+
+    <div class="row">
+      <label for="print-depth" class="muted">Depth</label>
+      <input id="print-depth" type="number" min="0" max="50" value="2" style="width:80px;">
+      <button id="print-run" class="btn" type="button">Select folder &amp; run</button>
+      <span id="print-status" class="muted"></span>
+    </div>
+
+    <details open>
+      <summary><strong>Folder tree</strong></summary>
+      <textarea id="print-tree" placeholder="Tree will appear here…"></textarea>
+      <div class="row" style="justify-content:flex-start;">
+        <button id="copy-tree" class="btn secondary" type="button">Copy Tree</button>
+        <button id="download-tree" class="btn secondary" type="button">Download tree.txt</button>
+      </div>
+    </details>
+
+    <details>
+      <summary><strong>File contents</strong></summary>
+      <textarea id="print-contents" placeholder="File contents will appear here…"></textarea>
+      <div class="row" style="justify-content:flex-start;">
+        <button id="copy-contents" class="btn secondary" type="button">Copy Contents</button>
+        <button id="download-contents" class="btn secondary" type="button">Download contents.txt</button>
+        <button id="send-to-chat" class="btn btn-accent" type="button">Attach to chat</button>
+      </div>
+    </details>
+
+    <p class="muted" style="margin-top:10px;">
+      Tip: If your browser doesn’t allow folder access, use the
+      <a href="/download">desktop .print app</a>.
+    </p>
+  </div>
+  <script id="reportly-state" type="application/json">
+    {{ {'doc_id': (state.doc_id if state else None)} | tojson }}
+  </script>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
   {% if state %}
   <script>
     const docId = "{{ state.doc_id }}";
-    (function(){
-      if (!docId) return;
+    function preset(text){
+      const ta = document.getElementById('chatInput');
+      ta.value = text; ta.focus();
+    }
 
+    /* PDF refresh on SSE */
+    (function(){
+      const frame = document.getElementById('pdfFrame');
+      const veil = document.getElementById('pv-loading');
+      function refresh(){
+        if (!frame) return;
+        const base = frame.src.split("?")[0];
+        veil?.classList.add('on');
+        frame.src = base + "?_ts=" + Date.now();
+      }
+      frame?.addEventListener('load', ()=> veil?.classList.remove('on'));
+      if (window.EventSource){
+        const es = new EventSource(`/reportly/stream/${docId}`);
+        es.addEventListener("update", ev => {
+          try{ const d = JSON.parse(ev.data||"{}"); if (d.preview==="ready") refresh(); }catch(_){}
+        });
+      }
+    })();
+
+    /* Chat + toggles */
+    (function(){
       const chatForm = document.getElementById("chatForm");
       const chatLog = document.getElementById("chatLog");
       const chatInput = document.getElementById("chatInput");
@@ -168,20 +260,13 @@
       const customWords = document.getElementById("customWords");
       const includeInContext = document.getElementById("includeInContext");
       const stripExisting = document.getElementById("stripExisting");
-      const stateForm = document.getElementById("stateForm");
-      const pdfFrame = document.getElementById("pdfFrame");
 
       function updateCustomVisibility(){
-        if (!lengthMode || !customWords) return;
-        customWords.style.display = (lengthMode.value === "custom") ? "inline-block" : "none";
+        customWords.style.display = (lengthMode.value === "custom" ? "inline-block" : "none");
       }
-      if (lengthMode){
-        lengthMode.addEventListener("change", updateCustomVisibility);
-        updateCustomVisibility();
-      }
+      lengthMode.addEventListener("change", updateCustomVisibility); updateCustomVisibility();
 
       function appendMsg(role, content){
-        if (!chatLog) return;
         const wrap = document.createElement("div");
         wrap.className = "chat-msg " + (role === "user" ? "user" : "assistant");
         const bubble = document.createElement("div");
@@ -192,65 +277,329 @@
         chatLog.scrollTop = chatLog.scrollHeight;
       }
 
-      function refreshPDF(){
-        if (!pdfFrame) return;
-        const base = pdfFrame.src.split("?")[0];
-        pdfFrame.src = base + "?_ts=" + Date.now();
-      }
-
       async function postForm(url, data){
         const res = await fetch(url, { method: "POST", body: data });
-        let j = null;
-        try{ j = await res.json(); }catch(e){}
-        if (!res.ok){
-          const err = (j && j.error) ? j.error : ("HTTP " + res.status);
-          throw new Error(err);
-        }
+        let j = null; try{ j = await res.json(); }catch(e){}
+        if (!res.ok){ throw new Error((j && j.error) ? j.error : ("HTTP " + res.status)); }
         return j || {};
       }
 
-      if (chatForm){
-        chatForm.addEventListener("submit", async (e)=>{
-          e.preventDefault();
-          const msg = (chatInput.value || "").trim();
-          if (!msg) return;
-          appendMsg("user", msg);
+      chatForm.addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        const msg = (chatInput.value || "").trim();
+        if (!msg) return;
+        appendMsg("user", msg);
 
-          const fd = new FormData();
-          fd.append("message", msg);
-          fd.append("length_mode", lengthMode ? lengthMode.value : "standard");
-          if (customWords && customWords.value && lengthMode && lengthMode.value === "custom"){
-            fd.append("custom_words", customWords.value);
-          }
+        const fd = new FormData();
+        fd.append("message", msg);
+        fd.append("length_mode", lengthMode.value);
+        if (customWords.value && lengthMode.value === "custom"){
+          fd.append("custom_words", customWords.value);
+        }
 
-          chatInput.value = "";
-          try{
-            const resp = await postForm(`/reportly/chat/${docId}`, fd);
-            appendMsg("assistant", resp.assistant_message || "Updated the document content.");
-            refreshPDF();
-          }catch(err){
-            appendMsg("assistant", "⚠︎ " + err.message);
-          }
-        });
-      }
+        chatInput.value = "";
+        try{
+          const resp = await postForm(`/reportly/chat/${docId}`, fd);
+          appendMsg("assistant", resp.assistant_message || "Proposed changes.");
+        }catch(err){
+          appendMsg("assistant", "⚠︎ " + err.message);
+        }
+      });
 
       async function pushState(){
-        if (!stateForm) return;
         const fd = new FormData();
-        fd.append("include_in_context", includeInContext && includeInContext.checked ? "1" : "0");
-        fd.append("strip_existing", stripExisting && stripExisting.checked ? "1" : "0");
-        try{
-          await postForm(`/reportly/state/${docId}`, fd);
-          refreshPDF();
-        }catch(e){
-          console.warn("state update failed", e);
-        }
+        fd.append("include_in_context", includeInContext.checked ? "1" : "0");
+        fd.append("strip_existing",     stripExisting.checked ? "1" : "0");
+        try{ await postForm(`/reportly/state/${docId}`, fd); }catch(_){}
       }
-      if (includeInContext) includeInContext.addEventListener("change", pushState);
-      if (stripExisting) stripExisting.addEventListener("change", pushState);
+      includeInContext.addEventListener("change", pushState);
+      stripExisting.addEventListener("change", pushState);
 
-      if (chatInput) chatInput.focus();
+      chatInput?.focus();
     })();
   </script>
   {% endif %}
+
+  <!-- Update file input label -->
+  <script>
+    (function(){
+      document.querySelectorAll('.upload-form input[type="file"]').forEach(input=>{
+        const labelEl = input.closest('label')?.querySelector('.file-cta');
+        if (!labelEl) return;
+        input.addEventListener('change', ()=>{
+          const f = input.files && input.files[0];
+          if (f) labelEl.textContent = f.name;
+        });
+      });
+    })();
+  </script>
+
+  <!-- Review bar + .print modal -->
+  <script>
+    (function(){
+      const stateEl = document.getElementById('reportly-state');
+      let s = null;
+      try { s = JSON.parse(stateEl?.textContent || '{}').doc_id || null; } catch {}
+      if (!s) return;
+      // ...
+
+      // Review list
+      const listEl = document.getElementById('review-list');
+      const acceptAll = document.getElementById('accept-all');
+      const rejectAll = document.getElementById('reject-all');
+
+      async function fetchPending(){
+        const r = await fetch(`/reportly/pending/${s}`);
+        const j = await r.json();
+        render(j.pending||[]);
+      }
+
+      function render(items){
+        listEl.innerHTML = '';
+        if (!items.length){
+          listEl.classList.add('empty');
+          listEl.innerHTML = '<span class="muted">No pending changes.</span>';
+          return;
+        }
+        listEl.classList.remove('empty');
+        for (const c of items){
+          const row = document.createElement('div');
+          row.className = 'review-item';
+          row.innerHTML = `
+            <div class="review-meta">
+              <div class="review-title-small">${c.title || 'Untitled section'}</div>
+              <div class="muted">level ${c.level} · ${(c.blocks && c.blocks.length) || 0} block(s)</div>
+            </div>
+            <div class="review-ops">
+              <button data-id="${c.change_id}" class="btn secondary btn-accept">Accept</button>
+              <button data-id="${c.change_id}" class="btn secondary btn-reject">Reject</button>
+            </div>
+          `;
+          listEl.appendChild(row);
+        }
+        bindOps();
+      }
+
+      function bindOps(){
+        listEl.querySelectorAll('.btn-accept').forEach(b=>{
+          b.onclick = async ()=>{
+            const id = b.getAttribute('data-id');
+            await fetch(`/reportly/review/${s}/accept`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({change_id:id})});
+            fetchPending();
+          };
+        });
+        listEl.querySelectorAll('.btn-reject').forEach(b=>{
+          b.onclick = async ()=>{
+            const id = b.getAttribute('data-id');
+            await fetch(`/reportly/review/${s}/reject`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({change_id:id})});
+            fetchPending();
+          };
+        });
+      }
+
+      acceptAll?.addEventListener('click', async ()=>{
+        await fetch(`/reportly/review/${s}/accept`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({all:true})});
+        fetchPending();
+      });
+      rejectAll?.addEventListener('click', async ()=>{
+        await fetch(`/reportly/review/${s}/reject`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({all:true})});
+        fetchPending();
+      });
+
+      // Refresh pending list when preview rebuilds
+      if (window.EventSource){
+        const es = new EventSource(`/reportly/stream/${s}`);
+        es.addEventListener("update", ev => {
+          try{ const d = JSON.parse(ev.data||"{}"); if (d.preview==="ready") fetchPending(); }catch(_){}
+        });
+      }
+      fetchPending();
+
+      // .print modal
+      const modal = document.getElementById('print-modal');
+      const openBtn = document.getElementById('print-open');
+      const closeBtn = document.getElementById('print-close');
+      const runBtn = document.getElementById('print-run');
+      const depthInput = document.getElementById('print-depth');
+      const statusEl = document.getElementById('print-status');
+      const treeEl = document.getElementById('print-tree');
+      const contentsEl = document.getElementById('print-contents');
+      const copyTreeBtn = document.getElementById('copy-tree');
+      const copyContentsBtn = document.getElementById('copy-contents');
+      const dlTreeBtn = document.getElementById('download-tree');
+      const dlContentsBtn = document.getElementById('download-contents');
+      const sendBtn = document.getElementById('send-to-chat');
+
+      function show(){ modal.style.display = 'block'; }
+      function hide(){ modal.style.display = 'none'; }
+
+      openBtn?.addEventListener('click', ()=>{
+        if (!('showDirectoryPicker' in window)) {
+          alert('Your browser may show a folder file picker instead of native access.');
+        }
+        show();
+      });
+      closeBtn?.addEventListener('click', hide);
+      modal.addEventListener('click', (e)=>{ if (e.target === modal) hide(); });
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') hide(); });
+
+      const SKIP_DIRS = new Set(['.git','__pycache__','node_modules']);
+      const TEXT_EXTS = new Set([
+        '.txt','.md','.markdown','.py','.js','.ts','.tsx','.jsx','.json',
+        '.yml','.yaml','.ini','.cfg','.toml','.css','.scss','.sass',
+        '.html','.htm','.jinja','.jinja2',
+        '.sh','.bat','.ps1','.rb','.php','.java','.c','.cpp','.h','.hpp'
+      ]);
+      const MAX_BYTES = 300_000;
+      const extOf = n => { const i = n.lastIndexOf('.'); return i>=0 ? n.slice(i).toLowerCase() : ''; };
+
+      async function* walkFSDirectoryHandle(dirHandle, basePath = '', depth = 2){
+        if (depth < 0) return;
+        for await (const entry of dirHandle.values()){
+          const rel = basePath ? `${basePath}/${entry.name}` : entry.name;
+          if (entry.kind === 'directory'){
+            if (SKIP_DIRS.has(entry.name)) continue;
+            yield {type:'dir', path: rel};
+            const sub = await dirHandle.getDirectoryHandle(entry.name);
+            yield* walkFSDirectoryHandle(sub, rel, depth-1);
+          } else {
+            yield {type:'file', path: rel, handle: entry};
+          }
+        }
+      }
+
+      async function readFileHandle(fileHandle){
+        const file = await fileHandle.getFile();
+        if (file.size > MAX_BYTES) return null;
+        const isText = TEXT_EXTS.has(extOf(file.name)) || file.type.startsWith('text/') || file.type === '';
+        if (!isText) return null;
+        const buf = await file.arrayBuffer();
+        if (buf.byteLength > MAX_BYTES) return null;
+        try{ return new TextDecoder('utf-8', {fatal:false}).decode(buf); }catch{ return null; }
+      }
+
+      async function runCollectorWithDirectoryPicker(maxDepth){
+        const dir = await window.showDirectoryPicker({mode:'read'});
+        const treeLines = [];
+        const contentChunks = [];
+        for await (const item of walkFSDirectoryHandle(dir, '', maxDepth)){
+          if (item.type === 'dir'){
+            treeLines.push(`📁 ${item.path}/`);
+          } else {
+            treeLines.push(`📄 ${item.path}`);
+            const txt = await readFileHandle(item.handle);
+            if (txt !== null){
+              contentChunks.push(`\n--- Contents of ${item.path} ---\n${txt}`);
+            }
+          }
+        }
+        return { tree: treeLines.join('\n'), contents: contentChunks.join('\n') };
+      }
+
+      function getFallbackInput(){
+        let input = document.getElementById('webkit-dir-input');
+        if (input) return input;
+        input = document.createElement('input');
+        input.type = 'file';
+        input.id = 'webkit-dir-input';
+        input.setAttribute('webkitdirectory','');
+        input.setAttribute('multiple','');
+        input.style.display = 'none';
+        document.body.appendChild(input);
+        return input;
+      }
+
+      async function runCollectorWithFileInput(maxDepth){
+        const input = getFallbackInput();
+        return new Promise(resolve=>{
+          input.onchange = ()=>{
+            const files = Array.from(input.files || []);
+            files.sort((a,b)=> (a.webkitRelativePath||a.name).localeCompare(b.webkitRelativePath||b.name));
+            const treeLines = [];
+            const contentChunks = [];
+            for (const file of files){
+              const rel = file.webkitRelativePath || file.name;
+              const parts = rel.split('/');
+              const depth = parts.length - 1;
+              if (depth > maxDepth) continue;
+              if (parts.some(p => SKIP_DIRS.has(p))) continue;
+              treeLines.push(`📄 ${rel}`);
+            }
+            (async ()=>{
+              for (const file of files){
+                const rel = file.webkitRelativePath || file.name;
+                const parts = rel.split('/');
+                const depth = parts.length - 1;
+                if (depth > maxDepth) continue;
+                if (parts.some(p => SKIP_DIRS.has(p))) continue;
+                const ext = extOf(file.name);
+                const isText = TEXT_EXTS.has(ext) || file.type.startsWith('text/') || file.type === '';
+                if (!isText) continue;
+                if (file.size > MAX_BYTES) continue;
+                const txt = await file.text();
+                contentChunks.push(`\n--- Contents of ${rel} ---\n${txt}`);
+              }
+              resolve({ tree: treeLines.join('\n'), contents: contentChunks.join('\n') });
+            })();
+          };
+          input.click();
+        });
+      }
+
+      async function runPrintCollector(maxDepth){
+        if ('showDirectoryPicker' in window){
+          try { return await runCollectorWithDirectoryPicker(maxDepth); }
+          catch(e){ /* cancel */ }
+        }
+        return await runCollectorWithFileInput(maxDepth);
+      }
+
+      runBtn?.addEventListener('click', async ()=>{
+        statusEl.textContent = 'Running…';
+        try {
+          const maxDepth = Math.max(0, Math.min(50, parseInt(depthInput.value || '2', 10)));
+          const { tree, contents } = await runPrintCollector(maxDepth);
+          treeEl.value = tree || '';
+          contentsEl.value = contents || '';
+          statusEl.textContent = 'Done.';
+        } catch (e) {
+          statusEl.textContent = (e && e.message) ? e.message : 'Failed.';
+        }
+      });
+
+      copyTreeBtn?.addEventListener('click', ()=>{ treeEl.select(); document.execCommand('copy'); });
+      copyContentsBtn?.addEventListener('click', ()=>{ contentsEl.select(); document.execCommand('copy'); });
+
+      function downloadText(filename, text){
+        const blob = new Blob([text||''], {type:'text/plain'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+        URL.revokeObjectURL(url);
+      }
+      dlTreeBtn?.addEventListener('click', ()=> downloadText('tree.txt', treeEl.value) );
+      dlContentsBtn?.addEventListener('click', ()=> downloadText('contents.txt', contentsEl.value) );
+
+      sendBtn?.addEventListener('click', async ()=>{
+        const payload = { tree: treeEl.value || '', contents: contentsEl.value || '' };
+        statusEl.textContent = 'Uploading…';
+        try{
+          const res = await fetch('/api/print/upload', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data?.message || 'Upload failed');
+          statusEl.textContent = data.message || 'Uploaded';
+          const chatInput = document.getElementById('chatInput');
+          if (chatInput && data.id){
+            chatInput.value = (chatInput.value ? chatInput.value + '\n' : '') + `[print:${data.id}]`;
+            chatInput.focus();
+          }
+        }catch(e){
+          statusEl.textContent = e.message || 'Upload failed';
+        }
+      });
+    })();
+  </script>
 {% endblock %}

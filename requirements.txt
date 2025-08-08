@@ -9,4 +9,4 @@ requests==2.31.0
 pillow
 openai
 python-docx
-
+pyqt6

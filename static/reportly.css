@@ -123,3 +123,201 @@ html, body {
 
 /* Utilities */
 .sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+
+/* Slim hero override */
+.page-hero,
+.page-hero.page-hero--slim {
+  height: auto !important;
+  min-height: 0 !important;          /* kills any global 60–80vh */
+  padding: 12px 0 8px !important;     /* tighter spacing */
+  scroll-margin-top: var(--nav-h,72px);
+}
+
+/* Use a narrow hero container so it doesn't span 1200px */
+.page-hero .hero-container {
+  max-width: 760px;                   /* <— was 1200px */
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+/* Tighter typography */
+.page-hero .hero-title {
+  margin: 0 0 4px;
+  font-size: clamp(22px, 3.2vw, 34px);
+  line-height: 1.2;
+}
+
+.page-hero .hero-sub {
+  margin: 0;
+  color: #9aa3af;
+  font-size: clamp(13px, 1.6vw, 16px);
+  line-height: 1.45;
+  max-width: 56ch;          /* prevent long lines */
+  text-align: center;       /* ✅ correct property */
+  margin-inline: auto;      /* center the narrower block itself */
+}
+
+  .dl-mac{
+    display:inline-flex;align-items:center;gap:.6rem;
+    padding:.85rem 1.1rem;border:1px solid #e5e7eb;border-radius:12px;
+    text-decoration:none;font-weight:600;color:#111827;background:#fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.06)
+  }
+  .dl-mac:hover{box-shadow:0 14px 34px rgba(0,0,0,.1)}
+  .dl-mac svg{width:20px;height:20px;fill:#111827}
+
+  /* --- Print Tool (dot_print / print.py UI) ------------------------------ */
+.box{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow);
+  max-width: 1200px;
+  margin: 1rem auto;
+}
+
+.box .row{
+  display:flex; align-items:center; gap:.65rem; flex-wrap:wrap;
+  margin: .5rem 0;
+}
+
+.box h3{ margin:0; font-size:1.05rem; letter-spacing:.2px; }
+#print-status{ color: var(--muted); font-size:.9rem; }
+
+/* Inputs in toolbar */
+#print-depth{
+  background:#0a0d12; color:var(--text);
+  border:1px solid #1b2432; border-radius:.45rem;
+  padding:.35rem .55rem; width:88px;
+}
+
+/* Button variant used in this tool */
+.btn.secondary{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+.btn.secondary:hover{
+  border-color: rgba(0,255,204,.45);
+  box-shadow: 0 6px 20px rgba(0,255,204,.15);
+}
+
+/* Details panels */
+.box details{
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0c0f14;
+  margin-top: .75rem;
+  overflow: hidden;
+}
+.box details + details{ margin-top: .6rem; }
+
+.box summary{
+  cursor: pointer;
+  list-style: none;
+  padding: .75rem .9rem;
+  font-weight: 700;
+  color: var(--text);
+  position: relative;
+  outline: none;
+  user-select: none;
+}
+.box summary::-webkit-details-marker{ display:none; }
+
+/* Fancy chevron */
+.box summary::after{
+  content: "";
+  position: absolute;
+  right: .9rem; top: 50%;
+  width: .6rem; height: .6rem;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: translateY(-60%) rotate(45deg);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.box details[open] summary::after{
+  transform: translateY(-30%) rotate(-135deg);
+  border-color: var(--accent);
+}
+
+/* Panel body */
+.box details > *:not(summary){
+  padding: .75rem .9rem .9rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Textareas (tree + contents) */
+#print-tree,
+#print-contents{
+  width: 100%;
+  min-height: clamp(200px, 38vh, 520px);
+  background: #0a0d12;
+  color: #e5e7eb;
+  border: 1px solid #1b2432;
+  border-radius: 10px;
+  padding: .75rem .85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13.5px;
+  line-height: 1.45;
+  resize: vertical;
+  white-space: pre-wrap;       /* keep wrapping for readability */
+  overflow: auto;
+}
+
+/* Buttons under textareas */
+.box .row button.btn.secondary{
+  padding: .5rem .7rem;
+}
+
+/* Hide any Grammarly / lt mirror artifacts if they leak through */
+lt-mirror, .lt-mirror, .lt-mirror__wrapper{ display:none !important; }
+
+/* Scrollbar cosmetics (WebKit) */
+#print-tree::-webkit-scrollbar,
+#print-contents::-webkit-scrollbar{
+  height: 10px; width: 10px;
+}
+#print-tree::-webkit-scrollbar-thumb,
+#print-contents::-webkit-scrollbar-thumb{
+  background: #1b2432; border-radius: 8px;
+  border: 2px solid #0a0d12;
+}
+#print-tree::-webkit-scrollbar-track,
+#print-contents::-webkit-scrollbar-track{
+  background: #0a0d12;
+}
+
+/* Responsive tweaks */
+@media (max-width: 800px){
+  .box{ padding: .9rem; }
+  #print-tree, #print-contents{ min-height: clamp(180px, 32vh, 440px); }
+  .box .row{ gap:.5rem; }
+}
+
+/* Small link hint at bottom */
+.box p.muted a{
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(0,255,204,.45);
+}
+.box p.muted a:hover{
+  border-bottom-color: var(--accent);
+}
+
+/* Layout helper */
+.row.between { justify-content: space-between; }
+
+/* Safer title selector than .row h3 */
+.box-title{
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: .2px;
+  color: #000;  /* or #000 if you truly want black */
+}
+
+/* If you really want to target h3s inside .row globally: */
+.row h3 { color: var(#0a0d12); }
+

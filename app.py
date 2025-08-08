@@ -1,9 +1,10 @@
 # app.py
 
-from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response, send_file
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response, send_file, Response
 import os, logging
 from dotenv import load_dotenv
 from datetime import datetime
+import uuid
 
 # Make sure your tracker.py defines BOTH of these:
 #   def handle_tracker_post(...):
@@ -357,7 +358,19 @@ import reportly
 def reportly_home():
     if request.method == "POST":
         return reportly.handle_upload()
-    return reportly.render_template("reportly.html", state=None)
+    # BAD: return reportly.render_template("reportly.html", state=None)
+    return render_template("reportly.html", state=None)
+
+
+@app.route("/reportly/download-current/<doc_id>", methods=["GET"])
+def reportly_download_current(doc_id):
+    return reportly.handle_download_current(doc_id)
+
+
+@app.get("/reportly/stream/<doc_id>")
+def reportly_stream(doc_id):
+    # stream Server-Sent Events from reportly.sse_stream
+    return Response(reportly.sse_stream(doc_id), mimetype="text/event-stream")
 
 @app.route("/reportly/edit/<doc_id>", methods=["GET"])
 def reportly_edit(doc_id):
@@ -384,6 +397,10 @@ def reportly_state_update(doc_id):
 def reportly_chat(doc_id):
     return reportly.handle_chat(doc_id)
 
+@app.route('/download')
+def download():
+    return render_template('downloads.html')
+
 
 @app.route('/debug/db-test')
 def debug_db_test():
@@ -404,6 +421,26 @@ def debug_db_test():
             'error_type': str(type(e)),
             'table_exists': False
         }), 500
+
+@app.post('/api/print/upload')
+def api_print_upload():
+    data = request.get_json(force=True, silent=True) or {}
+    tree = data.get('tree', '')
+    contents = data.get('contents', '')
+    if not tree and not contents:
+        return jsonify({"ok": False, "message": "No data"}), 400
+
+    uid = str(uuid.uuid4())
+    out_dir = os.path.join('outputs')
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, f'{uid}_print.txt')
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write("=== TREE ===\n")
+        f.write(tree)
+        f.write("\n\n=== CONTENTS ===\n")
+        f.write(contents)
+
+    return jsonify({"ok": True, "id": uid, "path": out_path, "message": "Saved"}), 200
 
 @app.route('/debug/test-delete/<int:review_id>')
 def debug_test_delete(review_id):
@@ -435,9 +472,154 @@ def debug_test_delete(review_id):
             'error': str(e),
             'error_type': str(type(e))
         }), 500
+    
+
+# app.py (add)
+from flask import request, jsonify, url_for  # drop current_app here
+
+PACKAGES_DIR = os.path.join(app.root_path, "static", "downloads", "live")
+BASES_DIR = os.path.join(app.root_path, "pack-bases")  # store base binaries here
+
+os.makedirs(PACKAGES_DIR, exist_ok=True)
+
+def make_payload_zip(out_zip_path, tree_text, contents_text, include_files=None, meta=None):
+    with zipfile.ZipFile(out_zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("tree.txt", tree_text or "")
+        z.writestr("contents.txt", contents_text or "")
+        z.writestr("manifest.json", json.dumps(meta or {}, indent=2))
+        for rel in include_files or []:
+            # security: keep inside allowed dirs
+            p = os.path.join(app.root_path, rel)
+            if os.path.isfile(p):
+                z.write(p, arcname=f"files/{os.path.basename(p)}")
+
+@app.post("/api/print/package")
+def build_user_package():
+    data = request.get_json(force=True)
+    tree = data.get("tree","")
+    contents = data.get("contents","")
+    include_files = data.get("include_files") or []
+    want_exe = bool(data.get("want_exe", True))
+    app_name = data.get("app_name", "Project Explorer")
+
+    uid = str(uuid.uuid4())
+    out_dir = os.path.join(PACKAGES_DIR, uid)
+    os.makedirs(out_dir, exist_ok=True)
+
+    payload = os.path.join(out_dir, "payload.zip")
+    make_payload_zip(payload, tree, contents, include_files, {"id": uid, "built_at": datetime.datetime.utcnow().isoformat()})
+
+    # make Windows SFX, mac .zip (or .dmg), linux .run/.zip
+    urls = {}
+
+    # WINDOWS SFX EXE
+    try:
+        exe = os.path.join(BASES_DIR, "windows", "Project Explorer.exe")    # prebuilt
+        sfx = os.path.join(BASES_DIR, "windows", "7zS.sfx")                 # SFX stub (from 7-Zip)
+        cfg = os.path.join(out_dir, "config.txt")
+        archive = os.path.join(out_dir, "package.7z")
+        out_exe = os.path.join(out_dir, f"{app_name.replace(' ','-')}-{uid}.exe")
+
+        # create 7z archive with base exe + payload
+        shutil.copy(exe, os.path.join(out_dir, "Project Explorer.exe"))
+        shutil.copy(payload, os.path.join(out_dir, "payload.zip"))
+        subprocess.check_call(["7z", "a", "-bd", "-mx=9", archive, "Project Explorer.exe", "payload.zip"], cwd=out_dir)
+
+        # SFX config: pass --payload to exe on run
+        with open(cfg, "w", encoding="utf-8") as f:
+            f.write(r''';!@Install@!UTF-8!
+Title=Project Explorer
+GUIMode="2"
+RunProgram="\"Project Explorer.exe\" --payload payload.zip"
+;!@InstallEnd@!
+''')
+        # cat sfx + config + archive -> exe
+        with open(out_exe, "wb") as out_f, \
+             open(sfx, "rb") as sfx_f, \
+             open(cfg, "rb") as cfg_f, \
+             open(archive, "rb") as arc_f:
+            out_f.write(sfx_f.read()); out_f.write(cfg_f.read()); out_f.write(arc_f.read())
+
+        urls["windows_exe"] = url_for('static', filename=f"downloads/live/{uid}/{os.path.basename(out_exe)}", _external=False)
+    except Exception as e:
+        current_app.logger.warning(f"Windows EXE build failed: {e}")
+
+    # MACOS: copy .app, drop payload in Resources, zip it
+    try:
+        app_src = os.path.join(BASES_DIR, "mac", "Project Explorer.app")
+        app_dst = os.path.join(out_dir, "Project Explorer.app")
+        if os.path.exists(app_dst):
+            shutil.rmtree(app_dst)
+        shutil.copytree(app_src, app_dst)
+        res_dir = os.path.join(app_dst, "Contents", "Resources")
+        os.makedirs(res_dir, exist_ok=True)
+        shutil.copy(payload, os.path.join(res_dir, "payload.zip"))
+        mac_zip = os.path.join(out_dir, f"{app_name.replace(' ','-')}-{uid}-mac.zip")
+        subprocess.check_call(["/usr/bin/zip","-r","-y", mac_zip, "Project Explorer.app"], cwd=out_dir)
+        urls["mac_zip"] = url_for('static', filename=f"downloads/live/{uid}/{os.path.basename(mac_zip)}", _external=False)
+    except Exception as e:
+        current_app.logger.warning(f"macOS ZIP build failed: {e}")
+
+    # LINUX: makeself .run (or zip)
+    try:
+        base_bin = os.path.join(BASES_DIR, "linux", "Project Explorer")  # prebuilt onefile
+        run_dir = os.path.join(out_dir, "linux_pkg")
+        os.makedirs(run_dir, exist_ok=True)
+        shutil.copy(base_bin, os.path.join(run_dir, "Project-Explorer"))
+        shutil.copy(payload, os.path.join(run_dir, "payload.zip"))
+        os.chmod(os.path.join(run_dir, "Project-Explorer"), 0o755)
+        # create run script that launches with payload
+        with open(os.path.join(run_dir, "run.sh"), "w") as f:
+            f.write("#!/usr/bin/env bash\nDIR=$(cd \"$(dirname \"$0\")\" && pwd)\n\"$DIR/Project-Explorer\" --payload \"$DIR/payload.zip\"\n")
+        os.chmod(os.path.join(run_dir, "run.sh"), 0o755)
+
+        # If makeself is installed:
+        out_run = os.path.join(out_dir, f"{app_name.replace(' ','-')}-{uid}.run")
+        try:
+            subprocess.check_call(["makeself", "--nox11", run_dir, out_run, "Project Explorer", "./run.sh"])
+            urls["linux_run"] = url_for('static', filename=f"downloads/live/{uid}/{os.path.basename(out_run)}", _external=False)
+        except Exception:
+            # fallback: zip
+            linux_zip = os.path.join(out_dir, f"{app_name.replace(' ','-')}-{uid}-linux.zip")
+            subprocess.check_call(["zip","-r", linux_zip, "."], cwd=run_dir)
+            urls["linux_zip"] = url_for('static', filename=f"downloads/live/{uid}/{os.path.basename(linux_zip)}", _external=False)
+    except Exception as e:
+        current_app.logger.warning(f"Linux build failed: {e}")
+
+    # also return plain payload zip (some users may just want the bundle)
+    urls["payload_zip"] = url_for('static', filename=f"downloads/live/{uid}/payload.zip", _external=False)
+    return jsonify({"ok": True, "id": uid, **urls}), 200
+
+    
+import argparse, zipfile, tempfile, os, json
+
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument("--payload", help="Path to payload zip")
+    return p.parse_args()
+
+def load_payload_if_any(args, app_obj):
+    if not args.payload or not os.path.exists(args.payload):
+        return
+    tmp = tempfile.mkdtemp(prefix="printpayload_")
+    with zipfile.ZipFile(args.payload, "r") as z:
+        z.extractall(tmp)
+    # Optional: if you saved special fields in manifest.json
+    man = os.path.join(tmp, "manifest.json")
+    tree = os.path.join(tmp, "tree.txt")
+    contents = os.path.join(tmp, "contents.txt")
+    try:
+        if os.path.exists(tree):
+            with open(tree, "r", encoding="utf-8", errors="replace") as f:
+                app_obj.tree_display.setPlainText(f.read())
+        if os.path.exists(contents):
+            with open(contents, "r", encoding="utf-8", errors="replace") as f:
+                app_obj.content_display.setPlainText(f.read())
+    except Exception:
+        pass
 
 if __name__ == '__main__':
     # Use PORT env variable for Railway, default to 5006 locally
-    port = int(os.environ.get('PORT', 5008))
+    port = int(os.environ.get('PORT', 5013))
     debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     app.run(host='0.0.0.0', port=port, debug=debug)
