@@ -3,27 +3,6 @@
 
 {% block extra_head %}
   <link rel="stylesheet" href="{{ url_for('static', filename='reportly.css') }}">
-  <style>
-    /* .print modal (light theme inside modal) */
-    #print-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999}
-    #print-modal .box{max-width:980px;margin:5vh auto;background:#fff;border-radius:14px;padding:16px;box-shadow:0 20px 90px rgba(0,0,0,.35)}
-    #print-modal .row{display:flex;gap:12px;align-items:center;margin:8px 0 12px}
-    #print-modal .row.between{justify-content:space-between}
-    #print-modal textarea{width:100%;height:220px;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
-    #print-modal details{margin-top:10px}
-    #print-modal summary{cursor:pointer}
-    .btn.secondary{background:#f4f4f5;border:1px solid #e5e7eb;color:#111827}
-    .btn.inline{margin-left:8px}
-    .muted{color:#6b7280}
-
-    /* PDF viewer */
-    .viewer-bar{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:8px}
-    .viewer-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .preview-wrap{position:relative}
-    .preview-frame{width:100%;height:760px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
-    .loading-veil{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.6)}
-    .loading-veil.on{display:flex}
-  </style>
 {% endblock %}
 
 {% block content %}
@@ -43,88 +22,123 @@
   <!-- LEFT: Chat + toggles + upload -->
   <div class="col left">
     <div class="card chat-card" data-aos="fade-up">
-      <h2 class="card-title">Chat</h2>
+      <div class="chat-card-inner">
+        <h2 class="card-title">Chat</h2>
 
-      {% if state %}
-      <div id="chatLog" class="chat-log">
-        {% for m in state.messages %}
-        <div class="chat-msg {{ 'user' if m.role=='user' else 'assistant' }}">
-          <div class="bubble">{{ m.content }}</div>
-        </div>
-        {% endfor %}
-      </div>
-
-      <form id="chatForm" class="chat-form" action="javascript:void(0);">
-        <div class="chat-row">
-          <textarea id="chatInput" name="message" rows="3"
-            placeholder="e.g., “Replace Executive Summary with 2 paragraphs and a 3-row table.”"></textarea>
+        {% if state %}
+        <div id="chatLog" class="chat-log">
+          {% for m in state.messages %}
+          <div class="chat-msg {{ 'user' if m.role=='user' else 'assistant' }}">
+            <div class="bubble">{{ m.content }}</div>
+          </div>
+          {% endfor %}
         </div>
 
-        <div class="quick-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin:.3rem 0 .2rem">
-          <button type="button" class="btn secondary" onclick="preset('Generate full report content aligned to the template.')">Generate all</button>
-          <button type="button" class="btn secondary" onclick="preset('Only update Executive Summary with risks and 3 recommendations.')">Only Exec Summary</button>
-          <button type="button" class="btn secondary" onclick="preset('Replace Findings section with a detailed analysis and a 5-row table.')">Replace Findings</button>
-        </div>
+        <div class="chat-input-wrap">
+          <form id="chatForm" class="chat-form" action="javascript:void(0);" novalidate>
+            <div class="composer">
+              <!-- Left: plus -->
+              <button type="button" class="icon-btn composer-plus" id="plus-menu-btn" aria-label="More actions">
+                <!-- plus icon -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
 
-        <div class="chat-controls">
-          <label>Length:
-            <select name="length_mode" id="lengthMode">
-              <option value="concise">Concise</option>
-              <option value="standard" selected>Standard</option>
-              <option value="detailed">Detailed</option>
-              <option value="custom">Custom (words)</option>
-            </select>
+              <!-- Textarea -->
+              <textarea id="chatInput" name="message" rows="1"
+                placeholder="Message Reportly…"></textarea>
+
+              <!-- Right: paperclip + send -->
+              <div class="composer-actions">
+                <button type="button" class="icon-btn" id="print-open" aria-label="Attach .print">
+                  <!-- paperclip -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21 15V7a5 5 0 0 0-10 0v10a3 3 0 0 0 6 0V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="icon-btn send-btn" type="submit" aria-label="Send" formnovalidate>
+                  <!-- send arrow -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Plus menu (anchored to the plus button) -->
+            <div class="plus-menu" id="plus-menu" hidden>
+              <div class="plus-menu-section">
+                <h3>Quick actions</h3>
+                <button type="button" class="btn secondary" onclick="preset('Generate full report content aligned to the template.')">Generate all</button>
+                <button type="button" class="btn secondary" onclick="preset('Only update Executive Summary with risks and 3 recommendations.')">Only Exec Summary</button>
+                <button type="button" class="btn secondary" onclick="preset('Replace Findings section with a detailed analysis and a 5-row table.')">Replace Findings</button>
+              </div>
+
+              <div class="plus-menu-section">
+                <h3>Settings</h3>
+                <label>Length:
+                  <select name="length_mode" id="lengthMode">
+                    <option value="concise">Concise</option>
+                    <option value="standard" selected>Standard</option>
+                    <option value="detailed">Detailed</option>
+                    <option value="custom">Custom (words)</option>
+                  </select>
+                </label>
+                <input type="number" min="50" step="50" id="customWords" name="custom_words"
+                      placeholder="Words" class="custom-words" style="display:none">
+                <label class="checkbox">
+                  <input type="checkbox" id="includeInContext" name="include_in_context" {% if state.include_in_context %}checked{% endif %}>
+                  Include uploaded document text as AI context
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="stripExisting" name="strip_existing" {% if state.strip_existing %}checked{% endif %}>
+                  Strip existing body when composing
+                </label>
+              </div>
+
+              <div class="plus-menu-section">
+                <h3>Upload / Replace Template (.docx)</h3>
+                <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                  <label class="file">
+                    <span class="file-cta">Choose .docx or .pdf</span>
+                    <input type="file" name="file" accept=".docx,.pdf" required>
+                  </label>
+                  <button class="btn" type="submit">Upload</button>
+                </form>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="chat-footer">
+          <a class="btn secondary" href="{{ url_for('reportly_download_current', doc_id=state.doc_id) }}">Download DOCX</a>
+          <a class="btn secondary" href="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?download=1">Download PDF</a>
+        </div>
+        {% else %}
+        <p class="muted">Upload a Word template to start. Then chat to update it with live preview.</p>
+        <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form">
+          <label class="file">
+            <span class="file-cta">Choose .docx or .pdf</span>
+            <input type="file" name="file" accept=".docx" required>
           </label>
-          <input type="number" min="50" step="50" id="customWords" name="custom_words" placeholder="Words" class="custom-words" style="display:none;width:110px;">
-          <button class="btn" type="submit">Apply</button>
-          <button type="button" id="print-open" class="btn secondary inline">.print</button>
-        </div>
-      </form>
-
-      <div class="divider"></div>
-
-      <form id="stateForm" class="state-form" action="javascript:void(0);">
-        <label class="checkbox">
-          <input type="checkbox" name="include_in_context" id="includeInContext"
-                 {% if state.include_in_context %}checked{% endif %}>
-          Include uploaded document text as AI context
-        </label>
-        <label class="checkbox">
-          <input type="checkbox" name="strip_existing" id="stripExisting"
-                 {% if state.strip_existing %}checked{% endif %}>
-          Strip existing body when composing (use “off” to <strong>edit in place</strong>)
-        </label>
-      </form>
-
-      <div class="divider"></div>
-
-      <h3 class="subheading">Upload / Replace Template (.docx or .pdf)</h3>
-      <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form under-chat">
-        <label class="file">
-          <span class="file-cta">Choose .docx or .pdf</span>
-          <input type="file" name="file" accept=".docx,.pdf" required>
-        </label>
-        <button class="btn" type="submit">Upload</button>
-      </form>
-
-      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
-        <a class="btn secondary" href="{{ url_for('reportly_download_current', doc_id=state.doc_id) }}">
-          Download current DOCX
-        </a>
-        <a class="btn secondary" href="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?download=1">
-          Download PDF ({{ state.basename if state and state.basename else (state.filename.rsplit('.',1)[0] if state and state.filename else 'document') }}.pdf)
-        </a>
+          <button class="btn" type="submit">Upload</button>
+        </form>
+        {% endif %}
       </div>
-      {% else %}
-      <p class="muted">Upload a Word or PDF template to start. Then chat to update it with live preview.</p>
-      <form action="{{ url_for('reportly_home') }}" method="post" enctype="multipart/form-data" class="upload-form">
-        <label class="file">
-          <span class="file-cta">Choose .docx or .pdf</span>
-          <input type="file" name="file" accept=".docx,.pdf" required>
-        </label>
-        <button class="btn" type="submit">Upload</button>
-      </form>
-      {% endif %}
+    </div>
+
+    <!-- LOGS: extracted sections -->
+    <div class="card" id="doc-logs" data-aos="fade-up" style="margin-top:12px;">
+      <div class="card-header row between">
+        <h2 class="card-title" style="margin:0;">Logs</h2>
+        {% if state %}
+          <small class="muted">doc: {{ state.filename }}</small>
+        {% endif %}
+      </div>
+      <div class="log-body">
+        <div class="log-line muted">waiting for document…</div>
+      </div>
     </div>
   </div>
 
@@ -133,42 +147,32 @@
     <div class="card sticky" data-aos="fade-up" data-aos-delay="50">
       <div class="editor-head">
         <h2 class="card-title">Preview (Exact, PDF)</h2>
+        <div class="preview-menu">
+          <button type="button" class="btn secondary menu-btn">☰</button>
+          <div class="preview-menu-content" style="display: none;">
+            <button id="accept-all" class="btn secondary" type="button">Accept all</button>
+            <button id="reject-all" class="btn secondary" type="button">Reject all</button>
+            <a class="btn secondary" id="pv-open" href="{{ url_for('reportly_preview', doc_id=state.doc_id) }}" target="_blank">Open</a>
+          </div>
+        </div>
       </div>
 
       {% if state %}
-      <!-- Review bar -->
+      <div class="viewer-bar">
+        <div class="muted">{{ state.filename }} → PDF</div>
+      </div>
+
+      <div class="preview-wrap">
+        <div class="loading-veil" id="pv-loading"><span class="muted">Rendering…</span></div>
+        <iframe id="pdfFrame" class="preview-frame" title="Exact Preview" src="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?_ts={{ range(1)|list|first }}"></iframe>
+      </div>
+      <p class="muted">New AI text is highlighted in green until you Accept.</p>
       <div class="review-bar">
         <div class="review-title">Pending changes</div>
         <div id="review-list" class="review-list empty">
           <span class="muted">No pending changes.</span>
         </div>
-        <div class="review-actions">
-          <button id="accept-all" class="btn secondary" type="button">Accept all</button>
-          <button id="reject-all" class="btn secondary" type="button">Reject all</button>
-        </div>
       </div>
-
-      <div class="viewer-bar">
-        <div class="muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%;">
-          {{ state.filename }} → PDF
-        </div>
-        <div class="viewer-controls">
-          <a class="btn secondary" id="pv-open" target="_blank"
-             href="{{ url_for('reportly_preview', doc_id=state.doc_id) }}">Open</a>
-        </div>
-      </div>
-
-      <div class="preview-wrap">
-        <div class="loading-veil" id="pv-loading"><span class="muted">Rendering…</span></div>
-        <iframe id="pdfFrame"
-                class="preview-frame"
-                title="Exact Preview"
-                src="{{ url_for('reportly_preview', doc_id=state.doc_id) }}?_ts={{ range(1)|list|first }}">
-        </iframe>
-      </div>
-      <p class="muted" style="margin-top:8px;">
-        New AI text is highlighted in green until you Accept. Reject removes it from the queue.
-      </p>
       {% else %}
       <div class="outline">
         <p class="muted">Upload a document to see its preview here.</p>
@@ -221,12 +225,122 @@
     {{ {'doc_id': (state.doc_id if state else None)} | tojson }}
   </script>
 </div>
+
 {% endblock %}
 
 {% block extra_scripts %}
   {% if state %}
   <script>
+    // Auto-grow textarea (like ChatGPT)
+    const composer = document.querySelector('.composer');
+    const ta = document.getElementById('chatInput');
+    const form = document.getElementById('chatForm');
+    const plusBtn = document.getElementById('plus-menu-btn');
+    const plusMenu = document.getElementById('plus-menu');
+    const lengthMode = document.getElementById('lengthMode');
+    const customWords = document.getElementById('customWords');
     const docId = "{{ state.doc_id }}";
+
+    // Auto-resize textarea
+    function autoresize() {
+      if (!ta) return;
+      ta.style.height = '0px';
+      const h = Math.min(ta.scrollHeight, 220);
+      ta.style.height = h + 'px';
+    }
+    ta?.addEventListener('input', autoresize);
+    window.addEventListener('load', autoresize);
+
+    // Enter to send, Shift+Enter for newline
+    ta?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit(document.querySelector('.send-btn'));
+      }
+    });
+
+    // Form submission
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = (ta.value || '').trim();
+      if (!msg) return;
+
+      const chatLog = document.getElementById('chatLog');
+      function appendMsg(role, content) {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg ' + (role === 'user' ? 'user' : 'assistant');
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = content;
+        wrap.appendChild(bubble);
+        chatLog.appendChild(wrap);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      appendMsg('user', msg);
+      const fd = new FormData();
+      fd.append('message', msg);
+      fd.append('length_mode', lengthMode.value);
+      if (customWords.value && lengthMode.value === 'custom') {
+        fd.append('custom_words', customWords.value);
+      }
+
+      ta.value = '';
+      autoresize();
+      try {
+        const res = await fetch(`/reportly/chat/${docId}`, { method: 'POST', body: fd });
+        const resp = await res.json();
+        if (!res.ok) throw new Error(resp?.error || 'HTTP ' + res.status);
+        appendMsg('assistant', resp.assistant_message || 'Proposed changes.');
+      } catch (err) {
+        appendMsg('assistant', '⚠︎ ' + err.message);
+      }
+    });
+
+    // Plus menu toggle + click-away close
+    plusBtn?.addEventListener('click', () => {
+      const hidden = plusMenu.hasAttribute('hidden');
+      if (hidden) plusMenu.removeAttribute('hidden');
+      else plusMenu.setAttribute('hidden', '');
+    });
+    document.addEventListener('click', (e) => {
+      if (!plusMenu || !plusBtn) return;
+      if (!plusMenu.contains(e.target) && !plusBtn.contains(e.target)) {
+        plusMenu.setAttribute('hidden', '');
+      }
+    });
+
+    // Show/hide custom words input
+    function updateCustom() {
+      if (customWords) customWords.style.display = (lengthMode?.value === 'custom' ? 'block' : 'none');
+    }
+    lengthMode?.addEventListener('change', updateCustom);
+    updateCustom();
+
+    // Focus textarea on load
+    ta?.focus();
+  </script>
+  {% endif %}
+
+  <script>
+    (function(){
+      // Preview menu toggle
+      const previewMenuBtn = document.querySelector('.preview-menu .menu-btn');
+      const previewMenuContent = document.querySelector('.preview-menu-content');
+      previewMenuBtn?.addEventListener('click', () => {
+        previewMenuContent.style.display = previewMenuContent.style.display === 'none' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!previewMenuContent.contains(e.target) && !previewMenuBtn.contains(e.target)) {
+          previewMenuContent.style.display = 'none';
+        }
+      });
+    })();
+  </script>
+
+  {% if state %}
+  <script>
+    const docIdPreset = "{{ state.doc_id }}";
     function preset(text){
       const ta = document.getElementById('chatInput');
       ta.value = text; ta.focus();
@@ -602,4 +716,175 @@
       });
     })();
   </script>
+
+  {% if state %}
+  <script>
+  (() => {
+    if (!document.body.classList.contains('has-doc')) return;
+    const grid = document.querySelector('.row.chat-layout');
+    if (!grid) return;
+
+    // create gutter between the two .col panes
+    const cols = Array.from(grid.children).filter(n => n.classList?.contains('col'));
+    if (cols.length < 2) return;
+    let gutter = document.getElementById('split-gutter');
+    if (!gutter){
+      gutter = document.createElement('div');
+      gutter.id = 'split-gutter';
+      gutter.className = 'gutter';
+      gutter.setAttribute('role','separator');
+      gutter.setAttribute('aria-orientation','vertical');
+      cols[0].after(gutter);
+    }
+
+    // persist split in CSS var --split
+    const KEY = 'reportly-split-v1';
+    const clamp = (v,a,b)=> Math.min(b, Math.max(a,v));
+    const setSplit = pct => {
+      const v = clamp(Math.round(pct), 25, 75);
+      document.documentElement.style.setProperty('--split', String(v));
+      localStorage.setItem(KEY, String(v));
+    };
+    const saved = Number(localStorage.getItem(KEY));
+    if (!Number.isNaN(saved)) setSplit(saved);
+
+    // drag handlers
+    let dragging = false;
+    const start = () => { dragging = true; gutter.classList.add('is-dragging'); document.body.style.userSelect='none'; };
+    const move = (clientX) => {
+      const r = grid.getBoundingClientRect();
+      setSplit(((clientX - r.left) / r.width) * 100);
+    };
+    const stop = () => { if(!dragging) return; dragging=false; gutter.classList.remove('is-dragging'); document.body.style.userSelect=''; };
+
+    gutter.addEventListener('mousedown', e => { start(); move(e.clientX); });
+    window.addEventListener('mousemove', e => { if (dragging) move(e.clientX); });
+    window.addEventListener('mouseup', stop);
+
+    gutter.addEventListener('touchstart', e => { start(); move(e.touches[0].clientX); }, {passive:true});
+    window.addEventListener('touchmove', e => { if (dragging){ e.preventDefault(); move(e.touches[0].clientX); }}, {passive:false});
+    window.addEventListener('touchend', stop);
+
+    // keyboard nudge
+    gutter.tabIndex = 0;
+    gutter.addEventListener('keydown', e => {
+      const cur = Number(getComputedStyle(document.documentElement).getPropertyValue('--split')) || 58;
+      const step = e.shiftKey ? 5 : 1;
+      if (e.key === 'ArrowLeft'){ setSplit(cur - step); e.preventDefault(); }
+      if (e.key === 'ArrowRight'){ setSplit(cur + step); e.preventDefault(); }
+    });
+  })();
+  </script>
+  {% endif %}
+
+  <script>
+    // Pick whatever selector matches your fixed top nav:
+    const nav = document.querySelector('.reportly-header, .navbar, header');
+    if (nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+  </script>
+
+  <script>
+  (function(){
+    const grid = document.querySelector('.row.chat-layout');
+    if (!grid) return;
+
+    const left = grid.querySelector('.col.left');
+    const right = grid.querySelector('.col.right');
+    if (!left || !right) return;
+
+    // Insert gutter as the middle grid cell
+    let gutter = grid.querySelector('#split-gutter');
+    if (!gutter){
+      gutter = document.createElement('div');
+      gutter.id = 'split-gutter';
+      gutter.className = 'gutter';
+      gutter.setAttribute('role','separator');
+      gutter.setAttribute('aria-orientation','vertical');
+      left.after(gutter);
+    }
+
+    const KEY = 'reportly-split-v2';
+    const setSplit = (pct) => {
+      const v = Math.max(25, Math.min(75, Math.round(pct))); // clamp 25–75%
+      document.documentElement.style.setProperty('--split', v + '%');
+      try { localStorage.setItem(KEY, String(v)); } catch {}
+    };
+
+    // Restore saved split
+    const saved = parseInt(localStorage.getItem(KEY), 10);
+    if (!isNaN(saved)) setSplit(saved);
+
+    // Drag handlers
+    const onMove = (clientX) => {
+      const r = grid.getBoundingClientRect();
+      const pct = ((clientX - r.left) / r.width) * 100;
+      setSplit(pct);
+    };
+
+    let dragging = false;
+    const start = (clientX) => { dragging = true; gutter.classList.add('is-dragging'); document.body.style.userSelect='none'; onMove(clientX); };
+    const stop  = () => { if (!dragging) return; dragging=false; gutter.classList.remove('is-dragging'); document.body.style.userSelect=''; };
+
+    gutter.addEventListener('mousedown', e => start(e.clientX));
+    window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
+    window.addEventListener('mouseup', stop);
+
+    gutter.addEventListener('touchstart', e => start(e.touches[0].clientX), {passive:true});
+    window.addEventListener('touchmove', e => { if (dragging){ e.preventDefault(); onMove(e.touches[0].clientX); }}, {passive:false});
+    window.addEventListener('touchend', stop);
+
+    // Keyboard nudge (accessible)
+    gutter.tabIndex = 0;
+    gutter.addEventListener('keydown', e => {
+      const cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--split'), 10) || 58;
+      const step = e.shiftKey ? 5 : 1;
+      if (e.key === 'ArrowLeft')  { setSplit(cur - step); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { setSplit(cur + step); e.preventDefault(); }
+    });
+  })();
+  </script>
+
+  {% if state %}
+  <script>
+(function(){
+  const docId = "{{ state.doc_id if state else '' }}";
+  const bodyEl = document.querySelector('#doc-logs .log-body');
+  if (!docId || !bodyEl) return;
+
+  async function loadSections(){
+    try{
+      const r = await fetch(`/reportly/structure/${docId}`);
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || 'Failed to load sections');
+      const items = j.sections || [];
+      if (!items.length){
+        bodyEl.innerHTML = '<div class="log-line muted">No headings found. Using heuristics and preamble block.</div>';
+        return;
+      }
+      bodyEl.innerHTML = items.map(s => {
+        return `<div class="log-line">
+          <span class="lvl">H${s.level}</span>
+          <strong>${s.title.replace(/</g,'&lt;')}</strong>
+          <span class="meta">· ${s.paragraphs} ¶ · ${s.tables} tbl</span>
+        </div>`;
+      }).join('');
+    }catch(e){
+      bodyEl.innerHTML = `<div class="log-line">⚠ ${e.message || e}</div>`;
+    }
+  }
+
+  // initial
+  loadSections();
+
+  // refresh when preview rebuilds (often means structure changed after Accept)
+  if (window.EventSource){
+    const es = new EventSource(`/reportly/stream/${docId}`);
+    es.addEventListener("update", ev => {
+      try { const d = JSON.parse(ev.data||"{}"); if (d.preview==="ready") loadSections(); } catch {}
+    });
+  }
+})();
+  </script>
+  {% endif %}
+
 {% endblock %}
