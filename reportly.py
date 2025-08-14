@@ -9,18 +9,25 @@ from docx.oxml import OxmlElement
 from docx.text.paragraph import Paragraph
 from docx.shared import RGBColor
 import uuid, json, os, requests, re, time, shutil
+import subprocess
+import tempfile, os
+# --- Robust section & table parsing -----------------------------------------
+import difflib
+from docx.table import Table as DocxTable
+from docx.oxml.ns import qn
+
 
 # =========================
 # OpenAI client (env)
 # =========================
-OPENAI_MODEL = "gpt-3.5-turbo"
-OPENAI_API_KEY = os.environ.get("OpenAI_API_KEY")
+OPENAI_MODEL = "gpt-4"
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 _client = None
 def _get_openai_client():
     global _client
     if _client is None:
-        _client = OpenAI(api_key=OPENAI_API_KEY)
+        _client = OpenAI(api_key=OPENAI_API_KEY, max_retries=1)
     return _client
 
 # =========================
@@ -102,70 +109,90 @@ def _list_headings(doc: Document):
             out.append((i, _heading_level(p), txt, _key(txt)))
     return out
 
-def _find_anchor_index(doc: Document, title: str, level: int, approx_order_index):
-    """
-    Locate anchor heading by:
-      1) exact normalized title key
-      2) same-level ordinal (approx_order_index)
-      3) last heading
-    """
-    headings = _list_headings(doc)
-    k = _key(title)
-    for idx, lvl, txt, kk in headings:
-        if kk == k:
-            return idx, lvl
-    if approx_order_index is not None:
-        same = [h for h in headings if h[1] == level]
-        if same:
-            j = min(approx_order_index, len(same)-1)
-            return same[j][0], same[j][1]
-    return (headings[-1][0], headings[-1][1]) if headings else (-1, 99)
+HEADING_STYLE_PREFIXES = ("heading", "encabezado", "überschrift", "rubrique", "titre", "título")
 
-def extract_template_structure(doc: Document):
-    """Collect H1/H2/H3 sections only (no body text)."""
-    sections = []
-    for p in doc.paragraphs:
-        text = _normalize_ws(p.text)
-        if not text:
-            continue
-        style_lower = _para_style_name(p)
-        level = 1 if "heading 1" in style_lower else 2 if "heading 2" in style_lower else 3 if "heading 3" in style_lower else None
-        if level:
-            sections.append({
-                "id": str(uuid.uuid4()),
-                "title": text,
-                "level": level,
-                "style_name": p.style.name if p.style else "",
-                "blocks": []
-            })
+def _is_heading_style(p):
+    s = _para_style_name(p)
+    if not s:
+        return False
+    s = s.lower()
+    return any(s.startswith(hs) for hs in HEADING_STYLE_PREFIXES) or re.search(r"\bheading\s*[1-6]\b", s)
+
+def _infer_heading_level(p):
+    s = _para_style_name(p)
+    for lvl in range(1, 7):
+        if f"heading {lvl}" in s:
+            return lvl
+    txt = _normalize_ws(p.text)
+    if re.match(r"^\d+(\.\d+)*\s+\S", txt) or txt.endswith(":") or (txt.isupper() and 3 <= len(txt) <= 80):
+        return 2
+    return 99
+
+def _iter_block_items(document):
+    parent_elm = document._element.body
+    for child in parent_elm.iterchildren():
+        tag = child.tag.rsplit('}', 1)[-1]
+        if tag == "p":
+            yield Paragraph(child, document)
+        elif tag == "tbl":
+            yield DocxTable(child, document)
+
+def _table_to_json(tbl: DocxTable):
+    headers, rows = [], []
+    if tbl.rows:
+        first = [c.text.strip() for c in tbl.rows[0].cells]
+        looks_header = any(first) and all(len(h) <= 80 for h in first)
+        if looks_header:
+            headers = first
+            data_rows = tbl.rows[1:]
+        else:
+            data_rows = tbl.rows
+        for r in data_rows:
+            rows.append([c.text.strip() for c in r.cells])
+    return {"type": "table", "headers": headers, "rows": rows}
+
+def _para_to_block(p: Paragraph):
+    t = _normalize_ws(p.text)
+    if not t:
+        return None
+    style = _para_style_name(p)
+    if "list" in style:
+        mt = re.match(r"^(?:[\u2022\-\*]|\d+\.)\s+(.*)$", t)
+        core = mt.group(1) if mt else t
+        kind = "number" if re.match(r"^\d+\.", t) else "bullet"
+        return {"type": "list", "style": kind, "items": [core]}
+    return {"type": "paragraph", "text": t}
+
+def parse_docx_sections_full(doc: Document):
+    sections, current = [], None
+    def ensure_current(title="Preamble", level=1):
+        nonlocal current
+        if current is None:
+            current = {"id": str(uuid.uuid4()), "title": title, "level": level, "style_name": "Heading 1", "blocks": []}
+            sections.append(current)
+
+    for item in _iter_block_items(doc):
+        if isinstance(item, Paragraph):
+            if _is_heading_style(item):
+                lvl = _infer_heading_level(item)
+                title = _normalize_ws(item.text) or f"Section {len(sections)+1}"
+                current = {"id": str(uuid.uuid4()), "title": title, "level": min(lvl, 6), "style_name": item.style.name if item.style else "", "blocks": []}
+                sections.append(current)
+            else:
+                ensure_current()
+                blk = _para_to_block(item)
+                if blk:
+                    if blk["type"] == "list" and current["blocks"] and current["blocks"][-1]["type"] == "list" and current["blocks"][-1]["style"] == blk["style"]:
+                        current["blocks"][-1]["items"].extend(blk["items"])
+                    else:
+                        current["blocks"].append(blk)
+        else:  # table
+            ensure_current()
+            current["blocks"].append(_table_to_json(item))
+
     if not sections:
-        for title in ["Executive Summary", "Scope", "Findings", "Risks", "Recommendations"]:
-            sections.append({
-                "id": str(uuid.uuid4()),
-                "title": title,
-                "level": 1,
-                "style_name": "Heading 1",
-                "blocks": []
-            })
+        sections.append({"id": str(uuid.uuid4()), "title": "Document", "level": 1, "style_name": "Heading 1", "blocks": []})
     return sections
-
-def doc_to_fast_html(doc: Document):
-    parts = []
-    for p in doc.paragraphs:
-        text = _normalize_ws(p.text)
-        if not text:
-            continue
-        s = _para_style_name(p)
-        if "heading 1" in s: parts.append(f"<h1>{text}</h1>")
-        elif "heading 2" in s: parts.append(f"<h2>{text}</h2>")
-        elif "heading 3" in s: parts.append(f"<h3>{text}</h3>")
-        else: parts.append(f"<p>{text}</p>")
-    return "\n".join(parts)
-
-def clear_document_body(doc: Document):
-    body = doc._element.body
-    for child in list(body):
-        body.remove(child)
 
 # =========================
 # Compose (from scratch)
@@ -192,50 +219,87 @@ def compose_from_structure(template_path: Path, structure: list, outfile: Path, 
                     p = doc.add_paragraph(text)
                     try: p.style = doc.styles["Normal"]
                     except KeyError: pass
-
             elif btype == "list":
-                items = block.get("items", [])
-                style = block.get("style", "bullet")
+                items = block.get("items", []); style = block.get("style", "bullet")
                 for idx, it in enumerate(items):
                     txt = _normalize_ws(it)
                     if not txt: continue
                     p = doc.add_paragraph(f"{idx+1}. {txt}" if style == "number" else txt)
                     try: p.style = doc.styles["List Paragraph"]
                     except KeyError: pass
-
             elif btype == "table":
-                headers = block.get("headers", [])
-                rows = block.get("rows", [])
+                headers = block.get("headers", []); rows = block.get("rows", [])
                 cols = len(headers) if headers else (len(rows[0]) if rows else 0)
                 if cols > 0:
                     t = doc.add_table(rows=1 if headers else 0, cols=cols)
                     if headers:
-                        for i, h in enumerate(headers[:cols]):
-                            t.rows[0].cells[i].text = _normalize_ws(h)
+                        for i, h in enumerate(headers[:cols]): t.rows[0].cells[i].text = _normalize_ws(h)
                     for r in rows:
                         row_cells = t.add_row().cells
-                        for i, cell_val in enumerate(r[:cols]):
-                            row_cells[i].text = _normalize_ws(cell_val)
+                        for i, cell_val in enumerate(r[:cols]): row_cells[i].text = _normalize_ws(cell_val)
 
         if si < len(structure) - 1:
-            doc.add_paragraph("")  # spacer
-
+            doc.add_paragraph("")
     doc.save(str(outfile))
 
 # =========================
 # Edit-in-place (ordinal-aware)
 # =========================
+def _find_anchor_index(doc: Document, heading_text: str, level: int, approx_order_index):
+    heads = _list_headings(doc)
+    if not heads:
+        return -1, 99
+
+    key = _key(heading_text or "")
+    # 1) exact key match
+    for idx, lvl, txt, kk in heads:
+        if kk == key:
+            return idx, lvl
+
+    # 2) fuzzy title match
+    best = (-1, 0.0, 99)
+    for idx, lvl, txt, kk in heads:
+        score = difflib.SequenceMatcher(None, txt.lower(), (heading_text or "").lower()).ratio()
+        if score > best[1]:
+            best = (idx, score, lvl)
+    if best[0] != -1 and best[1] >= 0.72:
+        return best[0], best[2]
+
+    # 3) same-level ordinal
+    if approx_order_index is not None:
+        same = [h for h in heads if h[1] == level]
+        if same:
+            j = min(approx_order_index, len(same)-1)
+            return same[j][0], same[j][1]
+
+    return -1, 99
+
+def _insert_missing_heading(doc: Document, title: str, level: int) -> Paragraph:
+    anchor_ref = doc.paragraphs[-1] if doc.paragraphs else doc.add_paragraph()
+    new_p = OxmlElement("w:p")
+    anchor_ref._element.addnext(new_p)
+    hp = Paragraph(new_p, anchor_ref._parent)
+    hp.text = title or "New Section"
+    try:
+        hp.style = doc.styles["Heading 1" if level==1 else "Heading 2" if level==2 else "Heading 3"]
+    except Exception:
+        pass
+    return hp
+
 def replace_section_content_in_place(doc: Document, heading_text: str, blocks: list, approx_order_index=None, level_hint: int | None = None):
-    """
-    Replace content under a heading, anchored by fuzzy title and same-level ordinal.
-    """
     level_for_search = level_hint if level_hint else 1
     anchor_idx, _ = _find_anchor_index(doc, heading_text, level=level_for_search, approx_order_index=approx_order_index)
+
     if anchor_idx == -1:
-        anchor = doc.paragraphs[-1] if doc.paragraphs else doc.add_paragraph()
+        anchor = _insert_missing_heading(doc, heading_text, level_for_search)
+        # Find the new heading by text, fallback to last paragraph
+        anchor_idx = next(
+            (i for i, p in enumerate(doc.paragraphs) if _normalize_ws(p.text) == _normalize_ws(heading_text)),
+            len(doc.paragraphs) - 1
+        )
+        anchor = doc.paragraphs[anchor_idx]
     else:
         anchor = doc.paragraphs[anchor_idx]
-        # remove content after anchor until next heading of <= level(anchor)
         body = anchor._p.getparent()
         el = anchor._p.getnext()
         while el is not None:
@@ -249,62 +313,44 @@ def replace_section_content_in_place(doc: Document, heading_text: str, blocks: l
                 nxt = el.getnext(); body.remove(el); el = nxt; continue
             el = el.getnext()
 
-    # insert new content after anchor
     insert_after = anchor
     for block in blocks:
         btype = block.get("type")
-
         if btype == "paragraph":
-            p = _insert_par_after(insert_after)
-            p.text = _normalize_ws(block.get("text", ""))
-            try: p.style = doc.styles["Normal"]
-            except KeyError: pass
+            p = _insert_par_after(insert_after); p.text = _normalize_ws(block.get("text",""))
+            try:
+                p.style = doc.styles["Normal"]
+            except KeyError:
+                pass
             insert_after = p
-
         elif btype == "list":
-            items = block.get("items", [])
-            style = block.get("style", "bullet")
+            items = block.get("items", []); style = block.get("style", "bullet")
             for idx, it in enumerate(items):
                 p = _insert_par_after(insert_after)
                 p.text = f"{idx+1}. {_normalize_ws(it)}" if style == "number" else _normalize_ws(it)
-                try: p.style = doc.styles["List Paragraph"]
-                except KeyError: pass
+                try:
+                    p.style = doc.styles["List Paragraph"]
+                except KeyError:
+                    pass
                 insert_after = p
-
         elif btype == "table":
-            headers = block.get("headers", [])
-            rows = block.get("rows", [])
+            headers = block.get("headers", []); rows = block.get("rows", [])
             cols = len(headers) if headers else (len(rows[0]) if rows else 0)
             if cols > 0:
                 t = doc.add_table(rows=1 if headers else 0, cols=cols)
                 if headers:
-                    for i, h in enumerate(headers[:cols]):
-                        t.rows[0].cells[i].text = _normalize_ws(h)
+                    for i, h in enumerate(headers[:cols]): t.rows[0].cells[i].text = _normalize_ws(h)
                 for r in rows:
                     row_cells = t.add_row().cells
-                    for i, cell_val in enumerate(r[:cols]):
-                        row_cells[i].text = _normalize_ws(cell_val)
-                tbl_el = t._tbl
-                body = insert_after._p.getparent()
-                body.remove(tbl_el)
-                insert_after._element.addnext(tbl_el)
+                    for i, cell_val in enumerate(r[:cols]): row_cells[i].text = _normalize_ws(cell_val)
+                tbl_el = t._tbl; body = insert_after._p.getparent(); body.remove(tbl_el); insert_after._element.addnext(tbl_el)
                 insert_after = _insert_par_after(insert_after)
 
-# =========================
-# REVIEW: staged changes (preview-only until accepted)
-# =========================
-def _ensure_pending(state: dict):
-    if "pending" not in state or not isinstance(state["pending"], list):
-        state["pending"] = []
+    return anchor_idx
 
 def _apply_blocks_with_marker(doc: Document, title: str, blocks: list, approx_order_index, level_hint: int | None):
-    """
-    Apply blocks in-place and color newly inserted paragraphs green for preview.
-    """
-    replace_section_content_in_place(doc, title, blocks, approx_order_index=approx_order_index, level_hint=level_hint)
-    # color paragraphs after anchor until next heading
-    idx, _ = _find_anchor_index(doc, title, level=level_hint or 1, approx_order_index=approx_order_index)
-    if idx == -1: return
+    idx = replace_section_content_in_place(doc, title, blocks, approx_order_index=approx_order_index, level_hint=level_hint)
+    if idx < 0: return
     anchor = doc.paragraphs[idx]
     el = anchor._p.getnext()
     while el is not None:
@@ -313,10 +359,8 @@ def _apply_blocks_with_marker(doc: Document, title: str, blocks: list, approx_or
             temp = Paragraph(el, anchor._parent)
             if _is_heading(temp): break
             for run in temp.runs:
-                try:
-                    run.font.color.rgb = RGBColor(0x0A, 0xA3, 0x68)  # green highlight
-                except Exception:
-                    pass
+                try: run.font.color.rgb = RGBColor(0x0A, 0xA3, 0x68)
+                except Exception: pass
             el = el.getnext(); continue
         if tag == "tbl":
             el = el.getnext(); continue
@@ -363,33 +407,40 @@ def build_preview_pdf(doc_id: str) -> Path:
 # =========================
 # Conversions
 # =========================
+# reportly.py
 def _pdf_to_docx_local(pdf_path: Path, out_docx: Path):
-    import subprocess, shlex
+    import subprocess, time
     out_docx.parent.mkdir(parents=True, exist_ok=True)
-    cmd = (
-        f'soffice --headless --convert-to docx --outdir {shlex.quote(str(out_docx.parent))} '
-        f'{shlex.quote(str(pdf_path))}'
-    )
-    proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    before = {p.name for p in out_docx.parent.glob("*.docx")}
+
+    cmd = [
+        "soffice","--headless","--convert-to","docx",
+        "--outdir", str(out_docx.parent), str(pdf_path)
+    ]
+    proc = subprocess.run(cmd, capture_output=True, check=False)
     if proc.returncode != 0:
-        raise RuntimeError(proc.stderr.decode('utf-8', 'ignore') or proc.stdout.decode('utf-8', 'ignore'))
-    produced = pdf_path.with_suffix(".docx")
-    produced_path = out_docx.parent / produced.name
-    if produced_path != out_docx:
-        if out_docx.exists(): out_docx.unlink()
-        produced_path.rename(out_docx)
+        raise RuntimeError(proc.stderr.decode('utf-8','ignore') or proc.stdout.decode('utf-8','ignore'))
+
+    time.sleep(0.2)  # FS settle
+    after = [p for p in out_docx.parent.glob("*.docx") if p.name not in before]
+    if not after:
+        raise FileNotFoundError("Conversion succeeded but no DOCX appeared.")
+    # prefer same-stem, else newest
+    cand = sorted(after, key=lambda p: p.stat().st_mtime, reverse=True)
+    target = next((p for p in cand if p.stem.startswith(Path(pdf_path).stem)), cand[0])
+    if out_docx.exists(): out_docx.unlink()
+    target.rename(out_docx)
     return out_docx
 
 def _docx_to_pdf_local(docx_path: Path, out_pdf: Path):
-    import subprocess, shlex
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    cmd = (
-        f'soffice --headless --convert-to pdf --outdir {shlex.quote(str(out_pdf.parent))} '
-        f'{shlex.quote(str(docx_path))}'
-    )
-    proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = [
+        "soffice","--headless","--convert-to","pdf",
+        "--outdir", str(out_pdf.parent), str(docx_path)
+    ]
+    proc = subprocess.run(cmd, capture_output=True, check=False)
     if proc.returncode != 0:
-        raise RuntimeError(proc.stderr.decode('utf-8', 'ignore') or proc.stdout.decode('utf-8', 'ignore'))
+        raise RuntimeError(proc.stderr.decode('utf-8','ignore') or proc.stdout.decode('utf-8','ignore'))
     produced = docx_path.with_suffix(".pdf")
     produced_path = out_pdf.parent / produced.name
     if produced_path != out_pdf:
@@ -471,29 +522,63 @@ def _repair_json_loose(s: str) -> str:
     return s
 
 def call_openai_structured(messages, timeout=120):
+    # helper: build a realistic fallback using the provided template
+    def _fallback():
+        structure, instruction, length_mode = _extract_template_and_meta(messages)
+        return _generate_demo_sections(structure, instruction, length_mode)
+
+    # If there is no key at all, still give usable staged edits
     if not OPENAI_API_KEY:
-        template = messages[-1].get("template_structure", [])
-        return {"sections": [{"id": s["id"], "title": s["title"], "level": s["level"], "blocks": [{"type":"paragraph","text":f"Placeholder content for {s['title']}."}]} for s in template]}
-    client = _get_openai_client()
-    safe_messages = []
-    for m in messages:
-        role = m.get("role", "user")
-        content = m.get("content", "")
-        if not isinstance(content, str):
-            content = json.dumps(content, ensure_ascii=False)
-        safe_messages.append({"role": role, "content": content})
-    resp = client.chat.completions.create(model=OPENAI_MODEL, messages=safe_messages, temperature=0.2, max_tokens=2000)
-    content = resp.choices[0].message.content
+        return _fallback()
+
+    # Try the real call; on ANY null/empty/invalid result, auto-fallback
     try:
-        return json.loads(content)
-    except Exception:
+        client = _get_openai_client()
+        safe_messages = []
+        for m in messages:
+            role = m.get("role", "user")
+            content = m.get("content", "")
+            if not isinstance(content, str):
+                content = json.dumps(content, ensure_ascii=False)
+            safe_messages.append({"role": role, "content": content})
+
+        resp = client.chat.completions.create(
+            model=OPENAI_MODEL, messages=safe_messages,
+            temperature=0.2, max_tokens=2000, timeout=timeout
+        )
+
+        content = None
+        if resp and getattr(resp, "choices", None):
+            msg = resp.choices[0].message
+            content = getattr(msg, "content", None)
+
+        # Null, tool-only, or empty payload → fallback
+        if _is_nullish_content(content):
+            return _fallback()
+
+        # Parse JSON; if busted or empty → fallback
         try:
-            return json.loads(_repair_json_loose(content))
+            obj = json.loads(content)
         except Exception:
-            m = re.search(r"\{[\s\S]*\}", content)
-            if m:
-                return json.loads(_repair_json_loose(m.group(0)))
-            raise ValueError("Model did not return valid JSON.")
+            try:
+                obj = json.loads(_repair_json_loose(content))
+            except Exception:
+                m = re.search(r"\{[\s\S]*\}", content or "")
+                if not m:
+                    return _fallback()
+                try:
+                    obj = json.loads(_repair_json_loose(m.group(0)))
+                except Exception:
+                    return _fallback()
+
+        if not obj or not isinstance(obj, dict) or not obj.get("sections"):
+            return _fallback()
+
+        return obj
+
+    except Exception:
+        # Network errors, API errors, etc. → fallback so UX keeps flowing
+        return _fallback()
 
 def pick_target_sections(user_text: str, structure: list):
     text = (user_text or "").lower()
@@ -509,8 +594,29 @@ def pick_target_sections(user_text: str, structure: list):
 # =========================
 # State helpers
 # =========================
+
+def _doc_to_fast_html(doc):
+    """Basic HTML outline generator for docx Document."""
+    html = []
+    for p in doc.paragraphs:
+        txt = _normalize_ws(p.text)
+        if not txt:
+            continue
+        style = _para_style_name(p)
+        if _is_heading(p):
+            lvl = _heading_level(p)
+            html.append(f'<h{lvl}>{txt}</h{lvl}>')
+        else:
+            html.append(f'<p>{txt}</p>')
+    return "\n".join(html)
+
 def save_state(doc_id: str, data: dict):
-    (STATE_DIR / f"{doc_id}.json").write_text(json.dumps(data, indent=2))
+    path = STATE_DIR / f"{doc_id}.json"
+    tmp  = path.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(data, indent=2))
+    os.replace(tmp, path)  # ✅ atomic
+    # REMOVE any extra write here
+
 
 def load_state(doc_id: str):
     f = STATE_DIR / f"{doc_id}.json"
@@ -543,7 +649,6 @@ def handle_upload():
             return render_template("reportly.html", state=None)
         up_path = converted
         original_name = Path(original_name).stem + ".docx"
-
     # parse
     try:
         doc = Document(str(up_path))
@@ -551,12 +656,11 @@ def handle_upload():
         flash(f"Failed to parse .docx: {e}", "error")
         return render_template("reportly.html", state=None)
 
-    # working copy (mutated in place on accept)
     working_path = OUTPUT_DIR / f"{doc_id}_working.docx"
     shutil.copyfile(up_path, working_path)
 
-    structure  = extract_template_structure(doc)
-    fast_html  = doc_to_fast_html(doc)
+    structure  = parse_docx_sections_full(doc)
+    fast_html  = _doc_to_fast_html(doc)
 
     state = {
         "doc_id": doc_id,
@@ -564,12 +668,12 @@ def handle_upload():
         "basename": Path(original_name).stem,
         "upload_path": str(up_path),
         "working_path": str(working_path),
-        "strip_existing": False,          # edit in place by default
+        "strip_existing": False,
         "include_in_context": False,
-        "structure": structure,           # section skeleton
+        "structure": structure,
         "messages": [],
         "html_outline": fast_html,
-        "pending": []                     # staged AI changes
+        "pending": []
     }
     save_state(doc_id, state)
 
@@ -588,6 +692,14 @@ def handle_edit(doc_id):
         return redirect(url_for("reportly_home"))
     return render_template("reportly.html", state=state)
 
+_LAST_BUILD = {}
+def _should_build(doc_id, ms=300):
+    t = int(time.time()*1000)
+    last = _LAST_BUILD.get(doc_id, 0)
+    if t - last < ms: return False
+    _LAST_BUILD[doc_id] = t
+    return True
+
 def handle_state_update(doc_id):
     state = load_state(doc_id)
     if not state:
@@ -601,6 +713,7 @@ def handle_state_update(doc_id):
         build_preview_pdf(doc_id)
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
+    if _should_build(doc_id): build_preview_pdf(doc_id)
     return jsonify({"ok": True})
 
 def handle_download_current(doc_id):
@@ -832,3 +945,86 @@ def handle_review_reject(doc_id):
     save_state(doc_id, state)
     build_preview_pdf(doc_id)
     return jsonify({"ok": True, "rejected": n})
+
+def handle_structure_get(doc_id):
+    state = load_state(doc_id)
+    if not state:
+        return jsonify({"ok": False, "error": "not found"}), 404
+    items = []
+    for s in state.get("structure", []):
+        tables = sum(1 for b in s.get("blocks", []) if b.get("type") == "table")
+        paras  = sum(1 for b in s.get("blocks", []) if b.get("type") in ("paragraph","list"))
+        items.append({"id": s["id"], "title": s["title"], "level": int(s["level"]), "paragraphs": paras, "tables": tables})
+    return jsonify({"ok": True, "sections": items})
+
+# --- Null-safe fallback generators ------------------------------------------
+
+def _ensure_pending(state):
+    """Ensure the 'pending' key exists in the state dictionary."""
+    if "pending" not in state or not isinstance(state["pending"], list):
+        state["pending"] = []
+
+def _demo_paragraph(title: str, instruction: str, length_mode: str) -> str:
+    base = (f"{title} — demo content inserted automatically because the AI "
+            f"response was empty. This lets you test Review → Accept and downloads.")
+    if instruction:
+        base += f" Instruction hint: {instruction[:160]}."
+    if length_mode == "detailed":
+        return base + " Includes extra detail to validate formatting and spacing."
+    if length_mode == "concise":
+        return base
+    return base + " Key bullets follow for verification."
+
+def _demo_bullets(title: str) -> dict:
+    root = title.strip() or "Section"
+    return {"type":"list","style":"bullet","items":[
+        f"{root}: objective stated",
+        f"{root}: assumptions captured",
+        f"{root}: next actions with owners"
+    ]}
+
+def _demo_table(title: str) -> dict:
+    return {"type":"table","headers":["Item","Owner","ETA"],"rows":[
+        ["Kickoff","PM","Week 1"],
+        ["Draft v1","Writer","Week 2"],
+        ["Review","Leads","Week 3"],
+    ]}
+
+def _needs_table(title: str) -> bool:
+    t = (title or "").lower()
+    return any(k in t for k in ("timeline","schedule","plan","milestone","phases","budget","risk"))
+
+def _generate_demo_sections(structure: list, instruction: str, length_mode: str) -> dict:
+    out = []
+    for i, s in enumerate(structure, 1):
+        title = s.get("title") or f"Section {i}"
+        level = int(s.get("level", 1))
+        blocks = [
+            {"type":"paragraph","text": _demo_paragraph(title, instruction, (length_mode or "standard").lower())},
+            _demo_bullets(title),
+        ]
+        if _needs_table(title):
+            blocks.append(_demo_table(title))
+        out.append({"id": s["id"], "title": title, "level": level, "blocks": blocks})
+    return {"sections": out}
+
+def _extract_template_and_meta(messages):
+    """Pull template_structure + meta from the last user message, even if it's a JSON string."""
+    try:
+        last = messages[-1]
+        payload = last.get("content", "")
+        if not isinstance(payload, str):
+            payload = json.dumps(payload, ensure_ascii=False)
+        data = json.loads(payload)
+    except Exception:
+        data = {}
+    structure   = data.get("template_structure") or messages[-1].get("template_structure") or []
+    instruction = data.get("instruction","")
+    length_mode = (data.get("length_mode") or "standard").lower()
+    return structure, instruction, length_mode
+
+def _is_nullish_content(content: str | None) -> bool:
+    if content is None:
+        return True
+    t = str(content).strip().lower()
+    return t in ("", "null", "none", "{}", "[]", '"null"', '""')
