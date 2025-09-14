@@ -490,67 +490,6 @@ def seodemo():
 def team():
     return render_template('team.html')
 
-import reportly
-@app.route("/reportly", methods=["GET", "POST"])
-def reportly_home():
-    if request.method == "POST":
-        return reportly.handle_upload()
-    # BAD: return reportly.render_template("reportly.html", state=None)
-    return render_template("reportly.html", state=None)
-
-
-@app.route("/reportly/download-current/<doc_id>", methods=["GET"])
-def reportly_download_current(doc_id):
-    return reportly.handle_download_current(doc_id)
-
-
-@app.get("/reportly/stream/<doc_id>")
-def reportly_stream(doc_id):
-    # stream Server-Sent Events from reportly.sse_stream
-    return Response(reportly.sse_stream(doc_id), mimetype="text/event-stream")
-
-@app.route("/reportly/edit/<doc_id>", methods=["GET"])
-def reportly_edit(doc_id):
-    # read-only (no longer POST form here) — chat drives updates
-    return reportly.handle_edit(doc_id)
-
-@app.route("/reportly/compose/<doc_id>", methods=["POST"])
-def reportly_compose(doc_id):
-    return reportly.handle_compose(doc_id)
-
-@app.route("/reportly/download/<doc_id>", methods=["GET"])
-def reportly_download(doc_id):
-    return reportly.handle_download(doc_id)
-
-@app.route("/reportly/preview/<doc_id>", methods=["GET"])
-def reportly_preview(doc_id):
-    return reportly.handle_preview(doc_id)
-
-@app.route("/reportly/state/<doc_id>", methods=["POST"])
-def reportly_state_update(doc_id):
-    return reportly.handle_state_update(doc_id)
-
-@app.route("/reportly/chat/<doc_id>", methods=["POST"])
-def reportly_chat(doc_id):
-    return reportly.handle_chat(doc_id)
-
-# app.py (near the other /reportly routes)
-@app.route("/reportly/pending/<doc_id>", methods=["GET"])
-def reportly_pending(doc_id):
-    return reportly.handle_pending_list(doc_id)
-
-@app.route("/reportly/review/<doc_id>/accept", methods=["POST"])
-def reportly_accept(doc_id):
-    return reportly.handle_review_accept(doc_id)
-
-@app.route("/reportly/review/<doc_id>/reject", methods=["POST"])
-def reportly_reject(doc_id):
-    return reportly.handle_review_reject(doc_id)
-
-@app.get("/reportly/structure/<doc_id>")
-def reportly_structure_get(doc_id):
-    return reportly.handle_structure_get(doc_id)
-
 
 @app.route('/download')
 def download():
