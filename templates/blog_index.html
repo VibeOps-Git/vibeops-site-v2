@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block head %}
+  {{ super() }}
+  {# Cache-bust to ensure the latest CSS loads #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}?v=5">
+
+  <!-- Flag this page as blog for scoped fixes (no :has()) -->
+  <script>
+    document.documentElement.classList.add('is-vblog');
+    document.addEventListener('DOMContentLoaded', () => document.body.classList.add('is-vblog'));
+  </script>
+
+  <style>
+    /* ================= BLOG PAGES ONLY ================= */
+
+    /* 1) Make header a high layer, but not sticky */
+    .is-vblog .site-header,
+    .is-vblog .main-header,
+    .is-vblog header[role="banner"],
+    .is-vblog #site-header,
+    .is-vblog .navbar {
+      position: relative !important;
+      top: auto !important;
+      z-index: 2147483000 !important; /* huge, below dropdown */
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
+
+    /* 2) Force nav dropdown / menu drawer above EVERYTHING */
+    .is-vblog .nav-dropdown,
+    .is-vblog .menu-panel,
+    .is-vblog .menu,
+    .is-vblog .dropdown,
+    .is-vblog .dropdown-menu,
+    .is-vblog .nav-menu[aria-expanded="true"],
+    .is-vblog .menu-drawer,
+    .is-vblog [data-nav-panel] {
+      position: fixed !important;
+      z-index: 2147483647 !important; /* max-ish */
+      inset: auto auto auto auto;     /* your nav CSS can place it */
+    }
+
+    /* 3) Nuke stacking contexts in/around the blog area & common wrappers */
+    .is-vblog main,
+    .is-vblog #main,
+    .is-vblog .main,
+    .is-vblog .content,
+    .is-vblog #content,
+    .is-vblog .page,
+    .is-vblog #page,
+    .is-vblog .vblog-root,
+    .is-vblog .vblog-container,
+    .is-vblog .vblog-article,
+    .is-vblog .vblog-header,
+    .is-vblog .vblog-title {
+      position: static !important;
+      z-index: 0 !important;
+      transform: none !important;
+      filter: none !important;
+      will-change: auto !important;
+      isolation: auto !important;
+      perspective: none !important;
+      contain: none !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="vblog-root">
+  <div class="vblog-container">
+    <header class="vblog-header" style="margin-bottom:18px;">
+      <p class="vblog-kicker">VibeOps</p>
+      <h1 class="vblog-title">Insights & Blogs</h1>
+      <p class="vblog-intro">Tips, prototypes, and playbooks from the studio. Engineering notes, automation ideas, and real product experiments.</p>
+    </header>
+
+    <section class="vblog-grid">
+      {% for p in posts %}
+      <article class="vblog-card">
+        <h2 class="vblog-card-title">
+          <a class="vblog-card-link" href="{{ url_for('blog_detail', slug=p.slug) }}">{{ p.title }}</a>
+        </h2>
+        {% if p.summary %}
+          <p class="vblog-summary">{{ p.summary }}</p>
+        {% endif %}
+        <a class="vblog-cta-link" href="{{ url_for('blog_detail', slug=p.slug) }}">Read more →</a>
+      </article>
+      {% endfor %}
+    </section>
+  </div>
+</div>
+{% endblock %}

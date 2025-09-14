@@ -17,3 +17,4 @@ Allow: /case-studies
 Allow: /contact
 Allow: /booking
 Allow: /team
+Allow: /blog

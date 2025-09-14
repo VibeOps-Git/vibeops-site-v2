@@ -24,6 +24,141 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
 
+# --- Blog HTML sanitizer: strips scripts, styles, and wrappers from fragments ---
+import re
+
+_SANITIZE_PATTERNS = [
+    (re.compile(r'<!DOCTYPE[^>]*>', re.I | re.S), ''),                   # doctype
+    (re.compile(r'</?(html|head|body)\b[^>]*>', re.I), ''),              # wrappers
+    (re.compile(r'<script\b[^>]*>.*?</script\s*>', re.I | re.S), ''),    # scripts (Tailwind CDN, etc.)
+    (re.compile(r'<link\b[^>]*rel=["\']?stylesheet["\']?[^>]*>', re.I), ''),  # external styles
+    # If you want to also nuke inline <style> blocks, keep this line:
+    (re.compile(r'<style\b[^>]*>.*?</style\s*>', re.I | re.S), ''),      # inline styles
+    # Optional: meta tags inside fragments
+    (re.compile(r'<meta\b[^>]*>', re.I), ''),
+    # Optional: tidy stray title tags
+    (re.compile(r'</?title\b[^>]*>', re.I), ''),
+]
+
+def sanitize_blog_html(html: str) -> str:
+    out = html or ""
+    for pat, repl in _SANITIZE_PATTERNS:
+        out = pat.sub(repl, out)
+    return out
+
+
+# --- Blog registry ---
+from pathlib import Path
+import re
+import unicodedata
+from functools import lru_cache
+
+BLOGS_DIR = Path(app.root_path) / "templates" / "blogs"
+
+def _slugify(text: str) -> str:
+    text = unicodedata.normalize("NFKD", text)
+    text = re.sub(r"[^\w\s-]", "", text, flags=re.U).strip().lower()
+    return re.sub(r"[-\s]+", "-", text)
+
+def _title_from_html(html: str, fallback: str) -> str:
+    m = re.search(r"<h1[^>]*>(.*?)</h1>", html, flags=re.I|re.S)
+    if m:
+        return re.sub(r"\s+", " ", m.group(1)).strip()
+    # fallback from filename (remove extension)
+    no_ext = Path(fallback).stem
+    no_ext = no_ext.replace("_", " ").replace("-", " ").strip()
+    return no_ext
+
+@lru_cache(maxsize=1)
+def load_blog_index():
+    """Scan templates/blogs/*.html and build a registry"""
+    posts = []
+    if not BLOGS_DIR.exists():
+        return posts
+    for f in sorted(BLOGS_DIR.glob("*.html")):
+        try:
+            raw = f.read_text(encoding="utf-8", errors="ignore")
+            title = _title_from_html(raw, f.name)
+            slug = _slugify(title)
+            # Optional: extract meta description from first <p>
+            p = re.search(r"<p[^>]*>(.*?)</p>", raw, flags=re.I|re.S)
+            summary = None
+            if p:
+                summary = re.sub("<.*?>", "", p.group(1)).strip()
+                summary = re.sub(r"\s+", " ", summary)
+            posts.append({
+                "slug": slug,
+                "title": title,
+                "filename": f.name,
+                "summary": summary,
+                "relpath": f"blogs/{f.name}",
+            })
+        except Exception as e:
+            app.logger.warning(f"Skipping blog '{f}': {e}")
+    return posts
+
+def get_post_or_404(slug):
+    for p in load_blog_index():
+        if p["slug"] == slug:
+            return p
+    from flask import abort
+    abort(404)
+
+@app.route("/blog")
+def blog_index():
+    posts = load_blog_index()
+    # newest first just by filename alpha (adjust if you add dates)
+    posts = list(reversed(posts))
+    return render_template("blog_index.html", posts=posts)
+
+@app.route("/blog/<slug>")
+def blog_detail(slug):
+    post = get_post_or_404(slug)
+    fpath = BLOGS_DIR / post["filename"]
+    raw_html = fpath.read_text(encoding="utf-8", errors="ignore")
+
+    # Remove first H1 (to avoid duplicate title)
+    m = re.search(r"<h1[^>]*>.*?</h1>", raw_html, flags=re.I | re.S)
+    if m: raw_html = raw_html.replace(m.group(0), "", 1)
+
+    # CRITICAL: strip scripts/styles/wrappers that override your theme
+    raw_html = sanitize_blog_html(raw_html)
+
+    og = {
+        "title": post["title"],
+        "description": (post.get("summary") or post["title"])[:180],
+        "url": url_for("blog_detail", slug=slug, _external=True),
+    }
+    return render_template("blog_detail.html", post=post, raw_html=raw_html, og=og)
+
+@app.route("/blog/rss.xml")
+def blog_rss():
+    posts = load_blog_index()
+    items = []
+    for p in reversed(posts):
+        url = url_for("blog_detail", slug=p["slug"], _external=True)
+        items.append(f"""
+        <item>
+          <title>{p['title']}</title>
+          <link>{url}</link>
+          <guid isPermaLink="true">{url}</guid>
+          <description><![CDATA[{(p.get('summary') or p['title'])}]]></description>
+        </item>
+        """)
+    rss = f"""<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+      <channel>
+        <title>VibeOps Blog</title>
+        <link>{url_for('blog_index', _external=True)}</link>
+        <description>Updates, prototypes, and guides.</description>
+        {''.join(items)}
+      </channel>
+    </rss>"""
+    resp = make_response(rss)
+    resp.headers["Content-Type"] = "application/rss+xml; charset=utf-8"
+    return resp
+
+
 # Add context processor to make auth status available in templates
 @app.context_processor
 def inject_auth_status():

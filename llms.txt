@@ -11,3 +11,4 @@ Allow: /services
 Allow: /case-studies
 Allow: /contact
 Allow: /team
+Allow: /blog
