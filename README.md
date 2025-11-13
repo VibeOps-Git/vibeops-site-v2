@@ -2,7 +2,7 @@
 
 A lean, automation-powered site for founders, consultants, and small businesses who need to move fast, systematize smarter, and launch with swagger.
 
----
+-----
 
 ## 🌐 What VibeOps Delivers
 
