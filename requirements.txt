@@ -10,3 +10,4 @@ pillow
 openai
 python-docx
 pyqt6
+flask-cors
