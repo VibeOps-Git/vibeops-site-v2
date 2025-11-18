@@ -273,3 +273,12 @@
   box-shadow: none !important;
   background: transparent !important;
 }
+
+/* Kill horizontal scroll everywhere */
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}

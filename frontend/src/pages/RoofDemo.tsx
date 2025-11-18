@@ -1,196 +1,933 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
+
+import L, {
+  Map as LeafletMap,
+  FeatureGroup,
+  LatLngExpression,
+} from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// IMPORTANT: use the actual dist paths so the plugin loads correctly
+import "leaflet-draw/dist/leaflet.draw.css";
+import "leaflet-draw/dist/leaflet.draw.js";
+import "leaflet-geometryutil";
+
+import * as turf from "@turf/turf";
+
+const API_URL =
+  import.meta.env.VITE_FLASK_API_URL || "http://localhost:5008";
+
+type BomMaterial = {
+  item: string;
+  quantity: number | string;
+  rate?: number | string;
+  cost?: number | string;
+};
+
+type BomLabor = {
+  description: string;
+  quantity: number | string;
+  rate: number | string;
+  cost: number | string;
+};
+
+type BomOverhead = {
+  description: string;
+  percentage: number | string;
+  cost: number | string;
+};
+
+type BomSummary = {
+  materials_total?: number | string;
+  labor_total?: number | string;
+  overhead_total?: number | string;
+  total_cost?: number | string;
+};
+
+type BillOfMaterials = {
+  materials?: BomMaterial[];
+  labor?: BomLabor;
+  overhead?: BomOverhead;
+  summary?: BomSummary;
+};
+
+type RoofEstimateResponse = {
+  address: string;
+  roof_size: number | string;
+  total_cost: number | string;
+  bill_of_materials?: BillOfMaterials;
+};
+
+type NominatimResult = {
+  display_name: string;
+  lat: string;
+  lon: string;
+};
 
 export default function RoofDemo() {
-  const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState('');
-  const [roofSize, setRoofSize] = useState('');
-  const [results, setResults] = useState<any>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const drawnItemsRef = useRef<FeatureGroup | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const [address, setAddress] = useState("");
+  const [roofArea, setRoofArea] = useState<number | null>(null);
+  const [isMapReady, setIsMapReady] = useState(false);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [results, setResults] = useState<RoofEstimateResponse | null>(null);
 
-    try {
-      const formData = new FormData();
-      formData.append('address', address);
-      formData.append('roof_size', roofSize);
+  const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
-      const response = await api.calculateRoofCost(formData);
-      const data = await response.json();
-      
-      if (response.ok) {
-        setResults(data);
-        toast.success('Estimate calculated successfully!');
-      } else {
-        toast.error(data.error || 'Failed to calculate estimate');
+  // ───────────────── Map initialization ─────────────────
+  useEffect(() => {
+    if (!mapContainerRef.current || mapRef.current) return;
+    if (typeof window === "undefined") return; // hard guard for SSR
+
+    const map = L.map(mapContainerRef.current, {
+      zoomControl: true,
+    }).setView([49.2827, -123.1207], 12); // default Vancouver-ish
+
+    mapRef.current = map;
+
+    const streetLayer = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }
-    } catch (error) {
-      toast.error('An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
+    );
+
+    const satelliteLayer = L.tileLayer(
+      "https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=sfuVh1bXJaWZbxblHBkD",
+      {
+        attribution:
+          '© <a href="https://www.maptiler.com/copyright/">MapTiler</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }
+    ).addTo(map);
+
+    const baseLayers = {
+      "Street Map": streetLayer,
+      Satellite: satelliteLayer,
+    };
+
+    L.control.layers(baseLayers, null, { position: "bottomright" }).addTo(map);
+
+    const drawnItems = new L.FeatureGroup();
+    drawnItemsRef.current = drawnItems;
+    map.addLayer(drawnItems);
+
+    // Leaflet.draw control – guard in case plugin didn’t attach
+    const DrawControlCtor = (L as any).Control?.Draw;
+    if (DrawControlCtor) {
+      const drawControl = new DrawControlCtor({
+        position: "bottomright",
+        draw: {
+          polygon: {
+            shapeOptions: { color: "#00ffcc" },
+            allowIntersection: false,
+            showArea: true,
+            metric: true,
+            imperial: true,
+            precision: 2,
+            drawError: {
+              color: "#b1b4b6",
+              timeout: 2500,
+            },
+            repeatMode: false,
+          },
+          marker: false,
+          polyline: false,
+          rectangle: false,
+          circle: false,
+          circlemarker: false,
+        },
+        edit: {
+          featureGroup: drawnItems,
+          remove: false,   // keep this if you don’t want the trash button
+          // no `edit: true` here
+        },
+      });
+
+      map.addControl(drawControl);
+    } else {
+      console.warn("Leaflet.draw not loaded – no draw controls available.");
+    }
+
+    // Use raw event strings instead of L.Draw.Event.*
+    map.on("draw:drawstart", () => {
+      drawnItems.clearLayers();
+      setRoofArea(null);
+    });
+
+    map.on("draw:created", (e: any) => {
+      handlePolygonChanged(e.layer);
+    });
+
+    map.on("draw:edited", (e: any) => {
+      e.layers.eachLayer((layer: any) => handlePolygonChanged(layer));
+    });
+
+    // Custom delete button
+    const DeleteButton = (L.Control as any).extend({
+      onAdd: function () {
+        const container = L.DomUtil.create(
+          "div",
+          "leaflet-bar leaflet-control"
+        );
+        const button = L.DomUtil.create("a", "leaflet-control-delete", container);
+        button.innerHTML = "🗑️";
+        button.title = "Delete Polygon";
+        button.style.width = "32px";
+        button.style.height = "32px";
+        button.style.minHeight = "32px";
+        button.style.textAlign = "center";
+        button.style.fontSize = "12px";
+        button.style.backgroundColor = "#ffebee";
+        button.style.color = "#d32f2f";
+        button.style.border = "2px solid #ef9a9a";
+        button.style.borderRadius = "4px";
+        button.style.marginBottom = "5px";
+        button.style.cursor = "pointer";
+        button.style.display = "flex";
+        button.style.alignItems = "center";
+        button.style.justifyContent = "center";
+        button.style.lineHeight = "1";
+        button.style.padding = "0";
+
+        L.DomEvent.on(button, "click", (e: any) => {
+          L.DomEvent.stopPropagation(e);
+          clearPolygon();
+        });
+
+        return container;
+      },
+    });
+
+    new DeleteButton({ position: "bottomright" }).addTo(map);
+
+    setIsMapReady(true);
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+  }, []);
+
+  // ───────────────── Polygon area handling ─────────────────
+  const handlePolygonChanged = (layer: any) => {
+    if (!drawnItemsRef.current) return;
+
+    drawnItemsRef.current.clearLayers();
+    drawnItemsRef.current.addLayer(layer);
+
+    const latlngs = layer.getLatLngs();
+    const firstRing =
+      Array.isArray(latlngs) && Array.isArray(latlngs[0])
+        ? latlngs[0]
+        : latlngs;
+
+    const GeometryUtil = (L as any).GeometryUtil;
+    if (!GeometryUtil) {
+      console.warn("L.GeometryUtil not available");
+      return;
+    }
+
+    const areaMeters = GeometryUtil.geodesicArea(firstRing);
+    const areaFeet = areaMeters * 10.7639;
+
+    setRoofArea(areaFeet);
+
+    if (areaFeet < 100) {
+      setErrorMsg(
+        `Roof Area: ${areaFeet.toFixed(
+          2
+        )} sq ft (Too small! Zoom in and draw a bigger roof shape.)`
+      );
+    } else {
+      setErrorMsg(null);
     }
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-    }).format(value);
+  const clearPolygon = () => {
+    drawnItemsRef.current?.clearLayers();
+    setRoofArea(null);
+    setErrorMsg(null);
   };
 
+  // ───────────────── Address suggestions ─────────────────
+  useEffect(() => {
+    if (!address || address.trim().length < 3) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(
+            address
+          )}&addressdetails=1&countrycodes=ca,us`,
+          {
+            signal: controller.signal,
+          }
+        );
+        const data: NominatimResult[] = await res.json();
+        setSuggestions(data);
+        setShowSuggestions(true);
+      } catch {
+        // ignore
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [address]);
+
+  const handleSuggestionClick = (s: NominatimResult) => {
+    setAddress(s.display_name);
+    setSuggestions([]);
+    setShowSuggestions(false);
+  };
+
+  // ───────────────── Geocode + building outlines ─────────────────
+  const handleShowMap = async () => {
+    if (!isMapReady || !mapRef.current) return;
+    if (!address.trim()) {
+      toast.error("Please enter an address first.");
+      return;
+    }
+
+    setIsGeocoding(true);
+    setErrorMsg(null);
+    setResults(null);
+    clearPolygon();
+
+    const map = mapRef.current;
+
+    // Remove existing markers
+    map.eachLayer((layer: any) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+          address
+        )}&addressdetails=1&countrycodes=ca,us`
+      );
+      const data: NominatimResult[] = await res.json();
+
+      if (!data || data.length === 0) {
+        setErrorMsg(
+          `Could not find "${address}". Try including city and province/state.`
+        );
+        setIsGeocoding(false);
+        return;
+      }
+
+      const result = data[0];
+      const lat = parseFloat(result.lat);
+      const lon = parseFloat(result.lon);
+
+      const center: LatLngExpression = [lat, lon];
+      map.setView(center, 18);
+      L.marker(center).addTo(map);
+
+      // Fetch building outlines around point (Overpass)
+      let overpassData: any = null;
+      for (const radius of [200, 500, 1000]) {
+        const query = `
+          [out:json][timeout:30];
+          (
+            way["building"](around:${radius},${lat},${lon});
+            way["building:part"](around:${radius},${lat},${lon});
+            way["man_made"](around:${radius},${lat},${lon});
+            way["landuse"](around:${radius},${lat},${lon});
+            relation["building"](around:${radius},${lat},${lon});
+            relation["man_made"](around:${radius},${lat},${lon});
+          );
+          out geom;
+        `;
+
+        try {
+          const overpassRes = await fetch(
+            "https://overpass-api.de/api/interpreter",
+            {
+              method: "POST",
+              body: query,
+            }
+          );
+          const json = await overpassRes.json();
+          if (json.elements && json.elements.length > 0) {
+            overpassData = json;
+            break;
+          }
+        } catch {
+          // try next radius
+        }
+      }
+
+      if (!overpassData || !overpassData.elements?.length) {
+        setErrorMsg(
+          `No building outlines found near "${result.display_name}". Draw the roof manually.`
+        );
+        map.setView(center, 20);
+        setIsGeocoding(false);
+        return;
+      }
+
+      const pinPoint = turf.point([lon, lat]);
+      const candidates: {
+        feature: any;
+        layer: L.Polygon;
+        distance: number;
+      }[] = [];
+
+      overpassData.elements.forEach((element: any) => {
+        if (element.type === "way" && element.geometry?.length > 2) {
+          const coords = element.geometry.map((p: any) => [p.lat, p.lon]);
+          if (
+            coords[0][0] !== coords[coords.length - 1][0] ||
+            coords[0][1] !== coords[coords.length - 1][1]
+          ) {
+            coords.push(coords[0]);
+          }
+
+          const feature = {
+            type: "Feature",
+            geometry: { type: "Polygon", coordinates: [coords] },
+            properties: { id: element.id, tags: element.tags },
+          };
+
+          try {
+            const layer = L.polygon(coords as any, {
+              color: "#00ffcc",
+              weight: 2,
+            });
+            const centroid = turf.centroid(feature as any);
+            const distance = turf.distance(pinPoint, centroid, {
+              units: "meters",
+            });
+            candidates.push({ feature, layer, distance });
+          } catch {
+            // ignore this element
+          }
+        } else if (element.type === "relation" && element.members) {
+          const coords: any[] = [];
+          element.members.forEach((member: any) => {
+            if (member.type === "way" && member.geometry?.length > 2) {
+              const wayCoords = member.geometry.map((p: any) => [p.lat, p.lon]);
+              if (
+                wayCoords[0][0] !== wayCoords[wayCoords.length - 1][0] ||
+                wayCoords[0][1] !== wayCoords[wayCoords.length - 1][1]
+              ) {
+                wayCoords.push(wayCoords[0]);
+              }
+              coords.push(wayCoords);
+            }
+          });
+
+          if (coords.length > 0) {
+            const feature = {
+              type: "Feature",
+              geometry: { type: "MultiPolygon", coordinates: coords },
+              properties: { id: element.id, tags: element.tags },
+            };
+
+            try {
+              const layer = L.polygon(coords as any, {
+                color: "#00ffcc",
+                weight: 2,
+              });
+              const centroid = turf.centroid(feature as any);
+              const distance = turf.distance(pinPoint, centroid, {
+                units: "meters",
+              });
+              candidates.push({ feature, layer, distance });
+            } catch {
+              // ignore
+            }
+          }
+        }
+      });
+
+      if (!candidates.length) {
+        setErrorMsg(
+          `No building outlines found near "${result.display_name}". Draw the roof manually.`
+        );
+        map.setView(center, 20);
+        setIsGeocoding(false);
+        return;
+      }
+
+      // Filter valid "building-like" candidates
+      const validCandidates = candidates.filter((c) => {
+        const tags = c.feature.properties?.tags || {};
+        return (
+          tags.building ||
+          tags["building:part"] ||
+          tags.man_made === "rooftop" ||
+          tags.landuse === "residential"
+        );
+      });
+
+      if (!validCandidates.length) {
+        setErrorMsg(
+          `No valid building outlines found near "${result.display_name}". Draw the roof manually.`
+        );
+        map.setView(center, 20);
+        setIsGeocoding(false);
+        return;
+      }
+
+      // Prefer polygons containing the point
+      const containing = validCandidates.filter((c) => {
+        try {
+          return turf.booleanPointInPolygon(pinPoint, c.feature as any);
+        } catch {
+          return false;
+        }
+      });
+
+      let selected = containing.length ? containing : validCandidates;
+
+      // If containing, sort by area (smallest first), else by distance
+      selected.sort((a, b) => {
+        if (containing.length) {
+          const GeometryUtil = (L as any).GeometryUtil;
+          const areaA = GeometryUtil.geodesicArea(
+            (a.layer.getLatLngs()[0] as any) || []
+          );
+          const areaB = GeometryUtil.geodesicArea(
+            (b.layer.getLatLngs()[0] as any) || []
+          );
+          return areaA - areaB;
+        }
+        return a.distance - b.distance;
+      });
+
+      const closest = selected[0];
+      if (closest.distance > 150 && !containing.length) {
+        setErrorMsg(
+          `No building outlines found directly under "${result.display_name}". Draw the roof manually.`
+        );
+        map.setView(center, 20);
+        setIsGeocoding(false);
+        return;
+      }
+
+      drawnItemsRef.current?.clearLayers();
+      drawnItemsRef.current?.addLayer(closest.layer);
+      handlePolygonChanged(closest.layer);
+      map.fitBounds(closest.layer.getBounds());
+
+      setIsGeocoding(false);
+    } catch (err: any) {
+      setErrorMsg(
+        `Error while locating "${address}": ${
+          err?.message || "please try again."
+        }`
+      );
+      setIsGeocoding(false);
+    }
+  };
+
+  // ───────────────── Price calculation ─────────────────
+  const handleCalculateCost = async () => {
+    if (!roofArea || roofArea < 100) {
+      setErrorMsg(
+        "Roof area too small (< 100 sq ft). Zoom in and draw a larger shape."
+      );
+      return;
+    }
+
+    setIsCalculating(true);
+    setErrorMsg(null);
+
+    try {
+      const body = new URLSearchParams({
+        address: address || "Unknown",
+        roof_size: String(roofArea),
+      });
+
+      const res = await fetch(`${API_URL}/price`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body,
+        credentials: "include",
+      });
+
+      const data: any = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(
+          `Error: ${data?.error || "Failed to calculate estimate"} (Address: ${
+            data?.address || address
+          })`
+        );
+        setResults(null);
+      } else {
+        setResults(data as RoofEstimateResponse);
+        toast.success("Estimate calculated successfully!");
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || "An error occurred. Please try again.");
+      setResults(null);
+    } finally {
+      setIsCalculating(false);
+    }
+  };
+
+  // ───────────────── Helpers ─────────────────
+  const formatCurrency = (value: number | string | undefined) => {
+    const num =
+      typeof value === "number" ? value : Number(value !== undefined ? value : 0);
+    if (!Number.isFinite(num)) return String(value ?? "");
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(num);
+  };
+
+  const getRoofSizeDisplay = () => {
+    if (!roofArea) return "";
+    return `${roofArea.toFixed(2)} sq ft`;
+  };
+
+  // ───────────────── Render ─────────────────
   return (
     <div className="container mx-auto px-4 py-20">
-      <section className="max-w-5xl mx-auto">
+      <section className="max-w-6xl mx-auto">
+        {/* Header / Pitch */}
         <div className="text-center mb-12">
           <h1 className="section-title">VibeOps Roofing Estimator</h1>
-          <div className="inline-block bg-primary text-primary-foreground px-4 py-1 rounded-lg font-bold mb-4">
+          <div className="inline-block bg-primary text-primary-foreground px-4 py-1 rounded-lg font-bold mb-4 tracking-[0.2em]">
             DEMO
           </div>
           <p className="section-text">
-            A Sales Demo for Roofing Companies — Powered by VibeOps
+            Map-based roofing estimator that detects the roof from aerial
+            imagery, lets you trace the outline, and generates a full cost and
+            bill of materials — powered by VibeOps.
           </p>
         </div>
 
-        <Card className="mb-8 bg-accent/10 border-accent">
-          <CardContent className="pt-6">
-            <p className="text-center mb-4">
-              <strong>Welcome to the VibeOps Roofing Estimator Demo!</strong>
-            </p>
-            <p className="text-center text-muted-foreground">
-              This interactive demo shows how VibeOps can help your roofing company win more jobs and close deals faster. 
-              We customize and tune this estimator for your business, using your real unit costs, labor rates, and branding.
-            </p>
-            <p className="text-center text-muted-foreground mt-4">
-              Ready to see your own branded estimator? <strong>Contact VibeOps</strong> for a full white-label version tailored to your workflow.
-            </p>
-          </CardContent>
-        </Card>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card>
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)] gap-8">
+          {/* Left side: Map + controls */}
+          <Card className="overflow-hidden">
             <CardHeader>
-              <CardTitle>Property Information</CardTitle>
+              <CardTitle>Draw the Roof</CardTitle>
               <CardDescription>
-                Enter the property address and roof area
+                Type an address, zoom to the property, auto-detect the building
+                outline, then adjust it with the draw tools.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="address">Property Address</Label>
+            <CardContent className="space-y-4">
+              {/* Address + Show Map */}
+              <div className="relative">
+                <label className="block text-sm font-medium mb-1">
+                  Property Address
+                </label>
+                <div className="flex gap-2">
                   <Input
-                    id="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    required
                     placeholder="1234 West Broadway, Vancouver, BC"
+                    onFocus={() => {
+                      if (suggestions.length) setShowSuggestions(true);
+                    }}
                   />
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Enter a complete address in Canada or the US
-                  </p>
+                  <Button
+                    type="button"
+                    onClick={handleShowMap}
+                    disabled={!isMapReady || isGeocoding}
+                  >
+                    {isGeocoding ? "Locating..." : "Show Map"}
+                  </Button>
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Start typing and pick from suggestions, then click{" "}
+                  <strong>Show Map</strong>.
+                </p>
 
-                <div>
-                  <Label htmlFor="roofSize">Roof Size (sq ft)</Label>
-                  <Input
-                    id="roofSize"
-                    type="number"
-                    step="0.01"
-                    value={roofSize}
-                    onChange={(e) => setRoofSize(e.target.value)}
-                    required
-                    placeholder="e.g., 2500"
-                  />
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Measured roof area in square feet
-                  </p>
-                </div>
-
-                <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                  {loading ? 'Calculating...' : 'Calculate Cost'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          <div>
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle>How This Demo Works</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ol className="space-y-3 text-sm">
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">1.</span>
-                    <span>Type an address and enter the roof area in square feet</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">2.</span>
-                    <span>Click <strong>Calculate Cost</strong> to see a sample estimate and bill of materials</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">3.</span>
-                    <span>The estimate includes materials, labor, and total project cost</span>
-                  </li>
-                </ol>
-
-                <div className="bg-accent/20 border border-accent rounded-lg p-4 mt-6">
-                  <p className="font-semibold text-accent mb-2">DEMO ONLY</p>
-                  <p className="text-sm text-muted-foreground">
-                    This is a sample estimator. VibeOps will tune, brand, and connect this tool to your real unit costs, labor rates, and workflow for your company.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {results && (
-          <Card className="mt-8">
-            <CardHeader>
-              <CardTitle>Estimate Results</CardTitle>
-              <CardDescription>
-                {results.address}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <h3 className="font-semibold mb-4">Summary</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between pb-2 border-b">
-                    <span className="text-muted-foreground">Roof Area:</span>
-                    <span className="font-semibold">{results.roof_size?.toFixed(2)} sq ft</span>
-                  </div>
-                  <div className="flex justify-between pb-2 border-b text-lg">
-                    <span className="font-bold">Total Cost:</span>
-                    <span className="font-bold text-primary">{formatCurrency(results.total_cost)}</span>
-                  </div>
-                </div>
-              </div>
-
-              {results.bill_of_materials && (
-                <div>
-                  <h3 className="font-semibold mb-4">Bill of Materials</h3>
-                  <div className="space-y-2">
-                    {Object.entries(results.bill_of_materials).map(([item, quantity]) => (
-                      <div key={item} className="flex justify-between pb-2 border-b">
-                        <span className="text-muted-foreground capitalize">{item.replace('_', ' ')}:</span>
-                        <span className="font-semibold">{quantity as string}</span>
-                      </div>
+                {/* Suggestions dropdown */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute z-20 mt-1 max-h-56 w-full overflow-y-auto rounded-md border bg-background text-sm shadow-lg">
+                    {suggestions.map((s) => (
+                      <button
+                        key={`${s.lat}-${s.lon}-${s.display_name}`}
+                        type="button"
+                        className="block w-full px-3 py-2 text-left hover:bg-accent"
+                        onClick={() => handleSuggestionClick(s)}
+                      >
+                        {s.display_name}
+                      </button>
                     ))}
                   </div>
+                )}
+              </div>
+
+              {/* Map */}
+              <div className="mt-4">
+                <div
+                  ref={mapContainerRef}
+                  className="w-full h-[420px] rounded-lg border border-border overflow-hidden"
+                />
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Use the polygon tool in the bottom-right to trace the roof.
+                  Use the trash icon to clear and redraw.
+                </p>
+              </div>
+
+              {/* Area display + buttons */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 gap-3">
+                <div className="text-sm">
+                  <span className="font-semibold">Roof Area: </span>
+                  {roofArea ? (
+                    <span>{getRoofSizeDisplay()}</span>
+                  ) : (
+                    <span className="text-muted-foreground">
+                      Draw a polygon on the map to see area in sq ft.
+                    </span>
+                  )}
+                </div>
+                <Button
+                  type="button"
+                  variant="default"
+                  disabled={!roofArea || roofArea < 100 || isCalculating}
+                  onClick={handleCalculateCost}
+                >
+                  {isCalculating ? "Calculating..." : "Calculate Cost"}
+                </Button>
+              </div>
+
+              {/* Error */}
+              {errorMsg && (
+                <div className="mt-3 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                  {errorMsg}
                 </div>
               )}
             </CardContent>
           </Card>
-        )}
+
+          {/* Right side: How it works + Results */}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>How This Demo Works</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ol className="space-y-2 text-sm">
+                  <li>
+                    <span className="font-semibold text-primary">1.</span>{" "}
+                    Type a full address and hit <strong>Show Map</strong>.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-primary">2.</span> The
+                    system auto-detects nearby building outlines — pick the
+                    best fit and tweak it with the polygon tools.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-primary">3.</span> Once
+                    the roof area is large enough, click{" "}
+                    <strong>Calculate Cost</strong> to see the estimate and
+                    bill of materials.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-primary">4.</span> Use
+                    the trash icon to clear and redraw if needed.
+                  </li>
+                </ol>
+
+                <div className="mt-4 rounded-lg border border-accent bg-accent/10 p-3 text-xs">
+                  <p className="font-semibold text-accent mb-1">DEMO ONLY</p>
+                  <p className="text-muted-foreground">
+                    In production, VibeOps wires this directly into your real
+                    unit costs, labor rates, and CRM — so your sales team just
+                    traces the roof and sends a branded proposal in minutes.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {results && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Estimate Results</CardTitle>
+                  <CardDescription>{results.address}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm">
+                  {/* Summary */}
+                  <div>
+                    <h3 className="font-semibold mb-2">Summary</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between pb-1 border-b">
+                        <span className="text-muted-foreground">
+                          Roof Area:
+                        </span>
+                        <span className="font-semibold">
+                          {results.roof_size} sq ft
+                        </span>
+                      </div>
+                      <div className="flex justify-between pb-1 border-b text-base">
+                        <span className="font-semibold">Total Cost:</span>
+                        <span className="font-semibold text-primary">
+                          {formatCurrency(results.total_cost)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* BOM */}
+                  {results.bill_of_materials && (
+                    <div className="space-y-4">
+                      {results.bill_of_materials.materials && (
+                        <div>
+                          <h3 className="font-semibold mb-2">Materials</h3>
+                          <div className="border rounded-md overflow-hidden">
+                            <div className="grid grid-cols-4 bg-muted px-2 py-1 text-xs font-semibold">
+                              <span>Item</span>
+                              <span>Quantity</span>
+                              <span>Rate</span>
+                              <span>Cost</span>
+                            </div>
+                            <div className="divide-y">
+                              {results.bill_of_materials.materials.map(
+                                (m, idx) => (
+                                  <div
+                                    key={`${m.item}-${idx}`}
+                                    className="grid grid-cols-4 px-2 py-1 text-xs"
+                                  >
+                                    <span className="truncate">{m.item}</span>
+                                    <span>{m.quantity}</span>
+                                    <span>{m.rate}</span>
+                                    <span>{m.cost}</span>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {(results.bill_of_materials.labor ||
+                        results.bill_of_materials.overhead ||
+                        results.bill_of_materials.summary) && (
+                        <div>
+                          <h3 className="font-semibold mb-2">Cost Breakdown</h3>
+                          <div className="space-y-1 text-xs">
+                            {results.bill_of_materials.labor && (
+                              <div className="flex justify-between border-b pb-1">
+                                <span className="text-muted-foreground">
+                                  Labor (
+                                  {
+                                    results.bill_of_materials.labor
+                                      .description
+                                  }
+                                  ):
+                                </span>
+                                <span className="font-semibold">
+                                  {results.bill_of_materials.labor.cost}
+                                </span>
+                              </div>
+                            )}
+                            {results.bill_of_materials.overhead && (
+                              <div className="flex justify-between border-b pb-1">
+                                <span className="text-muted-foreground">
+                                  Overhead (
+                                  {
+                                    results.bill_of_materials.overhead
+                                      .percentage
+                                  }
+                                  %):
+                                </span>
+                                <span className="font-semibold">
+                                  {results.bill_of_materials.overhead.cost}
+                                </span>
+                              </div>
+                            )}
+                            {results.bill_of_materials.summary && (
+                              <div className="mt-2 border-t pt-2 space-y-1">
+                                {results.bill_of_materials.summary
+                                  .materials_total && (
+                                  <div className="flex justify-between">
+                                    <span>Materials Total</span>
+                                    <span>
+                                      {
+                                        results.bill_of_materials.summary
+                                          .materials_total
+                                      }
+                                    </span>
+                                  </div>
+                                )}
+                                {results.bill_of_materials.summary
+                                  .labor_total && (
+                                  <div className="flex justify-between">
+                                    <span>Labor Total</span>
+                                    <span>
+                                      {
+                                        results.bill_of_materials.summary
+                                          .labor_total
+                                      }
+                                    </span>
+                                  </div>
+                                )}
+                                {results.bill_of_materials.summary
+                                  .overhead_total && (
+                                  <div className="flex justify-between">
+                                    <span>Overhead Total</span>
+                                    <span>
+                                      {
+                                        results.bill_of_materials.summary
+                                          .overhead_total
+                                      }
+                                    </span>
+                                  </div>
+                                )}
+                                {results.bill_of_materials.summary
+                                  .total_cost && (
+                                  <div className="flex justify-between text-sm font-semibold">
+                                    <span>Grand Total</span>
+                                    <span className="text-primary">
+                                      {formatCurrency(
+                                        results.bill_of_materials.summary
+                                          .total_cost
+                                      )}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
       </section>
     </div>
   );
