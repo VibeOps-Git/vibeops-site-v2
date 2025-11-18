@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login · Reportly</title>
+  <link rel="stylesheet" href="/static/reportly.css">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <section class="page-hero-auth page-hero--slim">
+    <div class="hero-container">
+      <h1 class="hero-title">Reportly</h1>
+      <div class="hero-sub"><p class="hero-subtext">Log in</p></div>
+    </div>
+  </section>
+
+  <!-- Hard-centered wrapper -->
+  <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:calc(100dvh - 180px);
+    padding:0 12px;
+  ">
+    <div class="card" style="max-width:420px; width:100%; margin:0 auto;">
+      <div class="card-inner">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes">
+              {% for category, message in messages %}
+                <li class="flash {{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form method="post" action="/login" class="auth-form">
+          <label>Email
+            <input type="email" name="email" placeholder="you@domain.com" required />
+          </label>
+          <label>Password
+            <input type="password" name="password" placeholder="••••••••" required />
+          </label>
+          <div class="row between" style="margin-top:12px;">
+            <a class="btn secondary" href="/signup">Create account</a>
+            <button class="btn" type="submit">Log in</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

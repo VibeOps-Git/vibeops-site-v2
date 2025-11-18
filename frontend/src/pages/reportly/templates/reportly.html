@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VibeOps — AI-native automation, lean workflows, and rapid web solutions for teams that build fast, flex hard, and vibe always." />
+  <meta name="keywords" content="AI-native automation, lean workflows, rapid web development, CRM sync, startup tools, AI engineering" />
+  <meta name="author" content="VibeOps" />
+  <title>VibeOps — Reportly</title>
+  <link rel="stylesheet" href="/static/reportly.css">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* --- Track changes visuals (additions / deletions) ------------------- */
+    .change-add{
+      background: rgba(94,234,212,.14);
+      color: #c8fff0;
+      border-bottom: 1px dashed #5eead4;
+      padding: 0 .08em;
+    }
+    .change-del{
+      text-decoration: line-through;
+      color: #ffb3bd;
+      opacity: .8;
+      padding: 0 .08em;
+    }
+    /* Make suggestion nodes easy to click for accept/reject */
+    .change-suggest{ position: relative; padding-right: 70px; }
+    .change-actions{
+      position: absolute; right: 0; top: -0.6em;
+      display: inline-flex; gap: 6px;
+      background: rgba(20,20,22,0.9);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px;
+      box-shadow: var(--shadow);
+    }
+    .change-actions .btn.sm{
+      padding: .2rem .45rem; font-size: .75rem; border-radius: .45rem; box-shadow: none;
+    }
+    /* Prevent typing inside suggestion spans but still allow clicking buttons */
+    .change-lock{
+      -webkit-user-modify: read-only;
+      user-select: none;
+    }
+    .change-lock *{ user-select: text; } /* allow selecting text inside for copy */
+
+    /* Preview frame used as editable area in Interactive mode */
+    #interactiveEditor{
+      white-space: normal;
+      line-height: 1.5;
+    }
+
+    /* Ensure split var has % (guard) */
+    :root{ --split: 58%; --gutter-w: 10px; }
+    .row.chat-layout{
+      display: grid;
+      grid-template-columns: minmax(320px, var(--split)) var(--gutter-w) minmax(360px, 1fr);
+      gap: 0;
+    }
+    .row.chat-layout > .col { min-width: 0; }
+    .gutter{
+      cursor: col-resize;
+      background: #000;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+      position: relative;
+    }
+    .gutter::before{ content:""; position:absolute; inset:0 -4px; } /* bigger grab zone */
+    @media (max-width:1100px){
+      .row.chat-layout{ grid-template-columns: 1fr; }
+      .gutter{ display:none; }
+    }
+  </style>
+</head>
+<body>
+<nav class="reportly-header" style="display:flex; align-items:center; justify-content:space-between; padding:10px 16px;">
+  <div class="brand"><a href="/reportly" class="btn secondary">Reportly</a></div>
+  <div class="auth-links">
+    <div class="usage-widget" style="display:inline-flex; align-items:center; gap:8px; margin-right:12px;">
+      <div class="usage-bar"><div class="usage-fill" id="usage-fill" style="width:0%"></div></div>
+      <div class="usage-count muted"><span id="usage-count">0/5</span></div>
+    </div>
+    {% if session.get('user') %}
+      <span class="muted" style="margin-right:10px;">Signed in as {{ session['user'].get('email', 'user') }}</span>
+      <a class="btn secondary" href="/logout">Logout</a>
+    {% else %}
+      <a class="btn secondary" href="/login">Login</a>
+      <a class="btn" style="margin-left:8px;" href="/signup">Sign up</a>
+    {% endif %}
+  </div>
+</nav>
+{% if not state %}
+  <div class="no-doc-message" style="text-align:center; margin:2em;">
+    <h2>No document loaded</h2>
+    <p>Upload a .docx or .pdf to get started.</p>
+    <form action="/reportly" method="post" enctype="multipart/form-data" class="upload-form" style="display:inline-block;">
+      <label class="file">
+        <span class="file-cta">Choose .docx file</span>
+        <input type="file" name="file" accept=".docx" required>
+      </label>
+      <button class="btn" type="submit">Upload</button>
+    </form>
+  </div>
+{% endif %}
+
+<section class="page-hero page-hero--slim">
+  <div class="hero-container">
+    <h1 class="hero-title">Reportly</h1>
+    <div class="hero-sub">
+      <p class="hero-subtext">Cursor for word.</p>
+      <span class="doc-pill" id="filename-pill"></span>
+    </div>
+  </div>
+</section>
+
+<div class="row chat-layout">
+  <!-- LEFT: Chat + toggles + upload -->
+  <div class="col left">
+    <div class="card chat-card" data-aos="fade-up">
+      <div class="chat-card-inner">
+        <h2 class="card-title">Chat</h2>
+
+        <div id="chatLog" class="chat-log"></div>
+
+        <div class="chat-input-wrap">
+          <form id="chatForm" class="chat-form" action="javascript:void(0);" novalidate>
+            <div class="composer">
+              <button type="button" class="icon-btn composer-plus" id="plus-menu-btn" aria-label="More actions">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+
+              <textarea id="chatInput" name="message" rows="1" placeholder="Message Reportly…"></textarea>
+
+              <div class="composer-actions">
+                <button class="icon-btn send-btn" type="submit" aria-label="Send" formnovalidate>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="plus-menu" id="plus-menu" hidden>
+              <div class="plus-menu-section">
+                <h3>Quick actions</h3>
+                <button type="button" class="btn secondary" onclick="preset('Generate full report content aligned to the template.')">Generate all</button>
+                <button type="button" class="btn secondary" onclick="preset('Only update Executive Summary with risks and 3 recommendations.')">Only Exec Summary</button>
+                <button type="button" class="btn secondary" onclick="preset('Replace Findings section with a detailed analysis and a 5-row table.')">Replace Findings</button>
+              </div>
+
+              <div class="plus-menu-section">
+                <h3>Settings</h3>
+                <label>Length:
+                  <select name="length_mode" id="lengthMode">
+                    <option value="concise">Concise</option>
+                    <option value="standard" selected>Standard</option>
+                    <option value="detailed">Detailed</option>
+                    <option value="custom">Custom (words)</option>
+                  </select>
+                </label>
+                <input type="number" min="50" step="50" id="customWords" name="custom_words" placeholder="Words" class="custom-words" style="display:none">
+                <label class="checkbox">
+                  <input type="checkbox" id="includeInContext" name="include_in_context"> Include uploaded document text as AI context
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="stripExisting" name="strip_existing"> Strip existing body when composing
+                </label>
+              </div>
+
+              <div class="plus-menu-section">
+                <h3>Upload / Replace Template (.docx)</h3>
+                <form action="/reportly" method="post" enctype="multipart/form-data" class="upload-form">
+                  <label class="file">
+                    <span class="file-cta">Choose .docx file</span>
+                    <input type="file" name="file" accept=".docx" required>
+                  </label>
+                  <button class="btn" type="submit">Upload</button>
+                </form>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="chat-footer">
+          <a class="btn secondary" href="#" id="download-docx-btn" download>Download Word</a>
+          <span class="muted" id="quota-remaining" style="margin-left:8px;"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="doc-logs" data-aos="fade-up" style="margin-top:12px;">
+      <div class="card-header row between">
+        <h2 class="card-title" style="margin:0;">Doc Sections</h2>
+        <small class="muted" id="doc-filename">Exctracted: </small>
+      </div>
+      <div class="log-body">
+        <div class="log-line muted">waiting for document…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE gutter gets injected by JS -->
+
+  <!-- RIGHT: Preview + Review -->
+  <div class="col right">
+    <div class="card sticky" data-aos="fade-up" data-aos-delay="50">
+      <div class="editor-head">
+        <h2 class="card-title">Preview</h2>
+        <div class="preview-menu">
+          <button id="accept-all" class="btn secondary" type="button">Accept all</button>
+          <button id="reject-all" class="btn secondary" type="button">Reject all</button>
+          <a class="btn secondary" id="pv-open" href="#" target="_blank">Open</a>
+        </div>
+      </div>
+
+      <div class="viewer-bar"><div class="muted" id="pdf-filename"> → Preview</div></div>
+
+      <div class="preview-wrap">
+        <div class="loading-veil" id="pv-loading"><span class="muted">Rendering…</span></div>
+
+        <!-- HTML Preview -->
+        <div id="interactiveEditor"
+             class="preview-frame"
+             style="display:block; background:white; color:black; overflow:auto; padding:14px; border-radius:12px; border:1px solid var(--border);"
+             contenteditable="true">
+          <!-- populated by JS -->
+        </div>
+      </div>
+      <p class="muted">Green = additions. Struck = proposed deletions. Nothing is removed until you accept.</p>
+
+      <div class="review-bar">
+        <div class="review-title">Pending changes</div>
+        <div id="review-list" class="review-list empty">
+          <span class="muted">No pending changes.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="reportly-state" type="application/json">
+  {{ state|tojson|safe if state else '{}' }}
+</script>
+
+<script>
+  // Bootstrap APP_STATE + docId + preview wiring
+  const APP_STATE = (() => {
+    try { return JSON.parse(document.getElementById('reportly-state')?.textContent || '{}'); }
+    catch { return {}; }
+  })();
+  let docId = APP_STATE.doc_id || null;
+
+  function setDocId(id){
+    docId = id;
+    const open = document.getElementById('pv-open');
+    const dl = document.getElementById('download-docx-btn');
+      if (dl) {
+        dl.href = `/reportly/download/${id}`;
+        dl.removeAttribute('download');   // ← avoid downloading HTML redirects
+      }
+  }
+  if (docId) setDocId(docId);
+</script>
+
+<script>
+  (function(){
+    if (!window.APP_STATE) return;
+    const box = document.querySelector('#doc-logs .log-body');
+    if (!box) return;
+
+    async function loadSections(){
+      if (!window.docId) return;
+      try {
+        const res = await fetch(`/reportly/structure/${docId}`, { headers: { 'Accept': 'application/json' }});
+        // Some backends return HTML on auth redirect; be robust:
+        const ct = res.headers.get('content-type') || '';
+        let sections = [];
+        if (ct.includes('application/json')) {
+          const j = await res.json();
+          if (!res.ok) throw new Error(j?.error || ('HTTP '+res.status));
+          sections = j.sections || [];
+        } else {
+          // Fallback to state if server didn't return JSON
+          sections = (window.APP_STATE && APP_STATE.sections) || [];
+        }
+        renderSections(sections);
+      } catch (e) {
+        box.innerHTML = `<div class="muted">⚠ ${e.message || e}</div>`;
+      }
+    }
+
+    function renderSections(items){
+      if (!items || !items.length){
+        box.innerHTML = '<div class="muted">No sections detected yet.</div>';
+        return;
+      }
+      box.innerHTML = '';
+      for (const s of items){
+        const div = document.createElement('div');
+        div.className = 'log-line';
+        const indent = (s.level || 1) - 1;
+        div.innerHTML = `<span style="opacity:.6">${'&nbsp;&nbsp;'.repeat(Math.max(0, indent))}</span><strong>${s.title || '(untitled)'}</strong>`;
+        box.appendChild(div);
+      }
+    }
+
+    // Initial load + refresh on SSE “update”
+    if (window.docId) loadSections();
+    if (window.EventSource && window.docId){
+      const es = new EventSource(`/reportly/stream/${docId}`);
+      es.addEventListener("update", ev => {
+        try{ 
+          const d = JSON.parse(ev.data||"{}"); 
+          if (d.html === "ready") {
+            loadSections();
+          }
+        }catch(_){}
+      });
+    }
+  })();
+</script>
+
+
+<script>
+  // Split pane: inject gutter once, persist %, accessible controls
+  (function(){
+    const grid = document.querySelector('.row.chat-layout');
+    if (!grid) return;
+    const left = grid.querySelector('.col.left');
+    const right = grid.querySelector('.col.right');
+    if (!left || !right) return;
+
+    let gutter = grid.querySelector('#split-gutter');
+    if (!gutter){
+      gutter = document.createElement('div');
+      gutter.id = 'split-gutter';
+      gutter.className = 'gutter';
+      gutter.setAttribute('role','separator');
+      gutter.setAttribute('aria-orientation','vertical');
+      left.after(gutter);
+    }
+
+    const KEY = 'reportly-split-v3';
+    const clamp = v => Math.max(25, Math.min(75, Math.round(v)));
+    const setSplit = pct => {
+      const v = clamp(pct);
+      document.documentElement.style.setProperty('--split', v + '%');
+      try { localStorage.setItem(KEY, String(v)); } catch {}
+    };
+
+    const saved = parseInt(localStorage.getItem(KEY), 10);
+    if (!isNaN(saved)) setSplit(saved);
+
+    const onMove = (clientX) => {
+      const r = grid.getBoundingClientRect();
+      setSplit(((clientX - r.left) / r.width) * 100);
+    };
+
+    let dragging = false;
+    const start = (x) => { dragging = true; gutter.classList.add('is-dragging'); document.body.style.userSelect='none'; onMove(x); };
+    const stop  = () => { if (!dragging) return; dragging=false; gutter.classList.remove('is-dragging'); document.body.style.userSelect=''; };
+
+    gutter.addEventListener('mousedown', e => start(e.clientX));
+    window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
+    window.addEventListener('mouseup', stop);
+
+    gutter.addEventListener('touchstart', e => start(e.touches[0].clientX), {passive:true});
+    window.addEventListener('touchmove', e => { if (dragging){ e.preventDefault(); onMove(e.touches[0].clientX); }}, {passive:false});
+    window.addEventListener('touchend', stop);
+
+    gutter.tabIndex = 0;
+    gutter.addEventListener('keydown', e => {
+      const cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--split'), 10) || 58;
+      const step = e.shiftKey ? 5 : 1;
+      if (e.key === 'ArrowLeft')  { setSplit(cur - step); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { setSplit(cur + step); e.preventDefault(); }
+    });
+  })();
+</script>
+
+<script>
+  // Composer UX, usage bar, chat submit (kept from your version)
+  (function(){
+    const ta = document.getElementById('chatInput');
+    const form = document.getElementById('chatForm');
+    const plusBtn = document.getElementById('plus-menu-btn');
+    const plusMenu = document.getElementById('plus-menu');
+    const lengthMode = document.getElementById('lengthMode');
+    const customWords = document.getElementById('customWords');
+
+    function autoresize(){ if(!ta) return; ta.style.height='0px'; ta.style.height=Math.min(ta.scrollHeight,220)+'px'; }
+    ta?.addEventListener('input', autoresize);
+    window.addEventListener('load', autoresize);
+    ta?.addEventListener('keydown', (e)=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); form.requestSubmit(document.querySelector('.send-btn')); }});
+
+    async function refreshUsage(){
+      try{
+        const r = await fetch('/api/usage'); const j = await r.json();
+        if (!r.ok || !j.ok) throw new Error(j?.error||('HTTP '+r.status));
+        const limit=Number(j.limit||5), remaining=Number(j.remaining||0), used=Math.max(0,limit-remaining);
+        const pct = Math.max(0, Math.min(100, Math.round((used/limit)*100)));
+        const fill=document.getElementById('usage-fill'); const count=document.getElementById('usage-count');
+        if (fill) fill.style.width=pct+'%'; if (count) count.textContent=used+'/'+limit;
+      }catch(_){}
+    }
+    refreshUsage();
+
+    function appendMsg(role, content){
+      const wrap=document.createElement('div'); wrap.className='chat-msg '+(role==='user'?'user':'assistant');
+      const bubble=document.createElement('div'); bubble.className='bubble'; bubble.textContent=content;
+      wrap.appendChild(bubble); const log=document.getElementById('chatLog'); log.appendChild(wrap); log.scrollTop=log.scrollHeight;
+    }
+
+    form?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const msg=(ta.value||'').trim();
+      if (!msg || !docId) return;
+      appendMsg('user', msg);
+      const fd=new FormData(); fd.append('message', msg); fd.append('length_mode', lengthMode.value);
+      if (customWords.value && lengthMode.value==='custom'){ fd.append('custom_words', customWords.value); }
+      ta.value=''; autoresize();
+      try{
+        const res=await fetch(`/reportly/chat/${docId}`, {method:'POST', body:fd});
+        const resp=await res.json();
+        if (!res.ok) throw new Error(resp?.error||('HTTP '+res.status));
+        appendMsg('assistant', resp.assistant_message || 'Proposed changes.');
+        const quota=document.getElementById('quota-remaining');
+        if (typeof resp?.remaining==='number'){ quota.textContent=`Remaining this week: ${resp.remaining}`; }
+      }catch(err){ appendMsg('assistant','⚠︎ '+(err.message||err)); }
+    });
+
+    plusBtn?.addEventListener('click', ()=> plusMenu.toggleAttribute('hidden'));
+    document.addEventListener('click', (e)=>{ if(!plusMenu||!plusBtn) return;
+      if (!plusMenu.contains(e.target) && !plusBtn.contains(e.target)) plusMenu.setAttribute('hidden',''); });
+
+    function updateCustom(){ customWords.style.display = (lengthMode?.value==='custom' ? 'block':'none'); }
+    lengthMode?.addEventListener('change', updateCustom); updateCustom();
+
+    window.preset = function(text){ ta.value=text; ta.focus(); autoresize(); };
+    ta?.focus();
+  })();
+</script>
+
+<script>
+  // HTML preview auto-refresh via SSE
+  (function(){
+    const editor = document.getElementById('interactiveEditor');
+    const veil = document.getElementById('pv-loading');
+    
+    if (docId && window.EventSource){
+      const es = new EventSource(`/reportly/stream/${docId}`);
+      es.addEventListener("update", ev => {
+        try{ 
+          const d = JSON.parse(ev.data||"{}"); 
+          if (d.html === "ready" && editor) {
+            // Refresh the HTML content
+            veil?.classList.add('on');
+            fetch(`/reportly/html/${docId}`)
+              .then(res => res.text())
+              .then(html => {
+                editor.innerHTML = html;
+                veil?.classList.remove('on');
+              })
+              .catch(() => veil?.classList.remove('on'));
+          }
+        }catch(_){}
+      });
+    }
+  })();
+</script>
+
+<script>
+  (function(){
+    const editor = document.getElementById('interactiveEditor');
+    const acceptAllBtn = document.getElementById('accept-all');
+    const rejectAllBtn = document.getElementById('reject-all');
+
+    if (!editor) return;
+
+    // One editor used for both “Exact (HTML)” and Interactive.
+    // We’ll try HTML first; if unavailable, fall back to PDF iframe.
+    // Load HTML preview on page load
+    async function loadPreview() {
+      try {
+        const { html } = await fetchHTML(`/reportly/html/${docId}`);
+        editor.setAttribute('contenteditable', 'true');
+        editor.innerHTML = decorateSuggestions(html, /*readonly*/false);
+        lockSuggestionSpans();
+      } catch (e) {
+        editor.innerHTML = `<div class="muted">⚠ ${e.message || e}</div>`;
+      }
+    }
+
+    // Load preview when page loads
+    if (docId) {
+      loadPreview();
+    }
+
+    // Also load preview when docId is set later
+    window.addEventListener('load', () => {
+      if (docId) {
+        loadPreview();
+      }
+    });
+
+    async function fetchHTML(url){
+      const res = await fetch(url, { headers: { 'Accept': 'text/html,application/json;q=0.9' }});
+      const ct = (res.headers.get('content-type') || '').toLowerCase();
+      const text = await res.text();
+      if (!res.ok) throw new Error(text.slice(0, 160) || ('HTTP '+res.status));
+      if (ct.includes('application/json')){
+        try {
+          const j = JSON.parse(text);
+          return { html: j.html || '' };
+        } catch {
+          // Some proxies double-encode; last resort treat as html
+          return { html: text };
+        }
+      }
+      // text/html or anything else -> use as HTML
+      return { html: text };
+    }
+
+    function decorateSuggestions(html, readonly){
+      const wrap = document.createElement('div'); wrap.innerHTML = html;
+
+      // Normalize <ins>/<del> to our classes in case backend uses semantic tags
+      wrap.querySelectorAll('ins').forEach(n => { n.classList.add('change-add'); n.style.textDecoration='none'; });
+      wrap.querySelectorAll('del').forEach(n => n.classList.add('change-del'));
+
+      wrap.querySelectorAll('[data-change-id]').forEach(node=>{
+        node.classList.add('change-suggest');
+        if (readonly) return; // no buttons in Exact (read-only) mode
+        const id = node.getAttribute('data-change-id');
+        const box = document.createElement('div');
+        box.className = 'change-actions';
+        box.innerHTML = `
+          <button class="btn secondary sm" data-accept="${id}">Accept</button>
+          <button class="btn secondary sm" data-reject="${id}">Reject</button>
+        `;
+        node.appendChild(box);
+      });
+      return wrap.innerHTML;
+    }
+
+    function lockSuggestionSpans(){
+      editor.querySelectorAll('.change-del,.change-add').forEach(n => n.classList.add('change-lock'));
+    }
+
+    // Prevent typing inside suggestion wrappers (never delete without signoff)
+    editor.addEventListener('beforeinput', (e)=>{
+      const sel = getSelection();
+      const el = sel && sel.anchorNode && (sel.anchorNode.nodeType===1 ? sel.anchorNode : sel.anchorNode.parentElement);
+      if (el && el.closest && el.closest('.change-lock')) e.preventDefault();
+    });
+
+    // Inline Accept/Reject
+    editor.addEventListener('click', async (e)=>{
+      const acc = e.target.closest?.('[data-accept]');
+      const rej = e.target.closest?.('[data-reject]');
+      if (!acc && !rej) return;
+
+      const id = (acc && acc.getAttribute('data-accept')) || (rej && rej.getAttribute('data-reject'));
+      const endpoint = acc ? 'accept' : 'reject';
+      try{
+        await fetch(`/reportly/review/${docId}/${endpoint}`, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ change_id: id })
+        });
+        const span = editor.querySelector(`[data-change-id="${id}"]`);
+        if (!span) return;
+        if (span.classList.contains('change-del') && endpoint==='accept'){
+          // Accept deletion -> remove suggested-deleted content
+          span.remove();
+        } else {
+          // Accept addition -> keep addition text, unwrap
+          // Reject (either type) -> unwrap (keeps original text)
+          const txt = document.createTextNode(span.textContent);
+          span.replaceWith(txt);
+        }
+      }catch(err){ alert(err.message||'Failed'); }
+    });
+
+    acceptAllBtn?.addEventListener('click', ()=>bulk('accept'));
+    rejectAllBtn?.addEventListener('click', ()=>bulk('reject'));
+
+    async function bulk(endpoint){
+      await fetch(`/reportly/review/${docId}/${endpoint}`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ all: true })
+      });
+      if (endpoint==='accept'){
+        editor.querySelectorAll('[data-change-id].change-del').forEach(n=> n.remove());
+        editor.querySelectorAll('[data-change-id].change-add').forEach(n=>{
+          const t=document.createTextNode(n.textContent); n.replaceWith(t);
+        });
+      } else {
+        editor.querySelectorAll('[data-change-id]').forEach(n=>{
+          const t=document.createTextNode(n.textContent); n.replaceWith(t);
+        });
+      }
+    }
+  })();
+</script>
+
+
+<script>
+  // Nav height → CSS var (for hero scroll-margin etc.)
+  (function(){
+    const nav = document.querySelector('.reportly-header, .navbar, header');
+    if (nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+  })();
+</script>
+
+<script>
+  // Review list (kept from your version)
+  (function(){
+    const stateEl = document.getElementById('reportly-state');
+    let s = null; try { s = JSON.parse(stateEl?.textContent || '{}').doc_id || null; } catch {}
+    if (!s) return;
+
+    const listEl = document.getElementById('review-list');
+    const acceptAll = document.getElementById('accept-all');
+    const rejectAll = document.getElementById('reject-all');
+
+    async function fetchPending(){
+      const r = await fetch(`/reportly/pending/${s}`);
+      const j = await r.json();
+      render(j.pending||[]);
+    }
+
+    function render(items){
+      listEl.innerHTML = '';
+      if (!items.length){
+        listEl.classList.add('empty');
+        listEl.innerHTML = '<span class="muted">No pending changes.</span>';
+        return;
+      }
+      listEl.classList.remove('empty');
+      for (const c of items){
+        const row = document.createElement('div');
+        row.className = 'review-item';
+        row.innerHTML = `
+          <div class="review-meta">
+            <div class="review-title-small">${c.title || 'Untitled section'}</div>
+            <div class="muted">level ${c.level} · ${(c.blocks && c.blocks.length) || 0} block(s)</div>
+          </div>
+          <div class="review-ops">
+            <button data-id="${c.change_id}" class="btn secondary btn-accept">Accept</button>
+            <button data-id="${c.change_id}" class="btn secondary btn-reject">Reject</button>
+          </div>
+        `;
+        listEl.appendChild(row);
+      }
+      bindOps();
+    }
+
+    function bindOps(){
+      listEl.querySelectorAll('.btn-accept').forEach(b=>{
+        b.onclick = async ()=>{
+          const id = b.getAttribute('data-id');
+          await fetch(`/reportly/review/${s}/accept`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({change_id:id})});
+          fetchPending();
+        };
+      });
+      listEl.querySelectorAll('.btn-reject').forEach(b=>{
+        b.onclick = async ()=>{
+          const id = b.getAttribute('data-id');
+          await fetch(`/reportly/review/${s}/reject`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({change_id:id})});
+          fetchPending();
+        };
+      });
+    }
+
+    if (window.EventSource){
+      const es = new EventSource(`/reportly/stream/${s}`);
+      es.addEventListener("update", ev => {
+        try{ 
+          const d = JSON.parse(ev.data||"{}"); 
+          if (d.html === "ready") {
+            fetchPending();
+          }
+        }catch(_){}
+      });
+    }
+    fetchPending();
+  })();
+</script>
+
+<script>
+  // File input label UX in upload form
+  (function(){
+    document.querySelectorAll('.upload-form input[type="file"]').forEach(input=>{
+      const labelEl = input.closest('label')?.querySelector('.file-cta');
+      if (!labelEl) return;
+      input.addEventListener('change', ()=>{
+        const f = input.files && input.files[0];
+        if (f) labelEl.textContent = f.name;
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
