@@ -15,8 +15,15 @@ export default function Blog() {
   const posts = getAllPosts();
   const hasPosts = posts && posts.length > 0;
 
-  const featured = hasPosts ? posts[0] : null;
-  const rest = hasPosts ? posts.slice(1) : [];
+  // --- Randomize featured post ---
+  let featured = null as (typeof posts)[number] | null;
+  let rest: typeof posts = [];
+
+  if (hasPosts) {
+    const featuredIndex = Math.floor(Math.random() * posts.length);
+    featured = posts[featuredIndex];
+    rest = posts.filter((_, i) => i !== featuredIndex);
+  }
 
   return (
     <div className="relative min-h-screen bg-background">
@@ -112,7 +119,7 @@ export default function Blog() {
                                 Real implementation notes — not marketing fluff.
                               </p>
                             </div>
-                            {/* animated corner highlight */}
+                            {/* corner glow */}
                             <div className="pointer-events-none absolute -right-8 -bottom-8 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
                           </div>
                         </div>
@@ -178,15 +185,7 @@ export default function Blog() {
                             {/* top accent line */}
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-accent/0 opacity-80" />
                             <CardHeader className="pb-3">
-                              <div className="flex items-center justify-between mb-3">
-                                <span className="inline-flex items-center rounded-full border border-border/70 bg-background/70 px-2.5 py-1 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                                  {badgeLabel}
-                                </span>
-                                <span className="text-[0.65rem] text-muted-foreground/80">
-                                  {/* simple slug-based display */}
-                                  {post.slug.replace(/-/g, " ")}
-                                </span>
-                              </div>
+                                {/* removed slug text on the right to avoid weird overlay */}
                               <CardTitle className="text-base sm:text-lg line-clamp-2 group-hover:text-primary transition-colors">
                                 {post.title}
                               </CardTitle>
@@ -236,32 +235,8 @@ export default function Blog() {
         )}
       </div>
 
-      {/* Local micro-animations */}
+      {/* Local micro-animations – shimmer removed, keep subtle float */}
       <style>{`
-        @keyframes featuredShimmer {
-          0% { opacity: 0; transform: translateX(-100%); }
-          50% { opacity: 0.4; transform: translateX(0%); }
-          100% { opacity: 0; transform: translateX(120%); }
-        }
-        .featured-blog-card::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            120deg,
-            transparent 0%,
-            rgba(255,255,255,0.18) 50%,
-            transparent 100%
-          );
-          mix-blend-mode: screen;
-          opacity: 0;
-          pointer-events: none;
-          transform: translateX(-100%);
-        }
-        .featured-blog-card:hover::after {
-          animation: featuredShimmer 0.9s ease-out forwards;
-        }
-
         @keyframes blogCardFloat {
           0% { transform: translateY(0px); }
           50% { transform: translateY(-6px); }
