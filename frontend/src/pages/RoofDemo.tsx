@@ -225,13 +225,8 @@ export default function RoofDemo() {
     };
   }, []);
 
-  // ───────────────── Polygon area handling ─────────────────
-  const handlePolygonChanged = (layer: any) => {
-    if (!drawnItemsRef.current) return;
-
-    drawnItemsRef.current.clearLayers();
-    drawnItemsRef.current.addLayer(layer);
-
+  // ───────────────── Polygon area helpers ─────────────────
+  const computeAreaFromLayer = (layer: any) => {
     const latlngs = layer.getLatLngs();
     const firstRing =
       Array.isArray(latlngs) && Array.isArray(latlngs[0])
@@ -259,6 +254,19 @@ export default function RoofDemo() {
       setErrorMsg(null);
     }
   };
+
+  // ───────────────── Polygon area handling ─────────────────
+  const handlePolygonChanged = (layer: any) => {
+    if (!drawnItemsRef.current) return;
+
+    // Keep only this polygon in the FeatureGroup
+    drawnItemsRef.current.clearLayers();
+    drawnItemsRef.current.addLayer(layer);
+
+    // Just compute area – let Leaflet.draw handle edit mode internally
+    computeAreaFromLayer(layer);
+  };
+
 
   const clearPolygon = () => {
     drawnItemsRef.current?.clearLayers();
