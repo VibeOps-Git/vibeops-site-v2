@@ -243,9 +243,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="border-t border-border my-2 pt-1" />
                 <button
                   type="button"
-                  onClick={() =>
-                    setIsMobileDemosOpen((prev) => !prev)
-                  }
+                  onClick={() => setIsMobileDemosOpen((prev) => !prev)}
                   className="flex w-full items-center justify-between py-2.5 px-4 rounded-lg hover:bg-accent/10 text-sm"
                 >
                   <span>Demos</span>
@@ -383,7 +381,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} VibeOps Technologies Inc. All rights reserved.</p>
+            <p>
+              &copy; {new Date().getFullYear()} VibeOps Technologies Inc. All
+              rights reserved.
+            </p>
           </div>
         </div>
       </footer>
