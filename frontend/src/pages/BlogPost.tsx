@@ -1,312 +1,157 @@
-import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+// src/pages/BlogPost.tsx
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { getPostBySlug } from "@/lib/blogs";
+import Aurora from "../components/Aurora";
+import AnimatedContent from "../components/AnimatedContent";
 
-const REPORTLY_LOGIN_URL =
-  import.meta.env.VITE_REPORTLY_LOGIN_URL || "http://localhost:5014/reportly";
+export default function BlogPost() {
+  const { slug } = useParams<{ slug: string }>();
+  const post = slug ? getPostBySlug(slug) : undefined;
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const location = useLocation();
-
+  // Always open at top when slug changes
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [slug]);
+
+  // Toggle "back to top" button visibility
+  useEffect(() => {
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > window.innerHeight * 0.4);
+    };
+    window.addEventListener("scroll", onScroll);
+    onScroll(); // run once on mount
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    // Close mobile menu on route change
-    setIsMenuOpen(false);
-  }, [location.pathname]);
-
-  const openReportly = () => {
-    window.open(REPORTLY_LOGIN_URL, "_blank", "noopener,noreferrer");
-  };
+  if (!post) {
+    return (
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-2xl mx-auto text-center space-y-4">
+          <h1 className="text-3xl font-bold">Post not found</h1>
+          <p className="text-muted-foreground">
+            The blog post you&apos;re looking for doesn&apos;t exist or was moved.
+          </p>
+          <Link to="/blog" className="btn-primary inline-block">
+            Back to Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Navigation */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled || isMenuOpen
-            ? "bg-card/95 backdrop-blur-sm shadow-lg"
-            : "bg-transparent"
-        }`}
+    <div className="relative min-h-screen bg-background">
+      {/* Aurora background */}
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
+        <Aurora
+          colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
+          blend={0.45}
+          amplitude={1.0}
+          speed={0.6}
+        />
+      </div>
+
+      {/* Main content */}
+      <AnimatedContent
+        distance={120}
+        direction="vertical"
+        duration={1}
+        ease="power3.out"
+        initialOpacity={0}
+        animateOpacity
+        scale={0.97}
+        threshold={0.4}
       >
-        <nav className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
-              <img
-                src="/logo-wht-hrzntl.png"
-                alt="VibeOps Logo"
-                className="h-10 w-auto object-contain"
-              />
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
-              <Link to="/" className="nav-link">
-                About
-              </Link>
-              <Link to="/team" className="nav-link">
-                Team
-              </Link>
-              <Link to="/services" className="nav-link">
-                Services
-              </Link>
-              <Link to="/case-studies" className="nav-link">
-                Reviews
-              </Link>
-              <Link to="/blog" className="nav-link">
-                Blog
-              </Link>
-
-              {/* Apps Dropdown */}
-              <div className="relative group">
-                <button className="nav-link" type="button">
-                  Demos
-                </button>
-                <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  <Link
-                    to="/construction-tracker"
-                    className="block px-4 py-2 hover:bg-accent/10 rounded-t-lg"
-                  >
-                    Construction Tracker
-                  </Link>
-                  <Link
-                    to="/ai-report-generator"
-                    className="block px-4 py-2 hover:bg-accent/10"
-                  >
-                    AI Report Generator
-                  </Link>
-                  <Link
-                    to="/pipeline"
-                    className="block px-4 py-2 hover:bg-accent/10"
-                  >
-                    Pipeline Estimator
-                  </Link>
-                  <Link
-                    to="/roof-demo"
-                    className="block px-4 py-2 hover:bg-accent/10 rounded-b-lg"
-                  >
-                    Roofing Estimator
-                  </Link>
-                </div>
-              </div>
-
-              <Link to="/contact" className="nav-link">
-                Contact
-              </Link>
-
-              {/* Login dropdown – behaves exactly like Demos */}
-              <div className="relative group">
-                <button
-                  className="btn-primary flex items-center gap-1"
-                  type="button"
-                >
-                  Login
-                </button>
-                <div className="absolute top-full right-0 mt-2 w-40 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  <button
-                    type="button"
-                    onClick={openReportly}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-accent/10 rounded-lg"
-                  >
-                    Reportly
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle navigation"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 space-y-2 -mx-4 px-4">
-              <Link
-                to="/"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                About
-              </Link>
-              <Link
-                to="/services"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Services
-              </Link>
-              <Link
-                to="/case-studies"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Case Studies
-              </Link>
-              <Link
-                to="/contact"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Contact
-              </Link>
-              <Link
-                to="/team"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Team
-              </Link>
+        <div className="container mx-auto px-4 py-24 relative z-10">
+          <div className="max-w-3xl mx-auto space-y-12">
+            {/* Header */}
+            <header className="space-y-6">
               <Link
                 to="/blog"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
+                className="text-xs uppercase tracking-[0.22em] text-primary/80 hover:text-primary transition-colors inline-flex items-center gap-1"
               >
-                Blog
+                ← Back to all posts
               </Link>
 
-              <div className="border-t border-border my-2" />
+              <div className="space-y-3">
+                <p className="text-[0.65rem] uppercase tracking-[0.28em] text-muted-foreground/80">
+                  VibeOps · Field Notes
+                </p>
 
-              <Link
-                to="/construction-tracker"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Construction Tracker
-              </Link>
-              <Link
-                to="/ai-report-generator"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                AI Report Generator
-              </Link>
-              <Link
-                to="/pipeline"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Pipeline Estimator
-              </Link>
-              <Link
-                to="/roof-demo"
-                className="block py-2 px-4 hover:bg-accent/10 rounded"
-              >
-                Roofing Estimator
-              </Link>
+                <h1 className="text-4xl md:text-5xl font-semibold leading-tight bg-clip-text text-transparent bg-gradient-to-br from-primary/80 to-white/90 drop-shadow-xl">
+                  {post.title}
+                </h1>
 
-              <div className="border-t border-border my-2" />
-
-              {/* Keep internal login if you still have a React /login route */}
-              <Link
-                to="/login"
-                className="block py-2 px-4 bg-primary text-primary-foreground rounded"
-              >
-                Login
-              </Link>
-
-              {/* Mobile Reportly link (opens new tab) */}
-              <button
-                onClick={openReportly}
-                className="block w-full text-left mt-1 py-2 px-4 border border-border rounded hover:bg-accent/10 text-sm"
-              >
-                Reportly Login
-              </button>
-            </div>
-          )}
-        </nav>
-      </header>
-
-      {/* Main Content */}
-      <main className="pt-20">{children}</main>
-
-      {/* Footer */}
-      <footer className="bg-card border-t border-border mt-20">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">VibeOps</h3>
-              <p className="text-muted-foreground text-sm">
-                AI-powered partner for lean crews, solopreneurs, and local
-                heroes.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2 text-sm">
-                <Link
-                  to="/"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  About
-                </Link>
-                <Link
-                  to="/services"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Services
-                </Link>
-                <Link
-                  to="/case-studies"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Case Studies
-                </Link>
-                <Link
-                  to="/contact"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Contact
-                </Link>
+                <div className="h-[2px] w-24 bg-gradient-to-r from-primary/60 to-accent/40 rounded-full" />
               </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Demos</h4>
-              <div className="space-y-2 text-sm">
-                <Link
-                  to="/construction-tracker"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Construction Tracker
-                </Link>
-                <Link
-                  to="/ai-report-generator"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  AI Report Generator
-                </Link>
-                <Link
-                  to="/pipeline"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Pipeline Estimator
-                </Link>
-                <Link
-                  to="/roof-demo"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Roofing Estimator
-                </Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Connect</h4>
-              <p className="text-muted-foreground text-sm mb-4">
-                Book Your Free Vibe Check
-              </p>
-              <Link to="/contact" className="btn-primary inline-block">
-                Get Started
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} VibeOps. All rights reserved.</p>
+            </header>
+
+            {/* Article */}
+            <Card className="bg-card/70 backdrop-blur-md border border-border/80 p-6 sm:p-10 relative overflow-hidden blogpost-card">
+              {/* Glow accents */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-accent/5 opacity-60" />
+              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 bg-primary/10 blur-[90px] rounded-full" />
+              <div className="pointer-events-none absolute -left-10 -bottom-20 h-48 w-48 bg-accent/10 blur-[100px] rounded-full" />
+
+              <article
+                className="blog-article prose prose-invert max-w-none text-sm sm:text-base leading-relaxed tracking-[0.01em]"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            </Card>
           </div>
         </div>
-      </footer>
+      </AnimatedContent>
+
+      {/* Back to Top button */}
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`fixed bottom-8 right-8 z-40 rounded-full p-3 sm:p-4 bg-primary/20 backdrop-blur-md border border-primary/40 text-primary shadow-[0_0_20px_rgba(0,255,204,0.25)] hover:shadow-[0_0_35px_rgba(0,255,204,0.45)] hover:bg-primary/30 transition-all duration-300 flex items-center justify-center
+        ${showBackToTop ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        aria-label="Back to top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 sm:h-6 sm:w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
+
+      {/* Local micro-animations */}
+      <style>{`
+        /* Fade + slide-in for article children */
+        .blog-article > * {
+          animation: fadeSlideIn 0.6s ease forwards;
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        .blog-article > *:nth-child(1) { animation-delay: 0.05s; }
+        .blog-article > *:nth-child(2) { animation-delay: 0.1s; }
+        .blog-article > *:nth-child(3) { animation-delay: 0.15s; }
+        .blog-article > *:nth-child(4) { animation-delay: 0.2s; }
+        .blog-article > *:nth-child(5) { animation-delay: 0.25s; }
+
+        @keyframes fadeSlideIn {
+          0% { opacity: 0; transform: translateY(8px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .blogpost-card {
+          transition: box-shadow 0.4s ease, transform 0.4s ease;
+        }
+        .blogpost-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 28px 60px rgba(0,0,0,0.55);
+        }
+      `}</style>
     </div>
   );
 }
