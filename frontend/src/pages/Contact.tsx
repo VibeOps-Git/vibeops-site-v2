@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -20,6 +20,9 @@ type ContactChannel = {
   subject: string;
   body: string;
 };
+
+const CALENDLY_URL =
+  "https://calendly.com/zander-vibeops/30min?primary_color=00ffcc&text_color=e5e7eb&background_color=0f1115&hide_gdpr_banner=1";
 
 const contactChannels: ContactChannel[] = [
   {
@@ -147,32 +150,46 @@ export default function Contact() {
   );
   const [draftSubject, setDraftSubject] = useState("");
   const [draftBody, setDraftBody] = useState("");
+  const calendlyRef = useRef<HTMLDivElement | null>(null);
 
-  // Ensure Calendly script is present and re-init widget every time Contact mounts
+  // Ensure Calendly script is present and (re)initialize widget every time this page mounts
   useEffect(() => {
     let isMounted = true;
 
     const initCalendly = () => {
-      if (!isMounted) return;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore - Calendly is injected on window by the script
-      if (window.Calendly && typeof window.Calendly.initInlineWidgets === "function") {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        window.Calendly.initInlineWidgets();
+      if (!isMounted || !calendlyRef.current) return;
+
+      // @ts-ignore - Calendly is a global injected by the script
+      const Calendly = window.Calendly;
+      if (Calendly && typeof Calendly.initInlineWidget === "function") {
+        // Clear any previous iframe to force a fresh render
+        calendlyRef.current.innerHTML = "";
+        Calendly.initInlineWidget({
+          url: CALENDLY_URL,
+          parentElement: calendlyRef.current,
+          prefill: {},
+          utm: {},
+        });
       }
     };
 
-    const existing = document.querySelector<HTMLScriptElement>(
-      'script[src="https://assets.calendly.com/assets/external/widget.js"]'
+    const scriptSrc =
+      "https://assets.calendly.com/assets/external/widget.js";
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${scriptSrc}"]`
     );
 
-    if (existing) {
-      // Script already on page – just re-init the widgets
-      initCalendly();
+    if (existingScript) {
+      // Script already on the page
+      // @ts-ignore
+      if (window.Calendly) {
+        initCalendly();
+      } else {
+        existingScript.addEventListener("load", initCalendly);
+      }
     } else {
       const script = document.createElement("script");
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
+      script.src = scriptSrc;
       script.async = true;
       script.onload = initCalendly;
       document.body.appendChild(script);
@@ -180,6 +197,10 @@ export default function Contact() {
 
     return () => {
       isMounted = false;
+      // Clean up widget container on unmount so we always get a fresh one next time
+      if (calendlyRef.current) {
+        calendlyRef.current.innerHTML = "";
+      }
     };
   }, []);
 
@@ -268,10 +289,10 @@ export default function Contact() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0 relative">
+                    {/* Calendly container – rebuilt on every mount */}
                     <div
+                      ref={calendlyRef}
                       className="calendly-inline-widget w-full h-[960px] md:h-[1100px]"
-                      data-url="https://calendly.com/zander-vibeops/30min?primary_color=00ffcc&text_color=e5e7eb&background_color=0f1115&hide_gdpr_banner=1"
-                      style={{ minWidth: 320 }}
                     />
                   </CardContent>
                 </Card>

@@ -140,7 +140,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       to="/ai-report-generator"
                       className="block px-4 py-2.5 hover:bg-accent/10"
                     >
-                      AI Report Generator
+                      Report Generator
                     </Link>
                     <Link
                       to="/pipeline"

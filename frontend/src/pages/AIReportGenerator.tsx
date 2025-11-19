@@ -48,7 +48,7 @@ export default function AIReportGenerator() {
   return (
     <div className="container mx-auto px-4 py-20">
       <section className="max-w-5xl mx-auto">
-        <h1 className="section-title text-center">AI Report Generator</h1>
+        <h1 className="section-title text-center">Report Generator</h1>
         <p className="section-text text-center">
           Generate professional capital planning and engineering reports with AI assistance
         </p>
