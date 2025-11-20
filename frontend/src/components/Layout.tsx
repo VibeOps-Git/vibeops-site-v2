@@ -1,15 +1,39 @@
+// src/components/Layout.tsx
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import Aurora from "./Aurora";
 
 const REPORTLY_LOGIN_URL =
   import.meta.env.VITE_REPORTLY_LOGIN_URL || "http://localhost:5014/reportly";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobileDemosOpen, setIsMobileDemosOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  // Force Tailwind "background" tokens to dark so bg-background / bg-card never flash white
+  useEffect(() => {
+    const root = document.documentElement;
+
+    const prevBackground = root.style.getPropertyValue("--background");
+    const prevCard = root.style.getPropertyValue("--card");
+    const prevPopover = root.style.getPropertyValue("--popover");
+    const prevMuted = root.style.getPropertyValue("--muted");
+
+    // Typical shadcn dark palette values (HSL triplets)
+    root.style.setProperty("--background", "222.2 84% 4.9%"); // very dark slate
+    root.style.setProperty("--card", "222.2 84% 7%"); // slightly lighter than background
+    root.style.setProperty("--popover", "222.2 84% 7%");
+    root.style.setProperty("--muted", "217.2 32.6% 17.5%");
+
+    return () => {
+      if (prevBackground) root.style.setProperty("--background", prevBackground);
+      if (prevCard) root.style.setProperty("--card", prevCard);
+      if (prevPopover) root.style.setProperty("--popover", prevPopover);
+      if (prevMuted) root.style.setProperty("--muted", prevMuted);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -18,9 +42,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu + demos on route change
+    // Close mobile menu on route change
     setIsMenuOpen(false);
-    setIsMobileDemosOpen(false);
   }, [location.pathname]);
 
   const openReportly = () => {
@@ -33,13 +56,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen text-foreground overflow-x-hidden">
+      {/* Persistent global background (stays across page switches) */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        {/* Aurora wash */}
+        <Aurora
+          colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
+          blend={0.45}
+          amplitude={1.0}
+          speed={0.6}
+        />
+        {/* Dark radial vignette to keep everything deep + avoid bright flashes */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.85),_rgba(2,6,23,1))]" />
+      </div>
+
       {/* Navigation */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled || isMenuOpen
             ? "bg-card/95 backdrop-blur-md shadow-lg"
-            : "bg-gradient-to-b from-background/80 via-background/40 to-transparent"
+            : "bg-gradient-to-b from-[#020617]/95 via-[#020617]/70 to-transparent"
         }`}
       >
         <div className="relative">
@@ -117,46 +153,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   )}
                 </Link>
 
-                {/* Apps Dropdown */}
-                <div className="relative group">
-                  <button
-                    className="nav-link flex items-center gap-1"
-                    type="button"
-                  >
-                    Demos
-                    <span className="inline-block h-1 w-1 rounded-full bg-primary/70" />
-                  </button>
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                    <div className="px-4 py-3 border-b border-border/70 text-[0.7rem] uppercase tracking-[0.24em] text-muted-foreground">
-                      Sandbox Tools
-                    </div>
-                    <Link
-                      to="/construction-tracker"
-                      className="block px-4 py-2.5 hover:bg-accent/10"
-                    >
-                      Construction Tracker
-                    </Link>
-                    <Link
-                      to="/ai-report-generator"
-                      className="block px-4 py-2.5 hover:bg-accent/10"
-                    >
-                      Report Generator
-                    </Link>
-                    <Link
-                      to="/pipeline"
-                      className="block px-4 py-2.5 hover:bg-accent/10"
-                    >
-                      Pipeline Estimator
-                    </Link>
-                    <Link
-                      to="/roof-demo"
-                      className="block px-4 py-2.5 hover:bg-accent/10 rounded-b-xl"
-                    >
-                      Roofing Estimator
-                    </Link>
-                  </div>
-                </div>
-
                 <Link
                   to="/contact"
                   className={`nav-link relative ${
@@ -169,24 +165,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   )}
                 </Link>
 
-                {/* Login dropdown – behaves like Demos */}
-                <div className="relative group">
-                  <button
-                    className="btn-primary flex items-center gap-1"
-                    type="button"
-                  >
-                    Login
-                  </button>
-                  <div className="absolute top-full right-0 mt-2 w-40 bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                    <button
-                      type="button"
-                      onClick={openReportly}
-                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-accent/10 rounded-xl"
-                    >
-                      Reportly
-                    </button>
-                  </div>
-                </div>
+                {/* Login / Reportly */}
+                <button
+                  type="button"
+                  onClick={openReportly}
+                  className="btn-primary flex items-center gap-1 text-sm"
+                >
+                  Login
+                </button>
               </div>
 
               {/* Mobile Menu Button */}
@@ -201,7 +187,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Mobile Navigation */}
             {isMenuOpen && (
-              <div className="md:hidden mt-3 pb-4 space-y-1 -mx-4 px-4">
+              <div className="md:hidden mt-3 pb-4 space-y-1 -mx-4 px-4 bg-card/95 backdrop-blur-sm border-t border-border/70 pt-3">
                 <Link
                   to="/"
                   className="block py-2.5 px-4 rounded-lg hover:bg-accent/10 text-sm"
@@ -239,50 +225,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   Blog
                 </Link>
 
-                {/* Mobile Demos dropdown */}
-                <div className="border-t border-border my-2 pt-1" />
-                <button
-                  type="button"
-                  onClick={() => setIsMobileDemosOpen((prev) => !prev)}
-                  className="flex w-full items-center justify-between py-2.5 px-4 rounded-lg hover:bg-accent/10 text-sm"
-                >
-                  <span>Demos</span>
-                  <ChevronDown
-                    size={18}
-                    className={`transition-transform ${
-                      isMobileDemosOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {isMobileDemosOpen && (
-                  <div className="ml-4 pl-3 border-l border-border/70 space-y-1">
-                    <Link
-                      to="/construction-tracker"
-                      className="block py-2 px-3 rounded-lg hover:bg-accent/10 text-sm"
-                    >
-                      Construction Tracker
-                    </Link>
-                    <Link
-                      to="/ai-report-generator"
-                      className="block py-2 px-3 rounded-lg hover:bg-accent/10 text-sm"
-                    >
-                      AI Report Generator
-                    </Link>
-                    <Link
-                      to="/pipeline"
-                      className="block py-2 px-3 rounded-lg hover:bg-accent/10 text-sm"
-                    >
-                      Pipeline Estimator
-                    </Link>
-                    <Link
-                      to="/roof-demo"
-                      className="block py-2 px-3 rounded-lg hover:bg-accent/10 text-sm"
-                    >
-                      Roofing Estimator
-                    </Link>
-                  </div>
-                )}
-
                 <div className="border-t border-border my-3" />
 
                 {/* Mobile Login / Reportly */}
@@ -299,17 +241,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="pt-20">{children}</main>
+      <main className="pt-20 relative z-10">{children}</main>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border mt-20">
+      <footer className="bg-card/90 border-t border-border mt-20 relative z-10 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">VibeOps</h3>
+              <img
+                src="/logo-wht-hrzntl.png"
+                alt="VibeOps Logo"
+                className="h-9 md:h-10 w-auto object-contain mb-3"
+              />
               <p className="text-muted-foreground text-sm">
-                AI-powered partner for lean crews, solopreneurs, and local
-                heroes.
+                Built by Engineers – For Engineers.
               </p>
             </div>
             <div>
@@ -339,34 +284,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 >
                   Contact
                 </Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Demos</h4>
-              <div className="space-y-2 text-sm">
                 <Link
-                  to="/construction-tracker"
+                  to="/blog"
                   className="block text-muted-foreground hover:text-foreground"
                 >
-                  Construction Tracker
-                </Link>
-                <Link
-                  to="/ai-report-generator"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  AI Report Generator
-                </Link>
-                <Link
-                  to="/pipeline"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Pipeline Estimator
-                </Link>
-                <Link
-                  to="/roof-demo"
-                  className="block text-muted-foreground hover:text-foreground"
-                >
-                  Roofing Estimator
+                  Blog
                 </Link>
               </div>
             </div>

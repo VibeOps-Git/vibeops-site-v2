@@ -1,0 +1,52 @@
+# llms.txt for VibeOps
+# Place this file in: /public/llms.txt
+# Intended audience: operators of large language models and AI crawlers.
+
+site: https://vibeops.ca
+owner: VibeOps Technologies Inc.
+contact: zander@vibeops.ca
+
+policy:
+  - Normal web search engines (Google, Bing, etc.) may index this site
+    for standard search and discovery purposes.
+  - LLM and AI providers MAY NOT use content from this site for
+    training, fine-tuning, or improving foundation models without
+    prior written permission.
+  - LLM and AI providers MAY use this site for real-time retrieval
+    (browsing-style lookups) when individual users request information
+    about VibeOps, provided:
+      * Requests are rate-limited and respectful.
+      * Cached copies are refreshed regularly.
+      * Content is not retained or repurposed as bulk training data.
+
+llm-crawlers:
+  # These user-agents are expected to follow robots.txt as well.
+  # We restate the intent here for clarity.
+
+  - name: GPTBot
+    allowed: false
+    note: "Do not use VibeOps content for training OpenAI models."
+
+  - name: ChatGPT-User
+    allowed: false
+    note: "Do not pre-fetch or bulk-ingest VibeOps content for training."
+
+  - name: Google-Extended
+    allowed: false
+    note: "Do not use VibeOps content to improve Google AI models."
+
+  - name: Claude-Web
+    allowed: false
+    note: "Do not use VibeOps content for Anthropic model training."
+
+  - name: PerplexityBot
+    allowed: false
+    note: "Do not use VibeOps content for training or aggregation."
+
+usage-notes:
+  - This file expresses the site owner’s preferences regarding LLM
+    training and usage.
+  - Where there is conflict, robots.txt directives should be treated
+    as authoritative for crawling behavior.
+  - If you operate an AI/LLM crawler and are unsure whether your use
+    complies with this policy, please contact the owner.

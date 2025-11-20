@@ -1,5 +1,6 @@
-// src/pages/Team.tsx (or wherever this lives)
+// src/pages/Team.tsx
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Aurora from "../components/Aurora";
 import AnimatedContent from "../components/AnimatedContent";
@@ -73,25 +74,12 @@ const advisoryBoard: TeamMember[] = [
     email: "noboru@civil.ubc.ca",
     bio: `Associate Professor of Teaching in Hydrotechnical Engineering at UBC with decades of experience across research, consulting, and teaching CIVL design projects. Nobo guides VibeOps on real project workflows, technical rigor, and how automation can fit cleanly into existing QA processes.`,
   },
-  {
-    name: "Dr. Puyan A. Zadeh",
-    role: "Advisor · Project & Construction Innovation",
-    focus: "BIM, VDC, and construction innovation workflows",
-    image: "/team/puyan.jpeg",
-    email: "info@pyramooninnovations.com",
-    bio: `Building innovation specialist, founder of Pyramoon Innovations, and Research Associate with UBC’s Project & Construction Management group. Puyan advises VibeOps on BIM-based coordination, IPD/Lean practices, and how AI-driven tools can plug into real AECO and VDC workflows.`,
-  },
-  {
-    name: "Dr. Yahya Nazhat",
-    role: "Advisor · Geotechnical & Computational Tools",
-    focus: "Geotechnical design and CIVL computational workflows",
-    image: "/team/nazhat.jpg",
-    email: "ynazhat@civil.ubc.ca",
-    bio: `Lecturer in Geotechnical Engineering at UBC with decades of industry experience on major infrastructure projects. Nazhat supports VibeOps on geotechnical workflows, ground improvement and foundation design, and how automation can respect existing CIVL 303/410/445 computational practices.`,
-  },
+  // Future advisors can be added back here when confirmed
 ];
 
 export default function Team() {
+  const [heroLoaded, setHeroLoaded] = useState(false);
+
   return (
     <div className="relative min-h-screen bg-background">
       {/* Full-page Aurora background */}
@@ -108,13 +96,13 @@ export default function Team() {
       <div className="container mx-auto px-4 py-20 relative z-10 space-y-20">
         {/* Hero */}
         <AnimatedContent
-          distance={120}
+          distance={100}
           direction="vertical"
-          duration={1}
+          duration={0.9}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          scale={0.96}
+          scale={0.97}
           threshold={0.3}
         >
           <section className="max-w-5xl mx-auto text-center">
@@ -129,30 +117,54 @@ export default function Team() {
           </section>
         </AnimatedContent>
 
-        {/* Full-width banner image with extended fade into background */}
+        {/* Full-width banner image with smoother load */}
         <AnimatedContent
-          distance={140}
+          distance={90}
           direction="vertical"
-          duration={1}
+          duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          scale={0.98}
-          threshold={0.35}
+          scale={0.99}
+          threshold={0.3}
         >
           <section className="max-w-7xl mx-auto">
             <div className="relative overflow-hidden rounded-[28px] border border-border bg-background/40 backdrop-blur-sm">
+              {/* Skeleton / shimmer while big image loads */}
+              <div
+                className={`absolute inset-0 transition-opacity duration-500 ${
+                  heroLoaded
+                    ? "opacity-0 pointer-events-none"
+                    : "opacity-100 animate-pulse"
+                }`}
+              >
+                <div className="h-full w-full bg-gradient-to-br from-slate-800/60 via-slate-700/40 to-slate-900/70" />
+              </div>
+
               <img
                 src="/team/full-team-pic.png"
                 alt="VibeOps founding team"
-                className="
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setHeroLoaded(true)}
+                className={`
                   w-full
-                  h-[360px]
-                  md:h-[480px]
-                  lg:h-[560px]
+                  h-[320px]
+                  sm:h-[360px]
+                  md:h-[460px]
+                  lg:h-[540px]
                   object-cover
                   object-center
-                "
+                  transition-all
+                  duration-700
+                  ease-out
+                  will-change-transform
+                  ${
+                    heroLoaded
+                      ? "opacity-100 scale-100 blur-0"
+                      : "opacity-0 scale-[1.04] blur-sm"
+                  }
+                `}
               />
 
               {/* Top subtle depth overlay */}
@@ -160,10 +172,7 @@ export default function Team() {
 
               {/* Bottom fade: from about halfway down to the bottom */}
               <div
-                className="
-                  pointer-events-none
-                  absolute inset-x-0 bottom-0
-                "
+                className="pointer-events-none absolute inset-x-0 bottom-0"
                 style={{
                   height: "55%",
                   background:
@@ -172,14 +181,7 @@ export default function Team() {
               />
 
               {/* Caption + CTA */}
-              <div
-                className="
-                  absolute inset-x-4 md:inset-x-8 
-                  bottom-6 md:bottom-10 
-                  flex flex-col md:flex-row md:items-end md:justify-between 
-                  gap-4
-                "
-              >
+              <div className="absolute inset-x-4 md:inset-x-8 bottom-6 md:bottom-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
                 <div className="text-left drop-shadow-sm">
                   <p className="text-[0.65rem] md:text-xs uppercase tracking-[0.25em] text-muted-foreground/90">
                     VibeOps Technologies Inc.
@@ -202,9 +204,9 @@ export default function Team() {
 
         {/* Context */}
         <AnimatedContent
-          distance={100}
+          distance={80}
           direction="vertical"
-          duration={0.9}
+          duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
@@ -234,9 +236,9 @@ export default function Team() {
         {/* Founding Team */}
         <section className="max-w-6xl mx-auto">
           <AnimatedContent
-            distance={80}
+            distance={70}
             direction="vertical"
-            duration={0.9}
+            duration={0.8}
             ease="power3.out"
             initialOpacity={0}
             animateOpacity
@@ -258,29 +260,29 @@ export default function Team() {
             {foundingTeam.map((member, idx) => (
               <AnimatedContent
                 key={member.email}
-                distance={70}
+                distance={60}
                 direction="vertical"
-                duration={0.85}
+                duration={0.75}
                 ease="power3.out"
                 initialOpacity={0}
                 animateOpacity
-                scale={0.96}
+                scale={0.97}
                 threshold={0.45}
-                delay={idx * 0.06}
+                delay={idx * 0.05}
               >
                 <TeamCard member={member} />
               </AnimatedContent>
             ))}
             <AnimatedContent
-              distance={70}
+              distance={60}
               direction="vertical"
-              duration={0.85}
+              duration={0.75}
               ease="power3.out"
               initialOpacity={0}
               animateOpacity
-              scale={0.96}
+              scale={0.97}
               threshold={0.45}
-              delay={foundingTeam.length * 0.06}
+              delay={foundingTeam.length * 0.05}
             >
               <JoinCard
                 title="Join the Team"
@@ -295,9 +297,9 @@ export default function Team() {
         {/* Advisory Board */}
         <section className="max-w-6xl mx-auto">
           <AnimatedContent
-            distance={80}
+            distance={70}
             direction="vertical"
-            duration={0.9}
+            duration={0.8}
             ease="power3.out"
             initialOpacity={0}
             animateOpacity
@@ -320,29 +322,29 @@ export default function Team() {
             {advisoryBoard.map((advisor, idx) => (
               <AnimatedContent
                 key={advisor.email}
-                distance={70}
+                distance={60}
                 direction="vertical"
-                duration={0.85}
+                duration={0.75}
                 ease="power3.out"
                 initialOpacity={0}
                 animateOpacity
-                scale={0.96}
+                scale={0.97}
                 threshold={0.45}
-                delay={idx * 0.06}
+                delay={idx * 0.05}
               >
                 <TeamCard member={advisor} />
               </AnimatedContent>
             ))}
             <AnimatedContent
-              distance={70}
+              distance={60}
               direction="vertical"
-              duration={0.85}
+              duration={0.75}
               ease="power3.out"
               initialOpacity={0}
               animateOpacity
-              scale={0.96}
+              scale={0.97}
               threshold={0.45}
-              delay={advisoryBoard.length * 0.06}
+              delay={advisoryBoard.length * 0.05}
             >
               <JoinCard
                 title="Become an Advisor"
@@ -356,9 +358,9 @@ export default function Team() {
 
         {/* Our Vibe / CTA */}
         <AnimatedContent
-          distance={100}
+          distance={90}
           direction="vertical"
-          duration={1}
+          duration={0.85}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
@@ -423,6 +425,8 @@ function TeamCard({ member }: { member: TeamMember }) {
         <img
           src={member.image}
           alt={member.name}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-200"
         />
       </div>

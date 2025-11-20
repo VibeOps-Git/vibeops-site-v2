@@ -12,10 +12,10 @@ import Team from "./pages/Team";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Login from "./pages/Login";
-import AIReportGenerator from "./pages/AIReportGenerator";
-import ConstructionTracker from "./pages/ConstructionTracker";
-import PipelineEstimator from "./pages/PipelineEstimator";
-import RoofDemo from "./pages/RoofDemo";
+import AIReportGenerator from "./pages/demos-removed-for-now/AIReportGenerator";
+import ConstructionTracker from "./pages/demos-removed-for-now/ConstructionTracker";
+import PipelineEstimator from "./pages/demos-removed-for-now/PipelineEstimator";
+import RoofDemo from "./pages/demos-removed-for-now/RoofDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,10 +36,12 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/login" element={<Login />} />
+            {/* Demos - removed for now - add back in any as you'd like
             <Route path="/ai-report-generator" element={<AIReportGenerator />} />
             <Route path="/construction-tracker" element={<ConstructionTracker />} />
             <Route path="/pipeline" element={<PipelineEstimator />} />
             <Route path="/roof-demo" element={<RoofDemo />} />
+            */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

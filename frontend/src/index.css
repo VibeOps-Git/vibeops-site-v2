@@ -275,10 +275,16 @@
 }
 
 /* Kill horizontal scroll everywhere */
+/* Kill horizontal scroll everywhere & force dark base background */
 html,
 body,
 #root {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+
+  /* This is the important part: a solid dark base that never flashes white */
+  background-color: #020617; /* tailwind slate-950-ish */
+  color: hsl(var(--foreground));
 }
+
