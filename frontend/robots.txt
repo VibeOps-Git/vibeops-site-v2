@@ -1,0 +1,28 @@
+# robots.txt for VibeOps
+# Place this file in: /public/robots.txt
+
+# Default: allow normal search engines to index the marketing site.
+User-agent: *
+Allow: /
+
+# Explicitly disallow common LLM / data-extension crawlers from using content for training.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# You can expose a sitemap later if/when you generate one:
+# Sitemap: https://vibeops.ca/sitemap.xml
