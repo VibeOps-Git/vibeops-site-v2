@@ -90,7 +90,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   alt="VibeOps Logo"
                   className="h-9 md:h-10 w-auto object-contain"
                 />
-                <span className="hidden sm:inline-flex text-[0.65rem] uppercase tracking-[0.22em] text-muted-foreground/80">
+                <span
+                  className="hidden sm:inline-flex text-[0.65rem] uppercase tracking-[0.22em] 
+                            text-muted-foreground/80 translate-y-[2px]"
+                >
                   Technologies Inc.
                 </span>
               </Link>
