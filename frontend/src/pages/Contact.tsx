@@ -12,6 +12,19 @@ import { Textarea } from "@/components/ui/textarea";
 import Aurora from "../components/Aurora";
 import AnimatedContent from "../components/AnimatedContent";
 
+declare global {
+  interface Window {
+    Calendly?: {
+      initInlineWidget: (config: {
+        url: string;
+        parentElement: HTMLElement;
+      }) => void;
+      initPopupWidget: (config: { url: string }) => void;
+      showPopupWidget: (url: string) => void;
+    };
+  }
+}
+
 type ContactChannel = {
   label: string;
   person: string;
@@ -156,51 +169,61 @@ export default function Contact() {
   useEffect(() => {
     let isMounted = true;
 
-    const initCalendly = () => {
+    const loadCalendly = async () => {
       if (!isMounted || !calendlyRef.current) return;
 
-      // @ts-ignore - Calendly is a global injected by the script
-      const Calendly = window.Calendly;
-      if (Calendly && typeof Calendly.initInlineWidget === "function") {
-        // Clear any previous iframe to force a fresh render
-        calendlyRef.current.innerHTML = "";
-        Calendly.initInlineWidget({
-          url: CALENDLY_URL,
-          parentElement: calendlyRef.current,
-          prefill: {},
-          utm: {},
-        });
+      // Load the script
+      const script = document.createElement("script");
+      script.src = "https://assets.calendly.com/assets/external/widget.js";
+      script.async = true;
+
+      script.onload = () => {
+        if (isMounted && window.Calendly && calendlyRef.current) {
+          try {
+            // Clear the container first
+            if (calendlyRef.current) {
+              calendlyRef.current.innerHTML = "";
+            }
+            
+            // Initialize the widget
+            window.Calendly.initInlineWidget({
+              url: CALENDLY_URL,
+              parentElement: calendlyRef.current,
+            });
+            console.log("✓ Calendly widget loaded and initialized");
+          } catch (error) {
+            console.error("✗ Error initializing Calendly widget:", error);
+          }
+        }
+      };
+
+      script.onerror = () => {
+        console.error("✗ Failed to load Calendly script from CDN");
+      };
+
+      // Check if script already exists to avoid duplicates
+      const existingScript = document.querySelector(
+        'script[src="https://assets.calendly.com/assets/external/widget.js"]'
+      );
+
+      if (existingScript) {
+        console.log("Calendly script already present, reinitializing...");
+        if (window.Calendly && calendlyRef.current) {
+          calendlyRef.current.innerHTML = "";
+          window.Calendly.initInlineWidget({
+            url: CALENDLY_URL,
+            parentElement: calendlyRef.current,
+          });
+        }
+      } else {
+        document.head.appendChild(script);
       }
     };
 
-    const scriptSrc =
-      "https://assets.calendly.com/assets/external/widget.js";
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      `script[src="${scriptSrc}"]`
-    );
-
-    if (existingScript) {
-      // Script already on the page
-      // @ts-ignore
-      if (window.Calendly) {
-        initCalendly();
-      } else {
-        existingScript.addEventListener("load", initCalendly);
-      }
-    } else {
-      const script = document.createElement("script");
-      script.src = scriptSrc;
-      script.async = true;
-      script.onload = initCalendly;
-      document.body.appendChild(script);
-    }
+    loadCalendly();
 
     return () => {
       isMounted = false;
-      // Clean up widget container on unmount so we always get a fresh one next time
-      if (calendlyRef.current) {
-        calendlyRef.current.innerHTML = "";
-      }
     };
   }, []);
 
@@ -292,7 +315,8 @@ export default function Contact() {
                     {/* Calendly container – rebuilt on every mount */}
                     <div
                       ref={calendlyRef}
-                      className="calendly-inline-widget w-full h-[960px] md:h-[1100px]"
+                      className="calendly-inline-widget w-full min-h-[960px] md:min-h-[1100px]"
+                      style={{ display: "block" }}
                     />
                   </CardContent>
                 </Card>
@@ -360,7 +384,7 @@ export default function Contact() {
                                 : `Email ${firstName}`}
                             </Button>
 
-                            {isActive && (
+                            {isActive && selectedChannel && (
                               <Card className="bg-card/80 border border-primary/40 mt-3">
                                 <CardHeader className="pb-3">
                                   <CardTitle className="text-base">
@@ -368,7 +392,7 @@ export default function Contact() {
                                   </CardTitle>
                                   <CardDescription className="text-xs">
                                     Edit the subject and message below.
-                                    Clicking “Open in Email Client” will launch
+                                    Clicking "Open in Email Client" will launch
                                     your email app with this content.
                                   </CardDescription>
                                 </CardHeader>
