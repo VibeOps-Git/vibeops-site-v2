@@ -17,6 +17,7 @@ import ConstructionTracker from "./pages/demos-removed-for-now/ConstructionTrack
 import PipelineEstimator from "./pages/demos-removed-for-now/PipelineEstimator";
 import RoofDemo from "./pages/demos-removed-for-now/RoofDemo";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
