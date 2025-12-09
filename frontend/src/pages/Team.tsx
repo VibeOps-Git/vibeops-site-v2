@@ -74,7 +74,14 @@ const advisoryBoard: TeamMember[] = [
     email: "noboru@civil.ubc.ca",
     bio: `Associate Professor of Teaching in Hydrotechnical Engineering at UBC with decades of experience across research, consulting, and teaching CIVL design projects. Nobo guides VibeOps on real project workflows, technical rigor, and how automation can fit cleanly into existing QA processes.`,
   },
-  // Future advisors can be added back here when confirmed
+  /*{
+    name: "Dr. Puyan A. Zadeh",
+    role: "Advisor · Project & Construction Innovation",
+    focus: "BIM, VDC, and construction innovation workflows",
+    image: "/team/puyan.jpeg",
+    email: "info@pyramooninnovations.com",
+    bio: `Building innovation specialist, founder of Pyramoon Innovations, and Research Associate with UBC’s Project & Construction Management group. Puyan advises VibeOps on BIM-based coordination, IPD/Lean practices, and how AI-driven tools can plug into real AECO and VDC workflows.`,
+  }*/
 ];
 
 export default function Team() {
