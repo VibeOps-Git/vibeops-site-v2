@@ -75,7 +75,7 @@ function useScrollScenes(containerRef: React.RefObject<HTMLElement | null>, scen
 
 function DeviceFrame({ children, scale, rotateX }: { children: ReactNode; scale: number; rotateX: number }) {
   return (
-    <div className="relative" style={{ perspective: "1200px" }}>
+    <div className="relative mx-auto max-w-3xl" style={{ perspective: "1200px" }}>
       <div
         className="transition-transform duration-150 ease-out"
         style={{
@@ -94,13 +94,16 @@ function DeviceFrame({ children, scale, rotateX }: { children: ReactNode; scale:
           {/* Inner bezel */}
           <div className="relative bg-gradient-to-br from-gray-700 to-gray-900 rounded-[2rem] p-1">
             {/* Camera */}
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gray-600 border border-gray-500" />
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gray-600 border border-gray-500 z-20" />
 
-            {/* Screen */}
+            {/* Screen - the content container */}
             <div className="relative bg-[#0a0a0f] rounded-[1.75rem] overflow-hidden">
               {/* Screen reflection */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none z-10" />
-              {children}
+              {/* Content wrapper */}
+              <div className="relative z-0">
+                {children}
+              </div>
             </div>
           </div>
 
@@ -169,8 +172,8 @@ export function StickyDeviceShowcase({ scenes, children, className = "" }: Stick
       style={{ height: `${scenes.length * heightPerScene}vh` }}
     >
       {/* Sticky container for device */}
-      <div className="sticky top-0 h-screen flex items-center justify-center px-4 py-8">
-        <div className="relative w-full max-w-4xl mx-auto">
+      <div className="sticky top-0 h-screen flex items-center justify-center px-4 pt-24 pb-8">
+        <div className="relative w-full">
           {/* Scene indicators (desktop only) */}
           <div className="hidden lg:block">
             <SceneIndicators scenes={scenes} activeIndex={sceneIndex} progress={sceneProgress} />
