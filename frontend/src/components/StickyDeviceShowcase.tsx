@@ -36,9 +36,11 @@ function useScrollScenes(containerRef: React.RefObject<HTMLElement | null>, scen
 
       // Total scrollable distance within container
       const scrollableHeight = containerHeight - viewportHeight;
+      if (scrollableHeight <= 0) return;
 
       // Current scroll position relative to container top
-      const scrolled = -rect.top;
+      // rect.top is negative when scrolled past the top
+      const scrolled = Math.max(0, -rect.top);
 
       // Overall progress through the container (0 to 1)
       const overallProgress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
@@ -60,10 +62,17 @@ function useScrollScenes(containerRef: React.RefObject<HTMLElement | null>, scen
       setDeviceRotateX(rotateX);
     };
 
+    // Use both scroll and resize listeners
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    // Initial calculation
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, [containerRef, sceneCount]);
 
   return { sceneIndex, sceneProgress, deviceScale, deviceRotateX };
@@ -162,14 +171,14 @@ export function StickyDeviceShowcase({ scenes, children, className = "" }: Stick
   const containerRef = useRef<HTMLDivElement>(null);
   const { sceneIndex, sceneProgress, deviceScale, deviceRotateX } = useScrollScenes(containerRef, scenes.length);
 
-  // Height multiplier for scroll space per scene
-  const heightPerScene = 100; // vh per scene
+  // Height: 100vh per scene for scroll space
+  const totalHeight = scenes.length * 100;
 
   return (
     <div
       ref={containerRef}
       className={`relative ${className}`}
-      style={{ height: `${scenes.length * heightPerScene}vh` }}
+      style={{ minHeight: `${totalHeight}vh`, height: `${totalHeight}vh` }}
     >
       {/* Sticky container for device - fills viewport below navbar */}
       <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8 lg:px-16">
