@@ -16,23 +16,29 @@ export function useShowcaseScroll(sectionRef: RefObject<HTMLElement | null>): Sc
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
 
-      // Section starts when its top reaches viewport top
-      // Section ends when its bottom reaches viewport bottom
-      const sectionTop = rect.top;
-      const sectionHeight = rect.height;
+      // Total scrollable height within the section (section height minus one viewport)
+      const sectionHeight = section.offsetHeight;
       const scrollableDistance = sectionHeight - viewportHeight;
 
-      if (scrollableDistance <= 0) return;
+      if (scrollableDistance <= 0) {
+        setState({ sceneIndex: 0, sceneProgress: 0 });
+        return;
+      }
 
-      // Calculate how far we've scrolled into this section
-      // When sectionTop = 0, we're at the start
-      // When sectionTop = -scrollableDistance, we're at the end
-      const scrolledAmount = Math.max(0, Math.min(scrollableDistance, -sectionTop));
-      const progress = scrolledAmount / scrollableDistance;
+      // How far the section top has scrolled past the viewport top
+      // rect.top = 0 means section just entered
+      // rect.top = -scrollableDistance means we've scrolled through the whole section
+      const scrolledIntoSection = -rect.top;
 
-      // Map progress (0-1) to scene index
+      // Clamp to valid range
+      const clampedScroll = Math.max(0, Math.min(scrollableDistance, scrolledIntoSection));
+
+      // Progress from 0 to 1 through the entire section
+      const totalProgress = clampedScroll / scrollableDistance;
+
+      // Map to scene index (0, 1, 2 for 3 scenes)
       const totalScenes = SCENES.length;
-      const sceneFloat = progress * totalScenes;
+      const sceneFloat = totalProgress * totalScenes;
       const sceneIndex = Math.min(totalScenes - 1, Math.floor(sceneFloat));
       const sceneProgress = sceneFloat - sceneIndex;
 

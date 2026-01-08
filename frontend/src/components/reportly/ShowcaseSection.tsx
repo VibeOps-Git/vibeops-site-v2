@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SCENES, getPosition } from "./constants";
 import { IPadDevice } from "./IPadDevice";
@@ -6,73 +6,166 @@ import { SceneDescription } from "./SceneDescription";
 
 export function ShowcaseSection() {
   const [sceneIndex, setSceneIndex] = useState(0);
+  const [displayIndex, setDisplayIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const lastStepChange = useRef(0);
+  const stepCooldown = 500;
 
-  const currentScene = SCENES[sceneIndex];
-  const currentPosition = getPosition(sceneIndex);
-  const isRight = currentPosition === "right";
+  // Handle step change animation
+  useEffect(() => {
+    if (sceneIndex !== displayIndex) {
+      setIsTransitioning(true);
+      const timer = setTimeout(() => {
+        setDisplayIndex(sceneIndex);
+        setIsTransitioning(false);
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [sceneIndex, displayIndex]);
 
-  // Rotation based on position
-  const rotateZ = isRight ? -4 : 4;
+  // Wheel navigation when section is in view
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Check if section is mostly visible
+      const isVisible = rect.top < viewportHeight * 0.3 && rect.bottom > viewportHeight * 0.7;
+      if (!isVisible) return;
+
+      const now = Date.now();
+      if (now - lastStepChange.current < stepCooldown) return;
+
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+
+      if (scrollingDown && sceneIndex < SCENES.length - 1) {
+        setSceneIndex(prev => prev + 1);
+        lastStepChange.current = now;
+      } else if (scrollingUp && sceneIndex > 0) {
+        setSceneIndex(prev => prev - 1);
+        lastStepChange.current = now;
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const isVisible = rect.top < viewportHeight * 0.3 && rect.bottom > viewportHeight * 0.7;
+      if (!isVisible) return;
+
+      const now = Date.now();
+      if (now - lastStepChange.current < stepCooldown) return;
+
+      if ((e.key === "ArrowDown" || e.key === "ArrowRight") && sceneIndex < SCENES.length - 1) {
+        setSceneIndex(prev => prev + 1);
+        lastStepChange.current = now;
+      } else if ((e.key === "ArrowUp" || e.key === "ArrowLeft") && sceneIndex > 0) {
+        setSceneIndex(prev => prev - 1);
+        lastStepChange.current = now;
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [sceneIndex]);
 
   const goToPrev = () => {
-    setSceneIndex((prev) => Math.max(0, prev - 1));
+    if (sceneIndex > 0) {
+      setSceneIndex(prev => prev - 1);
+      lastStepChange.current = Date.now();
+    }
   };
 
   const goToNext = () => {
-    setSceneIndex((prev) => Math.min(SCENES.length - 1, prev + 1));
+    if (sceneIndex < SCENES.length - 1) {
+      setSceneIndex(prev => prev + 1);
+      lastStepChange.current = Date.now();
+    }
   };
+
+  const currentScene = SCENES[displayIndex];
+  const currentPosition = getPosition(displayIndex);
+  const isRight = currentPosition === "right";
+  const rotateZ = isRight ? -4 : 4;
+
+  const transitionOpacity = isTransitioning ? 0 : 1;
+  const transitionY = isTransitioning ? 15 : 0;
 
   const isFirst = sceneIndex === 0;
   const isLast = sceneIndex === SCENES.length - 1;
 
   return (
-    <section className="min-h-screen flex items-center justify-center py-16 md:py-24 relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="min-h-screen flex items-center py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden"
+    >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00ffcc]/5 to-transparent pointer-events-none" />
 
-      {/* Animated background elements */}
+      {/* Background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00ffcc]/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#00ffcc]/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#00ffcc]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-        {/* Section header */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+        {/* Header */}
+        <div className="text-center mb-10 lg:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
             See How It Works
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">
             Three simple steps to transform your reporting workflow
           </p>
         </div>
 
         {/* Main content */}
         <div
-          className={`flex items-center gap-8 md:gap-12 lg:gap-20 transition-all duration-700 ${
+          className={`flex items-center gap-8 md:gap-12 lg:gap-20 ${
             isRight ? "flex-col lg:flex-row" : "flex-col lg:flex-row-reverse"
           }`}
+          style={{ transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)" }}
         >
-          {/* Description - takes less space */}
-          <div className="w-full lg:w-2/5">
+          {/* Description */}
+          <div
+            className="w-full lg:w-2/5 order-2 lg:order-none"
+            style={{
+              opacity: transitionOpacity,
+              transform: `translateY(${transitionY}px)`,
+              transition: "opacity 0.3s ease-out, transform 0.3s ease-out",
+            }}
+          >
             <SceneDescription
               scene={currentScene}
-              sceneIndex={sceneIndex}
+              sceneIndex={displayIndex}
               isLeft={isRight}
             />
           </div>
 
-          {/* iPad - takes more space and is larger */}
-          <div className="w-full lg:w-3/5 flex justify-center">
+          {/* iPad */}
+          <div
+            className="w-full lg:w-3/5 flex justify-center order-1 lg:order-none"
+            style={{ transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)" }}
+          >
             <IPadDevice
-              sceneIndex={sceneIndex}
+              sceneIndex={displayIndex}
               rotateZ={rotateZ}
               isRight={isRight}
             />
           </div>
         </div>
 
-        {/* Navigation Arrows */}
+        {/* Navigation */}
         <div className="flex items-center justify-center gap-4 mt-12 md:mt-16">
           <button
             onClick={goToPrev}
@@ -88,31 +181,36 @@ export function ShowcaseSection() {
           </button>
 
           {/* Step indicators */}
-          <div className="flex items-center gap-3 px-6">
+          <div className="flex items-center gap-2 px-4">
             {SCENES.map((scene, i) => (
-              <button
-                key={i}
-                onClick={() => setSceneIndex(i)}
-                className={`relative transition-all duration-300 ${
-                  i === sceneIndex
-                    ? "scale-110"
-                    : "hover:scale-105"
-                }`}
-                aria-label={`Go to step ${i + 1}: ${scene.title}`}
-              >
-                <div
-                  className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
-                    i === sceneIndex
-                      ? "bg-[#00ffcc] shadow-lg shadow-[#00ffcc]/50"
-                      : i < sceneIndex
-                      ? "bg-[#00ffcc]/50"
-                      : "bg-white/20 hover:bg-white/40"
-                  }`}
-                />
-                {i === sceneIndex && (
-                  <div className="absolute -inset-1 border-2 border-[#00ffcc]/30 rounded-full animate-ping" />
+              <div key={i} className="flex items-center">
+                <button
+                  onClick={() => {
+                    setSceneIndex(i);
+                    lastStepChange.current = Date.now();
+                  }}
+                  className="relative p-1"
+                  aria-label={`Go to step ${i + 1}: ${scene.title}`}
+                >
+                  <div
+                    className={`w-3 h-3 md:w-3.5 md:h-3.5 rounded-full transition-all duration-400 ${
+                      i === displayIndex
+                        ? "bg-[#00ffcc] shadow-lg shadow-[#00ffcc]/50 scale-125"
+                        : i < displayIndex
+                        ? "bg-[#00ffcc]/60"
+                        : "bg-white/20 hover:bg-white/40"
+                    }`}
+                  />
+                </button>
+                {i < SCENES.length - 1 && (
+                  <div className="w-6 md:w-8 h-0.5 mx-0.5 bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-[#00ffcc]/50 rounded-full transition-all duration-400"
+                      style={{ width: i < displayIndex ? "100%" : "0%" }}
+                    />
+                  </div>
                 )}
-              </button>
+              </div>
             ))}
           </div>
 
@@ -131,9 +229,11 @@ export function ShowcaseSection() {
         </div>
 
         {/* Step counter */}
-        <div className="text-center mt-6">
+        <div className="text-center mt-4">
           <span className="text-sm text-gray-500">
-            Step <span className="text-[#00ffcc] font-semibold">{sceneIndex + 1}</span> of {SCENES.length}
+            Step{" "}
+            <span className="text-[#00ffcc] font-semibold">{displayIndex + 1}</span>{" "}
+            of {SCENES.length}
           </span>
         </div>
       </div>
