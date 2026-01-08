@@ -80,10 +80,40 @@ export default {
             height: "0",
           },
         },
+        "float-slow": {
+          "0%, 100%": {
+            transform: "translateY(0px) rotate(-8deg)",
+          },
+          "50%": {
+            transform: "translateY(-8px) rotate(-8deg)",
+          },
+        },
+        "float-delayed": {
+          "0%, 100%": {
+            transform: "translateY(0px) rotate(6deg)",
+          },
+          "50%": {
+            transform: "translateY(-10px) rotate(6deg)",
+          },
+        },
+        shimmer: {
+          "0%": {
+            opacity: "0.5",
+          },
+          "50%": {
+            opacity: "1",
+          },
+          "100%": {
+            opacity: "0.5",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float-slow": "float-slow 3s ease-in-out infinite",
+        "float-delayed": "float-delayed 3.5s ease-in-out infinite 0.5s",
+        shimmer: "shimmer 1.5s ease-in-out infinite",
       },
     },
   },
