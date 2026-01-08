@@ -26,10 +26,10 @@ function useScrollScenes(containerRef: React.RefObject<HTMLElement | null>, scen
   const [deviceRotateX, setDeviceRotateX] = useState(8);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleScroll = () => {
+      const container = containerRef.current;
+      if (!container) return;
+
       const rect = container.getBoundingClientRect();
       const containerHeight = rect.height;
       const viewportHeight = window.innerHeight;
@@ -38,8 +38,8 @@ function useScrollScenes(containerRef: React.RefObject<HTMLElement | null>, scen
       const scrollableHeight = containerHeight - viewportHeight;
       if (scrollableHeight <= 0) return;
 
-      // Current scroll position relative to container top
-      // rect.top is negative when scrolled past the top
+      // How far we've scrolled into the container
+      // rect.top starts positive, becomes negative as we scroll
       const scrolled = Math.max(0, -rect.top);
 
       // Overall progress through the container (0 to 1)
@@ -48,32 +48,31 @@ function useScrollScenes(containerRef: React.RefObject<HTMLElement | null>, scen
       // Divide progress into scenes
       const progressPerScene = 1 / sceneCount;
       const currentScene = Math.min(sceneCount - 1, Math.floor(overallProgress / progressPerScene));
-      const progressInScene = (overallProgress - (currentScene * progressPerScene)) / progressPerScene;
+      const progressInScene = (overallProgress - currentScene * progressPerScene) / progressPerScene;
 
       setSceneIndex(currentScene);
       setSceneProgress(Math.max(0, Math.min(1, progressInScene)));
 
       // Device transforms based on overall progress
-      // Start small/tilted, grow to full size as user scrolls
-      const scale = 0.85 + (overallProgress * 0.15);
-      const rotateX = 8 - (overallProgress * 8);
+      const scale = 0.85 + overallProgress * 0.15;
+      const rotateX = 8 - overallProgress * 8;
 
       setDeviceScale(scale);
       setDeviceRotateX(rotateX);
     };
 
-    // Use both scroll and resize listeners
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll, { passive: true });
 
-    // Initial calculation
-    handleScroll();
+    // Run on mount and whenever ref changes
+    const timer = setTimeout(handleScroll, 100);
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, [containerRef, sceneCount]);
+  }, [sceneCount]);
 
   return { sceneIndex, sceneProgress, deviceScale, deviceRotateX };
 }
@@ -171,14 +170,10 @@ export function StickyDeviceShowcase({ scenes, children, className = "" }: Stick
   const containerRef = useRef<HTMLDivElement>(null);
   const { sceneIndex, sceneProgress, deviceScale, deviceRotateX } = useScrollScenes(containerRef, scenes.length);
 
-  // Height: 100vh per scene for scroll space
-  const totalHeight = scenes.length * 100;
-
   return (
     <div
       ref={containerRef}
-      className={`relative ${className}`}
-      style={{ minHeight: `${totalHeight}vh`, height: `${totalHeight}vh` }}
+      className={`relative h-[500vh] ${className}`}
     >
       {/* Sticky container for device - fills viewport below navbar */}
       <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8 lg:px-16">
