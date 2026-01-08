@@ -1,371 +1,442 @@
 // src/pages/Index.tsx
 
-import React from "react";
-import Aurora from "../components/Aurora";
-import AnimatedContent from "../components/AnimatedContent";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { FileText, Wrench, BarChart3, Layers, ArrowRight, Check } from 'lucide-react';
+import AnimatedContent from '../components/AnimatedContent';
+import { VibeCard } from '@/components/ui/VibeCard';
+import { VibeLinkButton } from '@/components/ui/VibeButton';
+import { Section, SectionWithHeader, SectionDivider } from '@/components/ui/Section';
 
-const Index = () => {
+
+export default function Index() {
   return (
-    <div className="relative min-h-screen bg-background">
-      {/* Full-page Aurora background */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
-        <Aurora
-          colorStops={["#00ffcc", "#0092b7", "#00ffcc"]}
-          blend={0.45}
-          amplitude={1.0}
-          speed={0.6}
-        />
-      </div>
+    <div className="pt-20">
+      <HeroSection />
+      <SectionDivider className="mx-auto max-w-5xl" />
+      <TrustedBySection />
+      <SectionDivider className="mx-auto max-w-5xl" />
+      <ServicesSection />
+      <SectionDivider className="mx-auto max-w-5xl" />
+      <ReportlySection />
+      <SectionDivider className="mx-auto max-w-5xl" />
+      <ProcessSection />
+      <SectionDivider className="mx-auto max-w-5xl" />
+      <CTASection />
+    </div>
+  );
+}
 
-      {/* Foreground content */}
-      <div className="container mx-auto px-4 py-20 relative z-10 space-y-20">
-        {/* Top section: hero + image */}
-        <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-10 items-center">
-          {/* Hero */}
+// =============================================================================
+// Hero Section
+// =============================================================================
+
+function HeroSection() {
+  return (
+    <section className="min-h-[95vh] flex items-center justify-center px-4 pt-20">
+      <div className="text-center max-w-5xl mx-auto">
+        <AnimatedContent
+          distance={100}
+          direction="vertical"
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0}
+          animateOpacity
+          threshold={0.1}
+        >
+          <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-6">
+            Engineering Automation · Civil · Construction · Infrastructure
+          </p>
+        </AnimatedContent>
+
+        <AnimatedContent
+          distance={80}
+          direction="vertical"
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0}
+          animateOpacity
+          threshold={0.1}
+          delay={0.1}
+        >
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
+            <span className="text-white">Automation for</span>
+            <br />
+            <span className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
+              Engineering Teams
+            </span>
+          </h1>
+        </AnimatedContent>
+
+        <AnimatedContent
+          distance={60}
+          direction="vertical"
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0}
+          animateOpacity
+          threshold={0.1}
+          delay={0.2}
+        >
+          <p className="text-lg md:text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+            Engineers lose 30-40% of their time to documentation. We build report automation
+            that works with your existing templates—so your team can get back to engineering.
+          </p>
+          <p className="text-sm text-gray-500 mb-10">
+            Save 600+ hours per engineer annually. No workflow changes required.
+          </p>
+        </AnimatedContent>
+
+        <AnimatedContent
+          distance={40}
+          direction="vertical"
+          duration={0.8}
+          ease="power3.out"
+          initialOpacity={0}
+          animateOpacity
+          threshold={0.1}
+          delay={0.3}
+        >
+          <div className="flex flex-wrap justify-center gap-4">
+            <VibeLinkButton href="/contact" variant="primary" size="lg">
+              Book a Vibe Check
+            </VibeLinkButton>
+            <VibeLinkButton href="/services" variant="outline" size="lg">
+              See What We Build
+            </VibeLinkButton>
+          </div>
+        </AnimatedContent>
+
+        <AnimatedContent
+          distance={30}
+          direction="vertical"
+          duration={0.8}
+          ease="power3.out"
+          initialOpacity={0}
+          animateOpacity
+          threshold={0.1}
+          delay={0.4}
+        >
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-10 text-sm text-gray-500">
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-[#00ffcc]" />
+              No code changes to your workflow
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-[#00ffcc]" />
+              Works with existing templates
+            </span>
+          </div>
+        </AnimatedContent>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// Trusted By Section
+// =============================================================================
+
+function TrustedBySection() {
+  return (
+    <Section className="py-12">
+      <AnimatedContent
+        distance={40}
+        direction="vertical"
+        duration={0.8}
+        ease="power3.out"
+        initialOpacity={0}
+        animateOpacity
+        threshold={0.3}
+      >
+        <div className="text-center">
+          <p className="text-xs uppercase tracking-[0.25em] text-gray-500 mb-6">
+            Trusted by engineering teams at
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
+            <span className="text-lg font-semibold text-gray-400">UBC Engineering</span>
+            <span className="text-lg font-semibold text-gray-400">Civil Consulting Firms</span>
+            <span className="text-lg font-semibold text-gray-400">Construction Teams</span>
+          </div>
+        </div>
+      </AnimatedContent>
+    </Section>
+  );
+}
+
+// =============================================================================
+// Services Section
+// =============================================================================
+
+const services = [
+  {
+    icon: FileText,
+    title: 'Report Automation',
+    subtitle: 'Reportly Engine',
+    description: 'Transform hours of manual formatting into minutes. We automate Word and Excel reports using your existing templates.',
+    features: ['Template automation', 'Charts & tables from live data', 'Photo appendices', 'QA-ready output'],
+    href: '/services#reportly',
+    highlight: true,
+  },
+  {
+    icon: Wrench,
+    title: 'Workflow Automation',
+    subtitle: 'Custom Builds',
+    description: 'Remove repetitive documentation from engineering and construction workflows. Field data, checklists, and more.',
+    features: ['Field data ingestion', 'Inspection checklists', 'Site documentation', 'White-labeled tools'],
+    href: '/services',
+  },
+  {
+    icon: BarChart3,
+    title: 'Engineering Dashboards',
+    subtitle: 'Data Visualization',
+    description: 'Turn raw technical data into actionable insight. Instrumentation, construction tracking, and live field ops views.',
+    features: ['Instrument dashboards', 'Construction tracking', 'Map-based views', 'Shareable dashboards'],
+    href: '/services',
+  },
+  {
+    icon: Layers,
+    title: 'Internal Tools',
+    subtitle: 'Lightweight Apps',
+    description: 'Rapid engineering calculators and tools that mirror your workflows without the overhead of a full platform.',
+    features: ['Cost estimators', 'Asset tracking', 'Pilot tools', 'Secure deployment'],
+    href: '/services',
+  },
+];
+
+function ServicesSection() {
+  return (
+    <SectionWithHeader
+      tag="What We Build"
+      title="Engineering Automation, Done Right"
+      description="Four core capabilities. One focus: making engineering teams faster without breaking what already works."
+      divider
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {services.map((service, index) => (
           <AnimatedContent
-            distance={120}
+            key={service.title}
+            distance={60}
             direction="vertical"
-            duration={1}
+            duration={0.8}
             ease="power3.out"
             initialOpacity={0}
             animateOpacity
-            scale={0.98}
-            threshold={0.25}
+            threshold={0.3}
+            delay={index * 0.1}
           >
-            <div className="relative overflow-hidden rounded-[28px] border border-border bg-[rgb(5,10,20)]/90 p-6 md:p-8 lg:p-10 backdrop-blur-md">
-              <div className="relative z-10">
-                <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
-                  ABOUT VIBEOPS
-                </p>
-                <h1 className="section-title mb-4">
-                  From Civil Engineering Spreadsheets to{" "}
-                  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    Report Automation Infrastructure
-                  </span>
-                </h1>
-                <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl">
-                  VibeOps is a small team of engineer-founders building tools
-                  that turn manual reporting into stable, auditable automation —
-                  starting with <span className="font-semibold">Reportly</span>,
-                  our engine for generating Word and PDF deliverables from the
-                  templates firms already use.
-                </p>
-                <p className="text-muted-foreground max-w-2xl mb-8">
-                  We grew out of civil engineering coursework, consulting
-                  internships, and side projects where we kept seeing the same
-                  pattern: brilliant engineers spending late nights fixing
-                  headings, page breaks, and references in client reports.
-                  VibeOps exists to remove that drag, without forcing firms to
-                  rebuild their entire tech stack.
-                </p>
+            <ServiceCard {...service} />
+          </AnimatedContent>
+        ))}
+      </div>
+    </SectionWithHeader>
+  );
+}
 
-                <div className="flex flex-wrap gap-3">
-                  <Button asChild className="btn-primary">
-                    <a href="/contact">Book a Vibe Check</a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="border-border/70 bg-background/60"
-                  >
-                    <a href="/case-studies">See Client Outcomes</a>
-                  </Button>
+interface ServiceCardProps {
+  icon: typeof FileText;
+  title: string;
+  subtitle: string;
+  description: string;
+  features: string[];
+  href: string;
+  highlight?: boolean;
+}
+
+function ServiceCard({ icon: Icon, title, subtitle, description, features, href, highlight }: ServiceCardProps) {
+  return (
+    <a href={href} className="block group">
+      <VibeCard variant={highlight ? 'glow' : 'default'} className="h-full p-6">
+        <div className="flex items-start gap-4">
+          <div className={`p-3 rounded-xl ${highlight ? 'bg-[#00ffcc]/10' : 'bg-white/5'} transition-colors group-hover:bg-[#00ffcc]/10`}>
+            <Icon className={`w-6 h-6 ${highlight ? 'text-[#00ffcc]' : 'text-gray-400'} transition-colors group-hover:text-[#00ffcc]`} />
+          </div>
+          <div className="flex-1">
+            <p className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]/70 mb-1">{subtitle}</p>
+            <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-[#00ffcc] transition-colors">
+              {title}
+            </h3>
+            <p className="text-sm text-gray-400 mb-4">{description}</p>
+            <ul className="grid grid-cols-2 gap-2">
+              {features.map((feature) => (
+                <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
+                  <Check className="w-3 h-3 text-[#00ffcc]/60" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-end">
+          <span className="text-sm text-gray-500 group-hover:text-[#00ffcc] transition-colors flex items-center gap-1">
+            Learn more <ArrowRight className="w-4 h-4" />
+          </span>
+        </div>
+      </VibeCard>
+    </a>
+  );
+}
+
+// =============================================================================
+// Reportly Section (Featured Product)
+// =============================================================================
+
+function ReportlySection() {
+  return (
+    <Section divider>
+      <AnimatedContent
+        distance={80}
+        direction="vertical"
+        duration={1}
+        ease="power3.out"
+        initialOpacity={0}
+        animateOpacity
+        threshold={0.2}
+      >
+        <VibeCard variant="gradient" hover={false} className="p-8 md:p-12">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc]/70 mb-4">
+                Featured Product
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Reportly
+              </h2>
+              <p className="text-gray-400 mb-6 leading-relaxed">
+                Our flagship report automation engine. Plug in your existing Word and Excel
+                templates, connect your data, and generate audit-ready documents in minutes
+                instead of hours.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Works with templates you already use',
+                  'Charts, tables, and photos from live data',
+                  'Brand-consistent, QA-ready output',
+                  'No changes to your existing workflow',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-gray-300">
+                    <Check className="w-5 h-5 text-[#00ffcc]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-4">
+                <VibeLinkButton
+                  href="/reportly"
+                  variant="primary"
+                >
+                  Learn About Reportly
+                </VibeLinkButton>
+                <VibeLinkButton href="/contact" variant="outline">
+                  Schedule Demo
+                </VibeLinkButton>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-video rounded-xl bg-[rgba(0,255,204,0.03)] border border-[#00ffcc]/10 flex items-center justify-center">
+                <div className="text-center">
+                  <FileText className="w-16 h-16 text-[#00ffcc]/30 mx-auto mb-4" />
+                  <p className="text-gray-500 text-sm">Report Preview</p>
                 </div>
               </div>
             </div>
-          </AnimatedContent>
-
-          {/* Vertical team image */}
-          <AnimatedContent
-            distance={120}
-            direction="vertical"
-            reverse
-            duration={1}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.98}
-            threshold={0.25}
-            delay={0.1}
-          >
-            <Card className="bg-card/70 border border-border/70 overflow-hidden shadow-xl shadow-black/30">
-              <div className="relative h-[420px] sm:h-[500px] md:h-[560px] lg:h-[640px]">
-                <img
-                  src="/team/team-2.jpg"
-                  alt="VibeOps founding team"
-                  className="h-full w-full object-cover"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-4 text-xs sm:text-sm">
-                  <div className="space-y-1">
-                    <p className="font-semibold tracking-[0.16em] uppercase">
-                      The VibeOps Team
-                    </p>
-                    <p className="text-muted-foreground max-w-xs">
-                      Engineer-operators building automation that behaves like
-                      infrastructure, not a toy app.
-                    </p>
-                  </div>
-                  <span className="hidden sm:inline-flex rounded-full border border-primary/40 bg-background/60 px-3 py-1 text-[0.7rem] tracking-[0.16em] uppercase text-primary">
-                    Reportly · VibeOps
-                  </span>
-                </div>
-              </div>
-            </Card>
-          </AnimatedContent>
-        </section>
-
-        {/* What we actually do */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <AnimatedContent
-            distance={80}
-            direction="vertical"
-            duration={0.9}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.96}
-            threshold={0.3}
-          >
-            <Card className="bg-card/70 border border-border/70">
-              <CardHeader>
-                <CardTitle className="text-base">Reportly Engine</CardTitle>
-                <CardDescription>
-                  The core automation layer for your existing templates.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-3">
-                <p>
-                  We plug into the Word and Excel templates your teams already
-                  trust, then wire them to structured data — from spreadsheets,
-                  databases, or APIs.
-                </p>
-                <p>
-                  The output looks exactly like what you send clients today,
-                  just generated in minutes instead of hours.
-                </p>
-              </CardContent>
-            </Card>
-          </AnimatedContent>
-
-          <AnimatedContent
-            distance={80}
-            direction="vertical"
-            duration={0.9}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.96}
-            threshold={0.3}
-            delay={0.08}
-          >
-            <Card className="bg-card/70 border border-border/70">
-              <CardHeader>
-                <CardTitle className="text-base">
-                  Civil &amp; Infrastructure DNA
-                </CardTitle>
-                <CardDescription>
-                  Built by people who actually read drawings and specs.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-3">
-                <p>
-                  Our background spans civil engineering, transportation,
-                  geotechnical, and construction workflows — not just SaaS
-                  demos.
-                </p>
-                <p>
-                  That means we design around real constraints: QA sign-off,
-                  sealed documents, audit trails, and client-specific quirks.
-                </p>
-              </CardContent>
-            </Card>
-          </AnimatedContent>
-
-          <AnimatedContent
-            distance={80}
-            direction="vertical"
-            duration={0.9}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.96}
-            threshold={0.3}
-            delay={0.16}
-          >
-            <Card className="bg-card/70 border border-border/70">
-              <CardHeader>
-                <CardTitle className="text-base">Custom Internal Tools</CardTitle>
-                <CardDescription>
-                  Light dashboards and calculators around your core reports.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-3">
-                <p>
-                  Once reporting is automated, we help teams wrap it with simple
-                  interfaces: quote calculators, status dashboards, and internal
-                  portals that stay close to reality.
-                </p>
-                <p>
-                  No “one more platform” bloat — just focused tools for your
-                  project managers and engineers.
-                </p>
-              </CardContent>
-            </Card>
-          </AnimatedContent>
-        </section>
-
-        {/* How we work */}
-        <section className="max-w-5xl mx-auto">
-          <AnimatedContent
-            distance={100}
-            direction="vertical"
-            duration={1}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.97}
-            threshold={0.3}
-          >
-            <Card className="bg-card/70 border border-border/70">
-              <CardHeader>
-                <CardTitle>How We Work With Teams</CardTitle>
-                <CardDescription>
-                  Small, opinionated, and focused on getting one important
-                  workflow right at a time.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-muted-foreground">
-                <AnimatedContent
-                  distance={60}
-                  direction="vertical"
-                  duration={0.8}
-                  ease="power3.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  scale={0.98}
-                  threshold={0.4}
-                >
-                  <div className="space-y-2">
-                    <p className="text-xs uppercase tracking-[0.18em] text-primary">
-                      01 · Discovery
-                    </p>
-                    <p className="font-medium text-foreground">
-                      Start from real deliverables
-                    </p>
-                    <p>
-                      We review example reports, templates, and existing
-                      spreadsheets to understand how work actually gets done —
-                      not just the “ideal” process.
-                    </p>
-                  </div>
-                </AnimatedContent>
-
-                <AnimatedContent
-                  distance={60}
-                  direction="vertical"
-                  duration={0.8}
-                  ease="power3.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  scale={0.98}
-                  threshold={0.4}
-                  delay={0.08}
-                >
-                  <div className="space-y-2">
-                    <p className="text-xs uppercase tracking-[0.18em] text-primary">
-                      02 · Prototype
-                    </p>
-                    <p className="font-medium text-foreground">
-                      Wire up a thin slice
-                    </p>
-                    <p>
-                      We build and demo a narrow but end-to-end flow: ingest
-                      data, generate a real report, and walk it through your
-                      review and QA process.
-                    </p>
-                  </div>
-                </AnimatedContent>
-
-                <AnimatedContent
-                  distance={60}
-                  direction="vertical"
-                  duration={0.8}
-                  ease="power3.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  scale={0.98}
-                  threshold={0.4}
-                  delay={0.16}
-                >
-                  <div className="space-y-2">
-                    <p className="text-xs uppercase tracking-[0.18em] text-primary">
-                      03 · Rollout
-                    </p>
-                    <p className="font-medium text-foreground">
-                      Expand carefully, not chaotically
-                    </p>
-                    <p>
-                      Once the first workflow is trusted, we extend to more
-                      templates and teams, with proper versioning, access
-                      control, and documentation.
-                    </p>
-                  </div>
-                </AnimatedContent>
-              </CardContent>
-            </Card>
-          </AnimatedContent>
-        </section>
-
-        {/* CTA */}
-        <section className="max-w-4xl mx-auto">
-          <AnimatedContent
-            distance={90}
-            direction="vertical"
-            duration={1}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.97}
-            threshold={0.35}
-          >
-            <Card className="bg-gradient-to-r from-primary/10 via-card to-accent/10 border border-primary/30">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl md:text-3xl">
-                  Want Your Next Report to Be the Last One You Build by Hand?
-                </CardTitle>
-                <CardDescription className="text-base">
-                  We usually start with one painful template — monitoring
-                  reports, bridge inspections, dam instrumentation summaries, or
-                  similar — and prove out the value there.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                <Button asChild className="btn-primary px-8">
-                  <a href="/contact">Book a Vibe Check</a>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="border-border/70 bg-background/70"
-                >
-                  <a href="/services">See What We Build</a>
-                </Button>
-              </CardContent>
-            </Card>
-          </AnimatedContent>
-        </section>
-      </div>
-    </div>
+          </div>
+        </VibeCard>
+      </AnimatedContent>
+    </Section>
   );
-};
+}
 
-export default Index;
+// =============================================================================
+// Process Section
+// =============================================================================
+
+const processSteps = [
+  {
+    step: '01',
+    title: 'Discovery',
+    description: 'We review your actual reports, templates, and workflows. No theoretical processes — just how work really gets done.',
+  },
+  {
+    step: '02',
+    title: 'Prototype',
+    description: 'We build a narrow but complete flow: ingest data, generate a real report, and walk it through your QA process.',
+  },
+  {
+    step: '03',
+    title: 'Rollout',
+    description: 'Once the first workflow is trusted, we expand carefully. Proper versioning, access control, and documentation.',
+  },
+];
+
+function ProcessSection() {
+  return (
+    <SectionWithHeader
+      tag="How We Work"
+      title="Focused, Not Chaotic"
+      description="We get one workflow right before moving to the next. Small, opinionated, and built to fit how your team actually operates."
+      maxWidth="lg"
+      divider
+    >
+      <div className="grid md:grid-cols-3 gap-6">
+        {processSteps.map((step, index) => (
+          <AnimatedContent
+            key={step.step}
+            distance={50}
+            direction="vertical"
+            duration={0.7}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            threshold={0.4}
+            delay={index * 0.15}
+          >
+            <VibeCard className="p-6 text-center h-full">
+              <div className="w-12 h-12 rounded-full bg-[#00ffcc]/5 border border-[#00ffcc]/20 flex items-center justify-center mx-auto mb-4">
+                <span className="text-[#00ffcc] font-bold text-sm">{step.step}</span>
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
+              <p className="text-sm text-gray-400">{step.description}</p>
+            </VibeCard>
+          </AnimatedContent>
+        ))}
+      </div>
+    </SectionWithHeader>
+  );
+}
+
+// =============================================================================
+// CTA Section
+// =============================================================================
+
+function CTASection() {
+  return (
+    <Section className="pb-32" divider>
+      <AnimatedContent
+        distance={60}
+        direction="vertical"
+        duration={0.9}
+        ease="power3.out"
+        initialOpacity={0}
+        animateOpacity
+        threshold={0.3}
+      >
+        <VibeCard variant="gradient" hover={false} className="p-8 md:p-12 text-center max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to Stop Building Reports by Hand?
+          </h2>
+          <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+            We usually start with one painful template — monitoring reports, bridge inspections,
+            dam instrumentation — and prove out the value there.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <VibeLinkButton href="/contact" variant="primary" size="lg">
+              Book a Vibe Check
+            </VibeLinkButton>
+            <VibeLinkButton href="/case-studies" variant="outline" size="lg">
+              See Client Results
+            </VibeLinkButton>
+          </div>
+        </VibeCard>
+      </AnimatedContent>
+    </Section>
+  );
+}

@@ -1,20 +1,8 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { FileText, Wrench, BarChart3, Layers } from "lucide-react";
-import Aurora from "../components/Aurora";
+import { Link } from "react-router-dom";
 import AnimatedContent from "../components/AnimatedContent";
-
-const REPORTLY_LOGIN_URL =
-  import.meta.env.VITE_REPORTLY_LOGIN_URL || "http://localhost:5014/reportly";
-
-const openReportly = () => {
-  window.open(REPORTLY_LOGIN_URL, "_blank", "noopener,noreferrer");
-};
+import { SectionWithHeader, SectionDivider } from "../components/ui/Section";
+import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 
 export default function Services() {
   const services = [
@@ -69,295 +57,205 @@ export default function Services() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-background">
-      {/* Full-page Aurora background */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
-        <Aurora
-          colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
-          blend={0.45}
-          amplitude={1.0}
-          speed={0.6}
-        />
-      </div>
-
-      {/* Foreground content */}
-      <div className="container mx-auto px-4 py-20 relative z-10 space-y-16">
-        {/* Hero */}
+    <div className="pt-24">
+      {/* Hero */}
+      <section className="py-20 px-4">
         <AnimatedContent
-          distance={140}
+          distance={80}
           direction="vertical"
-          duration={1}
+          duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          scale={0.96}
-          threshold={0.3}
+          threshold={0.2}
         >
-          <section className="text-center max-w-3xl mx-auto">
-            <p className="text-[0.7rem] uppercase tracking-[0.28em] text-primary/80 mb-3">
-              SERVICES · VIBEOPS
+          <div className="container mx-auto text-center max-w-3xl">
+            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+              Services
             </p>
-            <h1 className="section-title">What We Build</h1>
-            <p className="section-subtitle mx-auto">
+            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
+              What We Build
+            </h1>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Custom automation software for engineering, construction, and
               inspection teams — with Reportly at the core and bespoke tools
               where you need them.
             </p>
-          </section>
+          </div>
         </AnimatedContent>
+      </section>
 
-        {/* Service Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {services.map((service, index) => (
+      <SectionDivider className="mx-auto max-w-5xl" />
+
+      {/* Service Cards */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {services.map((service, index) => (
+              <AnimatedContent
+                key={service.title}
+                distance={60}
+                direction="vertical"
+                duration={0.7}
+                ease="power3.out"
+                initialOpacity={0}
+                animateOpacity
+                threshold={0.3}
+                delay={index * 0.1}
+              >
+                <VibeCard variant="default" className="h-full">
+                  <VibeCardHeader>
+                    <div className="mb-4 text-[#00ffcc]">{service.icon}</div>
+                    <VibeCardTitle className="text-xl">{service.title}</VibeCardTitle>
+                    <VibeCardDescription className="text-gray-400 mt-2">
+                      {service.description}
+                    </VibeCardDescription>
+                  </VibeCardHeader>
+                  <VibeCardContent>
+                    <ul className="space-y-2">
+                      {service.features.map((feature, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center text-gray-400 text-sm"
+                        >
+                          <span className="text-[#00ffcc] mr-2">✓</span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </VibeCardContent>
+                </VibeCard>
+              </AnimatedContent>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider className="mx-auto max-w-5xl" />
+
+      {/* Demo Apps */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <AnimatedContent
+            distance={60}
+            direction="vertical"
+            duration={0.7}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            threshold={0.3}
+          >
+            <VibeCard variant="glass">
+              <VibeCardHeader>
+                <VibeCardTitle className="text-2xl">Demo Sandbox Tools</VibeCardTitle>
+                <VibeCardDescription className="text-gray-400">
+                  Simple demos — not production tools — built to show how we turn
+                  engineering workflows into software.
+                </VibeCardDescription>
+              </VibeCardHeader>
+              <VibeCardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Link
+                    to="/construction-tracker"
+                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
+                  >
+                    <h3 className="font-semibold text-white mb-2">Construction Tracker</h3>
+                    <p className="text-sm text-gray-400">
+                      A basic schedule and task tracking demo.
+                    </p>
+                  </Link>
+                  <Link
+                    to="/ai-report-generator"
+                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
+                  >
+                    <h3 className="font-semibold text-white mb-2">Reportly-Style Generator</h3>
+                    <p className="text-sm text-gray-400">
+                      Filling report templates from structured inputs.
+                    </p>
+                  </Link>
+                  <Link
+                    to="/pipeline"
+                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
+                  >
+                    <h3 className="font-semibold text-white mb-2">Pipeline Estimator</h3>
+                    <p className="text-sm text-gray-400">
+                      Simple pipeline cost and configuration demo.
+                    </p>
+                  </Link>
+                  <Link
+                    to="/roof-demo"
+                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
+                  >
+                    <h3 className="font-semibold text-white mb-2">Roofing Estimator</h3>
+                    <p className="text-sm text-gray-400">
+                      Address-based estimating example.
+                    </p>
+                  </Link>
+                </div>
+                <p className="text-xs text-gray-500 mt-4">
+                  In real deployments, we connect to your actual templates, data sources, and QA processes.
+                </p>
+              </VibeCardContent>
+            </VibeCard>
+          </AnimatedContent>
+        </div>
+      </section>
+
+      <SectionDivider className="mx-auto max-w-5xl" />
+
+      {/* CTAs */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <AnimatedContent
-              key={service.title}
-              distance={100}
-              direction={index % 2 === 0 ? "vertical" : "horizontal"}
-              reverse={index % 2 === 1}
-              duration={0.9}
+              distance={60}
+              direction="vertical"
+              duration={0.7}
               ease="power3.out"
               initialOpacity={0}
               animateOpacity
-              scale={0.95}
-              threshold={0.4}
-              delay={index * 0.08}
+              threshold={0.3}
             >
-              <Card className="border-2 border-border/80 hover:border-primary/70 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)] transition-all duration-300 bg-card/70 backdrop-blur-md relative overflow-hidden">
-                {/* glowing gradient edge */}
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-primary/0 via-primary/70 to-accent/0 opacity-60" />
-                <CardHeader>
-                  <div className="mb-4">{service.icon}</div>
-                  <CardTitle className="text-2xl">{service.title}</CardTitle>
-                  <CardDescription className="text-base">
-                    {service.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, i) => (
-                      <li
-                        key={i}
-                        className="flex items-center text-muted-foreground text-sm"
-                      >
-                        <span className="text-primary mr-2">✓</span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </AnimatedContent>
-          ))}
-        </section>
-
-        {/* Demo Apps – framed as simple examples */}
-        <AnimatedContent
-          distance={120}
-          direction="vertical"
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          scale={0.97}
-          threshold={0.4}
-        >
-          <section className="max-w-4xl mx-auto">
-            <Card className="bg-card/60 backdrop-blur-md border border-border/80 relative overflow-hidden">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/10" />
-              <CardHeader className="relative">
-                <CardTitle className="text-3xl">
-                  Demo Sandbox Tools
-                </CardTitle>
-                <CardDescription className="text-base">
-                  These are simple demos — not production tools — built to give
-                  you a feel for how we turn engineering workflows into
-                  software.
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-6 relative">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <AnimatedContent
-                    distance={60}
-                    direction="horizontal"
-                    duration={0.75}
-                    ease="power3.out"
-                    initialOpacity={0}
-                    animateOpacity
-                    scale={0.98}
-                    threshold={0.6}
-                  >
-                    <a
-                      href="/construction-tracker"
-                      className="block p-6 bg-secondary/80 rounded-lg hover:bg-secondary transition-colors hover:-translate-y-1 hover:shadow-lg duration-200"
-                    >
-                      <h3 className="font-bold text-lg mb-2">
-                        Construction Tracker
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        A basic schedule and task tracking demo to show how we
-                        handle project data.
-                      </p>
-                    </a>
-                  </AnimatedContent>
-
-                  <AnimatedContent
-                    distance={60}
-                    direction="horizontal"
-                    reverse
-                    duration={0.75}
-                    ease="power3.out"
-                    initialOpacity={0}
-                    animateOpacity
-                    scale={0.98}
-                    threshold={0.6}
-                  >
-                    <a
-                      href="/ai-report-generator"
-                      className="block p-6 bg-secondary/80 rounded-lg hover:bg-secondary transition-colors hover:-translate-y-1 hover:shadow-lg duration-200"
-                    >
-                      <h3 className="font-bold text-lg mb-2">
-                        Reportly-Style Generator
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        A stripped-down example of filling report templates
-                        from structured inputs.
-                      </p>
-                    </a>
-                  </AnimatedContent>
-
-                  <AnimatedContent
-                    distance={60}
-                    direction="horizontal"
-                    duration={0.75}
-                    ease="power3.out"
-                    initialOpacity={0}
-                    animateOpacity
-                    scale={0.98}
-                    threshold={0.6}
-                  >
-                    <a
-                      href="/pipeline"
-                      className="block p-6 bg-secondary/80 rounded-lg hover:bg-secondary transition-colors hover:-translate-y-1 hover:shadow-lg duration-200"
-                    >
-                      <h3 className="font-bold text-lg mb-2">
-                        Pipeline Estimator
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Simple pipeline cost and configuration demo to showcase
-                        engineering calculators.
-                      </p>
-                    </a>
-                  </AnimatedContent>
-
-                  <AnimatedContent
-                    distance={60}
-                    direction="horizontal"
-                    reverse
-                    duration={0.75}
-                    ease="power3.out"
-                    initialOpacity={0}
-                    animateOpacity
-                    scale={0.98}
-                    threshold={0.6}
-                  >
-                    <a
-                      href="/roof-demo"
-                      className="block p-6 bg-secondary/80 rounded-lg hover:bg-secondary transition-colors hover:-translate-y-1 hover:shadow-lg duration-200"
-                    >
-                      <h3 className="font-bold text-lg mb-2">
-                        Roofing Estimator
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Lightweight example of address-based estimating and
-                        material logic.
-                      </p>
-                    </a>
-                  </AnimatedContent>
-                </div>
-
-                <p className="text-xs text-muted-foreground">
-                  These demos are intentionally simple. In real deployments, we
-                  connect to your actual templates, data sources, and QA
-                  processes.
+              <VibeCard variant="glow" className="text-center p-8">
+                <h2 className="text-xl font-semibold text-white mb-3">Reportly</h2>
+                <p className="text-gray-400 mb-6">
+                  Our flagship report automation engine. Coming soon.
                 </p>
-              </CardContent>
-            </Card>
-          </section>
-        </AnimatedContent>
+                <Link
+                  to="/reportly"
+                  className="inline-block px-6 py-3 rounded-full bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-colors"
+                >
+                  Learn More
+                </Link>
+              </VibeCard>
+            </AnimatedContent>
 
-        {/* Main Funnels */}
-        <section className="max-w-3xl mx-auto mt-4 text-center space-y-10">
-          {/* Funnel 1 – Reportly account */}
-          <AnimatedContent
-            distance={100}
-            direction="horizontal"
-            duration={0.95}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.97}
-            threshold={0.45}
-          >
-            <div className="bg-card/80 border border-border rounded-xl p-8 backdrop-blur-md hover:border-primary/70 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-              <h2 className="text-2xl font-bold mb-3">Start Using Reportly</h2>
-              <p className="text-muted-foreground mb-6 text-lg">
-                Log in to generate reports using your own templates, or create
-                an account to get onboarded to Reportly.
-              </p>
-              <button
-                onClick={openReportly}
-                className="btn-primary inline-block text-base px-6 py-2.5"
-              >
-                Try Reportly
-              </button>
-            </div>
-          </AnimatedContent>
-
-          {/* Funnel 2 – Custom software call */}
-          <AnimatedContent
-            distance={100}
-            direction="horizontal"
-            reverse
-            duration={0.95}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.97}
-            threshold={0.45}
-          >
-            <div className="bg-card/80 border border-border rounded-xl p-8 backdrop-blur-md hover:border-primary/70 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-              <h2 className="text-2xl font-bold mb-3">
-                Talk About Custom Software
-              </h2>
-              <p className="text-muted-foreground mb-6 text-lg">
-                If you&apos;re looking for something beyond Reportly —
-                dashboards, calculators, or custom internal tools — we&apos;ll
-                map out what a tailored build could look like for your team.
-              </p>
-              <a
-                href="/contact"
-                className="inline-block rounded-lg border border-border px-8 py-3 text-lg hover:border-primary/60 hover:text-primary transition-colors"
-              >
-                Book a Custom Software Call
-              </a>
-            </div>
-          </AnimatedContent>
-        </section>
-      </div>
-
-      {/* Local float animation for icons */}
-      <style>{`
-        @keyframes serviceIconFloat {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-          100% { transform: translateY(0px); }
-        }
-        .service-icon-float {
-          animation: serviceIconFloat 5s ease-in-out infinite;
-          transform-origin: center;
-        }
-      `}</style>
+            <AnimatedContent
+              distance={60}
+              direction="vertical"
+              duration={0.7}
+              ease="power3.out"
+              initialOpacity={0}
+              animateOpacity
+              threshold={0.3}
+              delay={0.1}
+            >
+              <VibeCard variant="default" className="text-center p-8">
+                <h2 className="text-xl font-semibold text-white mb-3">Custom Software</h2>
+                <p className="text-gray-400 mb-6">
+                  Dashboards, calculators, or internal tools for your team.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-block px-6 py-3 rounded-full border border-white/20 text-white hover:border-[#00ffcc]/50 hover:text-[#00ffcc] transition-colors"
+                >
+                  Book a Call
+                </Link>
+              </VibeCard>
+            </AnimatedContent>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

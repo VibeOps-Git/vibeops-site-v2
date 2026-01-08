@@ -11,6 +11,7 @@ import Contact from "./pages/Contact";
 import Team from "./pages/Team";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Reportly from "./pages/Reportly";
 import Login from "./pages/Login";
 import AIReportGenerator from "./pages/demos-removed-for-now/AIReportGenerator";
 import ConstructionTracker from "./pages/demos-removed-for-now/ConstructionTracker";
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/team" element={<Team />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/reportly" element={<Reportly />} />
             <Route path="/login" element={<Login />} />
             {/* Demos - removed for now - add back in any as you'd like
             <Route path="/ai-report-generator" element={<AIReportGenerator />} />

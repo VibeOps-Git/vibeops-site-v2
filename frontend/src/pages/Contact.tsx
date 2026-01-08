@@ -1,16 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import Aurora from "../components/Aurora";
 import AnimatedContent from "../components/AnimatedContent";
+import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 
 declare global {
   interface Window {
@@ -245,242 +238,189 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative min-h-screen bg-background">
-      {/* Full-page Aurora background */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
-        <Aurora
-          colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
-          blend={0.45}
-          amplitude={1.0}
-          speed={0.6}
-        />
-      </div>
-
-      {/* Foreground content */}
-      <div className="container mx-auto px-4 py-20 relative z-10">
+    <div className="pt-24">
+      {/* Hero */}
+      <section className="py-16 px-4">
         <AnimatedContent
-          distance={140}
+          distance={80}
           direction="vertical"
-          duration={1}
+          duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          scale={0.96}
-          threshold={0.3}
+          threshold={0.2}
         >
-          <section className="max-w-6xl mx-auto text-center">
-            <h1 className="section-title py-1">Book a Free Strategy Call</h1>
-            <p className="section-subtitle mx-auto">
+          <div className="container mx-auto text-center max-w-3xl">
+            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+              Contact
+            </p>
+            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
+              Book a Free Strategy Call
+            </h1>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Grab 30 minutes with us via Calendly, or email the person who best
               fits your question.
             </p>
-          </section>
+          </div>
         </AnimatedContent>
+      </section>
 
-        <AnimatedContent
-          distance={100}
-          direction="vertical"
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          scale={0.98}
-          threshold={0.35}
-        >
-          <section className="max-w-6xl mx-auto mt-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-8">
-              {/* Calendly side */}
-              <AnimatedContent
-                distance={80}
-                direction="horizontal"
-                duration={0.9}
-                ease="power3.out"
-                initialOpacity={0}
-                animateOpacity
-                scale={0.98}
-                threshold={0.4}
-              >
-                <Card className="bg-card/70 border border-border overflow-hidden backdrop-blur-md relative contact-calendly-card">
-                  {/* soft gradient wash */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
-                  <CardHeader className="relative">
-                    <CardTitle>Schedule a 30-Minute Vibe Check</CardTitle>
-                    <CardDescription>
-                      We&apos;ll walk through your current workflow, where time
-                      is being burned, and what a VibeOps or Reportly build
-                      could look like.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-0 relative">
-                    {/* Calendly container – rebuilt on every mount */}
-                    <div
-                      ref={calendlyRef}
-                      className="calendly-inline-widget w-full min-h-[960px] md:min-h-[1100px]"
-                      style={{ display: "block" }}
-                    />
-                  </CardContent>
-                </Card>
-              </AnimatedContent>
+      <section className="px-4 pb-20">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-8">
+            {/* Calendly side */}
+            <AnimatedContent
+              distance={60}
+              direction="vertical"
+              duration={0.7}
+              ease="power3.out"
+              initialOpacity={0}
+              animateOpacity
+              threshold={0.2}
+            >
+              <VibeCard variant="glow" className="overflow-hidden">
+                <VibeCardHeader>
+                  <VibeCardTitle className="text-xl">Schedule a 30-Minute Vibe Check</VibeCardTitle>
+                  <VibeCardDescription>
+                    We'll walk through your current workflow and what a VibeOps build could look like.
+                  </VibeCardDescription>
+                </VibeCardHeader>
+                <VibeCardContent className="pt-0">
+                  <div
+                    ref={calendlyRef}
+                    className="calendly-inline-widget w-full min-h-[960px] md:min-h-[1100px]"
+                    style={{ display: "block" }}
+                  />
+                </VibeCardContent>
+              </VibeCard>
+            </AnimatedContent>
 
-              {/* Email routing + composer */}
-              <AnimatedContent
-                distance={80}
-                direction="horizontal"
-                reverse
-                duration={0.9}
-                ease="power3.out"
-                initialOpacity={0}
-                animateOpacity
-                scale={0.98}
-                threshold={0.4}
-              >
-                <div className="space-y-6">
-                  <Card className="bg-card/70 border border-border backdrop-blur-md">
-                    <CardHeader>
-                      <CardTitle>Email the Right Person</CardTitle>
-                      <CardDescription>
-                        Skip forms. Pick who you want to talk to — we&apos;ll
-                        open a prefilled draft you can tweak before sending.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {contactChannels.map((channel) => {
-                        const firstName = channel.person.split(" ")[0];
-                        const isActive =
-                          selectedChannel &&
-                          selectedChannel.email === channel.email;
+            {/* Email routing + composer */}
+            <AnimatedContent
+              distance={60}
+              direction="vertical"
+              duration={0.7}
+              ease="power3.out"
+              initialOpacity={0}
+              animateOpacity
+              threshold={0.2}
+              delay={0.1}
+            >
+              <VibeCard variant="default">
+                <VibeCardHeader>
+                  <VibeCardTitle className="text-xl">Email the Right Person</VibeCardTitle>
+                  <VibeCardDescription>
+                    Skip forms. Pick who you want to talk to.
+                  </VibeCardDescription>
+                </VibeCardHeader>
+                <VibeCardContent className="space-y-4">
+                  {contactChannels.map((channel) => {
+                    const firstName = channel.person.split(" ")[0];
+                    const isActive =
+                      selectedChannel &&
+                      selectedChannel.email === channel.email;
 
-                        return (
-                          <div
-                            key={channel.email}
-                            className={`rounded-xl p-4 space-y-3 border backdrop-blur-sm transition-all duration-300 ${
-                              isActive
-                                ? "border-primary/70 bg-background/80 shadow-[0_18px_45px_rgba(0,0,0,0.7)]"
-                                : "border-border/70 bg-background/60 hover:border-primary/40 hover:bg-background/75 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(0,0,0,0.6)]"
-                            }`}
-                          >
-                            <p className="text-[0.65rem] uppercase tracking-[0.22em] text-primary/80">
-                              {channel.label}
+                    return (
+                      <div
+                        key={channel.email}
+                        className={`rounded-xl p-4 space-y-3 border transition-all duration-300 ${
+                          isActive
+                            ? "border-[#00ffcc]/50 bg-white/10"
+                            : "border-white/10 bg-white/5 hover:border-[#00ffcc]/30 hover:bg-white/10"
+                        }`}
+                      >
+                        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc]">
+                          {channel.label}
+                        </p>
+                        <p className="font-semibold text-white text-sm">
+                          {channel.person}{" "}
+                          <span className="text-gray-500 text-xs">
+                            · {channel.email}
+                          </span>
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {channel.blurb}
+                        </p>
+
+                        <Button
+                          type="button"
+                          size="sm"
+                          className={`text-xs ${isActive ? 'bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90' : 'bg-white/10 text-white border-white/20 hover:bg-white/20'}`}
+                          variant={isActive ? "default" : "outline"}
+                          onClick={() => handleOpenComposer(channel)}
+                        >
+                          {isActive
+                            ? `Editing email to ${firstName}`
+                            : `Email ${firstName}`}
+                        </Button>
+
+                        {isActive && selectedChannel && (
+                          <div className="mt-4 p-4 rounded-xl border border-[#00ffcc]/30 bg-[rgba(0,255,204,0.05)]">
+                            <h4 className="text-white font-semibold mb-1">
+                              Compose Email to {selectedChannel.person}
+                            </h4>
+                            <p className="text-xs text-gray-400 mb-4">
+                              Edit and click to open in your email app.
                             </p>
-                            <p className="font-semibold text-sm">
-                              {channel.person}{" "}
-                              <span className="text-muted-foreground text-xs">
-                                · {channel.email}
-                              </span>
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {channel.blurb}
-                            </p>
 
-                            <Button
-                              type="button"
-                              size="sm"
-                              className="text-xs"
-                              variant={isActive ? "default" : "outline"}
-                              onClick={() => handleOpenComposer(channel)}
-                            >
-                              {isActive
-                                ? `Editing email to ${firstName}`
-                                : `Email ${firstName}`}
-                            </Button>
+                            <div className="space-y-3 text-sm">
+                              <div>
+                                <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500 mb-1">To</p>
+                                <p className="text-white">{selectedChannel.email}</p>
+                              </div>
 
-                            {isActive && selectedChannel && (
-                              <Card className="bg-card/80 border border-primary/40 mt-3">
-                                <CardHeader className="pb-3">
-                                  <CardTitle className="text-base">
-                                    Compose Email to {selectedChannel.person}
-                                  </CardTitle>
-                                  <CardDescription className="text-xs">
-                                    Edit the subject and message below.
-                                    Clicking "Open in Email Client" will launch
-                                    your email app with this content.
-                                  </CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-3 text-sm">
-                                  <div>
-                                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
-                                      To
-                                    </p>
-                                    <p className="text-foreground">
-                                      {selectedChannel.email}
-                                    </p>
-                                  </div>
+                              <div>
+                                <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500 mb-1">Subject</p>
+                                <Input
+                                  value={draftSubject}
+                                  onChange={(e) => setDraftSubject(e.target.value)}
+                                  className="text-sm bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
 
-                                  <div className="space-y-1">
-                                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
-                                      Subject
-                                    </p>
-                                    <Input
-                                      value={draftSubject}
-                                      onChange={(e) =>
-                                        setDraftSubject(e.target.value)
-                                      }
-                                      className="text-sm"
-                                    />
-                                  </div>
+                              <div>
+                                <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500 mb-1">Message</p>
+                                <Textarea
+                                  value={draftBody}
+                                  onChange={(e) => setDraftBody(e.target.value)}
+                                  rows={6}
+                                  className="text-sm bg-white/5 border-white/10 text-white"
+                                />
+                              </div>
 
-                                  <div className="space-y-1">
-                                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
-                                      Message
-                                    </p>
-                                    <Textarea
-                                      value={draftBody}
-                                      onChange={(e) =>
-                                        setDraftBody(e.target.value)
-                                      }
-                                      rows={8}
-                                      className="text-sm"
-                                    />
-                                  </div>
-
-                                  <div className="flex gap-2 pt-2">
-                                    <Button
-                                      type="button"
-                                      className="flex-1"
-                                      onClick={handleSendEmail}
-                                    >
-                                      Open in Email Client
-                                    </Button>
-                                    <Button
-                                      type="button"
-                                      variant="outline"
-                                      className="text-xs"
-                                      onClick={() => setSelectedChannel(null)}
-                                    >
-                                      Clear
-                                    </Button>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            )}
+                              <div className="flex gap-2 pt-2">
+                                <Button
+                                  type="button"
+                                  className="flex-1 bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90"
+                                  onClick={handleSendEmail}
+                                >
+                                  Open in Email Client
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  className="text-xs border-white/20 text-white hover:bg-white/10"
+                                  onClick={() => setSelectedChannel(null)}
+                                >
+                                  Clear
+                                </Button>
+                              </div>
+                            </div>
                           </div>
-                        );
-                      })}
+                        )}
+                      </div>
+                    );
+                  })}
 
-                      <p className="text-xs text-muted-foreground pt-2">
-                        Not sure who to pick? Zander or Felix are good defaults
-                        if you&apos;re just exploring options.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </AnimatedContent>
-            </div>
-          </section>
-        </AnimatedContent>
-      </div>
-
-      {/* Local micro-animations */}
-      <style>{`
-        @keyframes calendlyGlow {
-          0% { box-shadow: 0 0 0 rgba(0,255,204,0); }
-          50% { box-shadow: 0 0 32px rgba(0,255,204,0.25); }
-          100% { box-shadow: 0 0 0 rgba(0,255,204,0); }
-        }
-        .contact-calendly-card:hover {
-          animation: calendlyGlow 1.4s ease-out forwards;
-        }
-      `}</style>
+                  <p className="text-xs text-gray-500 pt-2">
+                    Not sure who to pick? Zander or Felix are good defaults.
+                  </p>
+                </VibeCardContent>
+              </VibeCard>
+            </AnimatedContent>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
