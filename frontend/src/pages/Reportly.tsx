@@ -3,8 +3,8 @@ import { FileText, Upload, Zap, Palette, Clock, Check, ArrowRight } from "lucide
 import AnimatedContent from "../components/AnimatedContent";
 import { VibeCard } from "../components/ui/VibeCard";
 import { Section, SectionDivider } from "../components/ui/Section";
-import { InteractiveTablet } from "../components/DeviceMockup";
-import { ReportlyPreview } from "../components/ReportlyPreview";
+import { StickyDeviceShowcase } from "../components/StickyDeviceShowcase";
+import { ReportlySceneRenderer, REPORTLY_SCENES } from "../components/ReportlyScenes";
 
 // =============================================================================
 // Constants
@@ -183,18 +183,13 @@ function HeroSection({ email, setEmail, loading, submitted, onSubmit }: {
   );
 }
 
-function DevicePreviewSection() {
+function DeviceShowcaseSection() {
   return (
-    <Section className="py-16 overflow-hidden">
-      <div className="max-w-4xl mx-auto">
-        <InteractiveTablet scaleRange={[0.8, 1]} rotateRange={[8, 0]}>
-          {(progress) => <ReportlyPreview progress={progress} />}
-        </InteractiveTablet>
-      </div>
-      <p className="text-center text-sm text-gray-500 mt-8 max-w-md mx-auto">
-        Upload your templates, connect your data, and generate audit-ready reports in minutes.
-      </p>
-    </Section>
+    <StickyDeviceShowcase scenes={REPORTLY_SCENES}>
+      {(sceneIndex, progress) => (
+        <ReportlySceneRenderer sceneIndex={sceneIndex} progress={progress} />
+      )}
+    </StickyDeviceShowcase>
   );
 }
 
@@ -352,7 +347,7 @@ export default function Reportly() {
   return (
     <div className="pt-24">
       <HeroSection {...formProps} />
-      <DevicePreviewSection />
+      <DeviceShowcaseSection />
       <SectionDivider className="mx-auto max-w-5xl" />
       <ProblemSection />
       <SectionDivider className="mx-auto max-w-5xl" />
