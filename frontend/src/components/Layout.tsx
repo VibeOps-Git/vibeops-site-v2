@@ -8,12 +8,18 @@ import SpaceField from "./SpaceField";
 const REPORTLY_LOGIN_URL =
   import.meta.env.VITE_REPORTLY_LOGIN_URL || "http://localhost:5014/reportly";
 
-const navLinks = [
+interface NavLink {
+  path: string;
+  label: string;
+  badge?: string;
+}
+
+const navLinks: NavLink[] = [
   { path: "/", label: "Home" },
   { path: "/services", label: "Services" },
+  { path: "/reportly", label: "Reportly", badge: "New" },
   { path: "/team", label: "Team" },
   { path: "/case-studies", label: "Case Studies" },
-  { path: "/blog", label: "Blog" },
   { path: "/contact", label: "Contact" },
 ];
 
@@ -79,13 +85,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                  className={`relative px-4 py-2 rounded-full text-sm transition-all duration-200 ${
                     isActive(link.path)
                       ? "text-[#00ffcc] bg-[#00ffcc]/10"
                       : "text-gray-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   {link.label}
+                  {link.badge && (
+                    <span className="absolute -top-1 -right-1 px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                      {link.badge}
+                    </span>
+                  )}
                 </Link>
               ))}
               <button
@@ -113,13 +124,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`block py-3 px-4 rounded-xl text-sm transition-colors ${
+                  className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
                     isActive(link.path)
                       ? "text-[#00ffcc] bg-[#00ffcc]/10"
                       : "text-gray-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   {link.label}
+                  {link.badge && (
+                    <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                      {link.badge}
+                    </span>
+                  )}
                 </Link>
               ))}
               <div className="pt-2">
