@@ -5,6 +5,8 @@ import AnimatedContent from '../components/AnimatedContent';
 import { VibeCard } from '@/components/ui/VibeCard';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 import { Section, SectionWithHeader, SectionDivider } from '@/components/ui/Section';
+import { GallerySection3D, ContentOverlay } from '../components/3d';
+import { ProcessTimeline } from '@/components/process/ProcessTimeline';
 
 
 export default function Index() {
@@ -77,11 +79,11 @@ function HeroSection() {
           delay={0.2}
         >
           <p className="text-lg md:text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
-            Engineers lose 30-40% of their time to documentation. We build report automation
-            that works with your existing templates—so your team can get back to engineering.
+            We build custom automation for engineering teams—reports, workflows, dashboards, and tools.
+            One workflow at a time. No platforms, no overhead.
           </p>
           <p className="text-sm text-gray-500 mb-10">
-            Save 600+ hours per engineer annually. No workflow changes required.
+            Small, focused solutions that fit how your team actually works.
           </p>
         </AnimatedContent>
 
@@ -118,11 +120,11 @@ function HeroSection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-10 text-sm text-gray-500">
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#00ffcc]" />
-              No code changes to your workflow
+              Integrates with your existing tools
             </span>
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#00ffcc]" />
-              Works with existing templates
+              No workflow disruption
             </span>
           </div>
         </AnimatedContent>
@@ -175,6 +177,7 @@ const services = [
     features: ['Template automation', 'Charts & tables from live data', 'Photo appendices', 'QA-ready output'],
     href: '/services#reportly',
     highlight: true,
+    machineType: 'printer' as const, // Printer machine for report generation
   },
   {
     icon: Wrench,
@@ -183,6 +186,7 @@ const services = [
     description: 'Remove repetitive documentation from engineering and construction workflows. Field data, checklists, and more.',
     features: ['Field data ingestion', 'Inspection checklists', 'Site documentation', 'White-labeled tools'],
     href: '/services',
+    machineType: 'conveyor' as const, // Conveyor belt for workflow processing
   },
   {
     icon: BarChart3,
@@ -191,6 +195,7 @@ const services = [
     description: 'Turn raw technical data into actionable insight. Instrumentation, construction tracking, and live field ops views.',
     features: ['Instrument dashboards', 'Construction tracking', 'Map-based views', 'Shareable dashboards'],
     href: '/services',
+    machineType: 'controlPanel' as const, // Control panel for monitoring/dashboards
   },
   {
     icon: Layers,
@@ -199,6 +204,7 @@ const services = [
     description: 'Rapid engineering calculators and tools that mirror your workflows without the overhead of a full platform.',
     features: ['Cost estimators', 'Asset tracking', 'Pilot tools', 'Secure deployment'],
     href: '/services',
+    machineType: 'toolbox' as const, // Toolbox for internal tools
   },
 ];
 
@@ -210,23 +216,8 @@ function ServicesSection() {
       description="Four core capabilities. One focus: making engineering teams faster without breaking what already works."
       divider
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {services.map((service, index) => (
-          <AnimatedContent
-            key={service.title}
-            distance={60}
-            direction="vertical"
-            duration={0.8}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            threshold={0.3}
-            delay={index * 0.1}
-          >
-            <ServiceCard {...service} />
-          </AnimatedContent>
-        ))}
-      </div>
+      {/* Liquid Glass Cards Gallery */}
+      <GallerySection3D items={services} />
     </SectionWithHeader>
   );
 }
@@ -353,12 +344,12 @@ const processSteps = [
   {
     step: '01',
     title: 'Discovery',
-    description: 'We review your actual reports, templates, and workflows. No theoretical processes — just how work really gets done.',
+    description: 'We review your actual workflows, tools, and processes. No theoretical frameworks — just how work really gets done.',
   },
   {
     step: '02',
     title: 'Prototype',
-    description: 'We build a narrow but complete flow: ingest data, generate a real report, and walk it through your QA process.',
+    description: 'We build a narrow but complete solution: ingest data, automate the workflow, and walk it through your QA process.',
   },
   {
     step: '03',
@@ -376,29 +367,7 @@ function ProcessSection() {
       maxWidth="lg"
       divider
     >
-      <div className="grid md:grid-cols-3 gap-6">
-        {processSteps.map((step, index) => (
-          <AnimatedContent
-            key={step.step}
-            distance={50}
-            direction="vertical"
-            duration={0.7}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            threshold={0.4}
-            delay={index * 0.15}
-          >
-            <VibeCard className="p-6 text-center h-full">
-              <div className="w-12 h-12 rounded-full bg-[#00ffcc]/5 border border-[#00ffcc]/20 flex items-center justify-center mx-auto mb-4">
-                <span className="text-[#00ffcc] font-bold text-sm">{step.step}</span>
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
-              <p className="text-sm text-gray-400">{step.description}</p>
-            </VibeCard>
-          </AnimatedContent>
-        ))}
-      </div>
+      <ProcessTimeline steps={processSteps} />
     </SectionWithHeader>
   );
 }
@@ -421,18 +390,17 @@ function CTASection() {
       >
         <VibeCard variant="gradient" hover={false} className="p-8 md:p-12 text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Stop Building Reports by Hand?
+            Ready to Automate Your Engineering Workflows?
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            We usually start with one painful template — monitoring reports, bridge inspections,
-            dam instrumentation — and prove out the value there.
+            We start with one workflow — the one that's slowing your team down the most — and prove the value. No platforms, no overhead, just results.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <VibeLinkButton href="/contact" variant="primary" size="lg">
               Book a Vibe Check
             </VibeLinkButton>
-            <VibeLinkButton href="/case-studies" variant="outline" size="lg">
-              See Client Results
+            <VibeLinkButton href="/services" variant="outline" size="lg">
+              Explore Our Services
             </VibeLinkButton>
           </div>
         </VibeCard>

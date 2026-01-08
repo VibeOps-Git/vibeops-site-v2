@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { Star, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
+import { VibeLinkButton } from "@/components/ui/VibeButton";
 
 type Review = {
   name: string;
@@ -9,6 +12,15 @@ type Review = {
   context: string;
   quote: string;
   image: string;
+};
+
+type PortfolioProject = {
+  title: string;
+  caption: string;
+  description: string;
+  youtubeId: string;
+  link: string;
+  features: string[];
 };
 
 const reviews: Review[] = [
@@ -31,29 +43,221 @@ const reviews: Review[] = [
 ];
 
 
-const legacyWebProjects = [
+const portfolioProjects = [
   {
     title: "Castaway Crew – Desktop",
     caption:
       "Bold, conversion-focused landing page for a boat cleaning business in Minnesota.",
+    description: "Complete brand refresh with a focus on conversion optimization. Features include pricing calculator, service area maps, and streamlined booking flow. Built with React and optimized for performance.",
     youtubeId: "trIZD2Lwe4s",
     link: "https://www.castawaycrewmn.com/",
+    features: [
+      "Conversion-optimized design",
+      "Dynamic pricing calculator",
+      "Service area mapping",
+      "Mobile-responsive layout",
+    ],
   },
   {
     title: "Castaway Crew – Mobile",
     caption:
       "Mobile-first experience that keeps booking effortless on small screens.",
+    description: "Optimized mobile experience with touch-friendly interfaces and streamlined navigation. Features quick-book functionality and location-based service detection.",
     youtubeId: "eJlnI9NCQuU",
     link: "https://www.castawaycrewmn.com/",
+    features: [
+      "Touch-optimized interface",
+      "Quick-book functionality",
+      "Location-based detection",
+      "Progressive web app features",
+    ],
   },
   {
     title: "EaZy Visuals",
     caption:
       "Dynamic, high-contrast site for a visual media and content studio.",
+    description: "High-impact portfolio site for a visual media studio. Features video showcase grid, dynamic transitions, and portfolio filtering. Built to showcase creative work with maximum visual impact.",
     youtubeId: "ArMIzD2MoeY",
     link: "https://www.eazy-visuals.com/",
+    features: [
+      "Video showcase grid",
+      "Dynamic transitions",
+      "Portfolio filtering",
+      "Optimized media loading",
+    ],
   },
 ];
+
+// Portfolio Section Component with Liquid Glass Cards
+function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  // ESC key handler
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && expandedIndex !== null) {
+        setExpandedIndex(null);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [expandedIndex]);
+
+  return (
+    <section className="py-16">
+      <AnimatedContent
+        distance={60}
+        direction="vertical"
+        duration={0.7}
+        ease="power3.out"
+        initialOpacity={0}
+        animateOpacity
+        threshold={0.3}
+      >
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-semibold text-white mb-3">Portfolio Projects</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Web apps and sites showing the level of polish we bring to internal tools and dashboards.
+          </p>
+        </div>
+      </AnimatedContent>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {projects.map((project, idx) => (
+          <AnimatedContent
+            key={project.title}
+            distance={50}
+            direction="vertical"
+            duration={0.6}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            threshold={0.3}
+            delay={idx * 0.1}
+          >
+            <div
+              className="h-full cursor-pointer"
+              onClick={() => setExpandedIndex(idx)}
+            >
+              <VibeCard
+                variant="default"
+                className="h-full overflow-hidden group hover:border-[#00ffcc]/40 transition-all"
+              >
+                <div className="relative">
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={`https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg`}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity pointer-events-none" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <div className="flex items-center gap-2 rounded-full bg-[#00ffcc] px-4 py-2 shadow-lg shadow-[#00ffcc]/50">
+                      <span className="inline-block h-0 w-0 border-y-4 border-y-transparent border-l-[8px] border-l-black" />
+                      <span className="text-sm font-semibold text-black">View Details</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 pointer-events-none">
+                  <h3 className="font-semibold text-white text-lg mb-2 group-hover:text-[#00ffcc] transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">{project.caption}</p>
+                </div>
+              </VibeCard>
+            </div>
+          </AnimatedContent>
+        ))}
+      </div>
+
+      {/* Expanded Modal */}
+      {expandedIndex !== null && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setExpandedIndex(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <VibeCard variant="glow" className="p-8">
+              {/* Close button */}
+              <button
+                onClick={() => setExpandedIndex(null)}
+                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all z-10"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Video embed */}
+              <div className="aspect-video rounded-xl overflow-hidden mb-6">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${projects[expandedIndex].youtubeId}?autoplay=1`}
+                  title={projects[expandedIndex].title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+
+              {/* Content */}
+              <h2 className="text-3xl font-bold text-white mb-3">
+                {projects[expandedIndex].title}
+              </h2>
+
+              <p className="text-gray-300 leading-relaxed mb-6">
+                {projects[expandedIndex].description}
+              </p>
+
+              {/* Features */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-white mb-4">Key Features</h3>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {projects[expandedIndex].features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3 text-gray-300">
+                      <span className="inline-block w-1.5 h-1.5 bg-[#00ffcc] rounded-full mt-2 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Live site link */}
+              <a
+                href={projects[expandedIndex].link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-colors"
+              >
+                <span>View Live Site</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+
+              {/* ESC hint */}
+              <div className="mt-8 pt-6 border-t border-[#00ffcc]/20 flex items-center gap-2 text-[#00ffcc]/50 text-sm">
+                <kbd className="px-2 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-xs">
+                  ESC
+                </kbd>
+                <span>Press to close</span>
+              </div>
+            </VibeCard>
+          </div>
+        </div>
+      )}
+
+      <p className="text-sm text-center text-gray-500 mt-8">
+        We apply the same care to internal tools your team uses every day.
+      </p>
+    </section>
+  );
+}
 
 export default function CaseStudies() {
   return (
@@ -86,42 +290,6 @@ export default function CaseStudies() {
       <SectionDivider className="mx-auto max-w-5xl" />
 
       <div className="container mx-auto px-4 max-w-5xl">
-        {/* Coming Soon Card */}
-        <section className="py-16">
-          <AnimatedContent
-            distance={60}
-            direction="vertical"
-            duration={0.7}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            threshold={0.3}
-          >
-            <VibeCard variant="gradient">
-              <VibeCardHeader>
-                <VibeCardTitle className="text-2xl">Case Studies in Progress</VibeCardTitle>
-                <VibeCardDescription>
-                  We're actively documenting live deployments and pilots with our partners.
-                </VibeCardDescription>
-              </VibeCardHeader>
-              <VibeCardContent>
-                <p className="text-gray-400 mb-6">
-                  Most of our work today is with engineering and construction teams who want to
-                  automate reporting, follow-ups, and documentation without hiring a full-time developer.
-                </p>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4 max-w-sm">
-                  <p className="font-semibold text-white mb-1">Civil & Construction</p>
-                  <p className="text-gray-400 text-sm">
-                    Report automation, dashboards, and internal tools around existing workflows.
-                  </p>
-                </div>
-              </VibeCardContent>
-            </VibeCard>
-          </AnimatedContent>
-        </section>
-
-        <SectionDivider />
-
         {/* Reviews section */}
         <section className="py-16">
           <AnimatedContent
@@ -133,9 +301,9 @@ export default function CaseStudies() {
             animateOpacity
             threshold={0.3}
           >
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2">What Our Clients Say</h2>
-              <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-semibold text-white mb-3">What Our Clients Say</h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
                 Real feedback from teams we've helped with automation and software.
               </p>
             </div>
@@ -154,120 +322,57 @@ export default function CaseStudies() {
                 threshold={0.3}
                 delay={idx * 0.1}
               >
-                <VibeCard variant="default" className="h-full">
-                  <VibeCardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="h-16 w-16 rounded-full overflow-hidden border border-[#00ffcc]/30 bg-white/5">
-                        <img
-                          src={review.image}
-                          alt={review.name}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <VibeCardTitle className="text-base">{review.name}</VibeCardTitle>
-                        <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500">
-                          {review.role}
-                        </p>
+                <VibeCard variant="glow" className="h-full p-6">
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 flex-shrink-0">
+                      <img
+                        src={review.image}
+                        alt={review.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-white mb-1">{review.name}</h3>
+                      <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
+                        {review.role}
+                      </p>
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-[#00ffcc] text-[#00ffcc]" />
+                        ))}
                       </div>
                     </div>
-                  </VibeCardHeader>
-                  <VibeCardContent>
-                    <p className="text-[0.7rem] text-[#00ffcc] font-medium tracking-[0.15em] uppercase mb-3">
-                      {review.context}
-                    </p>
-                    <p className="text-gray-400 text-sm leading-relaxed">
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="inline-block px-3 py-1.5 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20">
+                      <p className="text-xs text-[#00ffcc] font-medium">
+                        {review.context}
+                      </p>
+                    </div>
+
+                    <p className="text-gray-300 leading-relaxed italic">
                       "{review.quote}"
                     </p>
-                  </VibeCardContent>
+                  </div>
                 </VibeCard>
               </AnimatedContent>
             ))}
           </div>
 
-          <p className="text-xs text-center text-gray-500 mt-6">
+          <p className="text-sm text-center text-gray-500 mt-8">
             Longer-form case studies coming soon as we wrap pilots and get formal approvals.
           </p>
         </section>
 
         <SectionDivider />
 
-        {/* Legacy web projects */}
-        <section className="py-16">
-          <AnimatedContent
-            distance={60}
-            direction="vertical"
-            duration={0.7}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            threshold={0.3}
-          >
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2">Past Web Projects</h2>
-              <p className="text-gray-400 text-sm max-w-2xl mx-auto">
-                Marketing and brand sites showing the level of polish we bring to internal tools and dashboards.
-              </p>
-            </div>
-          </AnimatedContent>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {legacyWebProjects.map((proj, idx) => (
-              <AnimatedContent
-                key={proj.title}
-                distance={50}
-                direction="vertical"
-                duration={0.6}
-                ease="power3.out"
-                initialOpacity={0}
-                animateOpacity
-                threshold={0.3}
-                delay={idx * 0.1}
-              >
-                <VibeCard variant="default" className="h-full">
-                  <VibeCardContent className="pt-4">
-                    <a
-                      href={`https://www.youtube.com/watch?v=${proj.youtubeId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block rounded-xl overflow-hidden group relative mb-4"
-                    >
-                      <img
-                        src={`https://img.youtube.com/vi/${proj.youtubeId}/hqdefault.jpg`}
-                        alt={proj.title}
-                        className="w-full h-36 object-cover group-hover:scale-[1.03] transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="flex items-center gap-2 rounded-full bg-black/70 px-3 py-1">
-                          <span className="inline-block h-0 w-0 border-y-6 border-y-transparent border-l-[10px] border-l-white" />
-                          <span className="text-xs font-medium text-white">Watch</span>
-                        </div>
-                      </div>
-                    </a>
-                    <h3 className="font-semibold text-white text-sm mb-1">{proj.title}</h3>
-                    <p className="text-xs text-gray-400 mb-3">{proj.caption}</p>
-                    <a
-                      href={proj.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-[#00ffcc] hover:text-[#00ffcc]/80 transition-colors"
-                    >
-                      View live site →
-                    </a>
-                  </VibeCardContent>
-                </VibeCard>
-              </AnimatedContent>
-            ))}
-          </div>
-
-          <p className="text-xs text-center text-gray-500 mt-6">
-            We apply the same care to internal tools your team uses every day.
-          </p>
-        </section>
+        {/* Portfolio Projects */}
+        <PortfolioSection projects={portfolioProjects} />
 
         <SectionDivider />
 
-        {/* Demo Tools */}
+        {/* CTA */}
         <section className="py-16">
           <AnimatedContent
             distance={60}
@@ -278,104 +383,23 @@ export default function CaseStudies() {
             animateOpacity
             threshold={0.3}
           >
-            <VibeCard variant="glass">
-              <VibeCardHeader>
-                <VibeCardTitle className="text-xl">Demo Tools</VibeCardTitle>
-                <VibeCardDescription>
-                  Simple, non-production demos showing how we think about workflows.
-                </VibeCardDescription>
-              </VibeCardHeader>
-              <VibeCardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Link
-                    to="/construction-tracker"
-                    className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-1">Construction Tracker</h3>
-                    <p className="text-sm text-gray-400">Tasks, schedules, and dependencies.</p>
-                  </Link>
-                  <Link
-                    to="/ai-report-generator"
-                    className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-1">Report Generator</h3>
-                    <p className="text-sm text-gray-400">Template filling from structured inputs.</p>
-                  </Link>
-                  <Link
-                    to="/pipeline"
-                    className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-1">Pipeline Estimator</h3>
-                    <p className="text-sm text-gray-400">Cost and configuration demo.</p>
-                  </Link>
-                  <Link
-                    to="/roof-demo"
-                    className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-1">Roofing Estimator</h3>
-                    <p className="text-sm text-gray-400">Address-based estimating example.</p>
-                  </Link>
-                </div>
-                <p className="text-xs text-gray-500 mt-4">
-                  For real projects, we connect to your templates, data sources, and QA processes.
-                </p>
-              </VibeCardContent>
+            <VibeCard variant="gradient" hover={false} className="text-center p-10 md:p-14">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Become a Case Study?
+              </h2>
+              <p className="text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
+                Scope a pilot with clear before/after and measurable time savings. We'll help you automate the workflow that's slowing your team down the most.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <VibeLinkButton href="/contact" variant="primary" size="lg">
+                  Book a Vibe Check
+                </VibeLinkButton>
+                <VibeLinkButton href="/services" variant="outline" size="lg">
+                  Explore Our Services
+                </VibeLinkButton>
+              </div>
             </VibeCard>
           </AnimatedContent>
-        </section>
-
-        <SectionDivider />
-
-        {/* CTAs */}
-        <section className="py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnimatedContent
-              distance={50}
-              direction="vertical"
-              duration={0.6}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.3}
-            >
-              <VibeCard variant="glow" className="text-center p-8 h-full">
-                <h2 className="text-xl font-semibold text-white mb-3">Reportly</h2>
-                <p className="text-gray-400 text-sm mb-6">
-                  Automated reports from your existing Word and Excel templates. Coming soon.
-                </p>
-                <Link
-                  to="/reportly"
-                  className="inline-block px-6 py-3 rounded-full bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-colors"
-                >
-                  Learn More
-                </Link>
-              </VibeCard>
-            </AnimatedContent>
-
-            <AnimatedContent
-              distance={50}
-              direction="vertical"
-              duration={0.6}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.3}
-              delay={0.1}
-            >
-              <VibeCard variant="default" className="text-center p-8 h-full">
-                <h2 className="text-xl font-semibold text-white mb-3">Become a Case Study</h2>
-                <p className="text-gray-400 text-sm mb-6">
-                  Scope a pilot with clear before/after and measurable time savings.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-block px-6 py-3 rounded-full border border-white/20 text-white hover:border-[#00ffcc]/50 hover:text-[#00ffcc] transition-colors"
-                >
-                  Book a Call
-                </Link>
-              </VibeCard>
-            </AnimatedContent>
-          </div>
         </section>
       </div>
     </div>

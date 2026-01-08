@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionWithHeader, SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
+import { GallerySection3D } from "../components/3d/sections/GallerySection3D";
+import { VibeLinkButton } from "@/components/ui/VibeButton";
 
 export default function Services() {
   const services = [
     {
-      icon: <FileText className="w-12 h-12 text-primary service-icon-float" />,
-      title: "Report Automation (Reportly)",
+      icon: FileText,
+      title: "Report Automation",
+      subtitle: "Reportly Engine",
       description:
         "Transform hours of manual formatting into minutes of audit-ready, on-brand reporting using your existing Word and Excel templates.",
       features: [
@@ -19,8 +22,9 @@ export default function Services() {
       ],
     },
     {
-      icon: <Wrench className="w-12 h-12 text-primary service-icon-float" />,
-      title: "Custom Workflow Automation",
+      icon: Wrench,
+      title: "Workflow Automation",
+      subtitle: "Custom Builds",
       description:
         "We build software that removes repetitive documentation and data-handling from engineering, construction, and inspection workflows.",
       features: [
@@ -31,8 +35,9 @@ export default function Services() {
       ],
     },
     {
-      icon: <BarChart3 className="w-12 h-12 text-primary service-icon-float" />,
+      icon: BarChart3,
       title: "Engineering Dashboards",
+      subtitle: "Data Visualization",
       description:
         "Turn raw technical data into actionable insight — without hiring a full-time developer or maintaining internal software.",
       features: [
@@ -43,8 +48,9 @@ export default function Services() {
       ],
     },
     {
-      icon: <Layers className="w-12 h-12 text-primary service-icon-float" />,
-      title: "Lightweight Web Apps",
+      icon: Layers,
+      title: "Internal Tools",
+      subtitle: "Lightweight Apps",
       description:
         "Rapid engineering tools and calculators that mirror your existing workflows, without the overhead of a full custom platform.",
       features: [
@@ -74,12 +80,10 @@ export default function Services() {
               Services
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              What We Build
+              Choose Your Automation
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Custom automation software for engineering, construction, and
-              inspection teams — with Reportly at the core and bespoke tools
-              where you need them.
+              Four types of engineering automation. Pick the one that solves your biggest bottleneck first—then expand from there.
             </p>
           </div>
         </AnimatedContent>
@@ -87,55 +91,18 @@ export default function Services() {
 
       <SectionDivider className="mx-auto max-w-5xl" />
 
-      {/* Service Cards */}
+      {/* Service Cards - Liquid Glass */}
       <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {services.map((service, index) => (
-              <AnimatedContent
-                key={service.title}
-                distance={60}
-                direction="vertical"
-                duration={0.7}
-                ease="power3.out"
-                initialOpacity={0}
-                animateOpacity
-                threshold={0.3}
-                delay={index * 0.1}
-              >
-                <VibeCard variant="default" className="h-full">
-                  <VibeCardHeader>
-                    <div className="mb-4 text-[#00ffcc]">{service.icon}</div>
-                    <VibeCardTitle className="text-xl">{service.title}</VibeCardTitle>
-                    <VibeCardDescription className="text-gray-400 mt-2">
-                      {service.description}
-                    </VibeCardDescription>
-                  </VibeCardHeader>
-                  <VibeCardContent>
-                    <ul className="space-y-2">
-                      {service.features.map((feature, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center text-gray-400 text-sm"
-                        >
-                          <span className="text-[#00ffcc] mr-2">✓</span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </VibeCardContent>
-                </VibeCard>
-              </AnimatedContent>
-            ))}
-          </div>
+        <div className="container mx-auto max-w-6xl">
+          <GallerySection3D items={services} />
         </div>
       </section>
 
       <SectionDivider className="mx-auto max-w-5xl" />
 
-      {/* Demo Apps */}
+      {/* CTA */}
       <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-3xl">
           <AnimatedContent
             distance={60}
             direction="vertical"
@@ -145,115 +112,23 @@ export default function Services() {
             animateOpacity
             threshold={0.3}
           >
-            <VibeCard variant="glass">
-              <VibeCardHeader>
-                <VibeCardTitle className="text-2xl">Demo Sandbox Tools</VibeCardTitle>
-                <VibeCardDescription className="text-gray-400">
-                  Simple demos — not production tools — built to show how we turn
-                  engineering workflows into software.
-                </VibeCardDescription>
-              </VibeCardHeader>
-              <VibeCardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Link
-                    to="/construction-tracker"
-                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-2">Construction Tracker</h3>
-                    <p className="text-sm text-gray-400">
-                      A basic schedule and task tracking demo.
-                    </p>
-                  </Link>
-                  <Link
-                    to="/ai-report-generator"
-                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-2">Reportly-Style Generator</h3>
-                    <p className="text-sm text-gray-400">
-                      Filling report templates from structured inputs.
-                    </p>
-                  </Link>
-                  <Link
-                    to="/pipeline"
-                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-2">Pipeline Estimator</h3>
-                    <p className="text-sm text-gray-400">
-                      Simple pipeline cost and configuration demo.
-                    </p>
-                  </Link>
-                  <Link
-                    to="/roof-demo"
-                    className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00ffcc]/30 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <h3 className="font-semibold text-white mb-2">Roofing Estimator</h3>
-                    <p className="text-sm text-gray-400">
-                      Address-based estimating example.
-                    </p>
-                  </Link>
-                </div>
-                <p className="text-xs text-gray-500 mt-4">
-                  In real deployments, we connect to your actual templates, data sources, and QA processes.
-                </p>
-              </VibeCardContent>
+            <VibeCard variant="gradient" hover={false} className="text-center p-8 md:p-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Get Started?
+              </h2>
+              <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+                We'll help you pick the right automation for your team and build a working prototype in weeks, not months.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <VibeLinkButton href="/contact" variant="primary" size="lg">
+                  Book a Vibe Check
+                </VibeLinkButton>
+                <VibeLinkButton href="/case-studies" variant="outline" size="lg">
+                  View Case Studies
+                </VibeLinkButton>
+              </div>
             </VibeCard>
           </AnimatedContent>
-        </div>
-      </section>
-
-      <SectionDivider className="mx-auto max-w-5xl" />
-
-      {/* CTAs */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnimatedContent
-              distance={60}
-              direction="vertical"
-              duration={0.7}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.3}
-            >
-              <VibeCard variant="glow" className="text-center p-8">
-                <h2 className="text-xl font-semibold text-white mb-3">Reportly</h2>
-                <p className="text-gray-400 mb-6">
-                  Our flagship report automation engine. Coming soon.
-                </p>
-                <Link
-                  to="/reportly"
-                  className="inline-block px-6 py-3 rounded-full bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-colors"
-                >
-                  Learn More
-                </Link>
-              </VibeCard>
-            </AnimatedContent>
-
-            <AnimatedContent
-              distance={60}
-              direction="vertical"
-              duration={0.7}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.3}
-              delay={0.1}
-            >
-              <VibeCard variant="default" className="text-center p-8">
-                <h2 className="text-xl font-semibold text-white mb-3">Custom Software</h2>
-                <p className="text-gray-400 mb-6">
-                  Dashboards, calculators, or internal tools for your team.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-block px-6 py-3 rounded-full border border-white/20 text-white hover:border-[#00ffcc]/50 hover:text-[#00ffcc] transition-colors"
-                >
-                  Book a Call
-                </Link>
-              </VibeCard>
-            </AnimatedContent>
-          </div>
         </div>
       </section>
     </div>
