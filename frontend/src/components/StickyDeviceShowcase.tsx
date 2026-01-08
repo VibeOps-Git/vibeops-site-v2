@@ -171,11 +171,11 @@ export function StickyDeviceShowcase({ scenes, children, className = "" }: Stick
       className={`relative ${className}`}
       style={{ height: `${scenes.length * heightPerScene}vh` }}
     >
-      {/* Sticky container for device */}
-      <div className="sticky top-0 h-screen flex items-center justify-center px-4 pt-24 pb-8">
-        <div className="relative w-full">
+      {/* Sticky container for device - fills viewport below navbar */}
+      <div className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-8 lg:px-16">
+        <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center">
           {/* Scene indicators (desktop only) */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-full pl-8">
             <SceneIndicators scenes={scenes} activeIndex={sceneIndex} progress={sceneProgress} />
           </div>
 
@@ -183,18 +183,18 @@ export function StickyDeviceShowcase({ scenes, children, className = "" }: Stick
           <DeviceFrame scale={deviceScale} rotateX={deviceRotateX}>
             {children(sceneIndex, sceneProgress)}
           </DeviceFrame>
+        </div>
 
-          {/* Mobile scene indicator */}
-          <div className="lg:hidden flex justify-center gap-2 mt-6">
-            {scenes.map((scene, i) => (
-              <div
-                key={scene.id}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === sceneIndex ? "bg-[#00ffcc] scale-125" : i < sceneIndex ? "bg-[#00ffcc]/50" : "bg-white/20"
-                }`}
-              />
-            ))}
-          </div>
+        {/* Mobile scene indicator - fixed at bottom */}
+        <div className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+          {scenes.map((scene, i) => (
+            <div
+              key={scene.id}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                i === sceneIndex ? "bg-[#00ffcc] scale-125" : i < sceneIndex ? "bg-[#00ffcc]/50" : "bg-white/20"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </div>
