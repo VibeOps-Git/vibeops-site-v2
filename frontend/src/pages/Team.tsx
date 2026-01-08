@@ -1,6 +1,5 @@
 // src/pages/Team.tsx
 
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionDivider } from "../components/ui/Section";
@@ -86,8 +85,6 @@ const advisoryBoard: TeamMember[] = [
 ];
 
 export default function Team() {
-  const [heroLoaded, setHeroLoaded] = useState(false);
-
   return (
     <div className="pt-24">
       {/* Hero */}
@@ -106,12 +103,12 @@ export default function Team() {
               Our Team
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              Your Civil Engineering Software Team
+              Meet the Team Building Your Tools
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Built by engineers, for engineers. We're modernizing civil
-              engineering workflows by automating the reporting work nobody
-              went to school for.
+              We build custom software for engineering and construction teams—reports,
+              dashboards, field data tools, and internal applications that fit how you
+              actually work.
             </p>
           </div>
         </AnimatedContent>
@@ -120,34 +117,20 @@ export default function Team() {
       {/* Team Image Banner */}
       <section className="px-4 pb-16">
         <AnimatedContent
-          distance={60}
+          distance={30}
           direction="vertical"
-          duration={0.7}
-          ease="power3.out"
+          duration={1.0}
+          ease="power2.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.15}
         >
           <div className="container mx-auto max-w-6xl">
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[rgba(10,10,20,0.6)]">
-              {/* Loading skeleton */}
-              <div
-                className={`absolute inset-0 transition-opacity duration-500 ${
-                  heroLoaded ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
-                }`}
-              >
-                <div className="h-full w-full bg-gradient-to-br from-gray-800/60 via-gray-700/40 to-gray-900/70" />
-              </div>
-
               <img
                 src="/team/full-team-pic.png"
                 alt="VibeOps founding team"
-                loading="lazy"
-                decoding="async"
-                onLoad={() => setHeroLoaded(true)}
-                className={`w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center transition-all duration-700 ${
-                  heroLoaded ? "opacity-100 scale-100" : "opacity-0 scale-[1.02]"
-                }`}
+                className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center"
               />
 
               {/* Bottom gradient */}
@@ -160,7 +143,7 @@ export default function Team() {
                     VibeOps Technologies Inc.
                   </p>
                   <p className="text-xl md:text-2xl font-semibold text-white">
-                    Automating civil engineering workflows in an aging industry.
+                    Building software for engineering teams.
                   </p>
                 </div>
                 <Link
@@ -190,16 +173,16 @@ export default function Team() {
         >
           <div className="container mx-auto max-w-3xl text-center">
             <p className="text-gray-400 mb-4">
-              We've seen firsthand how much time civil engineers lose to copying
-              between Word and Excel, fixing broken templates, and wrestling
-              with formatting when specs change mid-project.
+              We've seen how much time engineering teams lose to repetitive documentation,
+              manual data entry, fragmented tools, and workflows that haven't changed in decades.
             </p>
             <p className="text-gray-400">
-              VibeOps exists so engineers can spend their time on{" "}
+              VibeOps exists to build{" "}
               <span className="font-semibold text-white">
-                design, analysis, and judgment
+                focused software
               </span>
-              —not on document gymnastics.
+              {" "}that fits real workflows—so teams can spend more time on actual engineering
+              and less time fighting their tools.
             </p>
           </div>
         </AnimatedContent>
@@ -340,38 +323,38 @@ export default function Team() {
             <VibeCard variant="gradient" className="p-8 md:p-10">
               <div className="grid gap-8 md:grid-cols-[1.5fr,1fr] items-center">
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-3">Our Vibe</h2>
+                  <h2 className="text-2xl font-semibold text-white mb-3">Our Approach</h2>
                   <p className="text-gray-400 mb-6">
-                    We're focused on one thing: automating civil and construction
-                    engineering reports using the templates firms already trust.
+                    We build custom software for engineering teams—reports, dashboards,
+                    workflow tools, and internal applications. One focused solution at a time.
                   </p>
                   <div className="grid gap-4 md:grid-cols-2 text-sm">
                     <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                       <p className="font-semibold text-white mb-1">Mission</p>
                       <p className="text-gray-400">
-                        Modernize civil workflows so engineers spend more time engineering.
+                        Make engineering teams faster by building software that fits real workflows.
                       </p>
                     </div>
                     <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                       <p className="font-semibold text-white mb-1">Expertise</p>
                       <p className="text-gray-400">
-                        Report automation, template parsing, and civil-specific workflows.
+                        Report generation, dashboards, data pipelines, and custom internal tools.
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <p className="text-sm text-gray-400">
-                    Curious what Reportly would look like with your firm's templates?
+                    Need software built for your team?
                   </p>
                   <Link
                     to="/contact"
                     className="px-5 py-2 rounded-full bg-[#00ffcc] text-black font-semibold text-sm hover:bg-[#00ffcc]/90 transition-colors"
                   >
-                    Book a Workflow Review
+                    Talk to the Team
                   </Link>
                   <p className="text-xs text-gray-500">
-                    Bring a real report and 30 minutes. We'll show you what can be automated.
+                    Bring your workflow. We'll build the software to support it.
                   </p>
                 </div>
               </div>
@@ -385,29 +368,34 @@ export default function Team() {
 
 function TeamCard({ member }: { member: TeamMember }) {
   return (
-    <article className="group h-full bg-[rgba(10,10,20,0.6)] border border-white/5 rounded-2xl p-6 flex flex-col items-center text-center hover:border-[#00ffcc]/30 hover:shadow-[0_0_30px_rgba(0,255,204,0.08)] transition-all duration-300">
-      <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden border border-[#00ffcc]/30 bg-white/5 mb-4">
+    <VibeCard
+      variant="glow"
+      className="group h-full p-6 flex flex-col items-center text-center"
+    >
+      <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 mb-4">
         <img
           src={member.image}
           alt={member.name}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+          className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
         />
       </div>
       <h3 className="text-lg font-semibold text-white">{member.name}</h3>
       <p className="text-gray-400 mt-1 text-sm font-medium">{member.role}</p>
-      <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] mt-1">
-        {member.focus}
-      </p>
-      <p className="text-sm text-gray-400 mt-4 flex-1">{member.bio}</p>
+      <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-2">
+        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+          {member.focus}
+        </p>
+      </div>
+      <p className="text-sm text-gray-300 mt-4 flex-1 leading-relaxed">{member.bio}</p>
       <a
         href={`mailto:${member.email}`}
         className="mt-4 text-[0.7rem] uppercase tracking-[0.2em] font-medium text-[#00ffcc] hover:text-[#00ffcc]/80 transition-colors"
       >
         {member.email}
       </a>
-    </article>
+    </VibeCard>
   );
 }
 
@@ -423,18 +411,23 @@ function JoinCard({
   ctaHref: string;
 }) {
   return (
-    <article className="h-full bg-[rgba(10,10,20,0.4)] border border-dashed border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
-      <p className="text-[0.65rem] uppercase tracking-[0.25em] text-gray-500 mb-2">
-        We're Growing
-      </p>
+    <VibeCard
+      variant="default"
+      className="h-full p-6 flex flex-col items-center justify-center text-center border-dashed hover:border-[#00ffcc]/40 transition-all"
+    >
+      <div className="inline-block px-3 py-1.5 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mb-3">
+        <p className="text-[0.65rem] uppercase tracking-[0.25em] text-[#00ffcc] font-medium">
+          We're Growing
+        </p>
+      </div>
       <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-      <p className="text-sm text-gray-400 mb-4 max-w-xs">{subtitle}</p>
+      <p className="text-sm text-gray-300 mb-6 max-w-xs leading-relaxed">{subtitle}</p>
       <Link
         to={ctaHref}
-        className="px-5 py-2 rounded-full bg-[#00ffcc] text-black font-semibold text-sm hover:bg-[#00ffcc]/90 transition-colors"
+        className="px-6 py-2.5 rounded-full bg-[#00ffcc] text-black font-semibold text-sm hover:bg-[#00ffcc]/90 transition-colors shadow-lg shadow-[#00ffcc]/20"
       >
         {ctaLabel}
       </Link>
-    </article>
+    </VibeCard>
   );
 }

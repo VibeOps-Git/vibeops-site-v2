@@ -38,9 +38,9 @@ export default function Login() {
     <div className="container mx-auto px-4 py-20 flex items-center justify-center min-h-[80vh]">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Login to Reportly</CardTitle>
           <CardDescription>
-            Sign in to access your account
+            Sign in to access your Reportly account
           </CardDescription>
         </CardHeader>
         <CardContent>

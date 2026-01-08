@@ -13,6 +13,8 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Reportly from "./pages/Reportly";
 import Login from "./pages/Login";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
 import AIReportGenerator from "./pages/demos-removed-for-now/AIReportGenerator";
 import ConstructionTracker from "./pages/demos-removed-for-now/ConstructionTracker";
 import PipelineEstimator from "./pages/demos-removed-for-now/PipelineEstimator";
@@ -40,7 +42,9 @@ const App = () => (
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/reportly" element={<Reportly />} />
             <Route path="/login" element={<Login />} />
-            {/* Demos - removed for now - add back in any as you'd like
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            {/* Demo routes - commented out due to missing dependencies
             <Route path="/ai-report-generator" element={<AIReportGenerator />} />
             <Route path="/construction-tracker" element={<ConstructionTracker />} />
             <Route path="/pipeline" element={<PipelineEstimator />} />

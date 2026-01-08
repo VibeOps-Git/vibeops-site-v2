@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import AnimatedContent from "../components/AnimatedContent";
-import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 
 declare global {
   interface Window {
@@ -12,8 +12,6 @@ declare global {
         url: string;
         parentElement: HTMLElement;
       }) => void;
-      initPopupWidget: (config: { url: string }) => void;
-      showPopupWidget: (url: string) => void;
     };
   }
 }
@@ -139,7 +137,7 @@ I'd like to connect regarding VibeOps and your fundraising / investor plans.
 Quick context:
 - Who I am:
 - How I heard about VibeOps:
-- What I’m interested in (round details, traction, product, etc.):
+- What I'm interested in (round details, traction, product, etc.):
 
 Looking forward to chatting.
 
@@ -150,22 +148,25 @@ Best,
   },
 ];
 
+type ContactMode = "initial" | "calendar" | "email";
+
 export default function Contact() {
-  const [selectedChannel, setSelectedChannel] = useState<ContactChannel | null>(
-    null
-  );
+  const [mode, setMode] = useState<ContactMode>("initial");
+  const [selectedChannel, setSelectedChannel] = useState<ContactChannel | null>(null);
   const [draftSubject, setDraftSubject] = useState("");
   const [draftBody, setDraftBody] = useState("");
+  const [connecting, setConnecting] = useState(false);
   const calendlyRef = useRef<HTMLDivElement | null>(null);
 
-  // Ensure Calendly script is present and (re)initialize widget every time this page mounts
+  // Calendly initialization
   useEffect(() => {
+    if (mode !== "calendar" || !calendlyRef.current) return;
+
     let isMounted = true;
 
     const loadCalendly = async () => {
       if (!isMounted || !calendlyRef.current) return;
 
-      // Load the script
       const script = document.createElement("script");
       script.src = "https://assets.calendly.com/assets/external/widget.js";
       script.async = true;
@@ -173,34 +174,22 @@ export default function Contact() {
       script.onload = () => {
         if (isMounted && window.Calendly && calendlyRef.current) {
           try {
-            // Clear the container first
-            if (calendlyRef.current) {
-              calendlyRef.current.innerHTML = "";
-            }
-            
-            // Initialize the widget
+            calendlyRef.current.innerHTML = "";
             window.Calendly.initInlineWidget({
               url: CALENDLY_URL,
               parentElement: calendlyRef.current,
             });
-            console.log("✓ Calendly widget loaded and initialized");
           } catch (error) {
-            console.error("✗ Error initializing Calendly widget:", error);
+            console.error("Error initializing Calendly:", error);
           }
         }
       };
 
-      script.onerror = () => {
-        console.error("✗ Failed to load Calendly script from CDN");
-      };
-
-      // Check if script already exists to avoid duplicates
       const existingScript = document.querySelector(
         'script[src="https://assets.calendly.com/assets/external/widget.js"]'
       );
 
       if (existingScript) {
-        console.log("Calendly script already present, reinitializing...");
         if (window.Calendly && calendlyRef.current) {
           calendlyRef.current.innerHTML = "";
           window.Calendly.initInlineWidget({
@@ -218,7 +207,15 @@ export default function Contact() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [mode]);
+
+  const handleModeSwitch = (newMode: ContactMode) => {
+    setConnecting(true);
+    setTimeout(() => {
+      setMode(newMode);
+      setConnecting(false);
+    }, 600);
+  };
 
   const handleOpenComposer = (channel: ContactChannel) => {
     setSelectedChannel(channel);
@@ -238,189 +235,344 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-24">
-      {/* Hero */}
-      <section className="py-16 px-4">
-        <AnimatedContent
-          distance={80}
-          direction="vertical"
-          duration={0.8}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          threshold={0.2}
+    <div className="pt-24 pb-16 px-4 relative overflow-hidden">
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 204, 0.2) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 204, 0.2) 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+          }}
+        />
+      </div>
+
+      {/* Animated Circuit Lines */}
+      <motion.div
+        className="fixed top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/50 to-transparent pointer-events-none z-0"
+        animate={{
+          opacity: [0.4, 0.8, 0.4],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="fixed bottom-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/50 to-transparent pointer-events-none z-0"
+        animate={{
+          opacity: [0.8, 0.4, 0.8],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.5,
+        }}
+      />
+
+      <div className="container mx-auto max-w-6xl relative z-10 w-full">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="container mx-auto text-center max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
-              Contact
-            </p>
-            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              Book a Free Strategy Call
-            </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Grab 30 minutes with us via Calendly, or email the person who best
-              fits your question.
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <Signal className="w-5 h-5 text-[#00ffcc] animate-pulse" />
+            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc]">
+              Communication Channel
             </p>
           </div>
-        </AnimatedContent>
-      </section>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+            Establish Connection
+          </h1>
+          <p className="text-gray-400 text-base max-w-2xl mx-auto">
+            Select your preferred communication protocol
+          </p>
+        </motion.div>
 
-      <section className="px-4 pb-20">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-8">
-            {/* Calendly side */}
-            <AnimatedContent
-              distance={60}
-              direction="vertical"
-              duration={0.7}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.2}
+        {/* Connection Loader */}
+        <AnimatePresence>
+          {connecting && (
+            <motion.div
+              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
-              <VibeCard variant="glow" className="overflow-hidden">
-                <VibeCardHeader>
-                  <VibeCardTitle className="text-xl">Schedule a 30-Minute Vibe Check</VibeCardTitle>
-                  <VibeCardDescription>
-                    We'll walk through your current workflow and what a VibeOps build could look like.
-                  </VibeCardDescription>
-                </VibeCardHeader>
-                <VibeCardContent className="pt-0">
-                  <div
-                    ref={calendlyRef}
-                    className="calendly-inline-widget w-full min-h-[960px] md:min-h-[1100px]"
-                    style={{ display: "block" }}
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Zap className="w-6 h-6 text-[#00ffcc] animate-pulse" />
+                  <p className="text-[#00ffcc] font-mono">ESTABLISHING CONNECTION</p>
+                </div>
+                <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-[#00ffcc]"
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 0.5 }}
                   />
-                </VibeCardContent>
-              </VibeCard>
-            </AnimatedContent>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            {/* Email routing + composer */}
-            <AnimatedContent
-              distance={60}
-              direction="vertical"
-              duration={0.7}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.2}
-              delay={0.1}
+        {/* Main Content */}
+        <AnimatePresence mode="wait">
+          {mode === "initial" && (
+            <motion.div
+              key="initial"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
             >
-              <VibeCard variant="default">
-                <VibeCardHeader>
-                  <VibeCardTitle className="text-xl">Email the Right Person</VibeCardTitle>
-                  <VibeCardDescription>
-                    Skip forms. Pick who you want to talk to.
-                  </VibeCardDescription>
-                </VibeCardHeader>
-                <VibeCardContent className="space-y-4">
+              {/* Calendar Option */}
+              <motion.button
+                onClick={() => handleModeSwitch("calendar")}
+                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#00ffcc]/40 bg-gradient-to-br from-[#00ffcc]/15 via-[#00ffcc]/8 to-transparent hover:border-[#00ffcc]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
+                whileHover={{ scale: 1.02, y: -4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffcc]/25 rounded-full blur-3xl group-hover:bg-[#00ffcc]/35 transition-all" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#00ffcc]/15 rounded-full blur-2xl group-hover:bg-[#00ffcc]/20 transition-all" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                <Calendar className="w-12 h-12 text-[#00ffcc] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2 relative z-10">
+                  Schedule Call
+                </h3>
+                <p className="text-gray-200 text-sm mb-5 relative z-10 leading-relaxed">
+                  Book a 30-minute strategy session via Calendly
+                </p>
+                <div className="flex items-center gap-2 text-[#00ffcc] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
+                  <span className="font-semibold">INITIATE SESSION</span>
+                  <motion.span
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="text-base"
+                  >
+                    →
+                  </motion.span>
+                </div>
+              </motion.button>
+
+              {/* Email Option */}
+              <motion.button
+                onClick={() => handleModeSwitch("email")}
+                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#00ffcc]/40 bg-gradient-to-br from-[#00ffcc]/15 via-[#00ffcc]/8 to-transparent hover:border-[#00ffcc]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
+                whileHover={{ scale: 1.02, y: -4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffcc]/25 rounded-full blur-3xl group-hover:bg-[#00ffcc]/35 transition-all" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#00ffcc]/15 rounded-full blur-2xl group-hover:bg-[#00ffcc]/20 transition-all" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                <Mail className="w-12 h-12 text-[#00ffcc] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2 relative z-10">
+                  Direct Email
+                </h3>
+                <p className="text-gray-200 text-sm mb-5 relative z-10 leading-relaxed">
+                  Contact specific team members directly
+                </p>
+                <div className="flex items-center gap-2 text-[#00ffcc] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
+                  <span className="font-semibold">OPEN CHANNEL</span>
+                  <motion.span
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="text-base"
+                  >
+                    →
+                  </motion.span>
+                </div>
+              </motion.button>
+            </motion.div>
+          )}
+
+          {mode === "calendar" && (
+            <motion.div
+              key="calendar"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="relative"
+            >
+              <Button
+                onClick={() => handleModeSwitch("initial")}
+                variant="outline"
+                className="mb-6 border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10"
+              >
+                ← Back to Options
+              </Button>
+
+              <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6 overflow-hidden">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-2 h-2 bg-[#00ffcc] rounded-full animate-pulse" />
+                  <p className="text-[#00ffcc] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
+                </div>
+                <div
+                  ref={calendlyRef}
+                  className="calendly-inline-widget w-full min-h-[960px] md:min-h-[1100px]"
+                  style={{ display: "block" }}
+                />
+              </div>
+            </motion.div>
+          )}
+
+          {mode === "email" && (
+            <motion.div
+              key="email"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Button
+                onClick={() => handleModeSwitch("initial")}
+                variant="outline"
+                className="mb-6 border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10"
+              >
+                ← Back to Options
+              </Button>
+
+              <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6">
+                <div className="flex items-center gap-2 mb-6">
+                  <User className="w-5 h-5 text-[#00ffcc]" />
+                  <p className="text-[#00ffcc] font-mono text-sm">SELECT TEAM MEMBER</p>
+                </div>
+
+                <div className="space-y-4">
                   {contactChannels.map((channel) => {
                     const firstName = channel.person.split(" ")[0];
-                    const isActive =
-                      selectedChannel &&
-                      selectedChannel.email === channel.email;
+                    const isActive = selectedChannel?.email === channel.email;
 
                     return (
-                      <div
+                      <motion.div
                         key={channel.email}
-                        className={`rounded-xl p-4 space-y-3 border transition-all duration-300 ${
+                        className={`rounded-xl p-5 border transition-all duration-300 ${
                           isActive
-                            ? "border-[#00ffcc]/50 bg-white/10"
-                            : "border-white/10 bg-white/5 hover:border-[#00ffcc]/30 hover:bg-white/10"
+                            ? "border-[#00ffcc]/50 bg-[#00ffcc]/10"
+                            : "border-[#00ffcc]/20 bg-white/5 hover:border-[#00ffcc]/40 hover:bg-white/10"
                         }`}
+                        whileHover={{ scale: 1.01 }}
                       >
-                        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc]">
-                          {channel.label}
-                        </p>
-                        <p className="font-semibold text-white text-sm">
-                          {channel.person}{" "}
-                          <span className="text-gray-500 text-xs">
-                            · {channel.email}
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-400">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#00ffcc] mb-1">
+                              {channel.label}
+                            </p>
+                            <p className="font-semibold text-white">
+                              {channel.person}
+                            </p>
+                            <p className="text-xs text-gray-500 font-mono">
+                              {channel.email}
+                            </p>
+                          </div>
+                        </div>
+
+                        <p className="text-sm text-gray-400 mb-4">
                           {channel.blurb}
                         </p>
 
                         <Button
                           type="button"
                           size="sm"
-                          className={`text-xs ${isActive ? 'bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90' : 'bg-white/10 text-white border-white/20 hover:bg-white/20'}`}
+                          className={`text-xs ${
+                            isActive
+                              ? "bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90"
+                              : "bg-white/10 text-white border-white/20 hover:bg-white/20"
+                          }`}
                           variant={isActive ? "default" : "outline"}
                           onClick={() => handleOpenComposer(channel)}
                         >
-                          {isActive
-                            ? `Editing email to ${firstName}`
-                            : `Email ${firstName}`}
+                          {isActive ? `Composing to ${firstName}` : `Contact ${firstName}`}
                         </Button>
 
-                        {isActive && selectedChannel && (
-                          <div className="mt-4 p-4 rounded-xl border border-[#00ffcc]/30 bg-[rgba(0,255,204,0.05)]">
-                            <h4 className="text-white font-semibold mb-1">
-                              Compose Email to {selectedChannel.person}
-                            </h4>
-                            <p className="text-xs text-gray-400 mb-4">
-                              Edit and click to open in your email app.
-                            </p>
+                        <AnimatePresence>
+                          {isActive && selectedChannel && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="mt-4 overflow-hidden"
+                            >
+                              <div className="p-4 rounded-xl border border-[#00ffcc]/30 bg-black/40 space-y-4">
+                                <div>
+                                  <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
+                                    TO
+                                  </p>
+                                  <p className="text-white font-mono text-sm">
+                                    {selectedChannel.email}
+                                  </p>
+                                </div>
 
-                            <div className="space-y-3 text-sm">
-                              <div>
-                                <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500 mb-1">To</p>
-                                <p className="text-white">{selectedChannel.email}</p>
-                              </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
+                                    SUBJECT
+                                  </p>
+                                  <Input
+                                    value={draftSubject}
+                                    onChange={(e) => setDraftSubject(e.target.value)}
+                                    className="bg-white/5 border-white/20 text-white font-mono"
+                                  />
+                                </div>
 
-                              <div>
-                                <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500 mb-1">Subject</p>
-                                <Input
-                                  value={draftSubject}
-                                  onChange={(e) => setDraftSubject(e.target.value)}
-                                  className="text-sm bg-white/5 border-white/10 text-white"
-                                />
-                              </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
+                                    MESSAGE
+                                  </p>
+                                  <Textarea
+                                    value={draftBody}
+                                    onChange={(e) => setDraftBody(e.target.value)}
+                                    rows={8}
+                                    className="bg-white/5 border-white/20 text-white font-mono text-sm"
+                                  />
+                                </div>
 
-                              <div>
-                                <p className="text-[0.65rem] uppercase tracking-[0.15em] text-gray-500 mb-1">Message</p>
-                                <Textarea
-                                  value={draftBody}
-                                  onChange={(e) => setDraftBody(e.target.value)}
-                                  rows={6}
-                                  className="text-sm bg-white/5 border-white/10 text-white"
-                                />
+                                <div className="flex gap-3 pt-2">
+                                  <Button
+                                    type="button"
+                                    className="flex-1 bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90 font-mono"
+                                    onClick={handleSendEmail}
+                                  >
+                                    SEND →
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="border-white/20 text-white hover:bg-white/10"
+                                    onClick={() => setSelectedChannel(null)}
+                                  >
+                                    Clear
+                                  </Button>
+                                </div>
                               </div>
-
-                              <div className="flex gap-2 pt-2">
-                                <Button
-                                  type="button"
-                                  className="flex-1 bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90"
-                                  onClick={handleSendEmail}
-                                >
-                                  Open in Email Client
-                                </Button>
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  className="text-xs border-white/20 text-white hover:bg-white/10"
-                                  onClick={() => setSelectedChannel(null)}
-                                >
-                                  Clear
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
                     );
                   })}
+                </div>
 
-                  <p className="text-xs text-gray-500 pt-2">
-                    Not sure who to pick? Zander or Felix are good defaults.
-                  </p>
-                </VibeCardContent>
-              </VibeCard>
-            </AnimatedContent>
-          </div>
-        </div>
-      </section>
+                <p className="text-xs text-gray-500 text-center mt-6 font-mono">
+                  Not sure who to contact? Zander or Felix are good defaults.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

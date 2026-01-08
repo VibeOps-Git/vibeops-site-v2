@@ -157,17 +157,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 bg-[#0a0a0f]/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
             {/* Brand */}
-            <div className="md:col-span-2">
+            <div>
               <img
                 src="/logo-wht-hrzntl.png"
                 alt="VibeOps Logo"
                 className="h-8 w-auto object-contain mb-4"
               />
-              <p className="text-gray-500 text-sm max-w-md">
-                Engineering automation for civil, construction, and infrastructure teams.
-                Less formatting, more engineering.
+              <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
+                Engineering automation for civil, construction, and infrastructure teams. Less formatting, more engineering.
               </p>
             </div>
 
@@ -175,16 +174,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
               <div className="space-y-3 text-sm">
-                <Link to="/" className="block text-gray-500 hover:text-[#00ffcc] transition-colors">
+                <Link to="/" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Home
                 </Link>
-                <Link to="/services" className="block text-gray-500 hover:text-[#00ffcc] transition-colors">
+                <Link to="/services" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Services
                 </Link>
-                <Link to="/team" className="block text-gray-500 hover:text-[#00ffcc] transition-colors">
+                <Link to="/team" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Team
                 </Link>
-                <Link to="/case-studies" className="block text-gray-500 hover:text-[#00ffcc] transition-colors">
+                <Link to="/case-studies" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Case Studies
                 </Link>
               </div>
@@ -193,19 +192,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* CTA */}
             <div>
               <h4 className="text-sm font-semibold text-white mb-4">Get Started</h4>
-              <p className="text-gray-500 text-sm mb-4">
+              <p className="text-gray-400 text-sm mb-4 leading-relaxed">
                 Book a free 30-minute call to see how we can help.
               </p>
               <Link
                 to="/contact"
-                className="inline-block px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all hover:bg-[#00ffcc]/90"
+                className="inline-block px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
               >
                 Book a Vibe Check
               </Link>
             </div>
           </div>
 
-          <div className="border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+          <div className="border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
             <p>© {new Date().getFullYear()} VibeOps Technologies Inc.</p>
             <div className="flex items-center gap-6">
               <Link to="/blog" className="hover:text-[#00ffcc] transition-colors">
@@ -213,6 +212,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link to="/contact" className="hover:text-[#00ffcc] transition-colors">
                 Contact
+              </Link>
+              <Link to="/privacy" className="hover:text-[#00ffcc] transition-colors">
+                Privacy
+              </Link>
+              <Link to="/terms" className="hover:text-[#00ffcc] transition-colors">
+                Terms
               </Link>
             </div>
           </div>
