@@ -1,6 +1,7 @@
 // src/pages/Index.tsx
 
 import { FileText, Wrench, BarChart3, Layers, ArrowRight, Check } from 'lucide-react';
+import { ReportlyHomepagePreview } from '@/components/ReportlyHomepagePreview';
 import AnimatedContent from '../components/AnimatedContent';
 import { VibeCard } from '@/components/ui/VibeCard';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
@@ -322,12 +323,7 @@ function ReportlySection() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-video rounded-xl bg-[rgba(0,255,204,0.03)] border border-[#00ffcc]/10 flex items-center justify-center">
-                <div className="text-center">
-                  <FileText className="w-16 h-16 text-[#00ffcc]/30 mx-auto mb-4" />
-                  <p className="text-gray-500 text-sm">Report Preview</p>
-                </div>
-              </div>
+              <ReportlyHomepagePreview />
             </div>
           </div>
         </VibeCard>
