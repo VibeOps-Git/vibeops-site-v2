@@ -1,5 +1,6 @@
 // src/pages/Team.tsx
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionDivider } from "../components/ui/Section";
@@ -19,7 +20,7 @@ const foundingTeam: TeamMember[] = [
     name: "Zander Dent",
     role: "Founder & CEO",
     focus: "Civil Engineering Workflows",
-    image: "/team/zander.JPG",
+    image: "/team/zander-optimized.jpg",
     email: "zander@vibeops.ca",
     bio: `Civil engineering student turned software founder, focused on killing manual reporting in consulting firms. Zander leads product vision and works directly with engineers and partners to make sure Reportly fits real project workflows, not theoretical ones.`,
   },
@@ -43,7 +44,7 @@ const foundingTeam: TeamMember[] = [
     name: "Felix Stewart",
     role: "Co-Founder & Head of Sales",
     focus: "Strategy & Partnerships",
-    image: "/team/felix.png",
+    image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
     bio: `Felix works with principals and firm leaders to map the business upside of automation—time saved, risk reduced, and new services unlocked. He helps translate “we waste time on reports” into concrete ROI and partnership structures.`,
   },
@@ -127,11 +128,7 @@ export default function Team() {
         >
           <div className="container mx-auto max-w-6xl">
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[rgba(10,10,20,0.6)]">
-              <img
-                src="/team/full-team-pic.png"
-                alt="VibeOps founding team"
-                className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center"
-              />
+              <TeamBannerImage />
 
               {/* Bottom gradient */}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0f] to-transparent" />
@@ -429,5 +426,34 @@ function JoinCard({
         {ctaLabel}
       </Link>
     </VibeCard>
+  );
+}
+
+function TeamBannerImage() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px]">
+      {/* Blur placeholder - shows immediately */}
+      <img
+        src="/team/full-team-pic-placeholder.jpg"
+        alt=""
+        aria-hidden="true"
+        className={`absolute inset-0 w-full h-full object-cover object-center scale-105 blur-sm transition-opacity duration-500 ${
+          isLoaded ? "opacity-0" : "opacity-100"
+        }`}
+      />
+      {/* Full image - fades in when loaded */}
+      <img
+        src="/team/full-team-pic-optimized.jpg"
+        alt="VibeOps founding team"
+        loading="eager"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
   );
 }
