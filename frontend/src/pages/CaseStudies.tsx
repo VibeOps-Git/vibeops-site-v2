@@ -53,8 +53,8 @@ const portfolioProjects = [
     link: "https://www.castawaycrewmn.com/",
     features: [
       "Conversion-optimized design",
-      "Dynamic pricing calculator",
-      "Service area mapping",
+      "Interactive pricing display",
+      "Service area visuals",
       "Mobile-responsive layout",
     ],
   },
@@ -68,7 +68,7 @@ const portfolioProjects = [
     features: [
       "Touch-optimized interface",
       "Quick-book functionality",
-      "Location-based detection",
+      "Streamlined navigation",
       "Progressive web app features",
     ],
   },
@@ -92,7 +92,7 @@ const portfolioProjects = [
 function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  // ESC key handler
+  // ESC key handler and body scroll lock
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && expandedIndex !== null) {
@@ -100,7 +100,18 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
       }
     };
     window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+
+    // Lock body scroll when modal is open
+    if (expandedIndex !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
   }, [expandedIndex]);
 
   return (
@@ -175,11 +186,11 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
       {/* Expanded Modal */}
       {expandedIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-24 pb-8 px-4 overflow-y-auto"
           onClick={() => setExpandedIndex(null)}
         >
           <div
-            className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            className="relative max-w-4xl w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <VibeCard variant="glow" className="p-8">
