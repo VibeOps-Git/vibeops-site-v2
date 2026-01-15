@@ -292,28 +292,29 @@ body,
 /* Custom scrollbar styling                                                    */
 /* -------------------------------------------------------------------------- */
 
-/* Webkit browsers (Chrome, Safari, Edge) */
-::-webkit-scrollbar {
+/* Webkit browsers (Chrome, Safari, Edge) - all elements */
+*::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 204, 0.2);
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 204, 0.4);
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 204, 0.3);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 204, 0.5);
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 204, 0.2) transparent;
+  scrollbar-color: rgba(0, 255, 204, 0.3) rgba(0, 0, 0, 0.2);
 }
 
