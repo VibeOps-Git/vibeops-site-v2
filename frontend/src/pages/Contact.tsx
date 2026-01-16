@@ -156,40 +156,17 @@ export default function Contact() {
   const [draftSubject, setDraftSubject] = useState("");
   const [draftBody, setDraftBody] = useState("");
   const [connecting, setConnecting] = useState(false);
-  const calendlyRef = useRef<HTMLDivElement | null>(null);
+  const calendlyRef = useRef<HTMLDivElement>(null);
 
-  // Calendly initialization
+  // Calendly initialization - use a small delay to ensure DOM is ready after animation
   useEffect(() => {
-    if (mode !== "calendar" || !calendlyRef.current) return;
+    if (mode !== "calendar") return;
 
-    let isMounted = true;
+    // Small delay to let AnimatePresence finish mounting the DOM
+    const timeoutId = setTimeout(() => {
+      if (!calendlyRef.current) return;
 
-    const loadCalendly = async () => {
-      if (!isMounted || !calendlyRef.current) return;
-
-      const script = document.createElement("script");
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
-      script.async = true;
-
-      script.onload = () => {
-        if (isMounted && window.Calendly && calendlyRef.current) {
-          try {
-            calendlyRef.current.innerHTML = "";
-            window.Calendly.initInlineWidget({
-              url: CALENDLY_URL,
-              parentElement: calendlyRef.current,
-            });
-          } catch (error) {
-            console.error("Error initializing Calendly:", error);
-          }
-        }
-      };
-
-      const existingScript = document.querySelector(
-        'script[src="https://assets.calendly.com/assets/external/widget.js"]'
-      );
-
-      if (existingScript) {
+      const initCalendly = () => {
         if (window.Calendly && calendlyRef.current) {
           calendlyRef.current.innerHTML = "";
           window.Calendly.initInlineWidget({
@@ -197,16 +174,33 @@ export default function Contact() {
             parentElement: calendlyRef.current,
           });
         }
-      } else {
+      };
+
+      // Check if script already exists
+      const existingScript = document.querySelector(
+        'script[src="https://assets.calendly.com/assets/external/widget.js"]'
+      );
+
+      if (existingScript && window.Calendly) {
+        initCalendly();
+      } else if (!existingScript) {
+        const script = document.createElement("script");
+        script.src = "https://assets.calendly.com/assets/external/widget.js";
+        script.async = true;
+        script.onload = initCalendly;
         document.head.appendChild(script);
+      } else {
+        // Script loading, poll for Calendly
+        const checkCalendly = setInterval(() => {
+          if (window.Calendly) {
+            clearInterval(checkCalendly);
+            initCalendly();
+          }
+        }, 100);
       }
-    };
+    }, 100);
 
-    loadCalendly();
-
-    return () => {
-      isMounted = false;
-    };
+    return () => clearTimeout(timeoutId);
   }, [mode]);
 
   const handleModeSwitch = (newMode: ContactMode) => {
@@ -421,8 +415,8 @@ export default function Contact() {
                 </div>
                 <div
                   ref={calendlyRef}
-                  className="calendly-inline-widget w-full min-h-[960px] md:min-h-[1100px]"
-                  style={{ display: "block" }}
+                  className="w-full"
+                  style={{ minWidth: "320px", height: "700px" }}
                 />
               </div>
             </motion.div>
