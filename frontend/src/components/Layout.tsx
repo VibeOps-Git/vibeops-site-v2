@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import SpaceField from "./SpaceField";
 
-const REPORTLY_LOGIN_URL =
-  import.meta.env.VITE_REPORTLY_LOGIN_URL || "http://localhost:5014/reportly";
 
 interface NavLink {
   path: string;
@@ -38,10 +36,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     setIsMenuOpen(false);
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  const openReportly = () => {
-    window.open(REPORTLY_LOGIN_URL, "_blank", "noopener,noreferrer");
-  };
 
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
@@ -99,12 +93,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   )}
                 </Link>
               ))}
-              <button
-                onClick={openReportly}
+              <Link
+                to="/reportly"
                 className="ml-4 px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all duration-200 hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
               >
                 Login
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -139,12 +133,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               ))}
               <div className="pt-2">
-                <button
-                  onClick={openReportly}
-                  className="w-full py-3 px-4 rounded-xl bg-[#00ffcc] text-black text-sm font-semibold"
+                <Link
+                  to="/reportly"
+                  className="block w-full py-3 px-4 rounded-xl bg-[#00ffcc] text-black text-sm font-semibold text-center"
                 >
                   Login to Reportly
-                </button>
+                </Link>
               </div>
             </div>
           )}
