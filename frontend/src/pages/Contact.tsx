@@ -1,20 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-declare global {
-  interface Window {
-    Calendly?: {
-      initInlineWidget: (config: {
-        url: string;
-        parentElement: HTMLElement;
-      }) => void;
-    };
-  }
-}
 
 type ContactChannel = {
   label: string;
@@ -156,52 +145,7 @@ export default function Contact() {
   const [draftSubject, setDraftSubject] = useState("");
   const [draftBody, setDraftBody] = useState("");
   const [connecting, setConnecting] = useState(false);
-  const calendlyRef = useRef<HTMLDivElement>(null);
 
-  // Calendly initialization - use a small delay to ensure DOM is ready after animation
-  useEffect(() => {
-    if (mode !== "calendar") return;
-
-    // Small delay to let AnimatePresence finish mounting the DOM
-    const timeoutId = setTimeout(() => {
-      if (!calendlyRef.current) return;
-
-      const initCalendly = () => {
-        if (window.Calendly && calendlyRef.current) {
-          calendlyRef.current.innerHTML = "";
-          window.Calendly.initInlineWidget({
-            url: CALENDLY_URL,
-            parentElement: calendlyRef.current,
-          });
-        }
-      };
-
-      // Check if script already exists
-      const existingScript = document.querySelector(
-        'script[src="https://assets.calendly.com/assets/external/widget.js"]'
-      );
-
-      if (existingScript && window.Calendly) {
-        initCalendly();
-      } else if (!existingScript) {
-        const script = document.createElement("script");
-        script.src = "https://assets.calendly.com/assets/external/widget.js";
-        script.async = true;
-        script.onload = initCalendly;
-        document.head.appendChild(script);
-      } else {
-        // Script loading, poll for Calendly
-        const checkCalendly = setInterval(() => {
-          if (window.Calendly) {
-            clearInterval(checkCalendly);
-            initCalendly();
-          }
-        }, 100);
-      }
-    }, 100);
-
-    return () => clearTimeout(timeoutId);
-  }, [mode]);
 
   const handleModeSwitch = (newMode: ContactMode) => {
     setConnecting(true);
@@ -413,10 +357,13 @@ export default function Contact() {
                   <div className="w-2 h-2 bg-[#00ffcc] rounded-full animate-pulse" />
                   <p className="text-[#00ffcc] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
                 </div>
-                <div
-                  ref={calendlyRef}
-                  className="w-full"
-                  style={{ minWidth: "320px", height: "700px" }}
+                <iframe
+                  src={CALENDLY_URL}
+                  width="100%"
+                  height="700"
+                  frameBorder="0"
+                  title="Schedule a call with VibeOps"
+                  className="rounded-xl"
                 />
               </div>
             </motion.div>
