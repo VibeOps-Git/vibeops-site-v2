@@ -35,18 +35,22 @@ export function EmailSignup({ onSubmit }: EmailSignupProps) {
       const GOOGLE_FORM_URL = import.meta.env.VITE_REPORTLY_WAITLIST_URL;
 
       // Entry IDs from Google Form (found via pre-filled link or page source)
-      const NAME_ENTRY_ID = import.meta.env.VITE_REPORTLY_NAME_ENTRY_ID || "entry.1234567890";
-      const EMAIL_ENTRY_ID = import.meta.env.VITE_REPORTLY_EMAIL_ENTRY_ID || "entry.0987654321";
+      const NAME_ENTRY_ID = import.meta.env.VITE_REPORTLY_NAME_ENTRY_ID || "entry.206032065";
+      const EMAIL_ENTRY_ID = import.meta.env.VITE_REPORTLY_EMAIL_ENTRY_ID || "entry.1273343999";
 
       if (GOOGLE_FORM_URL) {
-        const formData = new FormData();
-        formData.append(NAME_ENTRY_ID, name);
-        formData.append(EMAIL_ENTRY_ID, email);
+        // Use URLSearchParams for better Google Forms compatibility
+        const params = new URLSearchParams();
+        params.append(NAME_ENTRY_ID, name);
+        params.append(EMAIL_ENTRY_ID, email);
 
         await fetch(GOOGLE_FORM_URL, {
           method: "POST",
           mode: "no-cors",
-          body: formData,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: params.toString(),
         });
       }
 
