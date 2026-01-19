@@ -135,7 +135,7 @@ export function WhyVibeOpsSection() {
             <p className="text-gray-500 text-sm mb-4">
               Built by engineers, for engineers.
             </p>
-            <div className="flex items-center justify-center gap-1">
+            <div className="inline-flex items-center justify-center">
               {[
                 { name: "Zander", image: "/team/zander-optimized.jpg" },
                 { name: "Hrudai", image: "/team/hrudai-optimized.jpg" },
@@ -143,17 +143,13 @@ export function WhyVibeOpsSection() {
                 { name: "Felix", image: "/team/felix-optimized.jpg" },
                 { name: "Gabriel", image: "/team/gabriel-optimized.jpg" },
               ].map((member, i) => (
-                <div
+                <img
                   key={member.name}
-                  className="w-10 h-10 rounded-full border-2 border-[#00ffcc]/30 overflow-hidden"
+                  src={member.image}
+                  alt={member.name}
+                  className="w-10 h-10 rounded-full border-2 border-[#0a0a0f] object-cover"
                   style={{ marginLeft: i > 0 ? "-8px" : "0" }}
-                >
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                />
               ))}
               <span className="ml-4 text-sm text-gray-400">
                 The VibeOps Team

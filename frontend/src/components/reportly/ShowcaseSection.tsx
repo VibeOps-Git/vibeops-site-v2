@@ -209,7 +209,8 @@ export function ShowcaseSection() {
   };
 
   // Determine header text based on phase
-  const isShowingLaunch = scrollProgress < INTRO_END;
+  // Show "The Solution" during enter and intro phases (0-20%)
+  const isShowingLaunch = isInEnter || isInIntro;
 
   return (
     <>
@@ -260,21 +261,12 @@ export function ShowcaseSection() {
                 transform: `translateY(${headerTranslateY}px)`,
               }}
             >
-              {isShowingLaunch && (
-                <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
-                  The Solution
-                </span>
-              )}
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
-                {isShowingLaunch ? (
-                  <>Meet <span className="text-[#00ffcc]">Reportly</span></>
-                ) : (
-                  "See How It Works"
-                )}
+                {isShowingLaunch ? "Introducing Reportly" : "See How It Works"}
               </h2>
               <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">
                 {isShowingLaunch
-                  ? "Automated, audit-ready reports from your existing templates"
+                  ? "Your automated report generation platform"
                   : "Three simple steps to transform your reporting workflow"
                 }
               </p>
@@ -300,6 +292,15 @@ export function ShowcaseSection() {
               >
                 {isShowingLaunch ? (
                   <div className="lg:text-left text-center">
+                    <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
+                      The Solution
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                      Meet <span className="text-[#00ffcc]">Reportly</span>
+                    </h3>
+                    <p className="text-gray-400 mb-6">
+                      Automated, audit-ready reports from your existing templates.
+                    </p>
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
                         <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
