@@ -260,12 +260,21 @@ export function ShowcaseSection() {
                 transform: `translateY(${headerTranslateY}px)`,
               }}
             >
+              {isShowingLaunch && (
+                <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
+                  The Solution
+                </span>
+              )}
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
-                {isShowingLaunch ? "Launching Reportly" : "See How It Works"}
+                {isShowingLaunch ? (
+                  <>Meet <span className="text-[#00ffcc]">Reportly</span></>
+                ) : (
+                  "See How It Works"
+                )}
               </h2>
               <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">
                 {isShowingLaunch
-                  ? "Your automated report generation platform"
+                  ? "Automated, audit-ready reports from your existing templates"
                   : "Three simple steps to transform your reporting workflow"
                 }
               </p>
@@ -273,15 +282,52 @@ export function ShowcaseSection() {
 
             {/* Main content - centered layout */}
             <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 lg:gap-16">
-              {/* Description - left side, only visible after intro */}
+              {/* Description - left side */}
               <div
                 className="w-full lg:w-2/5 order-2 lg:order-1"
                 style={{
-                  opacity: finalContentOpacity * textTransitionOpacity,
-                  transform: `translateY(${textTransitionOpacity < 1 ? (1 - textTransitionOpacity) * 15 : 0}px)`,
+                  opacity: isShowingLaunch
+                    ? Math.min(1, introProgress * 2)
+                    : finalContentOpacity * textTransitionOpacity,
+                  transform: `translateY(${
+                    isShowingLaunch
+                      ? (1 - Math.min(1, introProgress * 2)) * 20
+                      : textTransitionOpacity < 1
+                        ? (1 - textTransitionOpacity) * 15
+                        : 0
+                  }px)`,
                 }}
               >
-                {showSceneContent && (
+                {isShowingLaunch ? (
+                  <div className="lg:text-left text-center">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
+                          <span className="text-[#00ffcc] text-sm">✓</span>
+                        </div>
+                        <p className="text-gray-300">
+                          <span className="text-white font-medium">Upload once</span> — your existing Word and Excel templates work instantly
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
+                          <span className="text-[#00ffcc] text-sm">✓</span>
+                        </div>
+                        <p className="text-gray-300">
+                          <span className="text-white font-medium">AI-powered</span> — understands engineering context and terminology
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
+                          <span className="text-[#00ffcc] text-sm">✓</span>
+                        </div>
+                        <p className="text-gray-300">
+                          <span className="text-white font-medium">Audit-ready</span> — compliant reports every time, no manual checks
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : showSceneContent && (
                   <SceneDescription
                     scene={SCENES[displayIndex]}
                     sceneIndex={displayIndex}

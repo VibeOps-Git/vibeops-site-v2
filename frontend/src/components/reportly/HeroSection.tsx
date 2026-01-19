@@ -1,10 +1,10 @@
-import { FileText, Clock, DollarSign, TrendingUp } from "lucide-react";
+import { FileText, ChevronDown } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
 import { EmailSignup } from "./EmailSignup";
 
 export function HeroSection() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-4 py-20">
+    <section className="min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
       {/* Coming Soon Badge */}
       <AnimatedContent
         distance={80}
@@ -57,43 +57,10 @@ export function HeroSection() {
         <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-2xl text-center">
           Stop wasting time on report formatting.
         </p>
-        <p className="text-lg text-gray-500 max-w-xl text-center mb-8">
+        <p className="text-lg text-gray-500 max-w-xl text-center mb-10">
           Automated, audit-ready reports from your existing Word and Excel templates.
           Built by engineers, for engineers.
         </p>
-      </AnimatedContent>
-
-      {/* Stats Row */}
-      <AnimatedContent
-        distance={30}
-        direction="vertical"
-        duration={1}
-        ease="power3.out"
-        initialOpacity={0}
-        animateOpacity
-        threshold={0.1}
-        delay={0.3}
-      >
-        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-12">
-          <div className="flex items-center gap-2 text-gray-400">
-            <Clock className="w-5 h-5 text-[#00ffcc]" />
-            <span className="text-sm">
-              <span className="text-white font-semibold">600-800 hrs</span> saved/year
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-400">
-            <DollarSign className="w-5 h-5 text-[#00ffcc]" />
-            <span className="text-sm">
-              <span className="text-white font-semibold">$35k</span> savings/engineer
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-400">
-            <TrendingUp className="w-5 h-5 text-[#00ffcc]" />
-            <span className="text-sm">
-              <span className="text-white font-semibold">30-40%</span> time reclaimed
-            </span>
-          </div>
-        </div>
       </AnimatedContent>
 
       {/* Email Signup */}
@@ -105,12 +72,31 @@ export function HeroSection() {
         initialOpacity={0}
         animateOpacity
         threshold={0.1}
-        delay={0.4}
+        delay={0.3}
       >
         <div className="w-full max-w-lg">
           <EmailSignup />
         </div>
       </AnimatedContent>
+
+      {/* Scroll indicator */}
+      <div className="mt-16">
+        <AnimatedContent
+          distance={20}
+          direction="vertical"
+          duration={0.8}
+          ease="power3.out"
+          initialOpacity={0}
+          animateOpacity
+          threshold={0.1}
+          delay={0.5}
+        >
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-xs text-gray-500">Scroll to explore</span>
+            <ChevronDown className="w-5 h-5 text-gray-500 animate-bounce" />
+          </div>
+        </AnimatedContent>
+      </div>
     </section>
   );
 }
