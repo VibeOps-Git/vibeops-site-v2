@@ -4,9 +4,10 @@ interface IPadDeviceProps {
   sceneIndex: number;
   rotateZ: number;
   isRight: boolean;
+  launchProgress?: number;
 }
 
-export function IPadDevice({ sceneIndex, rotateZ, isRight }: IPadDeviceProps) {
+export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPadDeviceProps) {
   return (
     <div
       className="flex-shrink-0 relative"
@@ -41,7 +42,7 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight }: IPadDeviceProps) {
 
             {/* Screen content with crossfade */}
             <div className="relative w-full h-full">
-              <IPadScreen sceneIndex={sceneIndex} />
+              <IPadScreen sceneIndex={sceneIndex} launchProgress={launchProgress} />
             </div>
           </div>
         </div>

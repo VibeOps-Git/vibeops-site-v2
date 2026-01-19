@@ -107,6 +107,16 @@ export default {
             opacity: "0.5",
           },
         },
+        "scroll-indicator": {
+          "0%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "translateY(8px)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -114,6 +124,7 @@ export default {
         "float-slow": "float-slow 3s ease-in-out infinite",
         "float-delayed": "float-delayed 3.5s ease-in-out infinite 0.5s",
         shimmer: "shimmer 1.5s ease-in-out infinite",
+        "scroll-indicator": "scroll-indicator 1.5s ease-in-out infinite",
       },
     },
   },

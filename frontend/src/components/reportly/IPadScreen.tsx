@@ -3,9 +3,10 @@ import { FileText, FileSpreadsheet, Upload, CheckCircle, Sparkles } from "lucide
 
 interface IPadScreenProps {
   sceneIndex: number;
+  launchProgress?: number; // 0-1, when provided shows launch screen
 }
 
-export function IPadScreen({ sceneIndex }: IPadScreenProps) {
+export function IPadScreen({ sceneIndex, launchProgress }: IPadScreenProps) {
   const [displayIndex, setDisplayIndex] = useState(sceneIndex);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -20,6 +21,11 @@ export function IPadScreen({ sceneIndex }: IPadScreenProps) {
     }
   }, [sceneIndex, displayIndex]);
 
+  // Show launch screen during intro
+  if (launchProgress !== undefined && launchProgress < 1) {
+    return <LaunchScreen progress={launchProgress} />;
+  }
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-[#0f1115] to-[#0a0a0f] overflow-hidden relative">
       <div
@@ -33,6 +39,61 @@ export function IPadScreen({ sceneIndex }: IPadScreenProps) {
         {displayIndex === 0 && <UploadScreen />}
         {displayIndex === 1 && <TransformScreen />}
         {displayIndex === 2 && <OutputScreen />}
+      </div>
+    </div>
+  );
+}
+
+function LaunchScreen({ progress }: { progress: number }) {
+  return (
+    <div className="w-full h-full bg-gradient-to-br from-[#0a0a0f] to-[#0f1115] flex flex-col items-center justify-center p-8">
+      {/* App icon with glow */}
+      <div className="relative mb-8">
+        <div
+          className="absolute inset-0 bg-[#00ffcc]/30 rounded-3xl blur-2xl"
+          style={{
+            opacity: 0.3 + progress * 0.5,
+            transform: `scale(${1 + progress * 0.3})`,
+          }}
+        />
+        <div
+          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#00ffcc]/20 to-[#00ffcc]/5 border border-[#00ffcc]/30 flex items-center justify-center"
+          style={{
+            transform: `scale(${0.9 + progress * 0.1})`,
+          }}
+        >
+          <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-[#00ffcc]" />
+        </div>
+      </div>
+
+      {/* App name */}
+      <h3
+        className="text-xl sm:text-2xl font-bold text-white mb-2"
+        style={{ opacity: 0.5 + progress * 0.5 }}
+      >
+        Reportly
+      </h3>
+      <p
+        className="text-xs sm:text-sm text-gray-500 mb-8"
+        style={{ opacity: 0.3 + progress * 0.7 }}
+      >
+        Automated Report Generation
+      </p>
+
+      {/* Progress bar */}
+      <div className="w-48 sm:w-56">
+        <div className="h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/70 rounded-full transition-all duration-100"
+            style={{ width: `${progress * 100}%` }}
+          />
+        </div>
+        <p className="text-center text-xs text-gray-500 mt-3">
+          {progress < 0.3 ? "Initializing..." :
+           progress < 0.6 ? "Loading assets..." :
+           progress < 0.9 ? "Preparing workspace..." :
+           "Ready!"}
+        </p>
       </div>
     </div>
   );
