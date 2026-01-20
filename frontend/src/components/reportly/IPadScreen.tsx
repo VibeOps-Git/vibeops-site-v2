@@ -1,45 +1,51 @@
-import { useState, useEffect } from "react";
 import { FileText, FileSpreadsheet, Upload, CheckCircle, Sparkles } from "lucide-react";
 
 interface IPadScreenProps {
   sceneIndex: number;
-  launchProgress?: number; // 0-1, when provided shows launch screen
+  launchProgress?: number; // 0-1 for launch, 1+ for crossfade to step 1
 }
 
 export function IPadScreen({ sceneIndex, launchProgress }: IPadScreenProps) {
-  const [displayIndex, setDisplayIndex] = useState(sceneIndex);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  useEffect(() => {
-    if (sceneIndex !== displayIndex) {
-      setIsTransitioning(true);
-      const timer = setTimeout(() => {
-        setDisplayIndex(sceneIndex);
-        setIsTransitioning(false);
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [sceneIndex, displayIndex]);
-
-  // Show launch screen during intro
-  if (launchProgress !== undefined && launchProgress < 1) {
-    return <LaunchScreen progress={launchProgress} />;
-  }
+  // Calculate opacities for launch-to-step1 crossfade
+  const showLaunch = launchProgress !== undefined;
+  const launchOpacity = showLaunch
+    ? (launchProgress <= 1 ? 1 : Math.max(0, 1 - (launchProgress - 1) * 2))
+    : 0;
+  const sceneOpacity = showLaunch
+    ? (launchProgress <= 1 ? 0 : Math.min(1, (launchProgress - 1) * 2))
+    : 1;
 
   return (
     <div className="w-full h-full bg-gradient-to-br from-[#0f1115] to-[#0a0a0f] overflow-hidden relative">
-      <div
-        style={{
-          opacity: isTransitioning ? 0 : 1,
-          transform: `scale(${isTransitioning ? 0.95 : 1})`,
-          transition: "opacity 0.3s ease-out, transform 0.3s ease-out",
-        }}
-        className="w-full h-full"
-      >
-        {displayIndex === 0 && <UploadScreen />}
-        {displayIndex === 1 && <TransformScreen />}
-        {displayIndex === 2 && <OutputScreen />}
-      </div>
+      {/* Launch screen - visible during intro, fades out during transition */}
+      {showLaunch && (
+        <div
+          className="absolute inset-0 z-10"
+          style={{
+            opacity: launchOpacity,
+            transition: "opacity 0.3s ease-out",
+          }}
+        >
+          <LaunchScreen progress={Math.min(1, launchProgress)} />
+        </div>
+      )}
+
+      {/* Scene screens - crossfade between them */}
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="absolute inset-0"
+          style={{
+            opacity: sceneIndex === i ? sceneOpacity : 0,
+            transition: "opacity 0.4s ease-out",
+            pointerEvents: sceneIndex === i && sceneOpacity > 0.5 ? "auto" : "none",
+          }}
+        >
+          {i === 0 && <UploadScreen />}
+          {i === 1 && <TransformScreen />}
+          {i === 2 && <OutputScreen />}
+        </div>
+      ))}
     </div>
   );
 }
@@ -48,18 +54,20 @@ function LaunchScreen({ progress }: { progress: number }) {
   return (
     <div className="w-full h-full bg-gradient-to-br from-[#0a0a0f] to-[#0f1115] flex flex-col items-center justify-center p-8">
       {/* App icon with glow */}
-      <div className="relative mb-8">
+      <div className="relative mb-8 will-change-transform">
         <div
-          className="absolute inset-0 bg-[#00ffcc]/30 rounded-3xl blur-2xl"
+          className="absolute inset-0 bg-[#00ffcc]/30 rounded-3xl blur-2xl will-change-[opacity,transform]"
           style={{
             opacity: 0.3 + progress * 0.5,
-            transform: `scale(${1 + progress * 0.3})`,
+            transform: `scale(${1 + progress * 0.3}) translateZ(0)`,
+            transition: "opacity 0.15s ease-out, transform 0.15s ease-out",
           }}
         />
         <div
-          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#00ffcc]/20 to-[#00ffcc]/5 border border-[#00ffcc]/30 flex items-center justify-center"
+          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#00ffcc]/20 to-[#00ffcc]/5 border border-[#00ffcc]/30 flex items-center justify-center will-change-transform"
           style={{
-            transform: `scale(${0.9 + progress * 0.1})`,
+            transform: `scale(${0.9 + progress * 0.1}) translateZ(0)`,
+            transition: "transform 0.15s ease-out",
           }}
         >
           <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-[#00ffcc]" />
@@ -84,8 +92,11 @@ function LaunchScreen({ progress }: { progress: number }) {
       <div className="w-48 sm:w-56">
         <div className="h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/70 rounded-full transition-all duration-100"
-            style={{ width: `${progress * 100}%` }}
+            className="h-full bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/70 rounded-full"
+            style={{
+              width: `${progress * 100}%`,
+              transition: "width 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
           />
         </div>
         <p className="text-center text-xs text-gray-500 mt-3">

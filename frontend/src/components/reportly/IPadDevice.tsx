@@ -10,11 +10,11 @@ interface IPadDeviceProps {
 export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPadDeviceProps) {
   return (
     <div
-      className="flex-shrink-0 relative"
+      className="flex-shrink-0 relative will-change-transform"
       style={{
         transform: `rotateZ(${rotateZ}deg)`,
         transformOrigin: isRight ? "bottom right" : "bottom left",
-        transition: "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
       }}
     >
       {/* Large glow effect */}

@@ -7,13 +7,13 @@ import { SceneDescription } from "./SceneDescription";
 /**
  * Apple-style scroll-driven showcase section.
  *
- * Phases:
- * 1. ENTER (0-8%): Section fades in, iPad rises from below
- * 2. INTRO (8-20%): App launches on iPad with progress bar filling
- * 3. SCENES (20-85%): Cycle through steps 1-2-3
- * 4. OUTRO (85-100%): Fade out to footer
+ * Phases (500vh scroll height for longer steps):
+ * 1. ENTER (0-5%): Section fades in, iPad rises from below
+ * 2. INTRO (5-15%): App launches on iPad with progress bar filling
+ * 3. SCENES (15-90%): Cycle through steps 1-2-3 (~25% each)
+ * 4. OUTRO (90-100%): Fade out to footer
  *
- * iPad stays centered with subtle float animation - no left/right movement.
+ * iPad stays centered with subtle float animation.
  */
 export function ShowcaseSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -21,32 +21,42 @@ export function ShowcaseSection() {
   const [isInView, setIsInView] = useState(false);
   const rafRef = useRef<number | null>(null);
 
-  // Scroll phases - added ENTER phase for smooth transition from hero
-  const ENTER_END = 0.08;
-  const INTRO_START = 0.08;
-  const INTRO_END = 0.20;
-  const SCENES_START = 0.20;
-  const SCENES_END = 0.85;
-  const OUTRO_START = 0.85;
+  // Auto-scroll state
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
+  const autoScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastUserScrollRef = useRef<number>(0);
 
-  // Calculate scene progress
+  // Scroll phases with crossfade transition
+  // Total scrollable: ~80% (5% enter, 5% outro leaves 90%)
+  // Intro + 3 scenes = 4 equal sections of ~21% each
+  const ENTER_END = 0.05;
+  const INTRO_START = 0.05;
+  const INTRO_END = 0.22;         // ~17% for intro (matching step duration)
+  const CROSSFADE_START = 0.22;   // Crossfade from launch to step 1
+  const CROSSFADE_END = 0.28;     // 6% for smooth crossfade
+  const SCENES_START = 0.28;
+  const SCENES_END = 0.90;
+  const OUTRO_START = 0.90;
+
+  // Calculate scene progress (0-1 across all scenes)
   const totalScenes = SCENES.length;
   const scenesProgress = Math.max(0, Math.min(1,
     (scrollProgress - SCENES_START) / (SCENES_END - SCENES_START)
   ));
+
+  // Current scene index and progress within that scene
   const rawSceneFloat = scenesProgress * totalScenes;
   const currentSceneIndex = Math.min(totalScenes - 1, Math.floor(rawSceneFloat));
-  const sceneProgress = rawSceneFloat - currentSceneIndex;
-
-  // Display index switches at midpoint of transition
-  const displayIndex = sceneProgress > 0.5 && currentSceneIndex < totalScenes - 1
-    ? currentSceneIndex + 1
-    : currentSceneIndex;
+  const sceneProgress = rawSceneFloat - currentSceneIndex; // 0-1 within current scene
 
   // Animation progress for each phase
   const enterProgress = Math.min(1, scrollProgress / ENTER_END);
   const introProgress = scrollProgress >= INTRO_START
     ? Math.min(1, (scrollProgress - INTRO_START) / (INTRO_END - INTRO_START))
+    : 0;
+  const crossfadeProgress = scrollProgress >= CROSSFADE_START
+    ? Math.min(1, (scrollProgress - CROSSFADE_START) / (CROSSFADE_END - CROSSFADE_START))
     : 0;
   const outroProgress = scrollProgress > OUTRO_START
     ? (scrollProgress - OUTRO_START) / (1 - OUTRO_START)
@@ -55,6 +65,7 @@ export function ShowcaseSection() {
   // Phase states
   const isInEnter = scrollProgress < ENTER_END;
   const isInIntro = scrollProgress >= INTRO_START && scrollProgress < INTRO_END;
+  const isInCrossfade = scrollProgress >= CROSSFADE_START && scrollProgress < CROSSFADE_END;
   const isInOutro = scrollProgress >= OUTRO_START;
 
   const updateScroll = useCallback(() => {
@@ -104,6 +115,87 @@ export function ShowcaseSection() {
     };
   }, [handleScroll]);
 
+  // Auto-scroll to a target progress value
+  const scrollToProgress = useCallback((targetProgress: number) => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollableDistance = sectionHeight - viewportHeight;
+
+    const targetScrollY = sectionTop + scrollableDistance * targetProgress;
+    window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+  }, []);
+
+  // Auto-scroll effect - starts after 3s of inactivity when in view
+  useEffect(() => {
+    // Don't auto-scroll if not in view or already past outro
+    if (!isInView || scrollProgress >= OUTRO_START || isAutoScrollPaused) {
+      return;
+    }
+
+    // Clear any existing timeout
+    if (autoScrollTimeoutRef.current) {
+      clearTimeout(autoScrollTimeoutRef.current);
+    }
+
+    // Start auto-scroll after 3 seconds of inactivity
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      // Only auto-scroll if user hasn't scrolled recently
+      const timeSinceLastScroll = Date.now() - lastUserScrollRef.current;
+      if (timeSinceLastScroll >= 2900 && isInView && scrollProgress < OUTRO_START) {
+        setIsAutoScrolling(true);
+
+        // Determine next target based on current progress
+        let nextProgress: number;
+
+        if (scrollProgress < INTRO_END) {
+          // During intro, scroll to crossfade end (step 1 start)
+          nextProgress = CROSSFADE_END + 0.05;
+        } else if (scrollProgress < SCENES_END) {
+          // During scenes, scroll to next scene
+          const nextSceneIndex = Math.min(totalScenes - 1, currentSceneIndex + 1);
+          if (nextSceneIndex > currentSceneIndex) {
+            const targetScenesProgress = (nextSceneIndex + 0.3) / totalScenes;
+            nextProgress = SCENES_START + targetScenesProgress * (SCENES_END - SCENES_START);
+          } else {
+            // At last scene, scroll to outro
+            nextProgress = OUTRO_START + 0.02;
+          }
+        } else {
+          nextProgress = 1;
+        }
+
+        scrollToProgress(nextProgress);
+      }
+    }, 3000);
+
+    return () => {
+      if (autoScrollTimeoutRef.current) {
+        clearTimeout(autoScrollTimeoutRef.current);
+      }
+    };
+  }, [isInView, scrollProgress, isAutoScrollPaused, currentSceneIndex, totalScenes, scrollToProgress, INTRO_END, CROSSFADE_END, SCENES_START, SCENES_END, OUTRO_START]);
+
+  // Track user scroll activity to pause auto-scroll
+  useEffect(() => {
+    const handleUserScroll = () => {
+      lastUserScrollRef.current = Date.now();
+      setIsAutoScrolling(false);
+    };
+
+    // Use wheel and touch events to detect user-initiated scrolls
+    window.addEventListener("wheel", handleUserScroll, { passive: true });
+    window.addEventListener("touchmove", handleUserScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", handleUserScroll);
+      window.removeEventListener("touchmove", handleUserScroll);
+    };
+  }, []);
+
   // Manual navigation
   const scrollToScene = (targetIndex: number) => {
     const section = sectionRef.current;
@@ -122,23 +214,19 @@ export function ShowcaseSection() {
   };
 
   const goToPrev = () => {
-    if (displayIndex > 0) scrollToScene(displayIndex - 1);
+    if (currentSceneIndex > 0) scrollToScene(currentSceneIndex - 1);
   };
 
   const goToNext = () => {
-    if (displayIndex < SCENES.length - 1) scrollToScene(displayIndex + 1);
+    if (currentSceneIndex < SCENES.length - 1) scrollToScene(currentSceneIndex + 1);
   };
 
   // === ENTER PHASE ANIMATIONS ===
-  // Container fades in
   const enterOpacity = enterProgress;
-  // iPad rises from below (starts 100px down, ends at 0)
   const enterTranslateY = (1 - enterProgress) * 100;
-  // iPad starts smaller and scales up
   const enterScale = 0.8 + enterProgress * 0.2;
 
   // === INTRO PHASE ANIMATIONS ===
-  // iPad continues to scale slightly during intro
   const introScale = 1 + introProgress * 0.02;
 
   // === OUTRO PHASE ANIMATIONS ===
@@ -160,32 +248,19 @@ export function ShowcaseSection() {
     ipadTranslateY = outroTranslateY;
   }
 
-  // Subtle floating effect (only after enter)
-  const floatY = isInEnter ? 0 : Math.sin(scrollProgress * Math.PI * 4) * 3;
-  const floatRotate = isInEnter ? 0 : Math.sin(scrollProgress * Math.PI * 2) * 1;
+  // Subtle floating effect
+  const floatY = isInEnter ? 0 : Math.sin(scrollProgress * Math.PI * 3) * 4;
+  const floatRotate = isInEnter ? 0 : Math.sin(scrollProgress * Math.PI * 1.5) * 0.8;
 
   const ipadOpacity = isInOutro ? outroOpacity : 1;
-
-  // Container opacity
   const containerOpacity = isInEnter ? enterOpacity : (isInOutro ? outroOpacity : 1);
 
-  // Content visibility - only show after intro
+  // Content visibility - show after intro ends
   const showSceneContent = scrollProgress >= INTRO_END;
   const sceneContentOpacity = showSceneContent
-    ? Math.min(1, (scrollProgress - INTRO_END) / 0.05)
+    ? Math.min(1, (scrollProgress - INTRO_END) / 0.05) // Quick fade in over 5%
     : 0;
   const finalContentOpacity = isInOutro ? Math.max(0, 1 - outroProgress * 1.5) : sceneContentOpacity;
-
-  // Text transition during scene changes
-  const transitionStart = 0.3;
-  const transitionEnd = 0.7;
-  let textTransitionOpacity = 1;
-  if (sceneProgress >= transitionStart && sceneProgress <= transitionEnd && currentSceneIndex < totalScenes - 1) {
-    const transitionProgress = (sceneProgress - transitionStart) / (transitionEnd - transitionStart);
-    textTransitionOpacity = transitionProgress < 0.5
-      ? 1 - (transitionProgress * 2)
-      : (transitionProgress - 0.5) * 2;
-  }
 
   // Header animation
   const headerOpacity = isInEnter
@@ -199,37 +274,32 @@ export function ShowcaseSection() {
       ? -outroProgress * 40
       : 0;
 
-  const isFirst = displayIndex === 0;
-  const isLast = displayIndex === SCENES.length - 1;
+  const isFirst = currentSceneIndex === 0;
+  const isLast = currentSceneIndex === SCENES.length - 1;
 
-  const getLineProgress = (index: number) => {
-    if (index < currentSceneIndex) return 1;
-    if (index === currentSceneIndex) return sceneProgress;
-    return 0;
-  };
-
-  // Determine header text based on phase
-  // Show "The Solution" during enter and intro phases (0-20%)
+  // Show launch content during enter and intro phases
   const isShowingLaunch = isInEnter || isInIntro;
 
   return (
     <>
-      {/* Scroll spacer */}
+      {/* Scroll spacer - increased height for longer steps */}
       <section
         ref={sectionRef}
         className="relative"
-        style={{ height: "400vh" }}
+        style={{ height: "500vh" }}
         aria-hidden="true"
       />
 
       {/* Fixed content */}
       {isInView && (
         <div
-          className="fixed inset-0 z-20 flex items-center bg-[#0a0a0f]"
+          className="fixed inset-0 z-20 flex items-center bg-[#0a0a0f] overflow-y-auto"
           style={{
             opacity: containerOpacity,
             pointerEvents: isInView && enterProgress > 0.5 ? "auto" : "none",
           }}
+          onMouseEnter={() => setIsAutoScrollPaused(true)}
+          onMouseLeave={() => setIsAutoScrollPaused(false)}
         >
           {/* Background gradient */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00ffcc]/5 to-transparent pointer-events-none" />
@@ -252,7 +322,7 @@ export function ShowcaseSection() {
             />
           </div>
 
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 my-auto relative z-10">
             {/* Header - hidden on mobile to give more space for step content */}
             <div
               className="hidden md:block text-center mb-8 lg:mb-12"
@@ -280,14 +350,13 @@ export function ShowcaseSection() {
                 style={{
                   opacity: isShowingLaunch
                     ? Math.min(1, introProgress * 2)
-                    : finalContentOpacity * textTransitionOpacity,
+                    : finalContentOpacity,
                   transform: `translateY(${
                     isShowingLaunch
                       ? (1 - Math.min(1, introProgress * 2)) * 20
-                      : textTransitionOpacity < 1
-                        ? (1 - textTransitionOpacity) * 15
-                        : 0
+                      : 0
                   }px)`,
+                  transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
                 }}
               >
                 {isShowingLaunch ? (
@@ -330,8 +399,8 @@ export function ShowcaseSection() {
                   </div>
                 ) : showSceneContent && (
                   <SceneDescription
-                    scene={SCENES[displayIndex]}
-                    sceneIndex={displayIndex}
+                    scene={SCENES[currentSceneIndex]}
+                    sceneIndex={currentSceneIndex}
                     isLeft={true}
                   />
                 )}
@@ -339,28 +408,37 @@ export function ShowcaseSection() {
 
               {/* iPad - with enter/intro/outro animations */}
               <div
-                className="w-full lg:w-3/5 flex justify-center order-1 lg:order-2"
+                className="w-full lg:w-3/5 flex justify-center order-1 lg:order-2 will-change-transform"
                 style={{
                   opacity: ipadOpacity,
                   transform: `
+                    translateZ(0)
                     scale(${ipadScale})
                     translateY(${ipadTranslateY + floatY}px)
                     rotateZ(${floatRotate}deg)
                   `,
+                  transition: isInEnter || isInOutro
+                    ? "none"
+                    : "transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out",
                 }}
               >
                 <IPadDevice
-                  sceneIndex={displayIndex}
+                  sceneIndex={currentSceneIndex}
                   rotateZ={0}
                   isRight={true}
-                  launchProgress={isInIntro ? introProgress : (isInEnter ? 0 : undefined)}
+                  launchProgress={
+                    isInEnter ? 0 :
+                    isInIntro ? introProgress :
+                    isInCrossfade ? 1 + crossfadeProgress : // 1.0 to 2.0 for crossfade
+                    undefined
+                  }
                 />
               </div>
             </div>
 
             {/* Navigation - only visible after intro */}
             <div
-              className="flex items-center justify-center gap-4 mt-10 md:mt-14"
+              className="flex items-center justify-center gap-4 mt-8 md:mt-12"
               style={{
                 opacity: finalContentOpacity,
                 pointerEvents: showSceneContent ? "auto" : "none",
@@ -379,38 +457,60 @@ export function ShowcaseSection() {
                 <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
               </button>
 
-              {/* Step indicators */}
-              <div className="flex items-center gap-2 px-4">
-                {SCENES.map((scene, i) => (
-                  <div key={i} className="flex items-center">
+              {/* Step progress indicators - dots that expand to progress bars */}
+              <div className="flex items-center gap-2 md:gap-3 px-4">
+                {SCENES.map((scene, i) => {
+                  // Determine state: completed, active, or upcoming
+                  const isCompleted = i < currentSceneIndex;
+                  const isActive = i === currentSceneIndex;
+                  const isUpcoming = i > currentSceneIndex;
+
+                  // Progress within this step (0-1)
+                  const stepFill = isCompleted ? 1 : isActive ? sceneProgress : 0;
+
+                  // Expanded width when active or completed
+                  const isExpanded = isCompleted || isActive;
+
+                  return (
                     <button
+                      key={i}
                       onClick={() => scrollToScene(i)}
-                      className="relative p-1"
+                      className="group relative flex items-center justify-center"
                       aria-label={`Go to step ${i + 1}: ${scene.title}`}
                     >
+                      {/* Container that morphs from dot to bar */}
                       <div
-                        className={`w-3 h-3 md:w-3.5 md:h-3.5 rounded-full transition-all duration-300 ${
-                          i === displayIndex
-                            ? "bg-[#00ffcc] shadow-lg shadow-[#00ffcc]/50 scale-125"
-                            : i < displayIndex
-                              ? "bg-[#00ffcc]/60"
-                              : "bg-white/20 hover:bg-white/40"
-                        }`}
-                      />
-                    </button>
-                    {i < SCENES.length - 1 && (
-                      <div className="w-6 md:w-8 h-0.5 mx-0.5 bg-white/10 rounded-full overflow-hidden">
+                        className="relative h-2 rounded-full overflow-hidden transition-all duration-300 ease-out"
+                        style={{
+                          width: isExpanded ? "4.5rem" : "0.5rem", // 72px expanded, 8px as dot
+                          backgroundColor: isUpcoming
+                            ? "rgba(255, 255, 255, 0.2)"
+                            : "rgba(0, 255, 204, 0.2)",
+                        }}
+                      >
+                        {/* Fill bar */}
                         <div
-                          className="h-full bg-[#00ffcc]/50 rounded-full"
+                          className="absolute inset-y-0 left-0 bg-[#00ffcc] rounded-full"
                           style={{
-                            width: `${getLineProgress(i) * 100}%`,
-                            transition: "width 0.1s linear",
+                            width: `${stepFill * 100}%`,
+                            transition: "width 0.05s linear",
                           }}
                         />
                       </div>
-                    )}
-                  </div>
-                ))}
+
+                      {/* Step number - only show when expanded */}
+                      <span
+                        className="absolute -top-5 text-[10px] font-medium transition-all duration-300"
+                        style={{
+                          opacity: isExpanded ? 1 : 0,
+                          color: isActive ? "#00ffcc" : isCompleted ? "rgba(0, 255, 204, 0.6)" : "rgba(255, 255, 255, 0.4)",
+                        }}
+                      >
+                        {i + 1}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
               <button
@@ -427,14 +527,13 @@ export function ShowcaseSection() {
               </button>
             </div>
 
-            {/* Step counter - only visible after intro */}
+            {/* Current step label */}
             <div
               className="text-center mt-4"
               style={{ opacity: finalContentOpacity }}
             >
-              <span className="text-sm text-gray-500">
-                Step <span className="text-[#00ffcc] font-semibold">{displayIndex + 1}</span> of{" "}
-                {SCENES.length}
+              <span className="text-xs text-gray-400 transition-all duration-300">
+                Step {currentSceneIndex + 1}: {SCENES[currentSceneIndex]?.title}
               </span>
             </div>
 
@@ -444,7 +543,9 @@ export function ShowcaseSection() {
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                 style={{ opacity: Math.max(0, 1 - (enterProgress + introProgress) * 0.8) }}
               >
-                <span className="text-xs text-gray-500">Scroll to explore</span>
+                <span className="text-xs text-gray-500">
+                  {isAutoScrolling ? "Auto-playing..." : "Scroll to explore or wait"}
+                </span>
                 <div className="w-5 h-8 rounded-full border-2 border-gray-500/50 flex justify-center pt-1.5">
                   <div className="w-1 h-2 bg-gray-500/50 rounded-full animate-scroll-indicator" />
                 </div>
