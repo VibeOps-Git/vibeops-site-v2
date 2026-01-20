@@ -253,9 +253,9 @@ export function ShowcaseSection() {
           </div>
 
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-            {/* Header */}
+            {/* Header - hidden on mobile to give more space for step content */}
             <div
-              className="text-center mb-8 lg:mb-12"
+              className="hidden md:block text-center mb-8 lg:mb-12"
               style={{
                 opacity: headerOpacity,
                 transform: `translateY(${headerTranslateY}px)`,

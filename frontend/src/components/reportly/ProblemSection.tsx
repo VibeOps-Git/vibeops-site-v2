@@ -34,14 +34,15 @@ const problems = [
 
 export function ProblemSection() {
   return (
-    <section className="relative py-24 px-4 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-red-950/5 to-[#0a0a0f]" />
+    <section className="relative py-24">
+      {/* Background elements - in overflow-hidden wrapper */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-red-950/5 to-[#0a0a0f]" />
+        {/* Animated gradient orb */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-red-500/10 rounded-full blur-[120px] animate-pulse" />
+      </div>
 
-      {/* Animated gradient orb */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-red-500/10 rounded-full blur-[120px] animate-pulse" />
-
-      <div className="container mx-auto max-w-6xl relative z-10">
+      <div className="container mx-auto max-w-6xl relative z-10 px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Document chaos visualization */}
           <AnimatedContent
@@ -152,16 +153,18 @@ export function ProblemSection() {
               animateOpacity
               threshold={0.2}
             >
-              <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-red-400 border border-red-500/30 bg-red-500/5 mb-4">
-                The Problem
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Manual Reporting is{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">Broken</span>
-              </h2>
-              <p className="text-gray-400 mb-8">
-                Validated through meetings with <span className="text-white font-semibold">20+ firms</span> and engineers across Vancouver and beyond.
-              </p>
+              <div className="text-left">
+                <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-red-400 border border-red-500/30 bg-red-500/5 mb-4">
+                  The Problem
+                </span>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                  Manual Reporting is{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">Broken</span>
+                </h2>
+                <p className="text-gray-400 mb-8">
+                  Validated through meetings with <span className="text-white font-semibold">20+ firms</span> and engineers across Vancouver and beyond.
+                </p>
+              </div>
             </AnimatedContent>
 
             {/* Problem cards with stats */}
@@ -178,9 +181,9 @@ export function ProblemSection() {
                   threshold={0.2}
                   delay={0.1 + index * 0.1}
                 >
-                  <div className="group relative flex gap-4 p-4 rounded-xl bg-gradient-to-r from-[rgba(10,10,20,0.6)] to-[rgba(10,10,20,0.4)] border border-white/5 hover:border-red-500/30 transition-all duration-300 overflow-hidden">
+                  <div className="group relative flex gap-4 p-4 rounded-xl bg-gradient-to-r from-[rgba(10,10,20,0.6)] to-[rgba(10,10,20,0.4)] border border-white/5 hover:border-red-500/30 transition-all duration-300">
                     {/* Hover glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-orange-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-orange-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
 
                     {/* Icon */}
                     <div className="relative flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/10 border border-red-500/20 flex items-center justify-center">
@@ -189,11 +192,11 @@ export function ProblemSection() {
 
                     {/* Content */}
                     <div className="relative flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
                         <h3 className="text-white font-semibold">
                           {problem.title}
                         </h3>
-                        <span className="text-xs font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
+                        <span className="text-xs font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20 whitespace-nowrap">
                           {problem.stat}
                         </span>
                       </div>

@@ -10,16 +10,16 @@ export function SceneDescription({ scene, sceneIndex, isLeft }: SceneDescription
   const Icon = scene.icon;
 
   return (
-    <div className={`${isLeft ? "text-left" : "text-right lg:text-right"}`}>
+    <div className={`text-center lg:${isLeft ? "text-left" : "text-right"}`}>
       {/* Step badge */}
-      <div className={`inline-flex items-center gap-3 mb-6 ${!isLeft ? "flex-row-reverse" : ""}`}>
+      <div className={`inline-flex items-center gap-3 mb-6 ${!isLeft ? "lg:flex-row-reverse" : ""}`}>
         <div className="relative">
           <div className="absolute inset-0 bg-[#00ffcc]/30 rounded-xl blur-lg" />
           <div className="relative p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/30">
             <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#00ffcc]" />
           </div>
         </div>
-        <div className={`${isLeft ? "text-left" : "text-right"}`}>
+        <div>
           <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
             Step {sceneIndex + 1}
           </span>
@@ -32,17 +32,17 @@ export function SceneDescription({ scene, sceneIndex, isLeft }: SceneDescription
       </h3>
 
       {/* Description */}
-      <p className="text-base md:text-lg lg:text-xl text-gray-400 leading-relaxed max-w-md">
+      <p className="text-base md:text-lg lg:text-xl text-gray-400 leading-relaxed max-w-md mx-auto lg:mx-0">
         {scene.description}
       </p>
 
       {/* Feature highlights based on step */}
-      <div className={`mt-8 space-y-3 ${!isLeft ? "ml-auto" : ""}`}>
+      <div className={`mt-8 space-y-3 inline-block lg:block ${!isLeft ? "lg:ml-auto" : ""}`}>
         {getStepFeatures(sceneIndex).map((feature, i) => (
           <div
             key={i}
             className={`flex items-center gap-3 text-sm text-gray-500 ${
-              !isLeft ? "flex-row-reverse" : ""
+              !isLeft ? "lg:flex-row-reverse" : ""
             }`}
           >
             <div className="w-1.5 h-1.5 rounded-full bg-[#00ffcc]" />
