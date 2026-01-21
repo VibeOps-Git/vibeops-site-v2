@@ -16,6 +16,7 @@ lerna-debug.log*
 
 # Environment
 .env
+.env.*
 *.local
 
 # Editor directories and files
@@ -40,3 +41,4 @@ lerna-debug.log*
 __pycache__/
 *.py[cod]
 *.pyc
+.env*.local

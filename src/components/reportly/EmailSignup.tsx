@@ -35,8 +35,8 @@ export function EmailSignup({ onSubmit }: EmailSignupProps) {
       const GOOGLE_FORM_URL = import.meta.env.VITE_REPORTLY_WAITLIST_URL;
 
       // Entry IDs from Google Form (found via pre-filled link or page source)
-      const NAME_ENTRY_ID = import.meta.env.VITE_REPORTLY_NAME_ENTRY_ID || "entry.206032065";
-      const EMAIL_ENTRY_ID = import.meta.env.VITE_REPORTLY_EMAIL_ENTRY_ID || "entry.1273343999";
+      const NAME_ENTRY_ID = import.meta.env.VITE_REPORTLY_NAME_ENTRY_ID;
+      const EMAIL_ENTRY_ID = import.meta.env.VITE_REPORTLY_EMAIL_ENTRY_ID;
 
       if (GOOGLE_FORM_URL) {
         // Use URLSearchParams for better Google Forms compatibility
