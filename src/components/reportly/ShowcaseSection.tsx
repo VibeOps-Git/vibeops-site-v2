@@ -293,7 +293,7 @@ export function ShowcaseSection() {
       {/* Fixed content */}
       {isInView && (
         <div
-          className="fixed inset-0 z-20 flex items-center bg-[#0a0a0f] overflow-y-auto"
+          className="fixed inset-0 z-20 flex items-center bg-[#0a0a0f] overflow-hidden"
           style={{
             opacity: containerOpacity,
             pointerEvents: isInView && enterProgress > 0.5 ? "auto" : "none",
@@ -322,28 +322,9 @@ export function ShowcaseSection() {
             />
           </div>
 
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 my-auto relative z-10">
-            {/* Header - hidden on mobile to give more space for step content */}
-            <div
-              className="hidden md:block text-center mb-8 lg:mb-12"
-              style={{
-                opacity: headerOpacity,
-                transform: `translateY(${headerTranslateY}px)`,
-              }}
-            >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
-                {isShowingLaunch ? "Introducing Reportly" : "See How It Works"}
-              </h2>
-              <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">
-                {isShowingLaunch
-                  ? "Your automated report generation platform"
-                  : "Three simple steps to transform your reporting workflow"
-                }
-              </p>
-            </div>
-
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-16 pb-4 my-auto relative z-10">
             {/* Main content - centered layout */}
-            <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 lg:gap-16">
+            <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-12 lg:gap-16">
               {/* Description - left side */}
               <div
                 className="w-full lg:w-2/5 order-2 lg:order-1"
@@ -436,9 +417,27 @@ export function ShowcaseSection() {
               </div>
             </div>
 
+            {/* Header - above step indicators */}
+            <div
+              className="text-center mt-2 sm:mt-4 md:mt-6"
+              style={{
+                opacity: finalContentOpacity,
+              }}
+            >
+              <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-1">
+                {isShowingLaunch ? "Introducing Reportly" : "See How It Works"}
+              </h2>
+              <p className="text-gray-400 text-sm">
+                {isShowingLaunch
+                  ? "Your automated report generation platform"
+                  : "Three simple steps to transform your reporting workflow"
+                }
+              </p>
+            </div>
+
             {/* Navigation - only visible after intro */}
             <div
-              className="flex items-center justify-center gap-4 mt-8 md:mt-12"
+              className="flex items-center justify-center gap-2 sm:gap-4 mt-2 sm:mt-4"
               style={{
                 opacity: finalContentOpacity,
                 pointerEvents: showSceneContent ? "auto" : "none",
@@ -447,18 +446,18 @@ export function ShowcaseSection() {
               <button
                 onClick={goToPrev}
                 disabled={isFirst}
-                className={`p-3 md:p-4 rounded-full border transition-all duration-300 ${
+                className={`p-2 sm:p-3 md:p-4 rounded-full border transition-all duration-300 ${
                   isFirst
                     ? "border-white/10 text-white/20 cursor-not-allowed"
                     : "border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 hover:border-[#00ffcc]/50"
                 }`}
                 aria-label="Previous step"
               >
-                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
               </button>
 
               {/* Step progress indicators - dots that expand to progress bars */}
-              <div className="flex items-center gap-2 md:gap-3 px-4">
+              <div className="flex items-center gap-1 sm:gap-2 md:gap-3 px-2 sm:px-4">
                 {SCENES.map((scene, i) => {
                   // Determine state: completed, active, or upcoming
                   const isCompleted = i < currentSceneIndex;
@@ -516,20 +515,20 @@ export function ShowcaseSection() {
               <button
                 onClick={goToNext}
                 disabled={isLast}
-                className={`p-3 md:p-4 rounded-full border transition-all duration-300 ${
+                className={`p-2 sm:p-3 md:p-4 rounded-full border transition-all duration-300 ${
                   isLast
                     ? "border-white/10 text-white/20 cursor-not-allowed"
                     : "border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 hover:border-[#00ffcc]/50"
                 }`}
                 aria-label="Next step"
               >
-                <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
               </button>
             </div>
 
-            {/* Current step label */}
+            {/* Current step label - hidden on mobile */}
             <div
-              className="text-center mt-4"
+              className="hidden sm:block text-center mt-2 sm:mt-4"
               style={{ opacity: finalContentOpacity }}
             >
               <span className="text-xs text-gray-400 transition-all duration-300">
