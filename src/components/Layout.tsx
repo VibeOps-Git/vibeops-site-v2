@@ -2,7 +2,7 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Linkedin, Twitter, Instagram } from "lucide-react";
 import SpaceField from "./SpaceField";
 
 
@@ -213,6 +213,35 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link to="/terms" className="hover:text-[#00ffcc] transition-colors">
                 Terms
               </Link>
+            </div>
+            <div className="flex items-center gap-4" data-testid="social-links">
+              <a
+                href="https://www.linkedin.com/company/vibeops"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-[#00ffcc] transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={20} />
+              </a>
+              <a
+                href="https://twitter.com/vibeops"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-[#00ffcc] transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter size={20} />
+              </a>
+              <a
+                href="https://instagram.com/vibeops"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-[#00ffcc] transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram size={20} />
+              </a>
             </div>
           </div>
         </div>
