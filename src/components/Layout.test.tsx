@@ -20,15 +20,15 @@ describe("Layout", () => {
       expect(linkedinLink).toHaveAttribute("target", "_blank");
       expect(linkedinLink).toHaveAttribute("rel", "noopener noreferrer");
 
-      // Check Twitter link
-      const twitterLink = screen.getByRole("link", { name: /twitter/i });
-      expect(twitterLink).toBeInTheDocument();
-      expect(twitterLink).toHaveAttribute(
+      // Check X link
+      const xLink = screen.getByRole("link", { name: /^x$/i });
+      expect(xLink).toBeInTheDocument();
+      expect(xLink).toHaveAttribute(
         "href",
-        "https://twitter.com/vibeops"
+        "https://x.com/vibeops_ca"
       );
-      expect(twitterLink).toHaveAttribute("target", "_blank");
-      expect(twitterLink).toHaveAttribute("rel", "noopener noreferrer");
+      expect(xLink).toHaveAttribute("target", "_blank");
+      expect(xLink).toHaveAttribute("rel", "noopener noreferrer");
 
       // Check Instagram link
       const instagramLink = screen.getByRole("link", { name: /instagram/i });
