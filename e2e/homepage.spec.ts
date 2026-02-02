@@ -15,7 +15,8 @@ test.describe("Homepage", () => {
   });
 
   test("should have working navigation links", async ({ page }) => {
-    const servicesLink = page.getByRole("link", { name: /services/i });
+    const nav = page.getByRole("navigation");
+    const servicesLink = nav.getByRole("link", { name: /services/i }).first();
     if (await servicesLink.isVisible()) {
       await servicesLink.click();
       await expect(page).toHaveURL(/services/i);
