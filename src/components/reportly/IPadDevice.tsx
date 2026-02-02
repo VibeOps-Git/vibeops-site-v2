@@ -33,7 +33,7 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPa
           <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-gray-600 border border-gray-500" />
 
           {/* Screen */}
-          <div className="relative bg-[#0a0a0f] rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] overflow-hidden w-[280px] h-[420px] sm:w-[360px] sm:h-[540px] md:w-[420px] md:h-[630px] lg:w-[480px] lg:h-[720px]">
+          <div className="relative bg-[#0a0a0f] rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] overflow-hidden w-[180px] h-[270px] sm:w-[220px] sm:h-[330px] md:w-[260px] md:h-[390px] lg:w-[320px] lg:h-[480px] xl:w-[420px] xl:h-[630px]">
             {/* Screen glare */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-transparent pointer-events-none z-10" />
 

@@ -59,7 +59,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             : "bg-transparent"
         }`}
       >
-        <nav className="container mx-auto px-4 py-4">
+        <nav className="container mx-auto pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-4 pt-[max(1rem,env(safe-area-inset-top))]">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
@@ -150,7 +150,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 bg-[#0a0a0f]/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-16 pb-[max(4rem,env(safe-area-inset-bottom))]">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
             {/* Brand */}
             <div>
