@@ -145,7 +145,7 @@ export default function Aurora(props: AuroraProps) {
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = 'transparent';
 
-    let program: Program | undefined;
+    let program: Program | null = null;
 
     function resize() {
       if (!ctn) return;
@@ -153,16 +153,16 @@ export default function Aurora(props: AuroraProps) {
       const height = ctn.offsetHeight;
       renderer.setSize(width, height);
       if (program) {
-        (program.uniforms.uResolution as any).value = [width, height];
+        (program.uniforms.uResolution as { value: number[] }).value = [width, height];
       }
     }
     window.addEventListener('resize', resize);
 
     const geometry = new Triangle(gl);
     // remove unused UVs
-    // @ts-ignore
+    // @ts-expect-error - OGL geometry attributes typing
     if (geometry.attributes.uv) {
-      // @ts-ignore
+      // @ts-expect-error - OGL geometry attributes typing
       delete geometry.attributes.uv;
     }
 
@@ -190,11 +190,11 @@ export default function Aurora(props: AuroraProps) {
     const update = (t: number) => {
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
-      (program!.uniforms.uTime as any).value = time * speed * 0.1;
-      (program!.uniforms.uAmplitude as any).value = propsRef.current.amplitude ?? 1.0;
-      (program!.uniforms.uBlend as any).value = propsRef.current.blend ?? blend;
+      (program!.uniforms.uTime as { value: number }).value = time * speed * 0.1;
+      (program!.uniforms.uAmplitude as { value: number }).value = propsRef.current.amplitude ?? 1.0;
+      (program!.uniforms.uBlend as { value: number }).value = propsRef.current.blend ?? blend;
       const stops = propsRef.current.colorStops ?? colorStops;
-      (program!.uniforms.uColorStops as any).value = stops.map((hex) => {
+      (program!.uniforms.uColorStops as { value: number[][] }).value = stops.map((hex) => {
         const c = new Color(hex);
         return [c.r, c.g, c.b];
       });
