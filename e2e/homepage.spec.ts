@@ -36,6 +36,55 @@ test.describe("Contact Page", () => {
   });
 });
 
+test.describe("Footer Social Links", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("should display social media links in the footer", async ({ page }) => {
+    const footer = page.locator("footer");
+    await expect(footer).toBeVisible();
+
+    const socialLinks = footer.getByTestId("social-links");
+    await expect(socialLinks).toBeVisible();
+
+    // Check all social links are present
+    const linkedinLink = socialLinks.getByRole("link", { name: /linkedin/i });
+    await expect(linkedinLink).toBeVisible();
+    await expect(linkedinLink).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/company/vibeops"
+    );
+
+    const twitterLink = socialLinks.getByRole("link", { name: /twitter/i });
+    await expect(twitterLink).toBeVisible();
+    await expect(twitterLink).toHaveAttribute(
+      "href",
+      "https://twitter.com/vibeops"
+    );
+
+    const instagramLink = socialLinks.getByRole("link", { name: /instagram/i });
+    await expect(instagramLink).toBeVisible();
+    await expect(instagramLink).toHaveAttribute(
+      "href",
+      "https://instagram.com/vibeops"
+    );
+  });
+
+  test("social links should open in new tab", async ({ page }) => {
+    const footer = page.locator("footer");
+    const socialLinks = footer.getByTestId("social-links");
+    const allLinks = socialLinks.getByRole("link");
+    const count = await allLinks.count();
+
+    for (let i = 0; i < count; i++) {
+      const link = allLinks.nth(i);
+      await expect(link).toHaveAttribute("target", "_blank");
+      await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
+  });
+});
+
 test.describe("Accessibility", () => {
   test("homepage should have no major accessibility issues", async ({
     page,
