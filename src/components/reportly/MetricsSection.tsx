@@ -87,7 +87,7 @@ const metrics = [
   },
   {
     icon: Users,
-    value: 20,
+    value: 100,
     prefix: "",
     suffix: "+",
     label: "Firms Interviewed",
@@ -131,7 +131,7 @@ export function MetricsSection() {
               The Cost of Manual Reporting
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              We met with 20+ firms and engineers across Vancouver.
+              We met with 100+ firms and engineers across Vancouver.
               The numbers speak for themselves.
             </p>
           </div>
