@@ -40,8 +40,8 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPa
             {/* Screen edge highlight */}
             <div className="absolute inset-0 border border-white/5 rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] pointer-events-none z-10" />
 
-            {/* Screen content with crossfade - scaled down on mobile */}
-            <div className="relative w-full h-full origin-top-left scale-[0.6] sm:scale-[0.75] md:scale-100 w-[167%] h-[167%] sm:w-[133%] sm:h-[133%] md:w-full md:h-full">
+            {/* Screen content with crossfade */}
+            <div className="relative w-full h-full">
               <IPadScreen sceneIndex={sceneIndex} launchProgress={launchProgress} />
             </div>
           </div>
