@@ -42,3 +42,9 @@ __pycache__/
 *.py[cod]
 *.pyc
 .env*.local
+
+# Testing
+coverage/
+playwright-report/
+playwright/.cache/
+test-results/
