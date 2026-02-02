@@ -33,15 +33,15 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPa
           <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-gray-600 border border-gray-500" />
 
           {/* Screen */}
-          <div className="relative bg-[#0a0a0f] rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] overflow-hidden w-[280px] h-[420px] sm:w-[360px] sm:h-[540px] md:w-[420px] md:h-[630px] lg:w-[480px] lg:h-[720px]">
+          <div className="relative bg-[#0a0a0f] rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] overflow-hidden w-[180px] h-[270px] sm:w-[280px] sm:h-[420px] md:w-[380px] md:h-[570px] lg:w-[420px] lg:h-[630px]">
             {/* Screen glare */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-transparent pointer-events-none z-10" />
 
             {/* Screen edge highlight */}
             <div className="absolute inset-0 border border-white/5 rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] pointer-events-none z-10" />
 
-            {/* Screen content with crossfade */}
-            <div className="relative w-full h-full">
+            {/* Screen content with crossfade - scaled down on mobile */}
+            <div className="relative w-full h-full origin-top-left scale-[0.6] sm:scale-[0.75] md:scale-100 w-[167%] h-[167%] sm:w-[133%] sm:h-[133%] md:w-full md:h-full">
               <IPadScreen sceneIndex={sceneIndex} launchProgress={launchProgress} />
             </div>
           </div>
