@@ -225,11 +225,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Linkedin size={20} />
               </a>
               <a
-                href="https://twitter.com/vibeops"
+                href="https://x.com/vibeops_ca"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#00ffcc] transition-colors"
-                aria-label="Twitter"
+                aria-label="X"
               >
                 <Twitter size={20} />
               </a>

@@ -56,11 +56,11 @@ test.describe("Footer Social Links", () => {
       "https://www.linkedin.com/company/vibeops"
     );
 
-    const twitterLink = socialLinks.getByRole("link", { name: /twitter/i });
-    await expect(twitterLink).toBeVisible();
-    await expect(twitterLink).toHaveAttribute(
+    const xLink = socialLinks.getByRole("link", { name: /^x$/i });
+    await expect(xLink).toBeVisible();
+    await expect(xLink).toHaveAttribute(
       "href",
-      "https://twitter.com/vibeops"
+      "https://x.com/vibeops_ca"
     );
 
     const instagramLink = socialLinks.getByRole("link", { name: /instagram/i });
