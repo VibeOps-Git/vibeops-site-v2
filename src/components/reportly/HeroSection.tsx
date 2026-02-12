@@ -1,6 +1,5 @@
-import { FileText, ChevronDown } from "lucide-react";
+import { FileText, ChevronDown, ArrowRight } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { EmailSignup } from "./EmailSignup";
 
 export function HeroSection() {
   return (
@@ -20,7 +19,7 @@ export function HeroSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ffcc] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ffcc]" />
           </span>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]">Coming Soon</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]">Now Available</span>
         </div>
       </AnimatedContent>
 
@@ -63,7 +62,7 @@ export function HeroSection() {
         </p>
       </AnimatedContent>
 
-      {/* Email Signup */}
+      {/* CTA Button */}
       <AnimatedContent
         distance={20}
         direction="vertical"
@@ -74,9 +73,15 @@ export function HeroSection() {
         threshold={0.1}
         delay={0.3}
       >
-        <div className="w-full max-w-lg">
-          <EmailSignup />
-        </div>
+        <a
+          href="https://frontend-three-drab-77.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
+        >
+          <span>Try Reportly</span>
+          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        </a>
       </AnimatedContent>
 
       {/* Scroll indicator */}
