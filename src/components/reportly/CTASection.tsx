@@ -51,7 +51,7 @@ export function CTASection() {
 
               {/* CTA Button */}
               <a
-                href="https://frontend-three-drab-77.vercel.app/"
+                href="https://reportly.ca/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
