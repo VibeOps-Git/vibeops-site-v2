@@ -1,7 +1,6 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../AnimatedContent";
-import { EmailSignup } from "./EmailSignup";
 
 export function CTASection() {
   return (
@@ -34,7 +33,7 @@ export function CTASection() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-6">
                 <Sparkles className="w-4 h-4 text-[#00ffcc]" />
                 <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]">
-                  Early Access
+                  Now Available
                 </span>
               </div>
 
@@ -46,30 +45,20 @@ export function CTASection() {
 
               {/* Subheadline */}
               <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-                Join the waitlist to be first in line when Reportly launches.
+                Start generating automated, audit-ready reports today.
                 Less formatting, more engineering.
               </p>
 
-              {/* Email signup */}
-              <div className="max-w-lg mx-auto mb-8">
-                <EmailSignup />
-              </div>
-
-              {/* Trust indicators */}
-              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#00ffcc]" />
-                  <span>No credit card required</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#00ffcc]" />
-                  <span>Free early access</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#00ffcc]" />
-                  <span>Cancel anytime</span>
-                </div>
-              </div>
+              {/* CTA Button */}
+              <a
+                href="https://frontend-three-drab-77.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
+              >
+                <span>Try Reportly</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </a>
             </div>
           </div>
         </AnimatedContent>
