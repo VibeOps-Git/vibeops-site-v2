@@ -56,6 +56,14 @@ const foundingTeam: TeamMember[] = [
     email: "gabriel@vibeops.ca",
     bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms—less formatting, fewer errors, and more time spent on real engineering.`,
   },
+  {
+    name: "Qazi Omair Ahmed",
+    role: "Co-Founder & Head of Engineering",
+    focus: "Systems Design & Product Delivery",
+    image: "/team/omair-optimized.jpg",
+    email: "omair@vibeops.ca",
+    bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflow that firms rely on with faster and more reliable client-specific automation.`,
+  },
 ];
 
 const advisoryBoard: TeamMember[] = [
