@@ -80,11 +80,10 @@ function HeroSection() {
           delay={0.2}
         >
           <p className="text-lg md:text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
-            We build custom automation for engineering teams—reports, workflows, dashboards, and tools.
-            One workflow at a time. No platforms, no overhead.
+            We automate reporting and workflows so engineers can focus on engineering.
           </p>
           <p className="text-sm text-gray-500 mb-10">
-            Small, focused solutions that fit how your team actually works.
+            Focused solutions that fit how your team actually works.
           </p>
         </AnimatedContent>
 
@@ -156,7 +155,7 @@ function TrustedBySection() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
             <span className="text-lg font-semibold text-gray-400">UBC Engineering</span>
-            <span className="text-lg font-semibold text-gray-400">Civil Consulting Firms</span>
+            <span className="text-lg font-semibold text-gray-400">Vancouver Consulting Firms</span>
             <span className="text-lg font-semibold text-gray-400">Construction Teams</span>
           </div>
         </div>
@@ -213,8 +212,8 @@ function ServicesSection() {
   return (
     <SectionWithHeader
       tag="What We Build"
-      title="Engineering Automation, Done Right"
-      description="Four core capabilities. One focus: making engineering teams faster without breaking what already works."
+      title="What We Automate"
+      description="We eliminate repetitive reporting and documentation work, so your team can deliver more engineering per project."
       divider
     >
       {/* Liquid Glass Cards Gallery */}
@@ -293,9 +292,8 @@ function ReportlySection() {
                 Reportly
               </h2>
               <p className="text-gray-400 mb-6 leading-relaxed">
-                Our flagship report automation engine. Plug in your existing Word and Excel
-                templates, connect your data, and generate audit-ready documents in minutes
-                instead of hours.
+                Our flagship report automation engine. Plug in your existing Word
+                templates, input your data, and generate review-ready documents with none of the formatting hassle.
               </p>
               <ul className="space-y-3 mb-8">
                 {[
@@ -358,8 +356,8 @@ function ProcessSection() {
   return (
     <SectionWithHeader
       tag="How We Work"
-      title="Focused, Not Chaotic"
-      description="We get one workflow right before moving to the next. Small, opinionated, and built to fit how your team actually operates."
+      title="Custom Projects"
+      description="We get one workflow right before moving to the next. Built to fit how your team actually operates."
       maxWidth="lg"
       divider
     >
@@ -386,10 +384,10 @@ function CTASection() {
       >
         <VibeCard variant="gradient" hover={false} className="p-8 md:p-12 text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Automate Your Engineering Workflows?
+            Ready to get engineering time back?
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            We start with one workflow — the one that's slowing your team down the most — and prove the value. No platforms, no overhead, just results.
+            We automate reporting and documentation, so your team can focus on engineering work - and deliver more per project.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <VibeLinkButton href="/contact" variant="primary" size="lg">
