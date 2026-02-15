@@ -46,7 +46,7 @@ function HeroSection() {
           threshold={0.1}
         >
           <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-6">
-            Engineering Automation · Civil · Construction · Infrastructure
+            Civil · Construction · Infrastructure
           </p>
         </AnimatedContent>
 
@@ -61,10 +61,10 @@ function HeroSection() {
           delay={0.1}
         >
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
-            <span className="text-white">Automation for</span>
+            <span className="text-white">Less formatting.</span>
             <br />
             <span className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
-              Engineering Teams
+              More engineering.
             </span>
           </h1>
         </AnimatedContent>
