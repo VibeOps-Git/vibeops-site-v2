@@ -64,6 +64,14 @@ const foundingTeam: TeamMember[] = [
     email: "omair@vibeops.ca",
     bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflow that firms rely on with faster and more reliable client-specific automation.`,
   },
+  {
+    name: "Edmund Zhang",
+    role: "Director of Creative & Video",
+    focus: "Content, Media & Growth",
+    image: "/team/edmund-optimized.jpg",
+    email: "edmund@vibeops.ca",
+    bio: `Edmund leads VibeOps’ media production—turning technical work into clear, compelling visuals and campaigns. He directs promotional content, builds distribution strategy, and applies consumer psychology to ensure our messaging actually reaches and resonates with engineering decision-makers. From product demos to brand storytelling, he helps translate what we build into growth.`,
+  },
 ];
 
 const advisoryBoard: TeamMember[] = [
