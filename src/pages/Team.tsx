@@ -33,14 +33,6 @@ const foundingTeam: TeamMember[] = [
     bio: `Hrudai coordinates delivery, timelines, and implementation so firms can adopt automation without disrupting active projects. From onboarding templates to rollout across teams, he makes sure changes are controlled, traceable, and predictable.`,
   },
   {
-    name: "Eric Balanecki",
-    role: "Co-Founder & CTO",
-    focus: "Architecture & Automation Engine",
-    image: "/team/eric-optimized.jpg",
-    email: "eric@vibeops.ca",
-    bio: `Eric leads the technical architecture behind Reportly’s automation engine—from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
-  },
-  {
     name: "Felix Stewart",
     role: "Co-Founder & Head of Sales",
     focus: "Strategy & Partnerships",
@@ -56,6 +48,15 @@ const foundingTeam: TeamMember[] = [
     email: "gabriel@vibeops.ca",
     bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms—less formatting, fewer errors, and more time spent on real engineering.`,
   },
+  {
+    name: "Eric Balanecki",
+    role: "Co-Founder & CTO",
+    focus: "Architecture & Automation Engine",
+    image: "/team/eric-optimized.jpg",
+    email: "eric@vibeops.ca",
+    bio: `Eric leads the technical architecture behind Reportly’s automation engine—from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
+  },
+  {
   {
     name: "Qazi Omair Ahmed",
     role: "Co-Founder & Head of Engineering",
