@@ -57,7 +57,6 @@ const foundingTeam: TeamMember[] = [
     bio: `Eric leads the technical architecture behind Reportly’s automation engine—from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
   },
   {
-  {
     name: "Qazi Omair Ahmed",
     role: "Co-Founder & Head of Engineering",
     focus: "Systems Design & Product Delivery",
