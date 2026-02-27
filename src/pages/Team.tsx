@@ -38,7 +38,7 @@ const foundingTeam: TeamMember[] = [
     focus: "Strategy & Partnerships",
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
-    bio: `Felix works with principals and firm leaders to map the business upside of automation—time saved, risk reduced, and new services unlocked. He helps translate “we waste time on reports” into concrete ROI and partnership structures.`,
+    bio: `Felix works with principals and firm leaders to map the business upside of automation, time saved, risk reduced, and new services unlocked. He helps translate “we waste time on reports” into concrete ROI and partnership structures.`,
   },
   {
     name: "Gabriel Comla",
@@ -46,7 +46,7 @@ const foundingTeam: TeamMember[] = [
     focus: "Storytelling for Engineers",
     image: "/team/gabriel-optimized.jpg",
     email: "gabriel@vibeops.ca",
-    bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms—less formatting, fewer errors, and more time spent on real engineering.`,
+    bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms, less formatting, fewer errors, and more time spent on real engineering.`,
   },
   {
     name: "Eric Balanecki",
@@ -54,7 +54,7 @@ const foundingTeam: TeamMember[] = [
     focus: "Architecture & Automation Engine",
     image: "/team/eric-optimized.jpg",
     email: "eric@vibeops.ca",
-    bio: `Eric leads the technical architecture behind Reportly’s automation engine—from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
+    bio: `Eric leads the technical architecture behind Reportly’s automation engine, from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
   },
   {
     name: "Qazi Omair Ahmed",
@@ -62,7 +62,7 @@ const foundingTeam: TeamMember[] = [
     focus: "Systems Design & Product Delivery",
     image: "/team/omair-optimized.jpg",
     email: "omair@vibeops.ca",
-    bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflow that firms rely on with faster and more reliable client-specific automation.`,
+    bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry-leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflows that firms rely on with faster and more reliable client-specific automation.`,
   },
   {
     name: "Edmund Zhang",
@@ -70,7 +70,7 @@ const foundingTeam: TeamMember[] = [
     focus: "Content, Media & Growth",
     image: "/team/edmund-optimized.jpg",
     email: "edmund@vibeops.ca",
-    bio: `Edmund leads VibeOps’ media production—turning technical work into clear, compelling visuals and campaigns. He directs promotional content, builds distribution strategy, and applies consumer psychology to ensure our messaging actually reaches and resonates with engineering decision-makers. From product demos to brand storytelling, he helps translate what we build into growth.`,
+    bio: `Edmund leads VibeOps’ media production, turning technical work into clear, compelling visuals and campaigns. He directs promotional content, builds distribution strategy, and applies consumer psychology to ensure our messaging actually reaches and resonates with engineering decision-makers. From product demos to brand storytelling, he helps translate what we build into growth.`,
   },
 ];
 
@@ -218,7 +218,7 @@ export default function Team() {
             <div className="mb-10">
               <h2 className="text-2xl font-semibold text-white mb-2">Founding Team</h2>
               <p className="text-gray-400 text-sm">
-                Five founders, one goal: make civil engineering firms faster and less bogged down in paperwork.
+                Six founders, one goal: make civil engineering firms faster and less bogged down in paperwork.
               </p>
             </div>
           </AnimatedContent>
