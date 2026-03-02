@@ -16,8 +16,14 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
+import { usePageTracking } from "./hooks/usePageTracking";
 
 const queryClient = new QueryClient();
+
+function PageTracker() {
+  usePageTracking();
+  return null;
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -25,6 +31,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PageTracker />
         <ScrollToTop />
         <Layout>
           <Routes>
