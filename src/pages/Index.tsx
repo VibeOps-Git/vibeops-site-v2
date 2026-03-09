@@ -136,7 +136,6 @@ function HeroSection() {
 // =============================================================================
 // Trusted By Section
 // =============================================================================
-
 function TrustedBySection() {
   return (
     <Section className="py-12">
@@ -150,13 +149,25 @@ function TrustedBySection() {
         threshold={0.3}
       >
         <div className="text-center">
-          <p className="text-xs uppercase tracking-[0.25em] text-gray-500 mb-6">
+          <p className="mb-6 text-xs uppercase tracking-[0.25em] text-gray-500">
             Trusted by engineering teams at
           </p>
+
           <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
-            <span className="text-lg font-semibold text-gray-400">UBC Engineering</span>
-            <span className="text-lg font-semibold text-gray-400">Vancouver Consulting Firms</span>
-            <span className="text-lg font-semibold text-gray-400">Construction Teams</span>
+            <img
+              src="/clients/SenseEngineering.png"
+              alt="Sense Engineering"
+              className="h-8 w-auto object-contain"
+            />
+            <span className="text-lg font-semibold text-gray-400">
+              UBC Engineering
+            </span>
+            <span className="text-lg font-semibold text-gray-400">
+              Vancouver Consulting Firms
+            </span>
+            <span className="text-lg font-semibold text-gray-400">
+              Construction Teams
+            </span>
           </div>
         </div>
       </AnimatedContent>
