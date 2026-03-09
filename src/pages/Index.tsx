@@ -159,12 +159,6 @@ function TrustedBySection() {
               alt="Sense Engineering"
               className="h-8 w-auto object-contain"
             />
-            <span className="text-lg font-semibold text-gray-400">
-              Vancouver Consulting Firms
-            </span>
-            <span className="text-lg font-semibold text-gray-400">
-              Construction Teams
-            </span>
             <img
               src="/clients/ubc-eng.jpg"
               alt="UBC Engineering"
