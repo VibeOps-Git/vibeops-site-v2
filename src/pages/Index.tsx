@@ -154,17 +154,19 @@ function TrustedBySection() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
+            <span className="text-lg font-semibold text-gray-400">
+              Vancouver Consulting Firms
+            </span>
+            <img
+              src="/clients/ubc-eng.jpg"
+              alt="UBC Engineering"
+              className="h-8 w-auto object-contain"
+            />
             <img
               src="/clients/SenseEngineering.png"
               alt="Sense Engineering"
               className="h-8 w-auto object-contain"
             />
-            <span className="text-lg font-semibold text-gray-400">
-              UBC Engineering
-            </span>
-            <span className="text-lg font-semibold text-gray-400">
-              Vancouver Consulting Firms
-            </span>
             <span className="text-lg font-semibold text-gray-400">
               Construction Teams
             </span>
