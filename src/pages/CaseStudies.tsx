@@ -29,7 +29,7 @@ const reviews: Review[] = [
     "role": "Co-Founder, GrantFundPro",
     "context": "Bubble + Stripe checkout customization and responsive scaling support",
     "quote": "VibeOps helped us rapidly implement and customize a scalable checkout workflow within our platform. Their team was extremely responsive, solved several technical integration challenges quickly, and delivered a clean, functional implementation that allowed us to move forward without delays. We appreciated their ability to work collaboratively with our developers and translate requirements into practical solutions.",
-    "image": "/clients/jonathan.png"
+    "image": "/clients/jonathan.jpg"
   },
   {
     name: "Steve Lisle",
