@@ -69,8 +69,16 @@ const foundingTeam: TeamMember[] = [
     role: "Director of Creative & Video",
     focus: "Content, Media & Growth",
     image: "/team/edmund-optimized.jpg",
-    email: "edmund@vibeops.ca",
+    email: "team@vibeops.ca",
     bio: `Edmund leads VibeOps’ media production, turning technical work into clear, compelling visuals and campaigns. He directs promotional content, builds distribution strategy, and applies consumer psychology to ensure our messaging actually reaches and resonates with engineering decision-makers. From product demos to brand storytelling, he helps translate what we build into growth.`,
+  },
+  {
+    "name": "Diego Boilley",
+    "role": "Sales and Marketing Representative",
+    "focus": "Business Development & Industry Outreach",
+    "image": "/team/diego-optimized.png",
+    "email": "team@vibeops.ca",
+    "bio": "Diego supports VibeOps’ growth by connecting our engineering automation tools with the firms that need them most. With a background in civil engineering and hands-on construction experience at Ledcor, he brings practical industry insight into client conversations. He works across lead generation, proposal development, and customer discovery to help expand adoption of VibeOps’ infrastructure and engineering software solutions."
   },
 ];
 
