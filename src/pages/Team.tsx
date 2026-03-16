@@ -151,25 +151,46 @@ export default function Team() {
           threshold={0.15}
         >
           <div className="container mx-auto max-w-6xl">
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[rgba(10,10,20,0.6)]">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-white/10 bg-[rgba(10,10,20,0.85)]"
+              data-testid="team-banner"
+            >
               <TeamBannerImage />
 
               {/* Bottom gradient */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0f] to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-1/2 bg-gradient-to-t from-[#0a0a0f] to-transparent md:block" />
 
-              {/* Caption */}
-              <div className="absolute inset-x-4 md:inset-x-8 bottom-6 md:bottom-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              {/* Mobile caption */}
+              <div className="px-5 pb-5 pt-4 md:hidden">
                 <div>
                   <p className="text-xs uppercase tracking-[0.25em] text-gray-400 mb-1">
                     VibeOps Technologies Inc.
                   </p>
-                  <p className="text-xl md:text-2xl font-semibold text-white">
+                  <p className="text-xl font-semibold text-white">
                     Building software for engineering teams.
                   </p>
                 </div>
                 <Link
                   to="/contact"
-                  className="px-5 py-2 rounded-full bg-[#00ffcc] text-black font-semibold text-sm hover:bg-[#00ffcc]/90 transition-colors"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#00ffcc] px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-[#00ffcc]/90"
+                >
+                  Talk to the Team
+                </Link>
+              </div>
+
+              {/* Desktop caption */}
+              <div className="absolute inset-x-8 bottom-8 hidden flex-row items-end justify-between gap-4 md:flex">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.25em] text-gray-400 mb-1">
+                    VibeOps Technologies Inc.
+                  </p>
+                  <p className="text-2xl font-semibold text-white">
+                    Building software for engineering teams.
+                  </p>
+                </div>
+                <Link
+                  to="/contact"
+                  className="rounded-full bg-[#00ffcc] px-5 py-2 text-sm font-semibold text-black transition-colors hover:bg-[#00ffcc]/90"
                 >
                   Talk to the Team
                 </Link>
@@ -457,27 +478,29 @@ function TeamBannerImage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px]">
+    <div className="relative w-full px-4 pt-4 md:h-[500px] md:px-0 md:pt-0">
+      <div className="relative aspect-[1280/736] w-full overflow-hidden rounded-[1.25rem] md:h-full md:rounded-none">
       {/* Blur placeholder - shows immediately */}
-      <img
-        src="/team/full-team-pic-placeholder.jpg"
-        alt=""
-        aria-hidden="true"
-        className={`absolute inset-0 w-full h-full object-cover object-center scale-105 blur-sm transition-opacity duration-500 ${
-          isLoaded ? "opacity-0" : "opacity-100"
-        }`}
-      />
-      {/* Full image - fades in when loaded */}
-      <img
-        src="/team/full-team-pic-optimized.jpg"
-        alt="VibeOps founding team"
-        loading="eager"
-        decoding="async"
-        onLoad={() => setIsLoaded(true)}
-        className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
-      />
+        <img
+          src="/team/full-team-pic-placeholder.jpg"
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 h-full w-full bg-[rgba(10,10,20,0.85)] object-cover object-center scale-105 blur-sm transition-opacity duration-500 ${
+            isLoaded ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        {/* Full image - fades in when loaded */}
+        <img
+          src="/team/full-team-pic-optimized.jpg"
+          alt="VibeOps founding team"
+          loading="eager"
+          decoding="async"
+          onLoad={() => setIsLoaded(true)}
+          className={`absolute inset-0 h-full w-full bg-[rgba(10,10,20,0.85)] object-cover object-center transition-opacity duration-500 ${
+            isLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      </div>
     </div>
   );
 }

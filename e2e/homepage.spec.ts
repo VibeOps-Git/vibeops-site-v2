@@ -36,6 +36,44 @@ test.describe("Contact Page", () => {
   });
 });
 
+test.describe("Team Page", () => {
+  test("should keep the full team banner visible on mobile", async ({ page }) => {
+    await page.goto("/team");
+
+    const banner = page.getByTestId("team-banner");
+    await expect(banner).toBeVisible();
+
+    const bannerImage = banner.getByAltText(/vibeops founding team/i);
+    await expect(bannerImage).toBeVisible();
+
+    const bannerBounds = await banner.boundingBox();
+    const imageBounds = await bannerImage.boundingBox();
+
+    expect(bannerBounds).not.toBeNull();
+    expect(imageBounds).not.toBeNull();
+
+    expect(imageBounds!.height).toBeGreaterThan(300);
+    expect(imageBounds!.width).toBeLessThanOrEqual(bannerBounds!.width + 1);
+    expect(imageBounds!.height).toBeLessThanOrEqual(bannerBounds!.height + 1);
+
+    await expect(
+      page.getByRole("link", { name: /talk to the team/i }).first()
+    ).toBeVisible();
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const { documentElement, body } = document;
+      const maxScrollWidth = Math.max(
+        documentElement.scrollWidth,
+        body.scrollWidth
+      );
+
+      return maxScrollWidth > window.innerWidth;
+    });
+
+    expect(hasHorizontalOverflow).toBe(false);
+  });
+});
+
 test.describe("Footer Social Links", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
