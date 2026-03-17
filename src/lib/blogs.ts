@@ -4,6 +4,8 @@ export type BlogPost = {
   title: string;
   content: string;  // full HTML body only
   excerpt: string;
+  metaDescription: string;
+  ogImage?: string;
 };
 
 const blogModules = import.meta.glob("../pages/blogs/*.html", {
@@ -51,6 +53,31 @@ function extractTitle(fullHtml: string, fallback: string): string {
   return fallback;
 }
 
+// Extract meta description from HTML head
+function extractMetaDescription(fullHtml: string, fallback: string): string {
+  // Try name="description" content="..."
+  const match = fullHtml.match(/<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i);
+  if (match?.[1]) return match[1].trim();
+
+  // Try content="..." name="description" (alternate order)
+  const altMatch = fullHtml.match(/<meta\s+content=["']([^"']+)["']\s+name=["']description["']/i);
+  if (altMatch?.[1]) return altMatch[1].trim();
+
+  return fallback;
+}
+
+// Extract og:image from HTML head
+function extractOgImage(fullHtml: string): string | undefined {
+  const match = fullHtml.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i);
+  if (match?.[1]) return match[1].trim();
+
+  // Try content first (alternate order)
+  const altMatch = fullHtml.match(/<meta\s+content=["']([^"']+)["']\s+property=["']og:image["']/i);
+  if (altMatch?.[1]) return altMatch[1].trim();
+
+  return undefined;
+}
+
 const allPosts: BlogPost[] = Object.entries(blogModules).map(
   ([path, fullHtml]) => {
     const filename = path.split("/").pop() || "post.html";
@@ -60,12 +87,16 @@ const allPosts: BlogPost[] = Object.entries(blogModules).map(
     const excerptPlain = stripHtml(bodyHtml);
     const excerpt =
       excerptPlain.slice(0, 220) + (excerptPlain.length > 220 ? "..." : "");
+    const metaDescription = extractMetaDescription(fullHtml, excerpt);
+    const ogImage = extractOgImage(fullHtml);
 
     return {
       slug,
       title,
       content: bodyHtml, // ⬅ important: body HTML, not stripped
       excerpt,
+      metaDescription,
+      ogImage,
     };
   }
 );
