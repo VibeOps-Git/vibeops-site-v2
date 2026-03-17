@@ -25,7 +25,7 @@ const coFounders: TeamMember[] = [
     bio: `Civil engineering student turned software founder, focused on killing manual reporting in consulting firms. Zander leads product vision and works directly with engineers and partners to make sure Reportly fits real project workflows, not theoretical ones.`,
   },
   {
-    name: "Felix Stewart",
+    name: "Félix Stewart",
     role: "Co-Founder: Sales & Operations",
     focus: "Strategy & Partnerships",
     image: "/team/felix-optimized.jpg",
