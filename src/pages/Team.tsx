@@ -15,26 +15,18 @@ type TeamMember = {
   bio: string;
 };
 
-const foundingTeam: TeamMember[] = [
+const coFounders: TeamMember[] = [
   {
     name: "Zander Dent",
-    role: "Founder & CEO",
+    role: "Co-Founder & CEO",
     focus: "Civil Engineering Workflows",
     image: "/team/zander-optimized.jpg",
     email: "zander@vibeops.ca",
     bio: `Civil engineering student turned software founder, focused on killing manual reporting in consulting firms. Zander leads product vision and works directly with engineers and partners to make sure Reportly fits real project workflows, not theoretical ones.`,
   },
   {
-    name: "Hrudai Rajesh",
-    role: "Co-Founder & COO",
-    focus: "Implementation & Delivery",
-    image: "/team/hrudai-optimized.jpg",
-    email: "hrudai@vibeops.ca",
-    bio: `Hrudai coordinates delivery, timelines, and implementation so firms can adopt automation without disrupting active projects. From onboarding templates to rollout across teams, he makes sure changes are controlled, traceable, and predictable.`,
-  },
-  {
     name: "Felix Stewart",
-    role: "Co-Founder & Head of Sales",
+    role: "Co-Founder: Sales & Operations",
     focus: "Strategy & Partnerships",
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
@@ -65,20 +57,39 @@ const foundingTeam: TeamMember[] = [
     bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry-leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflows that firms rely on with faster and more reliable client-specific automation.`,
   },
   {
+    name: "Hrudai Rajesh",
+    role: "Co-Founder",
+    focus: "Implementation & Delivery",
+    image: "/team/hrudai-optimized.jpg",
+    email: "hrudai@vibeops.ca",
+    bio: `Hrudai helped coordinate delivery, timelines, and implementation during the first year so firms could adopt automation without disrupting active projects. From onboarding templates to rollout planning, he helped make early changes more controlled, traceable, and predictable.`,
+  },
+];
+
+const contributors: TeamMember[] = [
+  {
     name: "Edmund Zhang",
-    role: "Director of Creative & Video",
+    role: "Contributor · Creative & Video",
     focus: "Content, Media & Growth",
     image: "/team/edmund-optimized.jpg",
     email: "team@vibeops.ca",
-    bio: `Edmund leads VibeOps’ media production, turning technical work into clear, compelling visuals and campaigns. He directs promotional content, builds distribution strategy, and applies consumer psychology to ensure our messaging actually reaches and resonates with engineering decision-makers. From product demos to brand storytelling, he helps translate what we build into growth.`,
+    bio: `Edmund supported VibeOps’ media production and helped turn technical work into clear, compelling visuals and campaigns. He contributed to promotional content, demos, and brand storytelling that helped communicate what we were building.`,
   },
   {
-    "name": "Diego Boilley",
-    "role": "Sales and Marketing Representative",
-    "focus": "Business Development & Industry Outreach",
-    "image": "/team/diego-optimized.png",
-    "email": "team@vibeops.ca",
-    "bio": "Diego supports VibeOps’ growth by connecting our engineering automation tools with the firms that need them most. With a background in civil engineering and hands-on construction experience at Ledcor, he brings practical industry insight into client conversations. He works across lead generation, proposal development, and customer discovery to help expand adoption of VibeOps’ infrastructure and engineering software solutions."
+    name: "Diego Boilley",
+    role: "Contributor · Sales & Marketing",
+    focus: "Business Development & Industry Outreach",
+    image: "/team/diego-optimized.png",
+    email: "team@vibeops.ca",
+    bio: `Diego supported VibeOps’ growth by helping connect our engineering automation tools with the firms that needed them most. With a background in civil engineering and hands-on construction experience, he contributed to outreach, proposal development, and customer discovery.`,
+  },
+  {
+    name: "Ahnaf Chowdhury",
+    role: "Contributor · Marketing Content",
+    focus: "Content Creation & Campaign Support",
+    image: "/team/ahnaf.jpeg",
+    email: "team@vibeops.ca",
+    bio: `Ahnaf supported VibeOps’ marketing efforts by helping create and refine content that communicates complex engineering software in a clear and engaging way. He contributed to campaign development, social media content, and messaging that helped translate what we were building into material engineers and industry partners could quickly understand.`
   },
 ];
 
@@ -99,14 +110,6 @@ const advisoryBoard: TeamMember[] = [
     email: "noboru@civil.ubc.ca",
     bio: `Associate Professor of Teaching in Hydrotechnical Engineering at UBC with decades of experience across research, consulting, and teaching CIVL design projects. Nobo guides VibeOps on real project workflows, technical rigor, and how automation can fit cleanly into existing QA processes.`,
   },
-  /*{
-    name: "Dr. Puyan A. Zadeh",
-    role: "Advisor · Project & Construction Innovation",
-    focus: "BIM, VDC, and construction innovation workflows",
-    image: "/team/puyan.jpeg",
-    email: "info@pyramooninnovations.com",
-    bio: `Building innovation specialist, founder of Pyramoon Innovations, and Research Associate with UBC’s Project & Construction Management group. Puyan advises VibeOps on BIM-based coordination, IPD/Lean practices, and how AI-driven tools can plug into real AECO and VDC workflows.`,
-  }*/
 ];
 
 export default function Team() {
@@ -157,10 +160,8 @@ export default function Team() {
             >
               <TeamBannerImage />
 
-              {/* Bottom gradient */}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-1/2 bg-gradient-to-t from-[#0a0a0f] to-transparent md:block" />
 
-              {/* Mobile caption */}
               <div className="px-5 pb-5 pt-4 md:hidden">
                 <div>
                   <p className="text-xs uppercase tracking-[0.25em] text-gray-400 mb-1">
@@ -178,7 +179,6 @@ export default function Team() {
                 </Link>
               </div>
 
-              {/* Desktop caption */}
               <div className="absolute inset-x-8 bottom-8 hidden flex-row items-end justify-between gap-4 md:flex">
                 <div>
                   <p className="text-xs uppercase tracking-[0.25em] text-gray-400 mb-1">
@@ -220,10 +220,8 @@ export default function Team() {
             </p>
             <p className="text-gray-400">
               VibeOps exists to build{" "}
-              <span className="font-semibold text-white">
-                focused software
-              </span>
-              {" "}that fits real workflows—so teams can spend more time on actual engineering
+              <span className="font-semibold text-white">focused software</span>{" "}
+              that fits real workflows—so teams can spend more time on actual engineering
               and less time fighting their tools.
             </p>
           </div>
@@ -232,7 +230,7 @@ export default function Team() {
 
       <SectionDivider className="mx-auto max-w-5xl" />
 
-      {/* Founding Team */}
+      {/* Co-Founders */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <AnimatedContent
@@ -245,17 +243,59 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2">Founding Team</h2>
+              <h2 className="text-2xl font-semibold text-white mb-2">Co-Founders</h2>
               <p className="text-gray-400 text-sm">
-                Six founders, one goal: make civil engineering firms faster and less bogged down in paperwork.
+                The core team behind VibeOps and Reportly.
               </p>
             </div>
           </AnimatedContent>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {foundingTeam.map((member, idx) => (
+            {coFounders.map((member, idx) => (
               <AnimatedContent
-                key={member.email}
+                key={`${member.name}-${idx}`}
+                distance={50}
+                direction="vertical"
+                duration={0.6}
+                ease="power3.out"
+                initialOpacity={0}
+                animateOpacity
+                threshold={0.3}
+                delay={idx * 0.08}
+              >
+                <TeamCard member={member} />
+              </AnimatedContent>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider className="mx-auto max-w-5xl" />
+
+      {/* Contributors */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <AnimatedContent
+            distance={60}
+            direction="vertical"
+            duration={0.7}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            threshold={0.3}
+          >
+            <div className="mb-10">
+              <h2 className="text-2xl font-semibold text-white mb-2">Contributors</h2>
+              <p className="text-gray-400 text-sm">
+                People who helped build, shape, and support VibeOps along the way.
+              </p>
+            </div>
+          </AnimatedContent>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {contributors.map((member, idx) => (
+              <AnimatedContent
+                key={`${member.name}-${idx}`}
                 distance={50}
                 direction="vertical"
                 duration={0.6}
@@ -276,7 +316,7 @@ export default function Team() {
               initialOpacity={0}
               animateOpacity
               threshold={0.3}
-              delay={foundingTeam.length * 0.08}
+              delay={contributors.length * 0.08}
             >
               <JoinCard
                 title="Join the Team"
@@ -314,7 +354,7 @@ export default function Team() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {advisoryBoard.map((advisor, idx) => (
               <AnimatedContent
-                key={advisor.email}
+                key={`${advisor.name}-${idx}`}
                 distance={50}
                 direction="vertical"
                 duration={0.6}
@@ -350,7 +390,7 @@ export default function Team() {
 
       <SectionDivider className="mx-auto max-w-5xl" />
 
-      {/* Our Vibe / CTA */}
+      {/* CTA */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-5xl">
           <AnimatedContent
@@ -480,7 +520,6 @@ function TeamBannerImage() {
   return (
     <div className="relative w-full px-4 pt-4 md:h-[500px] md:px-0 md:pt-0">
       <div className="relative aspect-[1280/736] w-full overflow-hidden rounded-[1.25rem] md:h-full md:rounded-none">
-      {/* Blur placeholder - shows immediately */}
         <img
           src="/team/full-team-pic-placeholder.jpg"
           alt=""
@@ -489,7 +528,6 @@ function TeamBannerImage() {
             isLoaded ? "opacity-0" : "opacity-100"
           }`}
         />
-        {/* Full image - fades in when loaded */}
         <img
           src="/team/full-team-pic-optimized.jpg"
           alt="VibeOps founding team"
