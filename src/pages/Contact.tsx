@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
+import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -173,8 +174,14 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-24 pb-16 px-4 relative overflow-hidden">
-      {/* Tech Grid Background */}
+    <>
+      <SEO
+        title="Contact"
+        description="Get in touch with VibeOps. Book a strategy session or contact our team directly for engineering automation, custom software, and Reportly."
+        canonical="https://vibeops.ca/contact"
+      />
+      <div className="pt-24 pb-16 px-4 relative overflow-hidden">
+        {/* Tech Grid Background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div
           className="absolute inset-0"
@@ -513,7 +520,8 @@ export default function Contact() {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

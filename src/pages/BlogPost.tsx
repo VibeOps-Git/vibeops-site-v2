@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { getPostBySlug } from "@/lib/blogs";
+import { SEO } from "@/components/SEO";
 import Aurora from "../components/Aurora";
 import AnimatedContent from "../components/AnimatedContent";
 
@@ -28,26 +29,41 @@ export default function BlogPost() {
 
   if (!post) {
     return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="max-w-2xl mx-auto text-center space-y-4">
-          <h1 className="text-3xl font-bold">Post not found</h1>
-          <p className="text-muted-foreground">
-            The blog post you&apos;re looking for doesn&apos;t exist or was moved.
-          </p>
-          <Link to="/blog" className="btn-primary inline-block">
-            Back to Blog
-          </Link>
+      <>
+        <SEO
+          title="Post Not Found"
+          description="The blog post you're looking for doesn't exist."
+          noindex={true}
+        />
+        <div className="container mx-auto px-4 py-20">
+          <div className="max-w-2xl mx-auto text-center space-y-4">
+            <h1 className="text-3xl font-bold">Post not found</h1>
+            <p className="text-muted-foreground">
+              The blog post you&apos;re looking for doesn&apos;t exist or was moved.
+            </p>
+            <Link to="/blog" className="btn-primary inline-block">
+              Back to Blog
+            </Link>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-background">
-      {/* Aurora background */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
-        <Aurora
-          colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
+    <>
+      <SEO
+        title={post.title}
+        description={post.metaDescription}
+        canonical={`https://vibeops.ca/blog/${slug}`}
+        ogType="article"
+        ogImage={post.ogImage}
+      />
+      <div className="relative min-h-screen bg-background">
+        {/* Aurora background */}
+        <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
+          <Aurora
+            colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
           blend={0.45}
           amplitude={1.0}
           speed={0.6}
@@ -152,6 +168,7 @@ export default function BlogPost() {
           box-shadow: 0 28px 60px rgba(0,0,0,0.55);
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Star, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
+import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
@@ -279,9 +280,15 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
 
 export default function CaseStudies() {
   return (
-    <div className="pt-24">
-      {/* Hero */}
-      <section className="py-20 px-4">
+    <>
+      <SEO
+        title="Case Studies"
+        description="Client outcomes and portfolio projects. See how teams use VibeOps to automate workflows and build custom engineering software."
+        canonical="https://vibeops.ca/case-studies"
+      />
+      <div className="pt-24">
+        {/* Hero */}
+        <section className="py-20 px-4">
         <AnimatedContent
           distance={80}
           direction="vertical"
@@ -419,7 +426,8 @@ export default function CaseStudies() {
             </VibeCard>
           </AnimatedContent>
         </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

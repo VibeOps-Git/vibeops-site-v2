@@ -7,6 +7,7 @@ import {
   WhyVibeOpsSection,
   CTASection,
 } from "../components/reportly";
+import { SEO } from "@/components/SEO";
 
 /**
  * Reportly Landing Page
@@ -23,29 +24,36 @@ import {
  */
 export default function Reportly() {
   return (
-    <div className="relative">
-      {/* Section 1: Hero */}
-      <HeroSection />
+    <>
+      <SEO
+        title="Reportly"
+        description="Automated engineering report generation. Transform hours of manual formatting into minutes. Works with your existing Word templates, generates charts and tables from live data."
+        canonical="https://vibeops.ca/reportly"
+      />
+      <div className="relative">
+        {/* Section 1: Hero */}
+        <HeroSection />
 
-      {/* Section 2: Impact Metrics */}
-      <MetricsSection />
+        {/* Section 2: Impact Metrics */}
+        <MetricsSection />
 
-      {/* Section 3: Problem Statement */}
-      <ProblemSection />
+        {/* Section 3: Problem Statement */}
+        <ProblemSection />
 
-      {/* Section 4: iPad Showcase with sticky scroll */}
-      <ShowcaseSection />
+        {/* Section 4: iPad Showcase with sticky scroll */}
+        <ShowcaseSection />
 
-      {/* Section 5: Features & Competitive Advantages */}
-      <FeaturesSection />
+        {/* Section 5: Features & Competitive Advantages */}
+        <FeaturesSection />
 
-      {/* Section 6: Why VibeOps */}
-      <WhyVibeOpsSection />
+        {/* Section 6: Why VibeOps */}
+        <WhyVibeOpsSection />
 
-      {/* Section 7: Final CTA */}
-      <CTASection />
+        {/* Section 7: Final CTA */}
+        <CTASection />
 
-      {/* Section 8: Footer provided by Layout */}
-    </div>
+        {/* Section 8: Footer provided by Layout */}
+      </div>
+    </>
   );
 }
