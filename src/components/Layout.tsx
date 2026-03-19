@@ -18,6 +18,7 @@ const navLinks: NavLink[] = [
   { path: "/reportly", label: "Reportly", badge: "New" },
   { path: "/team", label: "Team" },
   { path: "/case-studies", label: "Case Studies" },
+  { path: "/blog", label: "Blog" },
   { path: "/contact", label: "Contact" },
 ];
 
