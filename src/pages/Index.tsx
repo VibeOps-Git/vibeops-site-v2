@@ -66,7 +66,7 @@ function HeroSection() {
           animateOpacity
           threshold={0.1}
         >
-          <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-6">
+          <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-4 sm:mb-6">
             Civil · Construction · Infrastructure
           </p>
         </AnimatedContent>
@@ -81,7 +81,7 @@ function HeroSection() {
           threshold={0.1}
           delay={0.1}
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-4 sm:mb-6">
             <span className="text-white">Less formatting.</span>
             <br />
             <span className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
@@ -100,10 +100,10 @@ function HeroSection() {
           threshold={0.1}
           delay={0.2}
         >
-          <p className="text-lg md:text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
             We automate reporting and workflows so engineers can focus on engineering.
           </p>
-          <p className="text-sm text-gray-500 mb-10">
+          <p className="text-sm text-gray-500 mb-6 sm:mb-10">
             Focused solutions that fit how your team actually works.
           </p>
         </AnimatedContent>
@@ -138,7 +138,7 @@ function HeroSection() {
           threshold={0.1}
           delay={0.4}
         >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-10 text-sm text-gray-500">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-6 sm:mt-10 text-sm text-gray-500">
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#00ffcc]" />
               Integrates with your existing tools
