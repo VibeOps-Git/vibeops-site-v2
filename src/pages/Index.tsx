@@ -161,7 +161,7 @@ function TrustedBySection() {
             Trusted by engineering teams at
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
+          <div className="flex flex-wrap items-center justify-center gap-8 opacity-40 mb-8">
             <img
               src="/clients/SenseEngineering.png"
               alt="Sense Engineering"
@@ -172,6 +172,28 @@ function TrustedBySection() {
               alt="UBC Engineering"
               className="h-8 w-auto object-contain"
             />
+          </div>
+
+          <p className="mb-6 text-xs uppercase tracking-[0.25em] text-gray-500">
+            Featured in
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 rounded-full border border-white/10 bg-white/5 text-gray-300 hover:text-[#00ffcc] hover:border-[#00ffcc]/30 hover:bg-[#00ffcc]/5 transition-all"
+            >
+              UBC 2026 Investor Showcase ↗
+            </a>
+            <a
+              href="https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 rounded-full border border-white/10 bg-white/5 text-gray-300 hover:text-[#00ffcc] hover:border-[#00ffcc]/30 hover:bg-[#00ffcc]/5 transition-all"
+            >
+              Venture Founder Cohort ↗
+            </a>
           </div>
         </div>
       </AnimatedContent>
