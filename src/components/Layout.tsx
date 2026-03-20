@@ -221,7 +221,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 rel="noopener noreferrer"
                 className="hover:text-[#00ffcc] transition-colors"
               >
-                UBC Innovation
+                UBC Investor Showcase
+              </a>
+              <a
+                href="https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#00ffcc] transition-colors"
+              >
+                Venture Cohort
               </a>
             </div>
             <div className="flex items-center gap-4" data-testid="social-links">
