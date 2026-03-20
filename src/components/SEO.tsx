@@ -10,7 +10,7 @@ interface SEOProps {
 }
 
 const SITE_NAME = 'VibeOps Technologies';
-const SITE_URL = 'https://vibeops.ca';
+const SITE_URL = 'https://www.vibeops.ca';
 const DEFAULT_OG_IMAGE = '/Logo-blk-hrzntl.jpeg';
 
 export function SEO({

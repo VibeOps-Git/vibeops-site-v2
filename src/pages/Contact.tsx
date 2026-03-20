@@ -178,7 +178,7 @@ export default function Contact() {
       <SEO
         title="Contact"
         description="Get in touch with VibeOps. Book a strategy session or contact our team directly for engineering automation, custom software, and Reportly."
-        canonical="https://vibeops.ca/contact"
+        canonical="https://www.vibeops.ca/contact"
       />
       <div className="pt-24 pb-16 px-4 relative overflow-hidden">
         {/* Tech Grid Background */}

@@ -17,7 +17,7 @@ export default function Index() {
       <SEO
         title="VibeOps Technologies"
         description="Engineering automation for civil, construction, and infrastructure teams. We automate reporting and workflows so engineers can focus on engineering."
-        canonical="https://vibeops.ca/"
+        canonical="https://www.vibeops.ca/"
       />
       <div className="pt-20">
         <HeroSection />

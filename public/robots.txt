@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://vibeops.ca/sitemap.xml
+Sitemap: https://www.vibeops.ca/sitemap.xml

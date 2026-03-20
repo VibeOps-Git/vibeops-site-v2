@@ -55,7 +55,7 @@ export default function BlogPost() {
       <SEO
         title={post.title}
         description={post.metaDescription}
-        canonical={`https://vibeops.ca/blog/${slug}`}
+        canonical={`https://www.vibeops.ca/blog/${slug}`}
         ogType="article"
         ogImage={post.ogImage}
       />

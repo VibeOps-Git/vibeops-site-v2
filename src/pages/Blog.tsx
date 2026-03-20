@@ -25,7 +25,7 @@ export default function Blog() {
       <SEO
         title="Blog - Lab Notes"
         description="Practical examples, implementation notes, and experiments from VibeOps prototypes, estimators, and automation tests."
-        canonical="https://vibeops.ca/blog"
+        canonical="https://www.vibeops.ca/blog"
       />
       <div className="pt-24">
         {/* Hero */}
