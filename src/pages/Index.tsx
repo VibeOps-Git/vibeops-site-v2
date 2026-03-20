@@ -10,6 +10,21 @@ import { Section, SectionWithHeader, SectionDivider } from '@/components/ui/Sect
 import { GallerySection3D, ContentOverlay } from '../components/3d';
 import { ProcessTimeline } from '@/components/process/ProcessTimeline';
 
+const pressLinks = [
+  {
+    label: "UBC Investor Showcase",
+    url: "https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase",
+  },
+  {
+    label: "Venture Founder Cohort",
+    url: "https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort",
+  },
+];
+
+const partnerLogos = [
+  { src: "/clients/SenseEngineering.png", alt: "Sense Engineering" },
+  { src: "/clients/ubc-eng.jpg", alt: "UBC Engineering" },
+];
 
 export default function Index() {
   return (
@@ -21,8 +36,6 @@ export default function Index() {
       />
       <div className="pt-20">
         <HeroSection />
-        <SectionDivider className="mx-auto max-w-5xl" />
-        <TrustedBySection />
         <SectionDivider className="mx-auto max-w-5xl" />
         <ServicesSection />
         <SectionDivider className="mx-auto max-w-5xl" />
@@ -42,8 +55,8 @@ export default function Index() {
 
 function HeroSection() {
   return (
-    <section className="min-h-[95vh] flex items-center justify-center px-4 pt-20">
-      <div className="text-center max-w-5xl mx-auto">
+    <section className="min-h-[90vh] flex flex-col justify-center px-4 pt-8 sm:pt-20 pb-6 sm:pb-12">
+      <div className="text-center max-w-5xl mx-auto flex-1 flex flex-col justify-center">
         <AnimatedContent
           distance={100}
           direction="vertical"
@@ -53,7 +66,7 @@ function HeroSection() {
           animateOpacity
           threshold={0.1}
         >
-          <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-6">
+          <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-4 sm:mb-6">
             Civil · Construction · Infrastructure
           </p>
         </AnimatedContent>
@@ -68,7 +81,7 @@ function HeroSection() {
           threshold={0.1}
           delay={0.1}
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-4 sm:mb-6">
             <span className="text-white">Less formatting.</span>
             <br />
             <span className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
@@ -87,10 +100,10 @@ function HeroSection() {
           threshold={0.1}
           delay={0.2}
         >
-          <p className="text-lg md:text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
             We automate reporting and workflows so engineers can focus on engineering.
           </p>
-          <p className="text-sm text-gray-500 mb-10">
+          <p className="text-sm text-gray-500 mb-6 sm:mb-10">
             Focused solutions that fit how your team actually works.
           </p>
         </AnimatedContent>
@@ -125,7 +138,7 @@ function HeroSection() {
           threshold={0.1}
           delay={0.4}
         >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-10 text-sm text-gray-500">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-6 sm:mt-10 text-sm text-gray-500">
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#00ffcc]" />
               Integrates with your existing tools
@@ -137,45 +150,62 @@ function HeroSection() {
           </div>
         </AnimatedContent>
       </div>
-    </section>
-  );
-}
 
-// =============================================================================
-// Trusted By Section
-// =============================================================================
-function TrustedBySection() {
-  return (
-    <Section className="py-12">
+      {/* Social Proof */}
       <AnimatedContent
-        distance={40}
+        distance={20}
         direction="vertical"
         duration={0.8}
         ease="power3.out"
         initialOpacity={0}
         animateOpacity
-        threshold={0.3}
+        threshold={0.1}
+        delay={0.5}
       >
-        <div className="text-center">
-          <p className="mb-6 text-xs uppercase tracking-[0.25em] text-gray-500">
-            Trusted by engineering teams at
-          </p>
+        <div className="text-center mt-auto pt-4 sm:pt-8">
+          {/* Trusted By - Partner Logos */}
+          <div className="mb-6">
+            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-4">
+              Trusted By
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              {partnerLogos.map((logo) => (
+                <img
+                  key={logo.alt}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-6 w-auto object-contain opacity-50 hover:opacity-80 transition-opacity"
+                />
+              ))}
+            </div>
+          </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
-            <img
-              src="/clients/SenseEngineering.png"
-              alt="Sense Engineering"
-              className="h-8 w-auto object-contain"
-            />
-            <img
-              src="/clients/ubc-eng.jpg"
-              alt="UBC Engineering"
-              className="h-8 w-auto object-contain"
-            />
+          {/* Featured In - Press Links */}
+          <div>
+            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-3">
+              Featured In
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+              {pressLinks.map((link, index) => (
+                <span key={link.url} className="flex items-center">
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs uppercase tracking-[0.15em] text-gray-400 hover:text-[#00ffcc] transition-colors"
+                  >
+                    {link.label} ↗
+                  </a>
+                  {index < pressLinks.length - 1 && (
+                    <span className="hidden sm:inline mx-3 text-gray-600">·</span>
+                  )}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </AnimatedContent>
-    </Section>
+    </section>
   );
 }
 

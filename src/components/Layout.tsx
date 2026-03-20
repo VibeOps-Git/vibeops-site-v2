@@ -214,6 +214,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link to="/terms" className="hover:text-[#00ffcc] transition-colors">
                 Terms
               </Link>
+              <span className="text-gray-600">|</span>
+              <a
+                href="https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#00ffcc] transition-colors"
+              >
+                UBC Investor Showcase
+              </a>
+              <a
+                href="https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#00ffcc] transition-colors"
+              >
+                Venture Cohort
+              </a>
             </div>
             <div className="flex items-center gap-4" data-testid="social-links">
               <a
