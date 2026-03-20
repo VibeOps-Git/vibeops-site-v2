@@ -1,6 +1,7 @@
 // src/pages/Blog.tsx
 import { Link } from "react-router-dom";
 import { getAllPosts } from "@/lib/blogs";
+import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
@@ -20,8 +21,14 @@ export default function Blog() {
   }
 
   return (
-    <div className="pt-24">
-      {/* Hero */}
+    <>
+      <SEO
+        title="Blog - Lab Notes"
+        description="Practical examples, implementation notes, and experiments from VibeOps prototypes, estimators, and automation tests."
+        canonical="https://vibeops.ca/blog"
+      />
+      <div className="pt-24">
+        {/* Hero */}
       <section className="py-20 px-4">
         <AnimatedContent
           distance={80}
@@ -192,7 +199,8 @@ export default function Blog() {
             </AnimatedContent>
           </section>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

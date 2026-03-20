@@ -1,5 +1,6 @@
 import { FileText, Wrench, BarChart3, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionWithHeader, SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
@@ -63,9 +64,15 @@ export default function Services() {
   ];
 
   return (
-    <div className="pt-24">
-      {/* Hero */}
-      <section className="py-20 px-4">
+    <>
+      <SEO
+        title="Services"
+        description="Four types of engineering automation: Report Automation, Workflow Automation, Engineering Dashboards, and Internal Tools. Pick the one that solves your biggest bottleneck."
+        canonical="https://vibeops.ca/services"
+      />
+      <div className="pt-24">
+        {/* Hero */}
+        <section className="py-20 px-4">
         <AnimatedContent
           distance={80}
           direction="vertical"
@@ -131,6 +138,7 @@ export default function Services() {
           </AnimatedContent>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

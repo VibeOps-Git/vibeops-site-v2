@@ -1,12 +1,19 @@
 // src/pages/PrivacyPolicy.tsx
 
+import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { Section } from "../components/ui/Section";
 
 export default function PrivacyPolicy() {
   return (
-    <div className="pt-24 pb-16">
-      <Section>
+    <>
+      <SEO
+        title="Privacy Policy"
+        description="VibeOps Technologies Inc. privacy policy. Learn how we collect, use, and protect your personal information."
+        canonical="https://vibeops.ca/privacy"
+      />
+      <div className="pt-24 pb-16">
+        <Section>
         <AnimatedContent
           distance={60}
           direction="vertical"
@@ -236,7 +243,8 @@ export default function PrivacyPolicy() {
             </div>
           </div>
         </AnimatedContent>
-      </Section>
-    </div>
+        </Section>
+      </div>
+    </>
   );
 }

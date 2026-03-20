@@ -1,12 +1,19 @@
 // src/pages/Terms.tsx
 
+import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { Section } from "../components/ui/Section";
 
 export default function Terms() {
   return (
-    <div className="pt-24 pb-16">
-      <Section>
+    <>
+      <SEO
+        title="Terms of Service"
+        description="VibeOps Technologies Inc. subscription agreement and terms of service. Governs access to and use of Reportly and other VibeOps services."
+        canonical="https://vibeops.ca/terms"
+      />
+      <div className="pt-24 pb-16">
+        <Section>
         <AnimatedContent
           distance={60}
           direction="vertical"
@@ -292,7 +299,8 @@ export default function Terms() {
             </div>
           </div>
         </AnimatedContent>
-      </Section>
-    </div>
+        </Section>
+      </div>
+    </>
   );
 }

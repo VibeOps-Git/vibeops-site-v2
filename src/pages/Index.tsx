@@ -1,6 +1,7 @@
 // src/pages/Index.tsx
 
 import { FileText, Wrench, BarChart3, Layers, ArrowRight, Check } from 'lucide-react';
+import { SEO } from '@/components/SEO';
 import { ReportlyHomepagePreview } from '@/components/ReportlyHomepagePreview';
 import AnimatedContent from '../components/AnimatedContent';
 import { VibeCard } from '@/components/ui/VibeCard';
@@ -12,19 +13,26 @@ import { ProcessTimeline } from '@/components/process/ProcessTimeline';
 
 export default function Index() {
   return (
-    <div className="pt-20">
-      <HeroSection />
-      <SectionDivider className="mx-auto max-w-5xl" />
-      <TrustedBySection />
-      <SectionDivider className="mx-auto max-w-5xl" />
-      <ServicesSection />
-      <SectionDivider className="mx-auto max-w-5xl" />
-      <ReportlySection />
-      <SectionDivider className="mx-auto max-w-5xl" />
-      <ProcessSection />
-      <SectionDivider className="mx-auto max-w-5xl" />
-      <CTASection />
-    </div>
+    <>
+      <SEO
+        title="VibeOps Technologies"
+        description="Engineering automation for civil, construction, and infrastructure teams. We automate reporting and workflows so engineers can focus on engineering."
+        canonical="https://vibeops.ca/"
+      />
+      <div className="pt-20">
+        <HeroSection />
+        <SectionDivider className="mx-auto max-w-5xl" />
+        <TrustedBySection />
+        <SectionDivider className="mx-auto max-w-5xl" />
+        <ServicesSection />
+        <SectionDivider className="mx-auto max-w-5xl" />
+        <ReportlySection />
+        <SectionDivider className="mx-auto max-w-5xl" />
+        <ProcessSection />
+        <SectionDivider className="mx-auto max-w-5xl" />
+        <CTASection />
+      </div>
+    </>
   );
 }
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard } from "../components/ui/VibeCard";
@@ -114,9 +115,15 @@ const advisoryBoard: TeamMember[] = [
 
 export default function Team() {
   return (
-    <div className="pt-24">
-      {/* Hero */}
-      <section className="py-16 px-4">
+    <>
+      <SEO
+        title="Team"
+        description="Meet the team building VibeOps. We build custom software for engineering and construction teams—reports, dashboards, field data tools, and internal applications."
+        canonical="https://vibeops.ca/team"
+      />
+      <div className="pt-24">
+        {/* Hero */}
+        <section className="py-16 px-4">
         <AnimatedContent
           distance={80}
           direction="vertical"
@@ -444,7 +451,8 @@ export default function Team() {
           </AnimatedContent>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }
 
