@@ -10,7 +10,7 @@ export default function Terms() {
       <SEO
         title="Terms of Service"
         description="VibeOps Technologies Inc. subscription agreement and terms of service. Governs access to and use of Reportly and other VibeOps services."
-        canonical="https://vibeops.ca/terms"
+        canonical="https://www.vibeops.ca/terms"
       />
       <div className="pt-24 pb-16">
         <Section>

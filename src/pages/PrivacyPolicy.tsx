@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
       <SEO
         title="Privacy Policy"
         description="VibeOps Technologies Inc. privacy policy. Learn how we collect, use, and protect your personal information."
-        canonical="https://vibeops.ca/privacy"
+        canonical="https://www.vibeops.ca/privacy"
       />
       <div className="pt-24 pb-16">
         <Section>

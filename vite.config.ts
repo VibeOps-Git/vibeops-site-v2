@@ -18,7 +18,7 @@ function sitemapPlugin(): Plugin {
   return {
     name: "generate-sitemap",
     closeBundle() {
-      const SITE_URL = "https://vibeops.ca";
+      const SITE_URL = "https://www.vibeops.ca";
 
       const staticRoutes = [
         "/",

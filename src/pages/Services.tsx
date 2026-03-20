@@ -68,7 +68,7 @@ export default function Services() {
       <SEO
         title="Services"
         description="Four types of engineering automation: Report Automation, Workflow Automation, Engineering Dashboards, and Internal Tools. Pick the one that solves your biggest bottleneck."
-        canonical="https://vibeops.ca/services"
+        canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
         {/* Hero */}

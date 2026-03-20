@@ -284,7 +284,7 @@ export default function CaseStudies() {
       <SEO
         title="Case Studies"
         description="Client outcomes and portfolio projects. See how teams use VibeOps to automate workflows and build custom engineering software."
-        canonical="https://vibeops.ca/case-studies"
+        canonical="https://www.vibeops.ca/case-studies"
       />
       <div className="pt-24">
         {/* Hero */}

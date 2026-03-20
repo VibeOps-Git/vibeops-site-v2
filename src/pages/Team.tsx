@@ -119,7 +119,7 @@ export default function Team() {
       <SEO
         title="Team"
         description="Meet the team building VibeOps. We build custom software for engineering and construction teams—reports, dashboards, field data tools, and internal applications."
-        canonical="https://vibeops.ca/team"
+        canonical="https://www.vibeops.ca/team"
       />
       <div className="pt-24">
         {/* Hero */}
