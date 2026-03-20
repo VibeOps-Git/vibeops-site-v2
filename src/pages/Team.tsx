@@ -14,6 +14,7 @@ type TeamMember = {
   image: string;
   email: string;
   bio: string;
+  linkedin?: string;
 };
 
 const coFounders: TeamMember[] = [
@@ -23,6 +24,7 @@ const coFounders: TeamMember[] = [
     focus: "Civil Engineering Workflows",
     image: "/team/zander-optimized.jpg",
     email: "zander@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/zander-dent/",
     bio: `Civil engineering student turned software founder, focused on killing manual reporting in consulting firms. Zander leads product vision and works directly with engineers and partners to make sure Reportly fits real project workflows, not theoretical ones.`,
   },
   {
@@ -31,6 +33,7 @@ const coFounders: TeamMember[] = [
     focus: "Strategy & Partnerships",
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/felix-stewart-67007219a/",
     bio: `Felix works with principals and firm leaders to map the business upside of automation, time saved, risk reduced, and new services unlocked. He helps translate “we waste time on reports” into concrete ROI and partnership structures.`,
   },
   {
@@ -39,6 +42,7 @@ const coFounders: TeamMember[] = [
     focus: "Storytelling for Engineers",
     image: "/team/gabriel-optimized.jpg",
     email: "gabriel@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/gabrielcomla/",
     bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms, less formatting, fewer errors, and more time spent on real engineering.`,
   },
   {
@@ -47,6 +51,7 @@ const coFounders: TeamMember[] = [
     focus: "Architecture & Automation Engine",
     image: "/team/eric-optimized.jpg",
     email: "eric@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/eric-balanecki/",
     bio: `Eric leads the technical architecture behind Reportly’s automation engine, from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
   },
   {
@@ -55,6 +60,7 @@ const coFounders: TeamMember[] = [
     focus: "Systems Design & Product Delivery",
     image: "/team/omair-optimized.jpg",
     email: "omair@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/qazi-omair-ahmed/",
     bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry-leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflows that firms rely on with faster and more reliable client-specific automation.`,
   },
   {
@@ -63,6 +69,7 @@ const coFounders: TeamMember[] = [
     focus: "Implementation & Delivery",
     image: "/team/hrudai-optimized.jpg",
     email: "hrudai@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/hrudai-rajesh/",
     bio: `Hrudai helped coordinate delivery, timelines, and implementation during the first year so firms could adopt automation without disrupting active projects. From onboarding templates to rollout planning, he helped make early changes more controlled, traceable, and predictable.`,
   },
 ];
@@ -74,7 +81,8 @@ const contributors: TeamMember[] = [
     focus: "Content, Media & Growth",
     image: "/team/edmund-optimized.jpg",
     email: "team@vibeops.ca",
-    bio: `Edmund supported VibeOps’ media production and helped turn technical work into clear, compelling visuals and campaigns. He contributed to promotional content, demos, and brand storytelling that helped communicate what we were building.`,
+    linkedin: "https://www.linkedin.com/in/edmund-zhang-business/",
+    bio: `Edmund supports VibeOps’ media production and helps turn technical work into clear, compelling visuals and campaigns. He contributes to promotional content, demos, and brand storytelling that helps communicate what we’re building.`,
   },
   {
     name: "Diego Boilley",
@@ -82,7 +90,8 @@ const contributors: TeamMember[] = [
     focus: "Business Development & Industry Outreach",
     image: "/team/diego-optimized.png",
     email: "team@vibeops.ca",
-    bio: `Diego supported VibeOps’ growth by helping connect our engineering automation tools with the firms that needed them most. With a background in civil engineering and hands-on construction experience, he contributed to outreach, proposal development, and customer discovery.`,
+    linkedin: "https://www.linkedin.com/in/diego-boilley-2b269728b/",
+    bio: `Diego supports VibeOps’ growth by helping connect our engineering automation tools with the firms that need them most. With a background in civil engineering and hands-on construction experience, he contributes to outreach, proposal development, and customer discovery.`,
   },
   {
     name: "Ahnaf Chowdhury",
@@ -90,7 +99,8 @@ const contributors: TeamMember[] = [
     focus: "Content Creation & Campaign Support",
     image: "/team/ahnaf.jpeg",
     email: "team@vibeops.ca",
-    bio: `Ahnaf supported VibeOps’ marketing efforts by helping create and refine content that communicates complex engineering software in a clear and engaging way. He contributed to campaign development, social media content, and messaging that helped translate what we were building into material engineers and industry partners could quickly understand.`
+    linkedin: "https://www.linkedin.com/in/ahnafchowdhury107/",
+    bio: `Ahnaf supports VibeOps’ marketing efforts by helping create and refine content that communicates complex engineering software in a clear and engaging way. He contributes to campaign development, social media content, and messaging that helps translate what we’re building into material engineers and industry partners can quickly understand.`,
   },
 ];
 
@@ -101,6 +111,7 @@ const advisoryBoard: TeamMember[] = [
     focus: "Innovation, pedagogy, and venture building",
     image: "/team/tamara.jpeg",
     email: "tamara.etmannski@ubc.ca",
+    linkedin: "https://www.linkedin.com/in/tamara-r-e-2180632b/",
     bio: `Assistant Professor of Teaching in Civil Engineering and Co-Director of Environmental Engineering at UBC. Tamara advises VibeOps on venture strategy, leadership, and making sure our tools actually support how students and practitioners learn, work, and adopt new tech.`,
   },
   {
@@ -114,6 +125,8 @@ const advisoryBoard: TeamMember[] = [
 ];
 
 export default function Team() {
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+
   return (
     <>
       <SEO
@@ -270,7 +283,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} />
+                <TeamCard member={member} onOpen={() => setSelectedMember(member)} />
               </AnimatedContent>
             ))}
           </div>
@@ -312,7 +325,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} />
+                <TeamCard member={member} onOpen={() => setSelectedMember(member)} />
               </AnimatedContent>
             ))}
             <AnimatedContent
@@ -371,7 +384,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={advisor} />
+                <TeamCard member={advisor} onOpen={() => setSelectedMember(advisor)} />
               </AnimatedContent>
             ))}
             <AnimatedContent
@@ -452,11 +465,21 @@ export default function Team() {
         </div>
       </section>
       </div>
+            <ProfileModal
+        member={selectedMember}
+        onClose={() => setSelectedMember(null)}
+      />
     </>
   );
 }
 
-function TeamCard({ member }: { member: TeamMember }) {
+function TeamCard({
+  member,
+  onOpen,
+}: {
+  member: TeamMember;
+  onOpen: () => void;
+}) {
   return (
     <VibeCard
       variant="glow"
@@ -471,20 +494,41 @@ function TeamCard({ member }: { member: TeamMember }) {
           className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
         />
       </div>
+
       <h3 className="text-lg font-semibold text-white">{member.name}</h3>
       <p className="text-gray-400 mt-1 text-sm font-medium">{member.role}</p>
+
       <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-2">
         <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
           {member.focus}
         </p>
       </div>
-      <p className="text-sm text-gray-300 mt-4 flex-1 leading-relaxed">{member.bio}</p>
-      <a
-        href={`mailto:${member.email}`}
-        className="mt-4 text-[0.7rem] uppercase tracking-[0.2em] font-medium text-[#00ffcc] hover:text-[#00ffcc]/80 transition-colors"
-      >
-        {member.email}
-      </a>
+
+      <p className="text-sm text-gray-300 mt-4 flex-1 leading-relaxed">
+        {member.bio}
+      </p>
+
+      <div className="mt-6 flex w-full flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={onOpen}
+          className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
+        >
+          View Profile
+        </button>
+
+        {member.linkedin && (
+          <a
+            href={member.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View ${member.name} on LinkedIn`}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+          >
+            LinkedIn
+          </a>
+        )}
+      </div>
     </VibeCard>
   );
 }
@@ -519,6 +563,85 @@ function JoinCard({
         {ctaLabel}
       </Link>
     </VibeCard>
+  );
+}
+
+function ProfileModal({
+  member,
+  onClose,
+}: {
+  member: TeamMember | null;
+  onClose: () => void;
+}) {
+  if (!member) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-2xl rounded-3xl border border-[#00ffcc]/20 bg-[#0a0a12] p-6 md:p-8 shadow-2xl shadow-[#00ffcc]/10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-gray-300 transition-colors hover:border-[#00ffcc]/40 hover:text-[#00ffcc]"
+          aria-label="Close profile modal"
+        >
+          ×
+        </button>
+
+        <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-6">
+          <div className="relative h-28 w-28 shrink-0 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5">
+            <img
+              src={member.image}
+              alt={member.name}
+              className="h-full w-full object-cover object-center"
+            />
+          </div>
+
+          <div className="flex-1">
+            <p className="text-xs uppercase tracking-[0.25em] text-[#00ffcc] mb-2">
+              Team Profile
+            </p>
+            <h3 className="text-2xl font-semibold text-white">{member.name}</h3>
+            <p className="text-gray-400 mt-1">{member.role}</p>
+
+            <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-4">
+              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+                {member.focus}
+              </p>
+            </div>
+
+            <p className="mt-5 text-sm md:text-base leading-relaxed text-gray-300">
+              {member.bio}
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
+              <a
+                href={`mailto:${member.email}`}
+                className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
+              >
+                {member.email}
+              </a>
+
+              {member.linkedin && (
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+                >
+                  View LinkedIn
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

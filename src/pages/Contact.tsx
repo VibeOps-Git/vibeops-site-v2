@@ -113,29 +113,6 @@ Thanks,
 [Role]
 [Company]`,
   },
-  {
-    label: "Fundraising & Investor Relations",
-    person: "Hrudai Rajesh",
-    email: "hrudai@vibeops.ca",
-    blurb:
-      "Investor conversations, fundraising, and how VibeOps is structuring growth and delivery.",
-    subject: "VibeOps — Fundraising / Investor Inquiry",
-    body: `Hi Hrudai,
-
-I'd like to connect regarding VibeOps and your fundraising / investor plans.
-
-Quick context:
-- Who I am:
-- How I heard about VibeOps:
-- What I'm interested in (round details, traction, product, etc.):
-
-Looking forward to chatting.
-
-Best,
-[Your Name]
-[Role]
-[Company]`,
-  },
 ];
 
 type ContactMode = "initial" | "calendar" | "email";
