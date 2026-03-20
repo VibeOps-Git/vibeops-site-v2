@@ -55,7 +55,7 @@ export default function Index() {
 
 function HeroSection() {
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center px-4 pt-20 pb-12">
+    <section className="min-h-[90vh] flex flex-col justify-center px-4 pt-8 sm:pt-20 pb-6 sm:pb-12">
       <div className="text-center max-w-5xl mx-auto flex-1 flex flex-col justify-center">
         <AnimatedContent
           distance={100}
@@ -162,7 +162,7 @@ function HeroSection() {
         threshold={0.1}
         delay={0.5}
       >
-        <div className="text-center mt-auto pt-8">
+        <div className="text-center mt-auto pt-4 sm:pt-8">
           {/* Trusted By - Partner Logos */}
           <div className="mb-6">
             <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-4">
