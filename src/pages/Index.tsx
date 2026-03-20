@@ -185,7 +185,7 @@ function HeroSection() {
             <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-3">
               Featured In
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
               {pressLinks.map((link, index) => (
                 <span key={link.url} className="flex items-center">
                   <a
@@ -197,7 +197,7 @@ function HeroSection() {
                     {link.label} ↗
                   </a>
                   {index < pressLinks.length - 1 && (
-                    <span className="mx-3 text-gray-600">·</span>
+                    <span className="hidden sm:inline mx-3 text-gray-600">·</span>
                   )}
                 </span>
               ))}
