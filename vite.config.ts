@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import mdx from "@mdx-js/rollup";
 import path from "path";
 import { readdirSync, writeFileSync } from "fs";
 import { componentTagger } from "lovable-tagger";
@@ -34,9 +35,9 @@ function sitemapPlugin(): Plugin {
 
       // Get blog slugs from blog files
       const blogsDir = path.resolve(__dirname, "src/pages/blogs");
-      const blogFiles = readdirSync(blogsDir).filter((f) => f.endsWith(".html"));
+      const blogFiles = readdirSync(blogsDir).filter((f) => f.endsWith(".mdx"));
       const blogRoutes = blogFiles.map(
-        (f) => `/blog/${f.replace(".html", "")}`
+        (f) => `/blog/${f.replace(".mdx", "")}`
       );
 
       const allRoutes = [...staticRoutes, ...blogRoutes];
@@ -69,6 +70,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
+    mdx(),
     react(),
     mode === "development" && componentTagger(),
     htmlEnvPlugin(),
