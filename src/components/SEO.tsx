@@ -13,6 +13,39 @@ const SITE_NAME = 'VibeOps Technologies';
 const SITE_URL = 'https://www.vibeops.ca';
 const DEFAULT_OG_IMAGE = '/Logo-blk-hrzntl.jpeg';
 
+function generateArticleSchema(props: {
+  title: string;
+  description: string;
+  canonical: string;
+  imageUrl: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: props.title,
+    description: props.description,
+    image: props.imageUrl,
+    url: props.canonical,
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/Logo-blk-hrzntl.jpeg`,
+      },
+    },
+    author: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': props.canonical,
+    },
+  };
+}
+
 export function SEO({
   title,
   description,
@@ -40,6 +73,16 @@ export function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
+      {ogType === 'article' && canonical && (
+        <script type="application/ld+json">
+          {JSON.stringify(generateArticleSchema({
+            title: fullTitle,
+            description,
+            canonical,
+            imageUrl,
+          }))}
+        </script>
+      )}
     </Helmet>
   );
 }

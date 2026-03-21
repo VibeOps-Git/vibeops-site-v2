@@ -112,10 +112,9 @@ export default function BlogPost() {
               <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 bg-primary/10 blur-[90px] rounded-full" />
               <div className="pointer-events-none absolute -left-10 -bottom-20 h-48 w-48 bg-accent/10 blur-[100px] rounded-full" />
 
-              <article
-                className="blog-article prose prose-invert max-w-none text-sm sm:text-base leading-relaxed tracking-[0.01em]"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+              <article className="blog-article prose prose-invert max-w-none text-sm sm:text-base leading-relaxed tracking-[0.01em]">
+                <post.Content />
+              </article>
             </Card>
           </div>
         </div>
