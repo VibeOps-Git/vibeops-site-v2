@@ -144,8 +144,9 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="w-full max-w-sm sm:max-w-md pb-10 lg:pb-12"
+          className="w-full max-w-sm sm:max-w-md pb-10 lg:pb-12 relative"
         >
+          {/* 1. Main "Browser" Container */}
           <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
             <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111] border-b border-white/8">
               <div className="w-2 h-2 rounded-full bg-[#FF5F57]" />
@@ -167,6 +168,18 @@ function HeroSection() {
               loop
               playsInline
               className="w-full aspect-video object-cover"
+            />
+          </div>
+
+          {/* 2. Zander Overlay (Moved OUTSIDE the container above to avoid clipping) */}
+          <div className="absolute -top-6 -right-3 lg:hidden w-[32%] z-50 pointer-events-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <video
+              src="/vids/Zander Walking Shoot Final.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-auto rounded-lg border border-white/20"
             />
           </div>
         </motion.div>
@@ -468,7 +481,6 @@ function ReportlySection() {
                     </a>
                   </span>
                 </div>
-
                 <div className="p-4 md:p-6">
                   <ReportlyHomepagePreview />
                 </div>
