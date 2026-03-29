@@ -1,10 +1,9 @@
 // src/components/Layout.tsx
 
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Menu, X, Linkedin, Twitter, Instagram } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown } from "lucide-react";
 import SpaceField from "./SpaceField";
-
 
 interface NavLink {
   path: string;
@@ -12,20 +11,41 @@ interface NavLink {
   badge?: string;
 }
 
-const navLinks: NavLink[] = [
+interface NavGroup {
+  label: string;
+  links: NavLink[];
+}
+
+const navGroups: NavGroup[] = [
+  {
+    label: "Solutions",
+    links: [
+      { path: "/services", label: "Services" },
+      { path: "/case-studies", label: "Case Studies" },
+      { path: "/reportly", label: "Reportly", badge: "New" },
+    ],
+  },
+  {
+    label: "Company",
+    links: [
+      { path: "/team", label: "Team" },
+      { path: "/blog", label: "Blog" },
+    ],
+  },
+];
+
+const topLevelLinks: NavLink[] = [
   { path: "/", label: "Home" },
-  { path: "/services", label: "Services" },
-  { path: "/reportly", label: "Reportly", badge: "New" },
-  { path: "/team", label: "Team" },
-  { path: "/case-studies", label: "Case Studies" },
-  { path: "/blog", label: "Blog" },
   { path: "/contact", label: "Contact" },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileExpandedGroups, setMobileExpandedGroups] = useState<string[]>([]);
   const location = useLocation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -35,12 +55,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setIsMenuOpen(false);
+    setActiveDropdown(null);
+    setMobileExpandedGroups([]);
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
+  };
+
+  const toggleMobileGroup = (label: string) => {
+    setMobileExpandedGroups(prev => 
+      prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]
+    );
   };
 
   return (
@@ -75,27 +114,80 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`relative px-4 py-2 rounded-full text-sm transition-all duration-200 ${
-                    isActive(link.path)
-                      ? "text-[#00ffcc] bg-[#00ffcc]/10"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  {link.label}
-                  {link.badge && (
-                    <span className="absolute -top-1 -right-1 px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
-                      {link.badge}
-                    </span>
-                  )}
-                </Link>
-              ))}
+            <div className="hidden md:flex items-center gap-1" ref={dropdownRef}>
+              {/* Home Link */}
               <Link
-                to="/reportly"
+                to="/"
+                className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                  isActive("/")
+                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                Home
+              </Link>
+
+              {/* Dropdown Groups */}
+              {navGroups.map((group) => (
+                <div key={group.label} className="relative group">
+                  <button
+                    onClick={() => setActiveDropdown(activeDropdown === group.label ? null : group.label)}
+                    onMouseEnter={() => setActiveDropdown(group.label)}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                      group.links.some(link => isActive(link.path))
+                        ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {group.label}
+                    <ChevronDown size={14} className={`transition-transform duration-200 ${activeDropdown === group.label ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {activeDropdown === group.label && (
+                    <div 
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      className="absolute top-full left-0 mt-2 w-48 bg-[#0a0a0f]/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200"
+                    >
+                      <div className="p-2 space-y-1">
+                        {group.links.map((link) => (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+                              isActive(link.path)
+                                ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                                : "text-gray-400 hover:text-white hover:bg-white/5"
+                            }`}
+                          >
+                            {link.label}
+                            {link.badge && (
+                              <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                                {link.badge}
+                              </span>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Contact Link */}
+              <Link
+                to="/contact"
+                className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                  isActive("/contact")
+                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                Contact
+              </Link>
+
+              <Link
+                to="https://reportly.ca/login"
                 className="ml-4 px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all duration-200 hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
               >
                 Login
@@ -115,27 +207,69 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden mt-4 pb-4 space-y-1 border-t border-white/5 pt-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
-                    isActive(link.path)
-                      ? "text-[#00ffcc] bg-[#00ffcc]/10"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  {link.label}
-                  {link.badge && (
-                    <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
-                      {link.badge}
-                    </span>
+              {/* Home */}
+              <Link
+                to="/"
+                className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
+                  isActive("/")
+                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                Home
+              </Link>
+
+              {/* Mobile Groups */}
+              {navGroups.map((group) => (
+                <div key={group.label} className="space-y-1">
+                  <button
+                    onClick={() => toggleMobileGroup(group.label)}
+                    className="w-full flex items-center justify-between py-3 px-4 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    {group.label}
+                    <ChevronDown size={16} className={`transition-transform duration-200 ${mobileExpandedGroups.includes(group.label) ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {mobileExpandedGroups.includes(group.label) && (
+                    <div className="pl-4 space-y-1 animate-in slide-in-from-top-1 duration-200">
+                      {group.links.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          className={`flex items-center justify-between py-3 px-4 rounded-xl text-sm transition-colors ${
+                            isActive(link.path)
+                              ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                              : "text-gray-400 hover:text-white hover:bg-white/5"
+                          }`}
+                        >
+                          {link.label}
+                          {link.badge && (
+                            <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                              {link.badge}
+                            </span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
                   )}
-                </Link>
+                </div>
               ))}
+
+              {/* Contact */}
+              <Link
+                to="/contact"
+                className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
+                  isActive("/contact")
+                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                Contact
+              </Link>
+
               <div className="pt-2">
                 <Link
-                  to="/reportly"
+                  to="https://reportly.ca/login"
                   className="block w-full py-3 px-4 rounded-xl bg-[#00ffcc] text-black text-sm font-semibold text-center"
                 >
                   Login to Reportly
