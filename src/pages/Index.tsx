@@ -1,14 +1,14 @@
 // src/pages/Index.tsx
 
-import { FileText, Wrench, BarChart3, Layers, ArrowRight, Check } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight } from 'lucide-react';
+import { useRef } from 'react';
 import { SEO } from '@/components/SEO';
 import { ReportlyHomepagePreview } from '@/components/ReportlyHomepagePreview';
 import AnimatedContent from '../components/AnimatedContent';
-import { VibeCard } from '@/components/ui/VibeCard';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 import { Section, SectionWithHeader, SectionDivider } from '@/components/ui/Section';
-import { GallerySection3D, ContentOverlay } from '../components/3d';
-import { ProcessTimeline } from '@/components/process/ProcessTimeline';
+import { GallerySection3D } from '../components/3d';
 
 const pressLinks = [
   {
@@ -34,8 +34,8 @@ export default function Index() {
         description="Engineering automation for civil, construction, and infrastructure teams. We automate reporting and workflows so engineers can focus on engineering."
         canonical="https://www.vibeops.ca/"
       />
-      <div className="pt-20">
-        <HeroSection />
+      <HeroSection />
+      <div>
         <SectionDivider className="mx-auto max-w-5xl" />
         <ServicesSection />
         <SectionDivider className="mx-auto max-w-5xl" />
@@ -53,158 +53,185 @@ export default function Index() {
 // Hero Section
 // =============================================================================
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
+
 function HeroSection() {
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center px-4 pt-8 sm:pt-20 pb-6 sm:pb-12">
-      <div className="text-center max-w-5xl mx-auto flex-1 flex flex-col justify-center">
-        <AnimatedContent
-          distance={100}
-          direction="vertical"
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          threshold={0.1}
-        >
-          <p className="text-xs uppercase tracking-[0.4em] text-[#00ffcc] mb-4 sm:mb-6">
-            Civil · Construction · Infrastructure
-          </p>
-        </AnimatedContent>
+    <section className="relative h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
 
-        <AnimatedContent
-          distance={80}
-          direction="vertical"
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          threshold={0.1}
-          delay={0.1}
-        >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-4 sm:mb-6">
+      {/* ── Left: Content panel ── */}
+      <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-8 sm:px-12 lg:px-16 xl:px-20 pt-28 lg:pt-32 pb-10">
+
+        <div className="flex flex-col justify-center flex-1">
+
+          <motion.p
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-[11px] uppercase tracking-[0.32em] text-[#00ffcc]/60 mb-5"
+          >
+            Civil · Construction · Infrastructure
+          </motion.p>
+
+          <motion.h1
+            custom={1}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-[2.8rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-bold leading-[1.06] tracking-tight mb-6"
+          >
             <span className="text-white">Less formatting.</span>
             <br />
             <span className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
               More engineering.
             </span>
-          </h1>
-        </AnimatedContent>
+          </motion.h1>
 
-        <AnimatedContent
-          distance={60}
-          direction="vertical"
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          threshold={0.1}
-          delay={0.2}
-        >
-          <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
+          <motion.p
+            custom={2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-base lg:text-lg text-gray-300 leading-relaxed mb-8 max-w-md"
+          >
             We automate reporting and workflows so engineers can focus on engineering.
-          </p>
-          <p className="text-sm text-gray-500 mb-6 sm:mb-10">
-            Focused solutions that fit how your team actually works.
-          </p>
-        </AnimatedContent>
+          </motion.p>
 
-        <AnimatedContent
-          distance={40}
-          direction="vertical"
-          duration={0.8}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          threshold={0.1}
-          delay={0.3}
-        >
-          <div className="flex flex-wrap justify-center gap-4">
+          <motion.div
+            custom={3}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-wrap gap-3 mb-8"
+          >
             <VibeLinkButton href="/contact" variant="primary" size="lg">
               Book a Vibe Check
             </VibeLinkButton>
             <VibeLinkButton href="/services" variant="outline" size="lg">
               See What We Build
             </VibeLinkButton>
-          </div>
-        </AnimatedContent>
+          </motion.div>
 
-        <AnimatedContent
-          distance={30}
-          direction="vertical"
-          duration={0.8}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          threshold={0.1}
-          delay={0.4}
-        >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-6 sm:mt-10 text-sm text-gray-500">
+          <motion.div
+            custom={4}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-500"
+          >
             <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-[#00ffcc]" />
+              <Check className="w-4 h-4 text-[#00ffcc] shrink-0" />
               Integrates with your existing tools
             </span>
             <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-[#00ffcc]" />
+              <Check className="w-4 h-4 text-[#00ffcc] shrink-0" />
               No workflow disruption
             </span>
+          </motion.div>
+        </div>
+
+        {/* ── Product demo card ── */}
+        <motion.div
+          custom={6}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="w-full max-w-sm sm:max-w-md pb-10 lg:pb-12"
+        >
+          <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
+            <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111] border-b border-white/8">
+              <div className="w-2 h-2 rounded-full bg-[#FF5F57]" />
+              <div className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+              <div className="w-2 h-2 rounded-full bg-[#28C840]" />
+              <a
+                href="https://reportly.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-2 flex-1 bg-white/5 rounded px-2 py-0.5 text-[9px] text-gray-400 hover:text-[#00ffcc] tracking-wide truncate transition-colors duration-200 cursor-pointer"
+              >
+                reportly.ca - Try Now! ↗
+              </a>
+            </div>
+            <video
+              src="/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full aspect-video object-cover"
+            />
           </div>
-        </AnimatedContent>
+        </motion.div>
+
+        {/* Social proof */}
+        <motion.div
+          custom={5}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="pt-6 border-t border-white/8"
+        >
+          <p className="text-[0.6rem] uppercase tracking-[0.3em] text-gray-600 mb-3">
+            Trusted By & Featured In
+          </p>
+          <div className="flex flex-wrap items-center gap-6">
+            {partnerLogos.map((logo) => (
+              <img
+                key={logo.alt}
+                src={logo.src}
+                alt={logo.alt}
+                className="h-5 w-auto object-contain opacity-35 hover:opacity-60 transition-opacity duration-200"
+              />
+            ))}
+            <div className="hidden sm:block w-px h-4 bg-white/15" />
+            {pressLinks.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] uppercase tracking-[0.15em] text-gray-500 hover:text-[#00ffcc] transition-colors duration-200"
+              >
+                {link.label} ↗
+              </a>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      {/* Social Proof */}
-      <AnimatedContent
-        distance={20}
-        direction="vertical"
-        duration={0.8}
-        ease="power3.out"
-        initialOpacity={0}
-        animateOpacity
-        threshold={0.1}
-        delay={0.5}
-      >
-        <div className="text-center mt-auto pt-4 sm:pt-8">
-          {/* Trusted By - Partner Logos */}
-          <div className="mb-6">
-            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-4">
-              Trusted By
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-8">
-              {partnerLogos.map((logo) => (
-                <img
-                  key={logo.alt}
-                  src={logo.src}
-                  alt={logo.alt}
-                  className="h-6 w-auto object-contain opacity-50 hover:opacity-80 transition-opacity"
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Featured In - Press Links */}
-          <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-3">
-              Featured In
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
-              {pressLinks.map((link, index) => (
-                <span key={link.url} className="flex items-center">
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs uppercase tracking-[0.15em] text-gray-400 hover:text-[#00ffcc] transition-colors"
-                  >
-                    {link.label} ↗
-                  </a>
-                  {index < pressLinks.length - 1 && (
-                    <span className="hidden sm:inline mx-3 text-gray-600">·</span>
-                  )}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </AnimatedContent>
+      {/* ── Right: Full-height video ── */}
+      {/*
+        Note: /vids/zander-subtitles.vtt does not exist yet.
+        To enable captions, add a WebVTT file at that path.
+        The <track> element is included but will silently do nothing until the file is present.
+      */}
+      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/vids/Zander Walking Shoot Final.mp4" type="video/mp4" />
+          <track
+            src="/vids/zander-subtitles.vtt"
+            kind="subtitles"
+            srcLang="en"
+            label="English"
+          />
+        </video>
+        {/* Gradient: blends left edge of video into the dark bg */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/20 to-transparent pointer-events-none" />
+      </div>
     </section>
   );
 }
@@ -222,7 +249,7 @@ const services = [
     features: ['Template automation', 'Charts & tables from live data', 'Photo appendices', 'QA-ready output'],
     href: '/services#reportly',
     highlight: true,
-    machineType: 'printer' as const, // Printer machine for report generation
+    machineType: 'printer' as const,
   },
   {
     icon: Wrench,
@@ -231,7 +258,7 @@ const services = [
     description: 'Remove repetitive documentation from engineering and construction workflows. Field data, checklists, and more.',
     features: ['Field data ingestion', 'Inspection checklists', 'Site documentation', 'White-labeled tools'],
     href: '/services',
-    machineType: 'conveyor' as const, // Conveyor belt for workflow processing
+    machineType: 'conveyor' as const,
   },
   {
     icon: BarChart3,
@@ -240,7 +267,7 @@ const services = [
     description: 'Turn raw technical data into actionable insight. Instrumentation, construction tracking, and live field ops views.',
     features: ['Instrument dashboards', 'Construction tracking', 'Map-based views', 'Shareable dashboards'],
     href: '/services',
-    machineType: 'controlPanel' as const, // Control panel for monitoring/dashboards
+    machineType: 'controlPanel' as const,
   },
   {
     icon: Layers,
@@ -249,7 +276,7 @@ const services = [
     description: 'Rapid engineering calculators and tools that mirror your workflows without the overhead of a full platform.',
     features: ['Cost estimators', 'Asset tracking', 'Pilot tools', 'Secure deployment'],
     href: '/services',
-    machineType: 'toolbox' as const, // Toolbox for internal tools
+    machineType: 'toolbox' as const,
   },
 ];
 
@@ -261,103 +288,144 @@ function ServicesSection() {
       description="We eliminate repetitive reporting and documentation work, so your team can deliver more engineering per project."
       divider
     >
-      {/* Liquid Glass Cards Gallery */}
       <GallerySection3D items={services} />
     </SectionWithHeader>
   );
 }
 
-interface ServiceCardProps {
-  icon: typeof FileText;
-  title: string;
-  subtitle: string;
-  description: string;
-  features: string[];
-  href: string;
-  highlight?: boolean;
-}
-
-function ServiceCard({ icon: Icon, title, subtitle, description, features, href, highlight }: ServiceCardProps) {
-  return (
-    <a href={href} className="block group">
-      <VibeCard variant={highlight ? 'glow' : 'default'} className="h-full p-6">
-        <div className="flex items-start gap-4">
-          <div className={`p-3 rounded-xl ${highlight ? 'bg-[#00ffcc]/10' : 'bg-white/5'} transition-colors group-hover:bg-[#00ffcc]/10`}>
-            <Icon className={`w-6 h-6 ${highlight ? 'text-[#00ffcc]' : 'text-gray-400'} transition-colors group-hover:text-[#00ffcc]`} />
-          </div>
-          <div className="flex-1">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]/70 mb-1">{subtitle}</p>
-            <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-[#00ffcc] transition-colors">
-              {title}
-            </h3>
-            <p className="text-sm text-gray-400 mb-4">{description}</p>
-            <ul className="grid grid-cols-2 gap-2">
-              {features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
-                  <Check className="w-3 h-3 text-[#00ffcc]/60" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-end">
-          <span className="text-sm text-gray-500 group-hover:text-[#00ffcc] transition-colors flex items-center gap-1">
-            Learn more <ArrowRight className="w-4 h-4" />
-          </span>
-        </div>
-      </VibeCard>
-    </a>
-  );
-}
-
 // =============================================================================
-// Reportly Section (Featured Product)
+// Reportly Section — Immersive editorial layout
 // =============================================================================
 
 function ReportlySection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['4%', '-4%']);
+
+  const featureItems = [
+    'Works with templates you already use',
+    'Charts, tables, and photos from live data',
+    'Brand-consistent, QA-ready output',
+    'No changes to your existing workflow',
+  ];
+
   return (
     <Section divider>
       <AnimatedContent
-        distance={80}
+        distance={50}
         direction="vertical"
-        duration={1}
+        duration={0.9}
         ease="power3.out"
         initialOpacity={0}
         animateOpacity
-        threshold={0.2}
+        threshold={0.15}
       >
-        <VibeCard variant="gradient" hover={false} className="p-8 md:p-12">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc]/70 mb-4">
-                Featured Product
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Reportly
-              </h2>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Our flagship report automation engine. Plug in your existing Word
-                templates, input your data, and generate review-ready documents with none of the formatting hassle.
-              </p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  'Works with templates you already use',
-                  'Charts, tables, and photos from live data',
-                  'Brand-consistent, QA-ready output',
-                  'No changes to your existing workflow',
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-gray-300">
-                    <Check className="w-5 h-5 text-[#00ffcc]" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="flex flex-wrap gap-4">
-                <VibeLinkButton
-                  href="/reportly"
-                  variant="primary"
+        {/* Outer wrapper — full-bleed feel with clipped overflow */}
+        <div
+          ref={sectionRef}
+          className="relative rounded-2xl overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #0c1a15 0%, #091211 50%, #0a0f1a 100%)' }}
+        >
+
+          {/* ── Ambient background glow ── */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            aria-hidden="true"
+          >
+            {/* Large emerald bloom — top-left */}
+            <div
+              className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full opacity-[0.12]"
+              style={{ background: 'radial-gradient(circle, #00ffcc 0%, transparent 65%)' }}
+            />
+            {/* Cyan accent — bottom-right */}
+            <div
+              className="absolute -bottom-24 right-0 w-[380px] h-[380px] rounded-full opacity-[0.08]"
+              style={{ background: 'radial-gradient(circle, #22d3ee 0%, transparent 65%)' }}
+            />
+            {/* Subtle grid overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.025]"
+              style={{
+                backgroundImage:
+                  'linear-gradient(rgba(0,255,204,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,204,0.4) 1px, transparent 1px)',
+                backgroundSize: '40px 40px',
+              }}
+            />
+          </div>
+
+          {/* ── Top label bar ── */}
+          <div className="relative flex items-center justify-between px-8 md:px-12 pt-8 pb-0">
+            <span className="text-[10px] uppercase tracking-[0.35em] text-[#00ffcc]/50 font-medium">
+              Flagship Product
+            </span>
+            <a
+              href="https://reportly.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[#00ffcc]/40 hover:text-[#00ffcc] transition-colors duration-300"
+            >
+              reportly.ca
+              <ArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+            </a>
+          </div>
+
+          {/* ── Main content grid ── */}
+          <div className="relative grid lg:grid-cols-[1fr_1.1fr] gap-0">
+
+            {/* LEFT — Text content */}
+            <div className="flex flex-col justify-between px-8 md:px-12 pt-10 pb-10 lg:pb-14">
+
+              {/* Wordmark */}
+              <div>
+                <h2
+                  className="text-[4.5rem] sm:text-[5.5rem] lg:text-[6rem] font-black leading-[0.88] tracking-[-0.04em] mb-2 select-none"
+                  style={{
+                    background: 'linear-gradient(135deg, #ffffff 0%, #a8f0e0 40%, #00ffcc 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
                 >
+                  Reportly
+                  <br />
+                </h2>
+
+                <p className="text-gray-400 text-[0.95rem] leading-relaxed max-w-sm mb-8 mt-5">
+                  Our flagship report automation engine. Plug in your existing Word
+                  templates, feed in data, and get review-ready documents — with none
+                  of the formatting overhead.
+                </p>
+
+                {/* Feature list — horizontal pill style */}
+                <ul className="flex flex-col gap-2.5 mb-10">
+                  {featureItems.map((item, i) => (
+                    <motion.li
+                      key={item}
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.1 + i * 0.07, ease: 'easeOut' }}
+                      className="flex items-center gap-3 text-sm text-gray-300"
+                    >
+                      {/* Custom tick */}
+                      <span
+                        className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center"
+                        style={{ background: 'rgba(0,255,204,0.12)', border: '1px solid rgba(0,255,204,0.25)' }}
+                      >
+                        <Check className="w-3 h-3 text-[#00ffcc]" />
+                      </span>
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-3">
+                <VibeLinkButton href="/reportly" variant="primary">
                   Learn About Reportly
                 </VibeLinkButton>
                 <VibeLinkButton href="/contact" variant="outline">
@@ -365,11 +433,72 @@ function ReportlySection() {
                 </VibeLinkButton>
               </div>
             </div>
-            <div className="relative">
-              <ReportlyHomepagePreview />
+
+            {/* RIGHT — Preview, inset with its own treatment */}
+            <div className="relative flex items-center justify-center p-6 md:p-10 lg:pt-10 lg:pb-10">
+
+              {/* Inner card — elevated from background */}
+              <div
+                className="relative w-full rounded-xl overflow-hidden"
+                style={{
+                  boxShadow: '0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,255,204,0.08), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  background: 'rgba(10,12,18,0.8)',
+                }}
+              >
+                {/* Faint top glow on the card */}
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,204,0.4), transparent)' }}
+                />
+
+                {/* Micro browser chrome */}
+                <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-white/[0.06]"
+                  style={{ background: 'rgba(255,255,255,0.02)' }}>
+                  <div className="w-2 h-2 rounded-full bg-[#FF5F57]" />
+                  <div className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                  <div className="w-2 h-2 rounded-full bg-[#28C840]" />
+                  <span className="ml-2 flex-1 text-[9px] text-gray-500 tracking-wide truncate">
+                    <a
+                      href="https://reportly.ca"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mx-2 flex-1 bg-white/5 rounded px-2 py-0.5 text-[9px] text-gray-400 hover:text-[#00ffcc] tracking-wide truncate transition-colors duration-200 cursor-pointer"
+                    >
+                      reportly.ca - Try Now! ↗
+                    </a>
+                  </span>
+                </div>
+
+                <div className="p-4 md:p-6">
+                  <ReportlyHomepagePreview />
+                </div>
+              </div>
             </div>
+
           </div>
-        </VibeCard>
+
+          {/* ── Bottom stat strip ── */}
+          <div
+            className="relative grid grid-cols-3 border-t"
+            style={{ borderColor: 'rgba(0,255,204,0.08)' }}
+          >
+            {[
+              { value: '3 min', label: 'avg. report time' },
+              { value: '100%', label: 'template-compatible' },
+              { value: '0 changes', label: 'to your workflow' },
+            ].map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`px-8 py-5 flex flex-col gap-0.5 ${i < 2 ? 'border-r' : ''}`}
+                style={{ borderColor: 'rgba(0,255,204,0.08)' }}
+              >
+                <span className="text-xl font-bold text-white tracking-tight">{stat.value}</span>
+                <span className="text-[11px] text-gray-500 uppercase tracking-[0.15em]">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+
+        </div>
       </AnimatedContent>
     </Section>
   );
@@ -406,7 +535,32 @@ function ProcessSection() {
       maxWidth="lg"
       divider
     >
-      <ProcessTimeline steps={processSteps} />
+      <div className="grid md:grid-cols-3 gap-5">
+        {processSteps.map((step, i) => (
+          <AnimatedContent
+            key={step.step}
+            distance={24}
+            direction="vertical"
+            duration={0.7}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            threshold={0.2}
+            delay={i * 0.15}
+          >
+            <div className="group relative border border-white/8 rounded-xl p-7 bg-white/[0.02] h-full flex flex-col overflow-hidden transition-colors duration-300 hover:border-[#00ffcc]/20 hover:bg-white/[0.035]">
+              {/* Step number — large ghost */}
+              <span className="block text-[4rem] font-black text-white/[0.05] leading-none mb-4 tracking-tight select-none group-hover:text-[#00ffcc]/[0.07] transition-colors duration-500">
+                {step.step}
+              </span>
+              {/* Thin accent line */}
+              <div className="w-8 h-px bg-[#00ffcc]/30 mb-4" />
+              <h3 className="text-base font-semibold text-white mb-2">{step.title}</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">{step.description}</p>
+            </div>
+          </AnimatedContent>
+        ))}
+      </div>
     </SectionWithHeader>
   );
 }
@@ -419,30 +573,53 @@ function CTASection() {
   return (
     <Section className="pb-32" divider>
       <AnimatedContent
-        distance={60}
+        distance={40}
         direction="vertical"
-        duration={0.9}
+        duration={0.8}
         ease="power3.out"
         initialOpacity={0}
         animateOpacity
         threshold={0.3}
       >
-        <VibeCard variant="gradient" hover={false} className="p-8 md:p-12 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to get engineering time back?
-          </h2>
-          <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            We automate reporting and documentation, so your team can focus on engineering work - and deliver more per project.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <VibeLinkButton href="/contact" variant="primary" size="lg">
-              Book a Vibe Check
-            </VibeLinkButton>
-            <VibeLinkButton href="/services" variant="outline" size="lg">
-              Explore Our Services
-            </VibeLinkButton>
+        <div className="relative rounded-2xl overflow-hidden text-center max-w-3xl mx-auto">
+          {/* Background treatment — diagonal split */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(150deg, #0d1a14 0%, #080d0d 60%, #090912 100%)',
+            }}
+          />
+          {/* Accent glow */}
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px"
+            style={{ background: 'linear-gradient(90deg, transparent 5%, rgba(0,255,204,0.3) 40%, rgba(0,255,204,0.3) 60%, transparent 95%)' }}
+          />
+          <div
+            className="absolute -top-20 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-[0.09] pointer-events-none"
+            style={{ background: 'radial-gradient(circle, #00ffcc 0%, transparent 70%)' }}
+          />
+
+          <div className="relative px-10 md:px-16 py-14 md:py-16">
+            <p className="text-[10px] uppercase tracking-[0.35em] text-[#00ffcc]/50 mb-5">
+              Ready to move faster?
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+              Get your engineering time back.
+            </h2>
+            <p className="text-gray-400 mb-10 max-w-md mx-auto leading-relaxed text-[0.95rem]">
+              We automate reporting and documentation so your team can focus on
+              engineering — and deliver more per project.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <VibeLinkButton href="/contact" variant="primary" size="lg">
+                Book a Vibe Check
+              </VibeLinkButton>
+              <VibeLinkButton href="/services" variant="outline" size="lg">
+                Explore Our Services
+              </VibeLinkButton>
+            </div>
           </div>
-        </VibeCard>
+        </div>
       </AnimatedContent>
     </Section>
   );
