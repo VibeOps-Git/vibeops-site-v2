@@ -64,12 +64,12 @@ const fadeUp = {
 
 function HeroSection() {
   return (
-    <section className="relative w-full flex overflow-hidden bg-[#0a0a0f]">
+    <section className="relative h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
 
       {/* ── Left: Content panel ── */}
-      <div className="relative z-10 flex flex-col justify-center w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-24 lg:pt-28 pb-8 gap-4">
+      <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-20 pb-6">
 
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center flex-1">
 
           <motion.p
             custom={0}
@@ -144,13 +144,13 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="hidden lg:block w-full max-w-sm"
+          className="hidden lg:block w-full max-w-sm mt-4"
         >
-          <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
-            <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111] border-b border-white/8">
-              <div className="w-2 h-2 rounded-full bg-[#FF5F57]" />
-              <div className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-              <div className="w-2 h-2 rounded-full bg-[#28C840]" />
+          <div className="rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#111] border-b border-white/8">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#FF5F57]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#FFBD2E]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#28C840]" />
               <a
                 href="https://reportly.ca"
                 target="_blank"
@@ -177,7 +177,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="pt-6 border-t border-white/8"
+          className="pt-4 border-t border-white/8"
         >
           <p className="text-[0.6rem] uppercase tracking-[0.3em] text-gray-600 mb-3">
             Trusted By & Featured In
@@ -208,7 +208,7 @@ function HeroSection() {
       </div>
 
       {/* ── Right: Full-height video ── */}
-      <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[56%] bg-[#0a0a0f] overflow-hidden">
+      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full bg-[#0a0a0f] overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
           allow="autoplay; encrypted-media"
