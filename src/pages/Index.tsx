@@ -103,11 +103,13 @@ function HeroSection() {
             <ScrambleText
               text="Less formatting."
               className="text-white"
+              trigger="mount"
             />
             <br />
             <ScrambleText
               text="More engineering."
               className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent"
+              trigger="mount"
             />
           </motion.h1>
 
