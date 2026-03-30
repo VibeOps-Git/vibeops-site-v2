@@ -3,6 +3,7 @@ import { Star, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
+import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 import { VibeLinkButton } from "@/components/ui/VibeButton";
@@ -134,7 +135,7 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
         threshold={0.3}
       >
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-white mb-3">Portfolio Projects</h2>
+          <h2 className="text-3xl font-semibold text-white mb-3"><ScrambleText text="Portfolio Projects" /></h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Web apps and sites showing the level of polish we bring to internal tools and dashboards.
           </p>
@@ -303,7 +304,7 @@ export default function CaseStudies() {
               Case Studies
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              Client Outcomes
+              <ScrambleText text="Client Outcomes" trigger="mount" />
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               A snapshot of how teams use VibeOps to do business faster.
@@ -327,7 +328,7 @@ export default function CaseStudies() {
             threshold={0.3}
           >
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-semibold text-white mb-3">What Our Clients Say</h2>
+              <h2 className="text-3xl font-semibold text-white mb-3"><ScrambleText text="What Our Clients Say" /></h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
                 Real feedback from teams we've helped with automation and software.
               </p>
@@ -410,7 +411,7 @@ export default function CaseStudies() {
           >
             <VibeCard variant="gradient" hover={false} className="text-center p-10 md:p-14">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to Become a Case Study?
+                <ScrambleText text="Ready to Become a Case Study?" />
               </h2>
               <p className="text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
                 Scope a pilot with clear before/after and measurable time savings. We'll help you automate the workflow that's slowing your team down the most.

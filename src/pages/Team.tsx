@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
+import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard } from "../components/ui/VibeCard";
 
@@ -151,7 +152,7 @@ export default function Team() {
               Our Team
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              Meet the Team Building Your Tools
+              <ScrambleText text="Meet the Team Building Your Tools" trigger="mount" />
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               We build custom software for engineering and construction teams—reports,
@@ -263,7 +264,7 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2">Co-Founders</h2>
+              <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Co-Founders" /></h2>
               <p className="text-gray-400 text-sm">
                 The core team behind VibeOps and Reportly.
               </p>
@@ -305,7 +306,7 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2">Contributors</h2>
+              <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Contributors" /></h2>
               <p className="text-gray-400 text-sm">
                 People who helped build, shape, and support VibeOps along the way.
               </p>
@@ -364,7 +365,7 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2">Advisory Board</h2>
+              <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Advisory Board" /></h2>
               <p className="text-gray-400 text-sm">
                 Educators and engineers who help us align with real-world civil workflows.
               </p>
@@ -425,7 +426,7 @@ export default function Team() {
             <VibeCard variant="gradient" className="p-8 md:p-10">
               <div className="grid gap-8 md:grid-cols-[1.5fr,1fr] items-center">
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-3">Our Approach</h2>
+                  <h2 className="text-2xl font-semibold text-white mb-3"><ScrambleText text="Our Approach" /></h2>
                   <p className="text-gray-400 mb-6">
                     We build custom software for engineering teams—reports, dashboards,
                     workflow tools, and internal applications. One focused solution at a time.

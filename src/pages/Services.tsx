@@ -2,6 +2,7 @@ import { FileText, Wrench, BarChart3, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
+import { ScrambleText } from "@/components/ScrambleText";
 import { SectionWithHeader, SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 import { GallerySection3D } from "../components/3d/sections/GallerySection3D";
@@ -87,7 +88,7 @@ export default function Services() {
               Services
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              Choose Your Automation
+              <ScrambleText text="Choose Your Automation" trigger="mount" />
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Four types of engineering automation. Pick the one that solves your biggest bottleneck first—then expand from there.
@@ -121,7 +122,7 @@ export default function Services() {
           >
             <VibeCard variant="gradient" hover={false} className="text-center p-8 md:p-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to Get Started?
+                <ScrambleText text="Ready to Get Started?" />
               </h2>
               <p className="text-gray-400 mb-8 max-w-xl mx-auto">
                 We'll help you pick the right automation for your team and build a working prototype in weeks, not months.

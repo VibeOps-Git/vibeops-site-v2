@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
+import { ScrambleText } from "@/components/ScrambleText";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -212,7 +213,7 @@ export default function Contact() {
             </p>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            Establish Connection
+            <ScrambleText text="Establish Connection" trigger="mount" />
           </h1>
           <p className="text-gray-400 text-base max-w-2xl mx-auto">
             Select your preferred communication protocol

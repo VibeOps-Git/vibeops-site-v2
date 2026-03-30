@@ -1,5 +1,6 @@
 import { FileText, ChevronDown, ArrowRight } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
+import { ScrambleText } from "../ScrambleText";
 
 export function HeroSection() {
   return (
@@ -38,7 +39,7 @@ export function HeroSection() {
           <div className="p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20">
             <FileText className="w-10 h-10 text-[#00ffcc]" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white">Reportly</h1>
+          <h1 className="text-5xl md:text-7xl font-bold text-white"><ScrambleText text="Reportly" trigger="mount" /></h1>
         </div>
       </AnimatedContent>
 
