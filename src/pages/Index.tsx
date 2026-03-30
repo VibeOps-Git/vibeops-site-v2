@@ -169,6 +169,18 @@ function HeroSection() {
               style={{ border: 'none' }}
             />
           </div>
+
+          {/* 2. Zander Overlay (Moved OUTSIDE the container above to avoid clipping) */}
+          <div className="absolute -top-6 -right-3 lg:hidden w-[32%] z-50 pointer-events-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <video
+              src="/vids/Zander Walking Shoot Final.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-auto rounded-lg border border-white/20"
+            />
+          </div>
         </motion.div>
 
         {/* Social proof */}
@@ -456,7 +468,6 @@ function ReportlySection() {
                     </a>
                   </span>
                 </div>
-
                 <div className="p-4 md:p-6">
                   <ReportlyHomepagePreview />
                 </div>
