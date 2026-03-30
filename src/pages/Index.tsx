@@ -160,13 +160,13 @@ function HeroSection() {
                 reportly.ca - Try Now! ↗
               </a>
             </div>
-            <video
-              src="/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full aspect-video object-cover"
+            <iframe
+              src="https://www.youtube.com/embed/-SGxzwsxL2U?autoplay=1&mute=1&loop=1&playlist=-SGxzwsxL2U&controls=0&showinfo=0&rel=0&modestbranding=1"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="Reportly Product Demo"
+              className="w-full aspect-video"
+              style={{ border: 'none' }}
             />
           </div>
         </motion.div>
@@ -208,27 +208,15 @@ function HeroSection() {
       </div>
 
       {/* ── Right: Full-height video ── */}
-      {/*
-        Note: /vids/zander-subtitles.vtt does not exist yet.
-        To enable captions, add a WebVTT file at that path.
-        The <track> element is included but will silently do nothing until the file is present.
-      */}
       <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/vids/Zander Walking Shoot Final.mp4" type="video/mp4" />
-          <track
-            src="/vids/zander-subtitles.vtt"
-            kind="subtitles"
-            srcLang="en"
-            label="English"
-          />
-        </video>
+        <iframe
+          src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1"
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          title="VibeOps Promo"
+          className="w-full h-full pointer-events-none"
+          style={{ border: 'none', transform: 'scale(1.2)', transformOrigin: 'center center' }}
+        />
         {/* Gradient: blends left edge of video into the dark bg */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/20 to-transparent pointer-events-none" />
       </div>
