@@ -208,17 +208,17 @@ function HeroSection() {
       </div>
 
       {/* ── Right: Full-height video ── */}
-      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full">
+      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full bg-[#0a0a0f] overflow-hidden">
         <iframe
-          src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1"
+          src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
           allow="autoplay; encrypted-media"
           allowFullScreen
           title="VibeOps Promo"
-          className="w-full h-full pointer-events-none"
-          style={{ border: 'none', transform: 'scale(1.2)', transformOrigin: 'center center' }}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          style={{ border: 'none', transform: 'scale(1.5)', transformOrigin: 'center center' }}
         />
         {/* Gradient: blends left edge of video into the dark bg */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/60 to-transparent pointer-events-none z-10" />
       </div>
     </section>
   );
