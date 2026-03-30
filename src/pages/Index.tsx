@@ -64,10 +64,10 @@ const fadeUp = {
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
+    <section className="relative w-full flex overflow-hidden bg-[#0a0a0f]">
 
       {/* ── Left: Content panel ── */}
-      <div className="relative z-10 flex flex-col justify-center w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-28 lg:pt-32 pb-12 gap-8">
+      <div className="relative z-10 flex flex-col justify-center w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-24 lg:pt-28 pb-8 gap-4">
 
         <div className="flex flex-col justify-center">
 
@@ -76,7 +76,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-[11px] uppercase tracking-[0.32em] text-[#00ffcc]/60 mb-5"
+            className="text-[11px] uppercase tracking-[0.32em] text-[#00ffcc]/60 mb-3"
           >
             Civil · Construction · Infrastructure
           </motion.p>
@@ -86,7 +86,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-[2.8rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-bold leading-[1.06] tracking-tight mb-6"
+            className="text-[2.8rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-bold leading-[1.06] tracking-tight mb-4"
           >
             <span className="text-white">Less formatting.</span>
             <br />
@@ -100,7 +100,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-base lg:text-lg text-gray-300 leading-relaxed mb-8 max-w-md"
+            className="text-base lg:text-lg text-gray-300 leading-relaxed mb-5 max-w-md"
           >
             We automate reporting and workflows so engineers can focus on engineering.
           </motion.p>
@@ -110,7 +110,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap gap-3 mb-8"
+            className="flex flex-wrap gap-3 mb-4"
           >
             <VibeLinkButton href="/contact" variant="primary" size="lg">
               Book a Vibe Check
@@ -144,7 +144,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="hidden sm:block w-full max-w-sm sm:max-w-md pb-10 lg:pb-12"
+          className="hidden lg:block w-full max-w-sm"
         >
           <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
             <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111] border-b border-white/8">
@@ -208,7 +208,7 @@ function HeroSection() {
       </div>
 
       {/* ── Right: Full-height video ── */}
-      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full bg-[#0a0a0f] overflow-hidden">
+      <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[56%] bg-[#0a0a0f] overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
           allow="autoplay; encrypted-media"
