@@ -627,7 +627,7 @@ function CTASection() {
               Ready to move faster?
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-              Get your engineering time back.
+              <ScrambleText text="Get your engineering time back." />
             </h2>
             <p className="text-gray-400 mb-10 max-w-md mx-auto leading-relaxed text-[0.95rem]">
               We automate reporting and documentation so your team can focus on

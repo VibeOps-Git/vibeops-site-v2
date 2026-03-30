@@ -1,5 +1,6 @@
 import { Copy, FileWarning, ShieldAlert, Clock } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
+import { ScrambleText } from "../ScrambleText";
 
 const problems = [
   {
@@ -158,8 +159,8 @@ export function ProblemSection() {
                   The Problem
                 </span>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                  Manual Reporting is{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">Broken</span>
+                  <ScrambleText text="Manual Reporting is" />{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400"><ScrambleText text="Broken" /></span>
                 </h2>
                 <p className="text-gray-400 mb-8">
                   Validated through meetings with <span className="text-white font-semibold">20+ firms</span> and engineers across Vancouver and beyond.

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock, DollarSign, TrendingUp, Users } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
+import { ScrambleText } from "../ScrambleText";
 
 interface CounterProps {
   end: number;
@@ -128,7 +129,7 @@ export function MetricsSection() {
               The Impact
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              The Cost of Manual Reporting
+              <ScrambleText text="The Cost of Manual Reporting" />
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               We met with 100+ firms and engineers across Vancouver.

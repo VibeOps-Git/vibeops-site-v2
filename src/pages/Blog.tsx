@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getAllPosts } from "@/lib/blogs";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
+import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 
@@ -44,7 +45,7 @@ export default function Blog() {
               Lab Notes
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              Blog
+              <ScrambleText text="Blog" trigger="mount" />
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Practical examples, implementation notes, and experiments from our

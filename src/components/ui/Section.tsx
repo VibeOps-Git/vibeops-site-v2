@@ -4,6 +4,7 @@
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import AnimatedContent from '../AnimatedContent';
+import { ScrambleText } from '../ScrambleText';
 
 // Subtle gradient divider component
 export function SectionDivider({ className }: { className?: string }) {
@@ -85,7 +86,7 @@ export function SectionWithHeader({
                 </p>
               )}
               <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4">
-                {title}
+                <ScrambleText text={title} />
               </h2>
               {description && (
                 <p className="text-gray-400 max-w-2xl mx-auto">

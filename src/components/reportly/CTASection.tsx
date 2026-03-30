@@ -1,6 +1,7 @@
 import { Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../AnimatedContent";
+import { ScrambleText } from "../ScrambleText";
 
 export function CTASection() {
   return (
@@ -39,8 +40,8 @@ export function CTASection() {
 
               {/* Headline */}
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Ready to Stop Wasting Time on{" "}
-                <span className="text-[#00ffcc]">Formatting</span>?
+                <ScrambleText text="Ready to Stop Wasting Time on" />{" "}
+                <span className="text-[#00ffcc]"><ScrambleText text="Formatting" /></span>?
               </h2>
 
               {/* Subheadline */}
