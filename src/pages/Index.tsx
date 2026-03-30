@@ -72,19 +72,19 @@ import { useEffect, useState } from 'react';
 
 function HeroSection() {
   return (
-    <section className="relative h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
+    <section className="relative lg:h-screen min-h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
 
       {/* ── Left: Content panel ── */}
-      <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-8 sm:px-12 lg:px-16 xl:px-20 pt-28 lg:pt-32 pb-10">
+      <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-20 pb-6">
 
-        <div className="flex flex-col justify-center flex-1">
+        <div className="flex flex-col">
 
           <motion.p
             custom={0}
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-[11px] uppercase tracking-[0.32em] text-[#00ffcc]/60 mb-5"
+            className="text-[11px] uppercase tracking-[0.32em] text-[#00ffcc]/60 mb-3"
           >
             Civil · Construction · Infrastructure
           </motion.p>
@@ -94,7 +94,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-[2.8rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-bold leading-[1.06] tracking-tight mb-6"
+            className="text-[2.8rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-bold leading-[1.06] tracking-tight mb-4"
           >
             <ScrambleText
               text="Less formatting."
@@ -112,7 +112,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-base lg:text-lg text-gray-300 leading-relaxed mb-8 max-w-md"
+            className="text-base lg:text-lg text-gray-300 leading-relaxed mb-5 max-w-md"
           >
             We automate reporting and workflows so engineers can focus on engineering.
           </motion.p>
@@ -122,7 +122,7 @@ function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap gap-3 mb-8"
+            className="flex flex-wrap gap-3 mb-4"
           >
             <VibeLinkButton href="/contact" variant="primary" size="lg">
               Book a Vibe Check
@@ -156,14 +156,13 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="w-full max-w-sm sm:max-w-md pb-10 lg:pb-12 relative"
+          className="w-full max-w-lg mt-2"
         >
-          {/* 1. Main "Browser" Container */}
-          <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
-            <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111] border-b border-white/8">
-              <div className="w-2 h-2 rounded-full bg-[#FF5F57]" />
-              <div className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-              <div className="w-2 h-2 rounded-full bg-[#28C840]" />
+          <div className="rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#111] border-b border-white/8">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#FF5F57]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#FFBD2E]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#28C840]" />
               <a
                 href="https://reportly.ca"
                 target="_blank"
@@ -173,13 +172,13 @@ function HeroSection() {
                 reportly.ca - Try Now! ↗
               </a>
             </div>
-            <video
-              src="/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full aspect-video object-cover"
+            <iframe
+              src="https://www.youtube.com/embed/-SGxzwsxL2U?autoplay=1&mute=1&loop=1&playlist=-SGxzwsxL2U&controls=0&showinfo=0&rel=0&modestbranding=1"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="Reportly Product Demo"
+              className="w-full aspect-video"
+              style={{ border: 'none' }}
             />
           </div>
 
@@ -202,7 +201,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="pt-6 border-t border-white/8"
+          className="pt-4 border-t border-white/8"
         >
           <p className="text-[0.6rem] uppercase tracking-[0.3em] text-gray-600 mb-3">
             Trusted By & Featured In
@@ -233,29 +232,17 @@ function HeroSection() {
       </div>
 
       {/* ── Right: Full-height video ── */}
-      {/*
-        Note: /vids/zander-subtitles.vtt does not exist yet.
-        To enable captions, add a WebVTT file at that path.
-        The <track> element is included but will silently do nothing until the file is present.
-      */}
-      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/vids/Zander Walking Shoot Final.mp4" type="video/mp4" />
-          <track
-            src="/vids/zander-subtitles.vtt"
-            kind="subtitles"
-            srcLang="en"
-            label="English"
-          />
-        </video>
+      <div className="hidden lg:block absolute right-0 top-0 w-[56%] h-full bg-[#0a0a0f] overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          title="VibeOps Promo"
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          style={{ border: 'none', transform: 'scale(1.5)', transformOrigin: 'center center' }}
+        />
         {/* Gradient: blends left edge of video into the dark bg */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-transparent to-transparent pointer-events-none z-10" style={{ backgroundSize: '50% 100%', backgroundRepeat: 'no-repeat' }} />
       </div>
     </section>
   );
@@ -521,11 +508,11 @@ function ReportlySection() {
             ].map((stat, i) => (
               <div
                 key={stat.label}
-                className={`px-8 py-5 flex flex-col gap-0.5 ${i < 2 ? 'border-r' : ''}`}
+                className={`px-4 sm:px-8 py-4 sm:py-5 flex flex-col gap-0.5 ${i < 2 ? 'border-r' : ''}`}
                 style={{ borderColor: 'rgba(0,255,204,0.08)' }}
               >
-                <span className="text-xl font-bold text-white tracking-tight">{stat.value}</span>
-                <span className="text-[11px] text-gray-500 uppercase tracking-[0.15em]">{stat.label}</span>
+                <span className="text-lg sm:text-xl font-bold text-white tracking-tight">{stat.value}</span>
+                <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-[0.1em] sm:tracking-[0.15em]">{stat.label}</span>
               </div>
             ))}
           </div>
