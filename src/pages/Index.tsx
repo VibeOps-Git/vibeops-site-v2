@@ -64,7 +64,7 @@ const fadeUp = {
 
 function HeroSection() {
   return (
-    <section className="relative h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
+    <section className="relative min-h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
 
       {/* ── Left: Content panel ── */}
       <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-8 sm:px-12 lg:px-16 xl:px-20 pt-28 lg:pt-32 pb-10">
@@ -144,7 +144,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="w-full max-w-sm sm:max-w-md pb-10 lg:pb-12"
+          className="hidden sm:block w-full max-w-sm sm:max-w-md pb-10 lg:pb-12"
         >
           <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
             <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111] border-b border-white/8">
@@ -218,7 +218,7 @@ function HeroSection() {
           style={{ border: 'none', transform: 'scale(1.5)', transformOrigin: 'center center' }}
         />
         {/* Gradient: blends left edge of video into the dark bg */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-[#0a0a0f]/60 to-transparent pointer-events-none z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f] via-transparent to-transparent pointer-events-none z-10" style={{ backgroundSize: '50% 100%', backgroundRepeat: 'no-repeat' }} />
       </div>
     </section>
   );
