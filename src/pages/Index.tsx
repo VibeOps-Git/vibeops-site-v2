@@ -21,6 +21,10 @@ const pressLinks = [
     label: "Venture Founder Cohort",
     url: "https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort",
   },
+  {
+    label: "Investor Spotlight",
+    url: "https://www.linkedin.com/feed/update/urn:li:share:7442251270310227970",
+  },
 ];
 
 const partnerLogos = [
