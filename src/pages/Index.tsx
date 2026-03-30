@@ -144,7 +144,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="hidden lg:block w-full max-w-sm mt-4"
+          className="hidden lg:block w-full max-w-lg mt-2"
         >
           <div className="rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
             <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#111] border-b border-white/8">
