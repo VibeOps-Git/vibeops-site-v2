@@ -69,7 +69,7 @@ function HeroSection() {
       {/* ── Left: Content panel ── */}
       <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-20 pb-6">
 
-        <div className="flex flex-col justify-center flex-1">
+        <div className="flex flex-col">
 
           <motion.p
             custom={0}
