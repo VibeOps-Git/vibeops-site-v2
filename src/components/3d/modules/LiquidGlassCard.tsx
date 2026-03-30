@@ -11,6 +11,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIBE_3D_THEME } from '@/lib/3d/theme';
+import { ScrambleText } from '@/components/ScrambleText';
 
 interface LiquidGlassCardProps {
   title: string;
@@ -93,7 +94,7 @@ export function LiquidGlassCard({
 
           {/* Title */}
           <h3 className="text-2xl font-bold mb-2 text-white">
-            {title}
+            <ScrambleText text={title}/>
           </h3>
 
           {/* Subtitle */}

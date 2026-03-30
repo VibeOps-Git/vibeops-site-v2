@@ -9,6 +9,8 @@ import AnimatedContent from '../components/AnimatedContent';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 import { Section, SectionWithHeader, SectionDivider } from '@/components/ui/Section';
 import { GallerySection3D } from '../components/3d';
+import { ScrambleText } from '@/components/ScrambleText';
+
 
 const pressLinks = [
   {
@@ -62,6 +64,12 @@ const fadeUp = {
   }),
 };
 
+// =============================================================================
+// Scramble Text Effect (local to Index)
+// =============================================================================
+
+import { useEffect, useState } from 'react';
+
 function HeroSection() {
   return (
     <section className="relative lg:h-screen min-h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
@@ -88,11 +96,15 @@ function HeroSection() {
             animate="visible"
             className="text-[2.8rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] font-bold leading-[1.06] tracking-tight mb-4"
           >
-            <span className="text-white">Less formatting.</span>
+            <ScrambleText
+              text="Less formatting."
+              className="text-white"
+            />
             <br />
-            <span className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
-              More engineering.
-            </span>
+            <ScrambleText
+              text="More engineering."
+              className="bg-gradient-to-r from-[#00ffcc] via-emerald-300 to-cyan-400 bg-clip-text text-transparent"
+            />
           </motion.h1>
 
           <motion.p
@@ -305,6 +317,8 @@ function ReportlySection() {
   });
   const bgY = useTransform(scrollYProgress, [0, 1], ['4%', '-4%']);
 
+  const [titleActive, setTitleActive] = useState(false)
+
   const featureItems = [
     'Works with templates you already use',
     'Charts, tables, and photos from live data',
@@ -380,7 +394,7 @@ function ReportlySection() {
 
               {/* Wordmark */}
               <div>
-                <h2
+                <motion.h2
                   className="text-[4.5rem] sm:text-[5.5rem] lg:text-[6rem] font-black leading-[0.88] tracking-[-0.04em] mb-2 select-none"
                   style={{
                     background: 'linear-gradient(135deg, #ffffff 0%, #a8f0e0 40%, #00ffcc 100%)',
@@ -388,10 +402,16 @@ function ReportlySection() {
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                   }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  onViewportEnter={() => setTitleActive(true)}
                 >
-                  Reportly
-                  <br />
-                </h2>
+                  <ScrambleText
+                    text="Reportly"
+                  />
+                </motion.h2>
 
                 <p className="text-gray-400 text-[0.95rem] leading-relaxed max-w-sm mb-8 mt-5">
                   Our flagship report automation engine. Plug in your existing Word
