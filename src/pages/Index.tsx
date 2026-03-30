@@ -67,9 +67,9 @@ function HeroSection() {
     <section className="relative min-h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
 
       {/* ── Left: Content panel ── */}
-      <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-8 sm:px-12 lg:px-16 xl:px-20 pt-28 lg:pt-32 pb-10">
+      <div className="relative z-10 flex flex-col justify-center w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-28 lg:pt-32 pb-12 gap-8">
 
-        <div className="flex flex-col justify-center flex-1">
+        <div className="flex flex-col justify-center">
 
           <motion.p
             custom={0}
