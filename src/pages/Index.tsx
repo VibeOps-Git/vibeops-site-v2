@@ -64,7 +64,7 @@ const fadeUp = {
 
 function HeroSection() {
   return (
-    <section className="relative h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
+    <section className="relative lg:h-screen min-h-screen w-full flex overflow-hidden bg-[#0a0a0f]">
 
       {/* ── Left: Content panel ── */}
       <div className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-20 pb-6">
@@ -144,7 +144,7 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="hidden lg:block w-full max-w-lg mt-2"
+          className="w-full max-w-lg mt-2"
         >
           <div className="rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
             <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#111] border-b border-white/8">
