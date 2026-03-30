@@ -477,11 +477,11 @@ function ReportlySection() {
             ].map((stat, i) => (
               <div
                 key={stat.label}
-                className={`px-8 py-5 flex flex-col gap-0.5 ${i < 2 ? 'border-r' : ''}`}
+                className={`px-4 sm:px-8 py-4 sm:py-5 flex flex-col gap-0.5 ${i < 2 ? 'border-r' : ''}`}
                 style={{ borderColor: 'rgba(0,255,204,0.08)' }}
               >
-                <span className="text-xl font-bold text-white tracking-tight">{stat.value}</span>
-                <span className="text-[11px] text-gray-500 uppercase tracking-[0.15em]">{stat.label}</span>
+                <span className="text-lg sm:text-xl font-bold text-white tracking-tight">{stat.value}</span>
+                <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-[0.1em] sm:tracking-[0.15em]">{stat.label}</span>
               </div>
             ))}
           </div>
