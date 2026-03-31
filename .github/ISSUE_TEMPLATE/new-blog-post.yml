@@ -1,0 +1,74 @@
+name: New Blog Post
+description: Submit a new blog post for the VibeOps website
+title: "[Blog] "
+labels: ["blog"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## New Blog Post Submission
+        Fill out the fields below and a PR will be created automatically.
+
+  - type: input
+    id: title
+    attributes:
+      label: Blog Title
+      description: The title that will appear on the page (without "| VibeOps Technologies" suffix)
+      placeholder: "e.g. How AI is Transforming Civil Engineering Reports"
+    validations:
+      required: true
+
+  - type: input
+    id: slug
+    attributes:
+      label: URL Slug (optional)
+      description: Leave blank to auto-generate from the title. If provided, use lowercase and hyphens only.
+      placeholder: "e.g. how-ai-transforms-civil-engineering-reports"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Meta Description
+      description: A short summary for SEO and social sharing (aim for 140-160 characters)
+      placeholder: "e.g. Learn how AI-powered reporting tools are helping civil engineers save time and improve documentation quality."
+    validations:
+      required: true
+
+  - type: input
+    id: og_image
+    attributes:
+      label: Social Sharing Image URL (optional)
+      description: A URL to an image for social media previews (Open Graph). Leave blank to use the site default.
+      placeholder: "e.g. https://www.vibeops.ca/images/my-blog-cover.png"
+    validations:
+      required: false
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Blog Content (Markdown)
+      description: |
+        Write the blog content in Markdown. You can use:
+        - `## Heading` for section titles
+        - `**bold**` for bold text
+        - `- item` for bullet lists
+        - `1. item` for numbered lists
+
+        Do NOT include the main title (H1) — it is added automatically.
+      placeholder: |
+        ## Introduction
+
+        Your intro paragraph here...
+
+        ## Why This Matters
+
+        - Point one
+        - Point two
+
+        ## Conclusion
+
+        Wrap-up text here.
+    validations:
+      required: true
