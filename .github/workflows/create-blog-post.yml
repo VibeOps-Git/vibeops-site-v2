@@ -2,7 +2,7 @@ name: Create Blog Post
 
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled]
 
 jobs:
   create-blog-post:
