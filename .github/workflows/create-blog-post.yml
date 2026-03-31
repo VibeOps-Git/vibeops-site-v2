@@ -114,7 +114,7 @@ jobs:
           body: |
             ## New Blog Post
 
-            Auto-generated from issue #${{ github.event.issue.number }}
+            Closes #${{ github.event.issue.number }}
 
             - **Title:** ${{ steps.parse.outputs.title }}
             - **Slug:** `/blog/${{ steps.parse.outputs.slug }}`
