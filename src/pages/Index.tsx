@@ -14,6 +14,10 @@ import { ScrambleText } from '@/components/ScrambleText';
 
 const pressLinks = [
   {
+    label: "Techcouver",
+    url: "https://techcouver.com/2026/03/30/ubc-ventures-take-stage-at-investor-showcase/",
+  },
+  {
     label: "UBC Investor Showcase",
     url: "https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase",
   },
