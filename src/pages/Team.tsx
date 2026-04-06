@@ -1,7 +1,7 @@
 // src/pages/Team.tsx
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
 import { ScrambleText } from "@/components/ScrambleText";
@@ -127,6 +127,15 @@ const advisoryBoard: TeamMember[] = [
 
 export default function Team() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const name = searchParams.get('member');
+    if (!name) return;
+    const all = [...coFounders, ...contributors, ...advisoryBoard];
+    const match = all.find((m) => m.name === decodeURIComponent(name));
+    if (match) setSelectedMember(match);
+  }, [searchParams]);
 
   return (
     <>
