@@ -144,7 +144,7 @@ export default function Index() {
       <CTASection />
       <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
         <a href="/services">Engineering automation services for civil and construction teams</a>
-        <a href="/reportly">Reportly — automated engineering report generation software</a>
+        <a href="/reportly">Reportly - automated engineering report generation software</a>
         <a href="/contact">Book a discovery call with VibeOps Technologies</a>
         <a href="/team">Meet the VibeOps engineering automation team</a>
         <a href="/blog">Engineering automation insights and case studies</a>
@@ -211,7 +211,7 @@ function HeroSection() {
           </motion.h1>
 
           <motion.p variants={item} className="text-[0.95rem] text-zinc-400 leading-[1.7] mb-8 max-w-[21rem]">
-            We automate reporting and documentation so your engineering team can focus on delivering work — not formatting it.
+            We automate reporting and documentation so your engineering team can focus on delivering work - not formatting it.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap gap-3 mb-6">
@@ -242,12 +242,12 @@ function HeroSection() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
                 <a href="https://reportly.ca" target="_blank" rel="noopener noreferrer"
                   className="ml-2 flex-1 text-[9px] text-zinc-500 hover:text-emerald-400 tracking-wide truncate transition-colors duration-200">
-                  reportly.ca — Try Now ↗
+                  reportly.ca - Try Now ↗
                 </a>
               </div>
               <video src={DEMO_VIDEO_SRC} autoPlay muted loop playsInline className="w-full aspect-video object-cover" />
             </motion.div>
-            {/* Pitch — mobile only */}
+            {/* Pitch - mobile only */}
             <div className="sm:w-[38%] sm:flex-shrink-0 lg:hidden rounded-xl overflow-hidden border border-zinc-800 relative" style={{ minHeight: 120 }}>
               <iframe src={PITCH_VIDEO_SRC} allow="autoplay; encrypted-media" title="VibeOps Pitch"
                 className="absolute inset-0 w-full h-full pointer-events-none" style={{ border: 'none' }} />
@@ -455,7 +455,7 @@ function ReportlySection() {
                 <ScrambleText text="Reportly" duration={2.0} />
               </h2>
               <p className="text-zinc-500 text-sm md:text-[0.95rem] leading-[1.75] max-w-xs mb-10">
-                Our flagship report automation engine. Plug in your existing Word templates, feed in data, and get review-ready documents — with none of the formatting overhead.
+                Our flagship report automation engine. Plug in your existing Word templates, feed in data, and get review-ready documents - with none of the formatting overhead.
               </p>
             </Reveal>
 
@@ -524,7 +524,7 @@ function ReportlySection() {
 // =============================================================================
 
 const processSteps = [
-  { step: '01', title: 'Discovery', description: 'We review your actual workflows, tools, and processes. No theoretical frameworks — just how work really gets done.' },
+  { step: '01', title: 'Discovery', description: 'We review your actual workflows, tools, and processes. No theoretical frameworks - just how work really gets done.' },
   { step: '02', title: 'Prototype', description: 'We build a narrow but complete solution: ingest data, automate the workflow, and walk it through your QA process.' },
   { step: '03', title: 'Rollout', description: 'Once the first workflow is trusted, we expand carefully. Proper versioning, access control, and documentation.' },
 ];
@@ -631,7 +631,7 @@ function TeamSection() {
           </motion.div>
         </Reveal>
 
-        {/* Avatar strip — centered */}
+        {/* Avatar strip - centered */}
         <motion.div
           className="flex justify-center gap-8 sm:gap-12 flex-wrap"
           variants={{ ...stagger, show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
@@ -681,7 +681,7 @@ function CTASection() {
             <ScrambleText text="Get your engineering time back." duration={1.0} />
           </motion.h2>
           <motion.p variants={item} className="text-zinc-500 text-sm md:text-[0.95rem] leading-[1.75] mb-10 max-w-sm">
-            We automate reporting and documentation so your team can focus on engineering — and deliver more per project.
+            We automate reporting and documentation so your team can focus on engineering - and deliver more per project.
           </motion.p>
           <motion.div variants={item} className="flex flex-wrap gap-3">
             <Btn href="/contact" primary>Book a Vibe Check <ArrowRight className="w-3.5 h-3.5" /></Btn>
