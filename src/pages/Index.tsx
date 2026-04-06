@@ -166,42 +166,49 @@ function HeroSection() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="w-full max-w-lg mt-2"
+          className="w-full mt-2 lg:max-w-lg"
         >
-          <div className="rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#111] border-b border-white/8">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#FF5F57]" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#FFBD2E]" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#28C840]" />
-              <a
-                href="https://reportly.ca"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mx-2 flex-1 bg-white/5 rounded px-2 py-0.5 text-[9px] text-gray-400 hover:text-[#00ffcc] tracking-wide truncate transition-colors duration-200 cursor-pointer"
-              >
-                reportly.ca - Try Now! ↗
-              </a>
-            </div>
-            <iframe
-              src="https://www.youtube.com/embed/-SGxzwsxL2U?autoplay=1&mute=1&loop=1&playlist=-SGxzwsxL2U&controls=0&showinfo=0&rel=0&modestbranding=1"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              title="Reportly Product Demo"
-              className="w-full aspect-video"
-              style={{ border: 'none' }}
-            />
-          </div>
+          {/* Mobile: side-by-side, Desktop: single card */}
+          <div className="flex gap-2 items-stretch lg:block">
 
-          {/* 2. Zander Overlay (Moved OUTSIDE the container above to avoid clipping) */}
-          <div className="absolute -top-6 -right-3 lg:hidden w-[32%] z-50 pointer-events-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-            <video
-              src="/vids/Zander Walking Shoot Final.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-auto rounded-lg border border-white/20"
-            />
+            {/* Reportly demo */}
+            <div className="flex-1 min-w-0 rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-black/60 bg-[#0d0d0d]">
+              <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#111] border-b border-white/8">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#FF5F57]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#FFBD2E]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#28C840]" />
+                <a
+                  href="https://reportly.ca"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mx-2 flex-1 bg-white/5 rounded px-2 py-0.5 text-[9px] text-gray-400 hover:text-[#00ffcc] tracking-wide truncate transition-colors duration-200 cursor-pointer"
+                >
+                  reportly.ca - Try Now! ↗
+                </a>
+              </div>
+              <video
+                src="/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full aspect-video object-cover"
+              />
+            </div>
+
+            {/* Promo video — mobile only, same height as Reportly card */}
+            <div className="w-[42%] flex-shrink-0 lg:hidden rounded-lg overflow-hidden border border-white/20 shadow-2xl shadow-black/60" style={{ position: 'relative', isolation: 'isolate', zIndex: 1 }}>
+              <iframe
+                src="https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="VibeOps Promo"
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none', zIndex: 1 }}
+              />
+              <div style={{ position: 'absolute', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.01)', cursor: 'default' }} />
+            </div>
+
           </div>
         </motion.div>
 
