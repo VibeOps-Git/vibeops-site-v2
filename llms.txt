@@ -1,6 +1,85 @@
-# llms.txt for VibeOps
-# Place this file in: /public/llms.txt
-# Intended audience: operators of large language models and AI crawlers.
+# VibeOps
+
+> Less formatting. More engineering.
+
+VibeOps Technologies Inc. builds engineering automation, AI systems, and high-performance software for civil engineering and infrastructure teams. We eliminate manual reporting, documentation, and repetitive workflows so engineers can focus on engineering.
+
+Website: https://vibeops.ca
+Location: Vancouver, BC, Canada
+
+## Products & Services
+
+### Reportly (Flagship Product)
+Automated, audit-ready reports from your existing Word and Excel templates. Built by engineers, for engineers.
+- Transforms hours of manual formatting into minutes (3 min avg. report time)
+- 100% template-compatible — works with existing Word and Excel templates, zero workflow changes
+- Features: template automation, live data charts and tables, photo appendices, QA-ready output, section-level AI
+- Website: https://reportly.ca
+
+### Workflow Automation
+Custom-built tools that remove repetitive documentation from engineering workflows.
+- Field data ingestion, inspection checklists, site documentation
+- White-labeled tools tailored to your team's processes
+
+### Engineering Dashboards
+Turn raw technical data into actionable insight.
+- Instrument dashboards, construction tracking, map-based views
+- Shareable, live field operations dashboards
+
+### Internal Tools
+Rapid engineering calculators and lightweight apps.
+- Cost estimators, asset tracking, pilot tools
+- Mirror workflows without full platform overhead
+
+## Who We Serve
+
+- Civil engineers and civil engineering firms
+- Construction teams and general contractors
+- Infrastructure and transportation organizations
+- Municipal government
+- Engineering consulting and design firms
+
+## The Problem We Solve
+
+Engineers lose 700+ hours per year on manual documentation and report formatting. That's $35,000 in wasted salary per engineer (on a $100K salary) and 30-40% of total project time lost to documentation. We interviewed 100+ firms across Vancouver and validated this pain point firsthand.
+
+## Our Approach
+
+1. Discovery — review your actual workflows, tools, and templates
+2. Prototype — build a narrow but complete solution with QA walkthrough
+3. Rollout — expand carefully with versioning and access control
+
+Working prototype in weeks, not months.
+
+## Team
+
+### Co-Founders
+- Zander Dent — CEO & Co-Founder. Civil engineering workflows and product vision. zander@vibeops.ca
+- Felix Stewart — Sales & Operations. Strategy, partnerships, business development. felix@vibeops.ca
+- Gabriel Comla — CMO & Co-Founder. Storytelling for engineers, marketing. gabriel@vibeops.ca
+- Eric Balanecki — CTO & Co-Founder. Technical architecture, automation engine. eric@vibeops.ca
+- Qazi Omair Ahmed — Head of Engineering & Co-Founder. Systems design, product delivery. omair@vibeops.ca
+- Hrudai Rajesh — Co-Founder. Implementation and delivery. hrudai@vibeops.ca
+
+### Advisors
+- Dr. Tamara Etmannski — UBC Assistant Professor, Civil Engineering
+- Dr. Noboru Yonemitsu — UBC Associate Professor, Hydrotechnical Engineering
+
+## Press & Recognition
+
+- Techcouver — "UBC Ventures Take Stage at Investor Showcase" (March 2026)
+- UBC Innovation Investor Showcase — Featured presenter (March 2026)
+- UBC Venture Founder Cohort — Member (February 2026)
+
+## Contact
+
+- General: team@vibeops.ca
+- Book a call: https://calendly.com/zander-vibeops/30min
+- LinkedIn: https://www.linkedin.com/company/vibeops
+- X/Twitter: https://x.com/vibeops_ca
+- Instagram: https://instagram.com/vibeops
+
+## Policy for AI Crawlers
 
 site: https://vibeops.ca
 owner: VibeOps Technologies Inc.
@@ -20,9 +99,6 @@ policy:
       * Content is not retained or repurposed as bulk training data.
 
 llm-crawlers:
-  # These user-agents are expected to follow robots.txt as well.
-  # We restate the intent here for clarity.
-
   - name: GPTBot
     allowed: false
     note: "Do not use VibeOps content for training OpenAI models."
@@ -44,7 +120,7 @@ llm-crawlers:
     note: "Do not use VibeOps content for training or aggregation."
 
 usage-notes:
-  - This file expresses the site owner’s preferences regarding LLM
+  - This file expresses the site owner's preferences regarding LLM
     training and usage.
   - Where there is conflict, robots.txt directives should be treated
     as authoritative for crawling behavior.
