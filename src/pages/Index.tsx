@@ -4,31 +4,29 @@ import {
   motion,
   useScroll,
   useTransform,
-  useMotionValue,
-  useSpring,
   useInView,
-  type MotionValue,
 } from 'framer-motion';
 import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
-import { useRef, useEffect, useState, useCallback, ReactNode } from 'react';
+import { useRef, useEffect, useState, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
 import { ScrambleText } from '@/components/ScrambleText';
 import { GallerySection3D } from '../components/3d';
 
-const DEMO_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
+// Hero uses the branded demo video (full background)
+const HERO_VIDEO_SRC = '/vids/demo vid.mp4';
+// Platform section uses the polished corporate demo
+const PLATFORM_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
+// YouTube pitch embed shown in CTA
 const PITCH_VIDEO_SRC =
   'https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1';
 
-const pressLinks = [
-  { label: 'Techcouver', url: 'https://techcouver.com/2026/03/30/ubc-ventures-take-stage-at-investor-showcase/' },
-  { label: 'UBC Investor Showcase', url: 'https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase' },
-  { label: 'Venture Founder Cohort', url: 'https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort' },
-  { label: 'Investor Spotlight', url: 'https://www.linkedin.com/feed/update/urn:li:share:7442251270310227970' },
-];
-
-const partnerLogos = [
-  { src: '/clients/SenseEngineering.png', alt: 'Sense Engineering' },
-  { src: '/clients/ubc-eng.jpg', alt: 'UBC Engineering' },
+const TICKER_ITEMS = [
+  { type: 'logo' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering' },
+  { type: 'logo' as const, src: '/clients/ubc-eng.jpg', alt: 'UBC Engineering' },
+  { type: 'text' as const, label: 'Techcouver', url: 'https://techcouver.com/2026/03/30/ubc-ventures-take-stage-at-investor-showcase/' },
+  { type: 'text' as const, label: 'UBC Investor Showcase', url: 'https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase' },
+  { type: 'text' as const, label: 'Venture Founder Cohort', url: 'https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort' },
+  { type: 'text' as const, label: 'Investor Spotlight', url: 'https://www.linkedin.com/feed/update/urn:li:share:7442251270310227970' },
 ];
 
 // =============================================================================
@@ -45,7 +43,7 @@ function Reveal({ children, delay = 0, className }: { children: ReactNode; delay
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+      initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.7, delay, ease: EASE }}
@@ -57,14 +55,14 @@ function Reveal({ children, delay = 0, className }: { children: ReactNode; delay
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 18, filter: 'blur(5px)' },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.55, ease: EASE } },
+  hidden: { opacity: 0, y: 20, filter: 'blur(5px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: EASE } },
 };
 
-function useCountUp(target: number, duration = 1.4) {
+function useCountUp(target: number, duration = 1.6) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const [val, setVal] = useState(0);
@@ -85,7 +83,7 @@ function useCountUp(target: number, duration = 1.4) {
 function Rule({ className }: { className?: string }) {
   return (
     <motion.div
-      className={`h-px bg-zinc-800/80 origin-left ${className ?? ''}`}
+      className={`h-px bg-white/8 origin-left ${className ?? ''}`}
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}
@@ -94,32 +92,64 @@ function Rule({ className }: { className?: string }) {
   );
 }
 
-// Infinite marquee
-function Marquee({ children, speed = 38 }: { children: ReactNode; speed?: number }) {
-  const [x, setX] = useState(0);
-  const innerRef = useRef<HTMLDivElement>(null);
-  const last = useRef(0);
-  const raf = useRef(0);
-  useEffect(() => {
-    const tick = (ts: number) => {
-      const dt = last.current ? ts - last.current : 0;
-      last.current = ts;
-      setX((prev) => {
-        const w = (innerRef.current?.offsetWidth ?? 0) / 2;
-        const n = prev - (speed * dt) / 1000;
-        return w && n <= -w ? 0 : n;
-      });
-      raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, [speed]);
+// Infinite CSS marquee — 2 copies, translates -50% for a perfect loop
+function InfiniteMarquee({ speed = 35 }: { speed?: number }) {
   return (
-    <div className="overflow-hidden w-full">
-      <div ref={innerRef} className="flex whitespace-nowrap will-change-transform" style={{ transform: `translateX(${x}px)` }}>
-        {children}{children}
+    <div className="overflow-hidden w-full select-none">
+      <div
+        className="flex whitespace-nowrap w-max"
+        style={{ animation: `marquee-scroll ${speed}s linear infinite` }}
+      >
+        {[0, 1].map((pass) => (
+          <span key={pass} className="flex items-center shrink-0">
+            {TICKER_ITEMS.map((t, i) => (
+              <span key={`${pass}-${i}`} className="inline-flex items-center gap-3 px-6">
+                {t.type === 'logo' ? (
+                  <img
+                    src={t.src}
+                    alt={t.alt}
+                    className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-65 transition-opacity duration-300 grayscale brightness-150"
+                    loading="lazy"
+                  />
+                ) : (
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] uppercase tracking-[0.28em] text-white/35 hover:text-white/70 transition-colors duration-200 font-medium"
+                  >
+                    {t.label}
+                  </a>
+                )}
+                <span className="w-1 h-1 rounded-full bg-white/15 flex-shrink-0" aria-hidden="true" />
+              </span>
+            ))}
+          </span>
+        ))}
       </div>
     </div>
+  );
+}
+
+// =============================================================================
+// Section transition bridge
+// =============================================================================
+
+/** Renders a gradient sliver that visually connects two sections.
+ *  fromColor / toColor are full CSS color values (hex, hsl, etc.). */
+function SectionBridge({ from, to, height = 80 }: { from: string; to: string; height?: number }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        height,
+        background: `linear-gradient(to bottom, ${from}, ${to})`,
+        marginTop: -1,
+        marginBottom: -1,
+        position: 'relative',
+        zIndex: 1,
+      }}
+    />
   );
 }
 
@@ -131,24 +161,31 @@ export default function Index() {
   return (
     <>
       <SEO
-        title="VibeOps Technologies"
-        description="Engineering automation for civil, construction, and infrastructure teams."
+        title="AI Engineering Report Automation | VibeOps Technologies"
+        description="VibeOps automates engineering reports, documentation, and workflows for civil and construction teams. Replace hours of manual formatting with AI-powered report generation in minutes."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
-      <LogoTicker />
+      {/* Hero is dark, ticker is dark — seamless */}
+      <TrustedByTicker />
+      {/* dark ticker → white platform */}
+      <SectionBridge from="#0c1220" to="#ffffff" height={80} />
+      <PlatformSection />
+      {/* white platform → dark features */}
+      <SectionBridge from="#ffffff" to="#060b14" height={120} />
       <FeaturesSection />
       <ReportlySection />
       <ProcessSection />
       <TeamSection />
       <CTASection />
+      {/* Hidden internal links for SEO crawlability */}
       <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
-        <a href="/services">Engineering automation services for civil and construction teams</a>
-        <a href="/reportly">Reportly - automated engineering report generation software</a>
-        <a href="/contact">Book a discovery call with VibeOps Technologies</a>
+        <a href="/services">AI engineering automation services for civil and construction teams</a>
+        <a href="/reportly">Reportly — AI report writing software for civil engineers</a>
+        <a href="/contact">Book a demo for engineering report automation</a>
         <a href="/team">Meet the VibeOps engineering automation team</a>
-        <a href="/blog">Engineering automation insights and case studies</a>
-        <a href="https://reportly.ca" rel="noopener">Reportly report automation platform</a>
+        <a href="/blog">AI tools for civil engineering report writing and documentation</a>
+        <a href="https://reportly.ca" rel="noopener">Reportly — automated engineering report generator</a>
       </div>
     </>
   );
@@ -158,132 +195,113 @@ export default function Index() {
 // Hero
 // =============================================================================
 
+const heroStats = [
+  { value: 80, suffix: '%+', label: 'Documentation Time Saved' },
+  { value: 3, suffix: ' min', label: 'Avg. Report Generation Time' },
+  { value: 100, suffix: '%', label: 'Existing Template Compatible' },
+];
+
+function HeroStatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { ref, val } = useCountUp(value, 1.8);
+  return (
+    <div className="flex flex-col">
+      <span ref={ref} className="text-2xl sm:text-3xl font-bold text-white tabular-nums tracking-tight">
+        {val}{suffix}
+      </span>
+      <span className="text-[11px] text-white/50 mt-1 leading-tight">{label}</span>
+    </div>
+  );
+}
+
 function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const videoY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
-  const videoOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '5%']);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const spotX = useSpring(mouseX, { stiffness: 55, damping: 22 });
-  const spotY = useSpring(mouseY, { stiffness: 55, damping: 22 });
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - r.left);
-    mouseY.set(e.clientY - r.top);
-  }, [mouseX, mouseY]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   return (
     <section
       ref={sectionRef}
-      className="relative lg:h-screen min-h-screen w-full flex overflow-hidden bg-black"
-      onMouseMove={handleMouseMove}
+      className="relative min-h-screen w-full flex flex-col justify-end overflow-hidden bg-[#060b14]"
+      aria-label="VibeOps — AI Engineering Report Automation Platform"
     >
-      {/* Cursor spotlight */}
-      <motion.div
-        className="absolute pointer-events-none z-0 w-[700px] h-[700px] rounded-full -translate-x-1/2 -translate-y-1/2"
-        style={{ left: spotX, top: spotY, background: 'radial-gradient(circle, rgba(52,211,153,0.04) 0%, transparent 60%)' }}
-      />
+      {/* Background video */}
+      <motion.div className="absolute inset-0 z-0" style={{ scale: videoScale }}>
+        <motion.div className="absolute inset-0" style={{ opacity: videoOpacity }}>
+          <video
+            src={HERO_VIDEO_SRC}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            aria-hidden="true"
+          />
+        </motion.div>
+        {/* Single mid-weight overlay so video is visible but text stays readable */}
+        <div className="absolute inset-0 bg-[#060b14]/80" />
+        {/* Heavier on the left where the headline sits */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#060b14]/100 via-[#060b14]/50 to-transparent" />
+        {/* Bottom fade into stats bar */}
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#060b14] to-transparent" />
+      </motion.div>
 
-      {/* ── Left panel ── */}
+      {/* Main content */}
       <motion.div
-        className="relative z-10 flex flex-col justify-between w-full lg:w-[50%] px-6 sm:px-12 lg:px-16 xl:px-20 pt-28 pb-10"
+        className="relative z-10 flex flex-col justify-center flex-1 px-6 sm:px-12 lg:px-20 xl:px-28 pt-32 pb-8"
         style={{ y: contentY }}
         variants={stagger}
         initial="hidden"
         animate="show"
       >
-        <div className="flex flex-col">
-          <motion.p variants={item} className="text-[10px] uppercase tracking-[0.35em] text-zinc-600 mb-6">
-            Civil · Construction · Infrastructure
-          </motion.p>
+        <motion.p
+          variants={item}
+          className="text-[10px] uppercase tracking-[0.42em] text-emerald-400/80 mb-5 font-semibold"
+        >
+          AI Report Writing for Civil &amp; Construction Engineering
+        </motion.p>
 
-          <motion.h1
-            variants={item}
-            className="text-[2.75rem] sm:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-semibold leading-[1.06] tracking-[-0.02em] mb-6"
-          >
-            <ScrambleText text="Less formatting." className="text-white" trigger="mount" duration={0.5} />
-            <br />
-            <ScrambleText text="More engineering." className="text-emerald-400" trigger="mount" duration={1.0} />
-          </motion.h1>
+        {/* h1 targets top keyword opportunity: "ai for report writing in civil engineering" */}
+        <motion.h1
+          variants={item}
+          className="text-[2.8rem] sm:text-5xl lg:text-[3.75rem] xl:text-[4.25rem] font-bold leading-[1.04] tracking-[-0.025em] mb-6 max-w-3xl"
+        >
+          <span className="text-white">Less</span>
+          <br />
+          <span className="text-emerald-400">Formatting</span>
+          <br />
+          <span className="text-white">More Engineering</span>
+        </motion.h1>
 
-          <motion.p variants={item} className="text-[0.95rem] text-zinc-400 leading-[1.7] mb-8 max-w-[21rem]">
-            We automate reporting and documentation so your engineering team can focus on delivering work - not formatting it.
-          </motion.p>
+        <motion.p
+          variants={item}
+          className="text-[0.95rem] sm:text-base text-white/55 leading-[1.8] mb-10 max-w-[30rem]"
+        >
+          Stop spending hours on manual engineering reports. VibeOps automates civil engineering documentation so your team focuses on delivering — not formatting.
+        </motion.p>
 
-          <motion.div variants={item} className="flex flex-wrap gap-3 mb-6">
-            <Btn href="/contact" primary>Book a Vibe Check <ArrowRight className="w-3.5 h-3.5" /></Btn>
-            <Btn href="/services">See What We Build</Btn>
-          </motion.div>
-
-          <motion.div variants={item} className="flex flex-wrap gap-x-6 gap-y-2">
-            {['Integrates with your existing tools', 'No workflow disruption'].map((t) => (
-              <span key={t} className="flex items-center gap-2 text-[13px] text-zinc-500">
-                <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />{t}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Demo card */}
-        <motion.div variants={item} className="w-full mt-8 lg:max-w-[500px]">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch lg:block">
-            <motion.div
-              className="flex-1 min-w-0 rounded-xl overflow-hidden border border-zinc-800 shadow-2xl shadow-black/70"
-              whileHover={{ borderColor: 'rgba(52,211,153,0.25)', y: -2 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            >
-              <div className="flex items-center gap-1.5 px-3 py-2.5 bg-zinc-900 border-b border-zinc-800">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-                <a href="https://reportly.ca" target="_blank" rel="noopener noreferrer"
-                  className="ml-2 flex-1 text-[9px] text-zinc-500 hover:text-emerald-400 tracking-wide truncate transition-colors duration-200">
-                  reportly.ca - Try Now ↗
-                </a>
-              </div>
-              <video src={DEMO_VIDEO_SRC} autoPlay muted loop playsInline className="w-full aspect-video object-cover" />
-            </motion.div>
-            {/* Pitch - mobile only */}
-            <div className="sm:w-[38%] sm:flex-shrink-0 lg:hidden rounded-xl overflow-hidden border border-zinc-800 relative" style={{ minHeight: 120 }}>
-              <iframe src={PITCH_VIDEO_SRC} allow="autoplay; encrypted-media" title="VibeOps Pitch"
-                className="absolute inset-0 w-full h-full pointer-events-none" style={{ border: 'none' }} />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Social proof */}
-        <motion.div variants={item} className="pt-6 border-t border-zinc-900 mt-5">
-          <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-700 mb-4">Trusted By & Featured In</p>
-          <div className="flex flex-wrap items-center gap-5">
-            {partnerLogos.map((logo) => (
-              <img key={logo.alt} src={logo.src} alt={logo.alt}
-                className="h-4 w-auto object-contain opacity-20 hover:opacity-40 transition-opacity duration-300" />
-            ))}
-            <div className="hidden sm:block w-px h-3 bg-zinc-800" />
-            {pressLinks.map((link) => (
-              <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
-                className="text-[10px] uppercase tracking-[0.15em] text-zinc-700 hover:text-zinc-400 transition-colors duration-200">
-                {link.label} ↗
-              </a>
-            ))}
-          </div>
+        <motion.div variants={item} className="flex flex-wrap gap-3.5">
+          <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>
+          <Btn href="/services">See What We Build</Btn>
         </motion.div>
       </motion.div>
 
-      {/* ── Right: video ── */}
-      <div className="hidden lg:block absolute right-0 top-0 w-[54%] h-full overflow-hidden bg-black">
-        <motion.div className="absolute inset-0" style={{ y: videoY, opacity: videoOpacity }}>
-          <iframe src={PITCH_VIDEO_SRC} allow="autoplay; encrypted-media" title="VibeOps Pitch"
-            className="absolute inset-0 w-full h-full pointer-events-none"
-            style={{ border: 'none', transform: 'scale(1.45)', transformOrigin: 'center center' }} />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent pointer-events-none z-10" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent pointer-events-none z-10" />
-      </div>
+      {/* Stats bar pinned to bottom of hero */}
+      <motion.div
+        className="relative z-10 w-full border-t border-white/10 bg-white/5 backdrop-blur-sm"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.8, ease: EASE }}
+      >
+        <div className="max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 xl:px-28 py-5">
+          <div className="flex flex-wrap gap-8 sm:gap-14 md:gap-20">
+            {heroStats.map((s) => (
+              <HeroStatItem key={s.label} {...s} />
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
@@ -296,14 +314,12 @@ function Btn({ href, children, primary = false }: { href: string; children: Reac
   return (
     <motion.a
       href={href}
-      className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-none ${
+      className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-[13.5px] font-semibold transition-none ${
         primary
-          ? 'bg-white text-black'
-          : 'border border-zinc-700 text-zinc-300'
+          ? 'bg-emerald-400 text-black hover:bg-emerald-300'
+          : 'border border-white/20 text-white/80 hover:border-white/40 hover:text-white'
       }`}
-      whileHover={primary
-        ? { scale: 1.03, backgroundColor: '#e4e4e7' }
-        : { scale: 1.03, borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}
+      whileHover={{ scale: 1.025 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: 'spring', stiffness: 400, damping: 22 }}
     >
@@ -313,26 +329,86 @@ function Btn({ href, children, primary = false }: { href: string; children: Reac
 }
 
 // =============================================================================
-// Logo ticker
+// Trusted By — infinite scrolling ticker
 // =============================================================================
 
-const TICKER_ITEMS = [
-  'Techcouver', 'UBC Investor Showcase', 'Venture Founder Cohort',
-  'Investor Spotlight', 'Sense Engineering', 'UBC Engineering',
-];
-
-function LogoTicker() {
+function TrustedByTicker() {
   return (
-    <div className="border-t border-b border-zinc-900 bg-black py-3.5 overflow-hidden">
-      <Marquee speed={36}>
-        {TICKER_ITEMS.map((t) => (
-          <span key={t} className="inline-flex items-center gap-6 px-8 text-[10px] uppercase tracking-[0.28em] text-zinc-700">
-            {t}
-            <span className="w-1 h-1 rounded-full bg-zinc-800 flex-shrink-0" />
-          </span>
-        ))}
-      </Marquee>
-    </div>
+    <section className="bg-[#0c1220] border-t border-white/5 py-6 overflow-hidden">
+      <p className="text-center text-[9px] uppercase tracking-[0.38em] text-white/25 mb-5 font-medium px-6">
+        Trusted by Engineering Professionals &amp; Featured In
+      </p>
+      <InfiniteMarquee speed={35} />
+    </section>
+  );
+}
+
+// =============================================================================
+// Platform Showcase
+// =============================================================================
+
+function PlatformSection() {
+  return (
+    <section className="bg-white pt-16 pb-24 md:pt-20 md:pb-32">
+      <div className="max-w-5xl mx-auto px-6 md:px-10">
+        <Reveal>
+          <p className="text-center text-[10px] uppercase tracking-[0.38em] text-emerald-600 mb-5 font-semibold">
+            One Platform
+          </p>
+          {/* h2 targets "ai tools for report writing in civil engineering" */}
+          <h2 className="text-center text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.025em] text-zinc-900 leading-[1.1] mb-5 max-w-3xl mx-auto">
+            AI Tools for Report Writing,{' '}
+            <span className="text-emerald-500">Workflows &amp; Engineering</span>
+            <br />
+            <span className="text-emerald-500">Documentation</span>
+          </h2>
+          <p className="text-center text-[0.9rem] text-zinc-500 max-w-xl mx-auto mb-12 leading-[1.8]">
+            Replace hours of manual civil engineering documentation with minutes of automated, QA-ready output — without changing a single thing about how your team works.
+          </p>
+          <div className="flex justify-center mb-14">
+            <Btn href="/services" primary>Explore the Platform <ArrowRight className="w-3.5 h-3.5" /></Btn>
+          </div>
+        </Reveal>
+
+        {/* Browser-chrome video player */}
+        <motion.div
+          className="relative rounded-2xl overflow-hidden border border-zinc-200 shadow-2xl shadow-zinc-200/60 bg-zinc-900"
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.9, ease: EASE }}
+          role="img"
+          aria-label="VibeOps engineering report automation platform demo"
+        >
+          {/* Browser chrome */}
+          <div className="flex items-center gap-2 px-4 py-3 bg-zinc-800 border-b border-zinc-700/60">
+            <div className="w-3 h-3 rounded-full bg-[#FF5F57]" aria-hidden="true" />
+            <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" aria-hidden="true" />
+            <div className="w-3 h-3 rounded-full bg-[#28C840]" aria-hidden="true" />
+            <a
+              href="https://reportly.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-3 flex-1 text-[10px] text-zinc-500 hover:text-emerald-400 tracking-wide truncate transition-colors"
+            >
+              reportly.ca — AI Engineering Report Automation Software
+            </a>
+          </div>
+
+          <div className="relative aspect-video bg-black">
+            <video
+              src={PLATFORM_VIDEO_SRC}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+              aria-label="Reportly AI report automation demo video"
+            />
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
@@ -369,26 +445,32 @@ const services = [
 
 function FeaturesSection() {
   return (
-    <section className="bg-black pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <Label>What We Build</Label>
-          <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-2xl mb-5 leading-[1.1] mt-4">
-            <ScrambleText text="Engineering automation for real-world teams." duration={0.9} />
+          {/* h2 targets "engineering automation" + "civil engineering" */}
+          <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-2xl mb-5 leading-[1.08] mt-4">
+            Engineering automation for civil &amp; construction teams.
           </h2>
-          <p className="text-zinc-500 text-sm md:text-[0.95rem] max-w-lg mb-16 leading-[1.75]">
-            We eliminate repetitive reporting and documentation work so your team can deliver more engineering per project.
+          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-16 leading-[1.8]">
+            We eliminate repetitive civil engineering documentation and reporting so your team can deliver more per project.
           </p>
         </Reveal>
 
         <motion.div
-          className="rounded-2xl overflow-hidden border border-zinc-800/60 mb-16"
+          className="rounded-2xl overflow-hidden border border-white/8 mb-16"
           initial={{ opacity: 0, clipPath: 'inset(6% 0% 6% 0% round 16px)' }}
           whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 16px)' }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 1.0, ease: EASE }}
         >
-          <img src="/reportly-features.png" alt="Reportly capabilities" className="w-full object-cover" />
+          <img
+            src="/reportly-features.png"
+            alt="Reportly AI report automation features — template engine, data integration, and QA-ready output for civil engineering"
+            className="w-full object-cover"
+            loading="lazy"
+          />
         </motion.div>
 
         <GallerySection3D items={services} />
@@ -402,26 +484,26 @@ function FeaturesSection() {
 // =============================================================================
 
 const featureItems = [
-  'Works with templates you already use',
-  'Charts, tables, and photos from live data',
-  'Brand-consistent, QA-ready output',
+  'Works with the Word templates you already use',
+  'Charts, tables, and photos from live engineering data',
+  'Brand-consistent, QA-ready civil engineering reports',
   'No changes to your existing workflow',
 ];
 
 const stats = [
-  { value: 3, suffix: ' min', label: 'avg. report time' },
-  { value: 100, suffix: '%', label: 'template-compatible' },
-  { value: 0, suffix: ' changes', label: 'to your workflow' },
+  { value: 80, suffix: '%+', label: 'Time saved on documentation' },
+  { value: 3, suffix: ' min', label: 'Avg. report generation time' },
+  { value: 100, suffix: '%', label: 'Template compatible' },
 ];
 
 function StatCard({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const { ref, val } = useCountUp(value);
   return (
     <div className="px-7 sm:px-10 py-7 flex flex-col gap-1.5">
-      <span ref={ref} className="text-2xl sm:text-3xl font-semibold text-white tracking-tight tabular-nums">
+      <span ref={ref} className="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums">
         {val}{suffix}
       </span>
-      <span className="text-[10px] text-zinc-600 uppercase tracking-[0.14em]">{label}</span>
+      <span className="text-[10px] text-white/35 uppercase tracking-[0.14em]">{label}</span>
     </div>
   );
 }
@@ -432,14 +514,14 @@ function ReportlySection() {
   const imgY = useTransform(scrollYProgress, [0, 1], [35, -35]);
 
   return (
-    <section className="border-t border-zinc-900 bg-black pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
       <div className="max-w-5xl mx-auto px-6 md:px-10" ref={sectionRef}>
 
         <Reveal>
           <div className="flex items-center justify-between mb-14">
             <Label>Flagship Product</Label>
             <motion.a href="https://reportly.ca" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[11px] text-zinc-600 hover:text-zinc-300 transition-colors duration-200"
+              className="flex items-center gap-1.5 text-[11px] text-white/30 hover:text-white/70 transition-colors duration-200"
               whileHover={{ x: 1 }} transition={{ duration: 0.15 }}>
               reportly.ca <ArrowUpRight className="w-3 h-3" />
             </motion.a>
@@ -451,20 +533,24 @@ function ReportlySection() {
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-14 lg:gap-20 items-start">
           <div>
             <Reveal>
-              <h2 className="text-[4rem] sm:text-[5rem] font-bold tracking-[-0.04em] text-white leading-none mb-6">
-                <ScrambleText text="Reportly" duration={2.0} />
+              <h2 className="text-[4rem] sm:text-[5rem] font-black tracking-[-0.04em] text-white leading-none mb-6">
+                <ScrambleText text="Reportly" duration={2.2} trigger="inView" />
               </h2>
-              <p className="text-zinc-500 text-sm md:text-[0.95rem] leading-[1.75] max-w-xs mb-10">
-                Our flagship report automation engine. Plug in your existing Word templates, feed in data, and get review-ready documents - with none of the formatting overhead.
+              <p className="text-white/45 text-sm md:text-[0.95rem] leading-[1.8] max-w-xs mb-10">
+                Our flagship AI report writing tool for civil engineers. Connect your existing Word templates, feed in field data, and get review-ready engineering reports — automatically.
               </p>
             </Reveal>
 
-            <motion.ul className="flex flex-col gap-3.5 mb-10"
+            <motion.ul
+              className="flex flex-col gap-3.5 mb-10"
               variants={{ ...stagger, show: { transition: { staggerChildren: 0.07 } } }}
-              initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}>
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-60px' }}
+            >
               {featureItems.map((fi) => (
-                <motion.li key={fi} variants={item} className="flex items-center gap-3 text-sm text-zinc-300">
-                  <span className="flex-shrink-0 w-4 h-4 rounded-full border border-emerald-700/50 flex items-center justify-center bg-emerald-950/50">
+                <motion.li key={fi} variants={item} className="flex items-center gap-3 text-sm text-white/70">
+                  <span className="flex-shrink-0 w-4 h-4 rounded-full border border-emerald-600/50 flex items-center justify-center bg-emerald-950/60">
                     <Check className="w-2.5 h-2.5 text-emerald-400" />
                   </span>
                   {fi}
@@ -482,34 +568,47 @@ function ReportlySection() {
 
           <Reveal delay={0.12}>
             <motion.div
-              className="rounded-2xl overflow-hidden border border-zinc-800/80 shadow-2xl shadow-black/60"
+              className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60"
               style={{ y: imgY }}
-              whileHover={{ scale: 1.012, borderColor: 'rgba(52,211,153,0.18)' }}
+              whileHover={{ scale: 1.012, borderColor: 'rgba(52,211,153,0.2)' }}
               transition={{ type: 'spring', stiffness: 200, damping: 30 }}
             >
-              <img src="/app-preview.png" alt="Reportly application" className="w-full object-cover" />
+              <img
+                src="/app-preview.png"
+                alt="Reportly engineering report automation software — automated civil engineering reports in minutes"
+                className="w-full object-cover"
+                loading="lazy"
+              />
             </motion.div>
           </Reveal>
         </div>
 
-        {/* Bridge */}
+        {/* Workflow bridge image */}
         <motion.div
-          className="mt-20 rounded-2xl overflow-hidden border border-zinc-800/60"
+          className="mt-20 rounded-2xl overflow-hidden border border-white/8"
           initial={{ opacity: 0, clipPath: 'inset(8% 0% 8% 0% round 16px)' }}
           whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 16px)' }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 1.1, ease: EASE }}
         >
-          <img src="/reportly-bridge.png" alt="Engineering workflow" className="w-full object-cover" />
+          <img
+            src="/reportly-bridge.png"
+            alt="Engineering report automation workflow — from raw data to polished civil engineering documentation"
+            className="w-full object-cover"
+            loading="lazy"
+          />
         </motion.div>
 
         {/* Stats */}
         <motion.div
-          className="mt-5 grid grid-cols-3 border border-zinc-800/60 rounded-2xl overflow-hidden"
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.15, ease: EASE }}>
+          className="mt-5 grid grid-cols-3 border border-white/8 rounded-2xl overflow-hidden"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.15, ease: EASE }}
+        >
           {stats.map((s, i) => (
-            <div key={s.label} className={i < 2 ? 'border-r border-zinc-800/60' : ''}>
+            <div key={s.label} className={i < 2 ? 'border-r border-white/8' : ''}>
               <StatCard {...s} />
             </div>
           ))}
@@ -524,22 +623,31 @@ function ReportlySection() {
 // =============================================================================
 
 const processSteps = [
-  { step: '01', title: 'Discovery', description: 'We review your actual workflows, tools, and processes. No theoretical frameworks - just how work really gets done.' },
-  { step: '02', title: 'Prototype', description: 'We build a narrow but complete solution: ingest data, automate the workflow, and walk it through your QA process.' },
-  { step: '03', title: 'Rollout', description: 'Once the first workflow is trusted, we expand carefully. Proper versioning, access control, and documentation.' },
+  {
+    step: '01', title: 'Discovery',
+    description: 'We review your actual civil engineering workflows, tools, and processes. No theoretical frameworks — just how your reporting and documentation really gets done.',
+  },
+  {
+    step: '02', title: 'Prototype',
+    description: 'We build a narrow but complete automation: ingest data, generate the report, and walk it through your QA process.',
+  },
+  {
+    step: '03', title: 'Rollout',
+    description: 'Once the first workflow is trusted, we expand carefully. Proper versioning, access control, and full documentation.',
+  },
 ];
 
 function ProcessSection() {
   return (
-    <section className="border-t border-zinc-900 bg-black pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <Label>How We Work</Label>
-          <h2 className="text-[2.2rem] sm:text-4xl font-semibold tracking-[-0.02em] text-white mb-5 mt-4">
-            <ScrambleText text="Custom projects." duration={0.9} />
+          <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mb-5 mt-4">
+            Custom engineering automation.
           </h2>
-          <p className="text-zinc-500 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.75]">
-            We get one workflow right before moving to the next. Built to fit how your team actually operates.
+          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.8]">
+            We get one workflow right before moving to the next. Each civil engineering team is different — we build to fit yours.
           </p>
         </Reveal>
 
@@ -548,27 +656,34 @@ function ProcessSection() {
         <motion.div
           className="grid md:grid-cols-3 gap-3"
           variants={{ ...stagger, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
-          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-60px' }}
         >
           {processSteps.map((step) => (
             <motion.div
               key={step.step}
-              variants={{ hidden: { opacity: 0, y: 24, filter: 'blur(5px)' }, show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: EASE } } }}
-              className="group relative border border-zinc-800/60 rounded-2xl p-8 flex flex-col overflow-hidden cursor-default"
-              whileHover={{ borderColor: 'rgba(255,255,255,0.1)', y: -3 }}
+              variants={{
+                hidden: { opacity: 0, y: 24, filter: 'blur(5px)' },
+                show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: EASE } },
+              }}
+              className="group relative border border-white/8 rounded-2xl p-8 flex flex-col overflow-hidden cursor-default"
+              whileHover={{ borderColor: 'rgba(52,211,153,0.2)', y: -3 }}
               transition={{ type: 'spring', stiffness: 300, damping: 28 }}
             >
               <motion.div
                 className="absolute -top-16 -right-16 w-40 h-40 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(circle, rgba(52,211,153,0.06) 0%, transparent 70%)' }}
-                initial={{ opacity: 0 }} whileHover={{ opacity: 1 }} transition={{ duration: 0.35 }}
+                style={{ background: 'radial-gradient(circle, rgba(52,211,153,0.07) 0%, transparent 70%)' }}
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.35 }}
               />
-              <span className="block text-[3.5rem] font-black text-zinc-800/70 leading-none mb-5 tracking-tight select-none">
+              <span className="block text-[3.5rem] font-black text-white/10 leading-none mb-5 tracking-tight select-none">
                 {step.step}
               </span>
-              <div className="w-5 h-px bg-zinc-800 mb-5 group-hover:bg-emerald-800 transition-colors duration-500" />
-              <h3 className="text-[13px] font-semibold text-zinc-200 mb-2 tracking-tight">{step.title}</h3>
-              <p className="text-[13px] text-zinc-500 leading-[1.7]">{step.description}</p>
+              <div className="w-5 h-px bg-white/12 mb-5 group-hover:bg-emerald-500/60 transition-colors duration-500" />
+              <h3 className="text-[13px] font-semibold text-white/90 mb-2 tracking-tight">{step.title}</h3>
+              <p className="text-[13px] text-white/40 leading-[1.75]">{step.description}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -591,19 +706,22 @@ const teamMembers = [
 
 function TeamSection() {
   return (
-    <section className="border-t border-zinc-900 bg-black pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
             <div>
               <Label>The People</Label>
-              <h2 className="text-[2.2rem] sm:text-4xl font-semibold tracking-[-0.02em] text-white mt-4">
-                <ScrambleText text="Built by engineers." duration={0.9} />
+              <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mt-4">
+                Built by engineers, for engineers.
               </h2>
             </div>
-            <motion.a href="/team"
-              className="flex items-center gap-1.5 text-[11px] text-zinc-600 uppercase tracking-[0.15em] hover:text-zinc-300 transition-colors duration-200"
-              whileHover={{ x: 1 }} transition={{ duration: 0.15 }}>
+            <motion.a
+              href="/team"
+              className="flex items-center gap-1.5 text-[11px] text-white/30 uppercase tracking-[0.15em] hover:text-white/70 transition-colors duration-200"
+              whileHover={{ x: 1 }}
+              transition={{ duration: 0.15 }}
+            >
               Full team <ArrowUpRight className="w-3 h-3" />
             </motion.a>
           </div>
@@ -611,48 +729,60 @@ function TeamSection() {
 
         <Rule className="mb-14" />
 
-        {/* Team banner */}
         <Reveal className="mb-12">
           <motion.div
-            className="relative rounded-2xl overflow-hidden border border-zinc-800/60"
-            whileHover={{ borderColor: 'rgba(255,255,255,0.1)' }}
+            className="relative rounded-2xl overflow-hidden border border-white/8"
+            whileHover={{ borderColor: 'rgba(255,255,255,0.14)' }}
             transition={{ duration: 0.3 }}
           >
-            <img src="/team/full-team-pic-optimized.jpg" alt="VibeOps founding team"
-              className="w-full object-cover object-center" style={{ maxHeight: 420 }} />
+            <img
+              src="/team/full-team-pic-optimized.jpg"
+              alt="VibeOps Technologies founding team — engineering automation specialists based in Vancouver, BC"
+              className="w-full object-cover object-center"
+              style={{ maxHeight: 420 }}
+              loading="lazy"
+            />
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
-                <p className="text-[9px] uppercase tracking-[0.28em] text-zinc-500 mb-1">VibeOps Technologies Inc.</p>
-                <p className="text-base md:text-lg font-medium text-white">Building software for engineering teams.</p>
+                <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. — Vancouver, BC</p>
+                <p className="text-base md:text-lg font-semibold text-white">Building AI tools for civil engineering teams.</p>
               </div>
               <Btn href="/contact" primary>Talk to the Team</Btn>
             </div>
           </motion.div>
         </Reveal>
 
-        {/* Avatar strip - centered */}
         <motion.div
           className="flex justify-center gap-8 sm:gap-12 flex-wrap"
           variants={{ ...stagger, show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
-          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-50px' }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-50px' }}
         >
           {teamMembers.map((member) => (
             <motion.a
               key={member.name}
               href={`/team?member=${encodeURIComponent(member.name)}`}
-              variants={{ hidden: { opacity: 0, y: 14, filter: 'blur(5px)' }, show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5, ease: EASE } } }}
+              variants={{
+                hidden: { opacity: 0, y: 14, filter: 'blur(5px)' },
+                show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5, ease: EASE } },
+              }}
               className="flex flex-col items-center gap-2.5 group"
               whileHover={{ y: -3 }}
               transition={{ type: 'spring', stiffness: 350, damping: 22 }}
             >
-              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-zinc-800 group-hover:border-zinc-600 transition-colors duration-300">
-                <img src={member.image} alt={member.name}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" />
+              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-white/12 group-hover:border-emerald-500/40 transition-colors duration-300">
+                <img
+                  src={member.image}
+                  alt={`${member.name} — ${member.role} at VibeOps Technologies`}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
               <div className="text-center">
-                <p className="text-[12px] font-medium text-zinc-300 leading-tight">{member.name.split(' ')[0]}</p>
-                <p className="text-[10px] text-zinc-600 leading-tight mt-0.5">{member.role}</p>
+                <p className="text-[12px] font-medium text-white/75 leading-tight">{member.name.split(' ')[0]}</p>
+                <p className="text-[10px] text-white/30 leading-tight mt-0.5">{member.role}</p>
               </div>
             </motion.a>
           ))}
@@ -668,25 +798,53 @@ function TeamSection() {
 
 function CTASection() {
   return (
-    <section className="border-t border-zinc-900 bg-black pt-28 pb-36 md:pt-36">
+    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Rule className="mb-20" />
-        <motion.div className="max-w-xl"
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}>
+
+        {/* CTA copy */}
+        <motion.div
+          className="max-w-xl mb-20"
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-60px' }}
+        >
           <motion.div variants={item}>
             <Label>Ready to move faster?</Label>
           </motion.div>
-          <motion.h2 variants={item}
-            className="text-[2.5rem] sm:text-5xl md:text-[3.5rem] font-semibold tracking-[-0.03em] text-white mb-6 mt-4 leading-[1.06]">
+          <motion.h2
+            variants={item}
+            className="text-[2.5rem] sm:text-5xl md:text-[3.5rem] font-bold tracking-[-0.03em] text-white mb-6 mt-4 leading-[1.06]"
+          >
             <ScrambleText text="Get your engineering time back." duration={1.0} />
           </motion.h2>
-          <motion.p variants={item} className="text-zinc-500 text-sm md:text-[0.95rem] leading-[1.75] mb-10 max-w-sm">
-            We automate reporting and documentation so your team can focus on engineering - and deliver more per project.
+          <motion.p variants={item} className="text-white/40 text-sm md:text-[0.95rem] leading-[1.8] mb-10 max-w-sm">
+            Automate your civil engineering reports and documentation so your team can focus on what matters — and deliver more per project.
           </motion.p>
           <motion.div variants={item} className="flex flex-wrap gap-3">
-            <Btn href="/contact" primary>Book a Vibe Check <ArrowRight className="w-3.5 h-3.5" /></Btn>
+            <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>
             <Btn href="/services">Explore Our Services</Btn>
           </motion.div>
+        </motion.div>
+
+        {/* YouTube pitch embed */}
+        <motion.div
+          className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60"
+          style={{ paddingBottom: '56.25%', height: 0 }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.85, ease: EASE }}
+        >
+          <iframe
+            src={PITCH_VIDEO_SRC}
+            allow="autoplay; encrypted-media"
+            title="VibeOps engineering automation platform pitch — AI report writing for civil engineers"
+            className="absolute inset-0 w-full h-full"
+            style={{ border: 'none' }}
+            loading="lazy"
+          />
         </motion.div>
       </div>
     </section>
@@ -699,7 +857,7 @@ function CTASection() {
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[10px] uppercase tracking-[0.32em] text-zinc-600 font-medium">
+    <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/70 font-semibold">
       {children}
     </p>
   );
