@@ -297,15 +297,17 @@ function LaptopMesh() {
     return tex;
   }, []);
 
-  // Lid opens: starts flat/closed (-Math.PI), lerps to ~110° open (-1.92)
-  const TARGET = -1.92;
-  useFrame(() => {
+  // Lid opens: starts flat/closed (-Math.PI = over keyboard), lerps to ~110° open (-1.92)
+  const TARGET = -5.0;
+  useFrame((state) => {
     if (!hingeRef.current) return;
+    // Stay closed for the first 2 s so the lid opens as the canvas fades in
+    if (state.clock.elapsedTime < 3) return;
 
     hingeRef.current.rotation.x = MathUtils.lerp(
       hingeRef.current.rotation.x,
       TARGET,
-      0.032
+      0.032,
     );
 
     if (videoTexture) {
@@ -353,32 +355,28 @@ function LaptopMesh() {
 
       {/* ── Lid pivot — hinge at rear edge of base ── */}
       <group position={[0, BH, -(BD / 2) + 0.07]}>
-        {/* hingeRef starts at -Math.PI (closed flat), animates to TARGET */}
+        {/* -Math.PI = closed (lid lying over keyboard); lerps to -1.92 = ~110° open */}
         <group ref={hingeRef} rotation={[-Math.PI, 0, 0]}>
 
-          {/* Lid body */}
-          <RoundedBox args={[W, LH, LD]} radius={0.032} smoothness={4} position={[0, 0, LD / 2]}>
+          {/* Lid body at -LD/2 so that at -π it sits over the keyboard */}
+          <RoundedBox args={[W, LH, LD]} radius={0.032} smoothness={4} position={[0, 0, -LD / 2]}>
             <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} />
           </RoundedBox>
 
-          {/* Black bezel inset */}
-          <mesh position={[0, -LH / 2 - 0.001, LD / 2]} rotation={[Math.PI / 2, 0, 0]}>
+          {/* Black bezel — on the +Y (inner) face of the lid */}
+          <mesh position={[0, LH / 2 + 0.001, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[W * 0.88, LD * 0.9]} />
             <meshStandardMaterial color="#080808" roughness={0.9} />
           </mesh>
 
-          {/* Screen */}
-          <mesh position={[0, -0.05, LD / 2 - 0.01]} rotation={[Math.PI / 2, 0, 0]}>
+          {/* Video screen — pinned to inner face, same centre as lid */}
+          <mesh position={[0, 0.036, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[screenW, screenH]} />
-            <meshBasicMaterial
-              map={videoTexture}
-              toneMapped={false}
-              side={DoubleSide}
-            />
+            <meshBasicMaterial map={videoTexture} toneMapped={false} />
           </mesh>
 
           {/* Screen glare */}
-          <mesh position={[W * 0.18, LH / 2 + 0.005, LD * 0.32]} rotation={[-Math.PI / 2, 0.08, 0]}>
+          <mesh position={[W * 0.18, LH / 2 + 0.005, -LD * 0.32]} rotation={[-Math.PI / 2, 0.08, 0]}>
             <planeGeometry args={[W * 0.22, LD * 0.28]} />
             <meshBasicMaterial color="#ffffff" transparent opacity={0.016} depthWrite={false} />
           </mesh>
@@ -392,8 +390,8 @@ function LaptopMesh() {
 /** Interactive 3-D laptop — opens on mount, video pinned to screen */
 function LaptopMockup() {
   return (
-    // overflow-visible so the 3-D canvas isn't clipped by parent containers
-    <div className="relative w-full overflow-visible" style={{ aspectRatio: '16/10' }}>
+    // Mobile: fixed height. Desktop: fills the full right column height.
+    <div className="relative w-full overflow-visible h-[340px] sm:h-[440px] lg:h-full">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -403,7 +401,7 @@ function LaptopMockup() {
       />
 
       <Canvas
-        camera={{ position: [0, 0.8, 7.9], fov: 32 }}       
+        camera={{ position: [0, 0.8, 10], fov: 32 }}       
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
         style={{ width: '100%', height: '100%', overflow: 'visible' }}
@@ -455,19 +453,19 @@ function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col overflow-hidden bg-white"
+      className="relative min-h-screen w-full flex flex-col bg-white"
       aria-label="VibeOps — AI Engineering Report Automation for Civil & Construction"
     >
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+      {/* ── Background layers — overflow-hidden here so gradients don't escape section ── */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {/* Emerald spotlight — desktop only (right half) */}
         <div className="absolute inset-0 hidden lg:block"
-          style={{ background: 'radial-gradient(ellipse 55% 55% at 75% 50%, rgba(16,185,129,0.055) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(ellipse 65% 55% at 83% 50%, rgba(16,185,129,0.055) 0%, transparent 70%)' }} />
 
         {/* DESKTOP: dark bleeds left→right + top/bottom vignette */}
         <div className="absolute inset-0 hidden lg:block" style={{
           background: `
-            linear-gradient(to right,  #060b14 0%, #060b14 38%, rgba(6,11,20,0.85) 52%, rgba(6,11,20,0.3) 65%, transparent 78%),
+            linear-gradient(to right,  #060b14 0%, #060b14 26%, rgba(6,11,20,0.85) 38%, rgba(6,11,20,0.3) 50%, transparent 64%),
             linear-gradient(to bottom, rgba(6,11,20,0.65) 0%, transparent 25%),
             linear-gradient(to top,    rgba(6,11,20,0.65) 0%, transparent 25%)
           `,
@@ -482,9 +480,9 @@ function HeroSection() {
       {/* ── Main split layout — full-height flex ── */}
       <div className="relative z-10 flex flex-col lg:flex-row flex-1 w-full pt-24 lg:pt-0">
 
-        {/* Left: copy — takes up left half */}
+        {/* Left: copy — 1/3 on desktop; text overflows into laptop area on lg */}
         <motion.div
-          className="flex flex-col justify-center flex-1 lg:flex-none lg:w-[50%] px-6 sm:px-10 lg:px-14 xl:px-20 pt-16 pb-8 lg:py-28"
+          className="flex flex-col justify-center flex-1 lg:flex-none lg:w-[34%] lg:overflow-visible px-6 sm:px-10 lg:px-12 xl:px-16 pt-16 pb-8 lg:py-28"
           style={{ y: contentY }}
           variants={stagger}
           initial="hidden"
@@ -508,8 +506,8 @@ function HeroSection() {
 
           <motion.h1
             variants={item}
-            className="font-bold leading-[0.97] tracking-[-0.035em] mb-7"
-            style={{ fontSize: 'clamp(2.6rem, 4.5vw, 3.75rem)' }}
+            className="font-bold leading-[0.97] tracking-[-0.035em] mb-7 lg:whitespace-nowrap"
+            style={{ fontSize: 'clamp(2.6rem, 4.5vw, 4.4rem)' }}
           >
             <span className="block text-white">Less formatting.</span>
             <span className="block text-emerald-400">More engineering.</span>
@@ -540,18 +538,21 @@ function HeroSection() {
           </motion.p>
         </motion.div>
 
-        {/* Right: laptop — desktop half-column, mobile full-width below text */}
+        {/* Right: laptop — full-height column on desktop, stacked below text on mobile */}
+        {/* scroll-based y + opacity handled by MotionValues; intro handled by inner div */}
         <motion.div
-          className="flex w-full lg:w-[50%] flex-shrink-0 items-center justify-center px-6 sm:px-12 lg:px-10 xl:px-16 pb-14 lg:pb-0"
-          initial={{ opacity: 0, x: 40, rotateY: 4 }}
-          animate={{ opacity: 1, x: 0, rotateY: 0 }}
-          transition={{ duration: 1.1, delay: 0.2, ease: EASE }}
+          className="flex w-full lg:w-[66%] flex-shrink-0 items-center justify-center lg:items-stretch lg:justify-stretch px-6 sm:px-12 lg:px-0 pb-14 lg:pb-0"
           style={{ y: laptopY, opacity: laptopOpacity, perspective: 1200 }}
         >
-          {/* max-w on mobile so it doesn't get too tiny, fills column on desktop */}
-          <div className="w-full max-w-[560px] lg:max-w-[780px] xl:max-w-[920px]">
+          {/* 2 s blank → 2 s fade-in (lid opens in sync via useFrame clock) */}
+          <motion.div
+            className="w-full max-w-[520px] lg:max-w-none lg:h-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2, delay: 1, ease: 'easeIn' }}
+          >
             <LaptopMockup />
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 
