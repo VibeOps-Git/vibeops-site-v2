@@ -7,13 +7,17 @@ import {
   useInView,
 } from 'framer-motion';
 import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
-import { useRef, useEffect, useState, ReactNode } from 'react';
+import { useRef, useEffect, useState, useMemo, ReactNode, Suspense } from 'react';
 import { SEO } from '@/components/SEO';
 import { ScrambleText } from '@/components/ScrambleText';
 import { GallerySection3D } from '../components/3d';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useVideoTexture, OrbitControls, Float, Environment, RoundedBox, ContactShadows } from '@react-three/drei';
+import { MathUtils, CanvasTexture, Group } from 'three';
+import { DoubleSide, SRGBColorSpace } from 'three';
 
 // Hero uses the branded demo video (full background)
-const HERO_VIDEO_SRC = '/vids/demo vid.mp4';
+const HERO_VIDEO_SRC = '/vids/demo-vid.mp4';
 // Platform section uses the polished corporate demo
 const PLATFORM_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
 // YouTube pitch embed shown in CTA
@@ -62,20 +66,21 @@ const item = {
   show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: EASE } },
 };
 
-function useCountUp(target: number, duration = 1.6) {
+function useCountUp(target: number, duration = 1.8) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const [val, setVal] = useState(0);
   useEffect(() => {
     if (!inView) return;
-    let start: number;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / (duration * 1000), 1);
-      setVal(Math.round((1 - Math.pow(1 - p, 3)) * target));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
+    // Use framer-motion animate for smoother easing + proper cleanup
+    import('framer-motion').then(({ animate }) => {
+      const controls = animate(0, target, {
+        duration,
+        ease: [0.22, 1, 0.36, 1],
+        onUpdate: (v) => setVal(Math.round(v)),
+      });
+      return () => controls.stop();
+    });
   }, [inView, target, duration]);
   return { ref, val };
 }
@@ -166,7 +171,7 @@ export default function Index() {
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
-      {/* Hero is dark, ticker is dark — seamless */}
+      {/* Stats bar ends dark → dark ticker: seamless */}
       <TrustedByTicker />
       {/* dark ticker → white platform */}
       <SectionBridge from="#0c1220" to="#ffffff" height={80} />
@@ -204,11 +209,238 @@ const heroStats = [
 function HeroStatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const { ref, val } = useCountUp(value, 1.8);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center sm:items-start">
       <span ref={ref} className="text-2xl sm:text-3xl font-bold text-white tabular-nums tracking-tight">
         {val}{suffix}
       </span>
-      <span className="text-[11px] text-white/50 mt-1 leading-tight">{label}</span>
+      <span className="text-[11px] text-white/50 mt-1 leading-tight text-center sm:text-left">{label}</span>
+    </div>
+  );
+}
+
+// ─── 3-D laptop mesh (must render inside a Canvas) ───────────────────────────
+function LaptopMesh() {
+  const hingeRef = useRef<Group>(null);
+  
+  // 1. Load the texture
+  const videoTexture = useVideoTexture(HERO_VIDEO_SRC, {
+    muted: true,
+    loop: true,
+    playsInline: true,
+    crossOrigin: 'Anonymous',
+  });
+
+  useEffect(() => {
+    const video = videoTexture.image as HTMLVideoElement;
+    if (!video) return;
+
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.crossOrigin = 'anonymous';
+
+    videoTexture.colorSpace = SRGBColorSpace;
+    videoTexture.needsUpdate = true;
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+      } catch (e) {
+        console.warn('Video autoplay failed:', e);
+      }
+    };
+
+    if (video.readyState >= 2) {
+      playVideo();
+    } else {
+      video.addEventListener('loadeddata', playVideo);
+    }
+
+    return () => {
+      video.removeEventListener('loadeddata', playVideo);
+    };
+  }, [videoTexture]);
+
+  // Canvas texture that draws rows of key shapes — built once
+  const keyboardTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800; canvas.height = 300;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#0b0b0d';
+    ctx.fillRect(0, 0, 800, 300);
+    // Key rows: [key-count, key-width, key-height, top-offset]
+    const rows: [number, number, number, number][] = [
+      [14, 50, 34, 10],
+      [13, 54, 40, 53],
+      [12, 58, 40, 102],
+      [11, 62, 40, 151],
+      [10, 68, 40, 200],
+    ];
+    rows.forEach(([n, kw, kh, y]) => {
+      const gap = 4;
+      const total = n * kw + (n - 1) * gap;
+      const x0 = (800 - total) / 2;
+      for (let i = 0; i < n; i++) {
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.fillRect(x0 + i * (kw + gap), y, kw, kh);
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x0 + i * (kw + gap) + 0.5, y + 0.5, kw - 1, kh - 1);
+      }
+    });
+    // Spacebar
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    ctx.fillRect(225, 250, 350, 42);
+    const tex = new CanvasTexture(canvas);
+    tex.anisotropy = 16; // Fixes blurriness at angles
+    tex.needsUpdate = true;
+    return tex;
+  }, []);
+
+  // Lid opens: starts flat/closed (-Math.PI), lerps to ~110° open (-1.92)
+  const TARGET = -1.92;
+  useFrame(() => {
+    if (!hingeRef.current) return;
+
+    hingeRef.current.rotation.x = MathUtils.lerp(
+      hingeRef.current.rotation.x,
+      TARGET,
+      0.032
+    );
+
+    if (videoTexture) {
+      videoTexture.needsUpdate = true;
+    }
+  });
+
+  // Dimensions (world units)
+  const W = 3.0, BH = 0.08, BD = 1.85, LH = 0.058, LD = 1.72;
+  const bezelInsetX = 0.14; // smaller = screen closer to edges
+  const bezelInsetY = 0.10;
+
+  const screenW = W - bezelInsetX * 2;
+  const screenH = LD - bezelInsetY * 2;
+
+  return (
+    <group position={[0, -0.18, 0]}>
+
+      {/* ── Base ── */}
+      <RoundedBox args={[W, BH, BD]} radius={0.042} smoothness={4} position={[0, BH / 2, 0]}>
+        <meshStandardMaterial color="#1d1d21" metalness={0.78} roughness={0.22} />
+      </RoundedBox>
+
+      {/* Keyboard (canvas texture with real key shapes) */}
+      <mesh 
+        position={[0, BH + 0.02, -BD * 0.04]} // Increased height from 0.001 to 0.02
+        rotation={[-Math.PI / 2, 0, 0]}
+      >
+        <planeGeometry args={[W * 0.86, BD * 0.72]} />
+        {/* Switch to StandardMaterial so it reacts to the city environment lights */}
+        <meshStandardMaterial 
+          map={keyboardTexture} 
+          transparent={true} 
+          opacity={1}
+          metalness={0.4}
+          roughness={0.1}
+        />
+      </mesh>
+
+      {/* Trackpad */}
+      <mesh position={[0, BH + 0.001, BD * 0.28]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[W * 0.27, BD * 0.17]} />
+        <meshStandardMaterial color="#161619" roughness={0.45} metalness={0.4} />
+      </mesh>
+
+      {/* ── Lid pivot — hinge at rear edge of base ── */}
+      <group position={[0, BH, -(BD / 2) + 0.07]}>
+        {/* hingeRef starts at -Math.PI (closed flat), animates to TARGET */}
+        <group ref={hingeRef} rotation={[-Math.PI, 0, 0]}>
+
+          {/* Lid body */}
+          <RoundedBox args={[W, LH, LD]} radius={0.032} smoothness={4} position={[0, 0, LD / 2]}>
+            <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} />
+          </RoundedBox>
+
+          {/* Black bezel inset */}
+          <mesh position={[0, -LH / 2 - 0.001, LD / 2]} rotation={[Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[W * 0.88, LD * 0.9]} />
+            <meshStandardMaterial color="#080808" roughness={0.9} />
+          </mesh>
+
+          {/* Screen */}
+          <mesh position={[0, -0.05, LD / 2 - 0.01]} rotation={[Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[screenW, screenH]} />
+            <meshBasicMaterial
+              map={videoTexture}
+              toneMapped={false}
+              side={DoubleSide}
+            />
+          </mesh>
+
+          {/* Screen glare */}
+          <mesh position={[W * 0.18, LH / 2 + 0.005, LD * 0.32]} rotation={[-Math.PI / 2, 0.08, 0]}>
+            <planeGeometry args={[W * 0.22, LD * 0.28]} />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.016} depthWrite={false} />
+          </mesh>
+
+        </group>
+      </group>
+    </group>
+  );
+}
+
+/** Interactive 3-D laptop — opens on mount, video pinned to screen */
+function LaptopMockup() {
+  return (
+    // overflow-visible so the 3-D canvas isn't clipped by parent containers
+    <div className="relative w-full overflow-visible" style={{ aspectRatio: '16/10' }}>
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 50% at 50% 65%, rgba(52,211,153,0.1) 0%, transparent 70%)',
+        }}
+      />
+
+      <Canvas
+        camera={{ position: [0, 0.8, 7.9], fov: 32 }}       
+        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 2]}
+        style={{ width: '100%', height: '100%', overflow: 'visible' }}
+      >
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[4, 6, 4]}   intensity={1.4} />
+        <directionalLight position={[-3, 2, -1]} intensity={0.25} color="#6ee7b7" />
+        <pointLight       position={[0, 3, 2]}   intensity={0.55} color="#34d399" />
+        <Environment preset="city" />
+
+        <Suspense fallback={null}>
+          <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
+            <group scale={1.22}>
+              <LaptopMesh />
+            </group>
+          </Float>
+          {/* Subtle ground shadow */}
+          <ContactShadows
+            position={[0, -0.25, 0]}
+            opacity={0.3}
+            scale={8}
+            blur={2.5}
+            far={3}
+          />
+        </Suspense>
+
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          minPolarAngle={Math.PI * 0.18}
+          maxPolarAngle={Math.PI * 0.46}
+          autoRotate
+          autoRotateSpeed={0.5}
+          enableDamping
+          dampingFactor={0.05}
+        />
+      </Canvas>
     </div>
   );
 }
@@ -216,92 +448,130 @@ function HeroStatItem({ value, suffix, label }: { value: number; suffix: string;
 function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const videoOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const laptopY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const laptopOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 40]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col justify-end overflow-hidden bg-[#060b14]"
-      aria-label="VibeOps — AI Engineering Report Automation Platform"
+      className="relative min-h-screen w-full flex flex-col overflow-hidden bg-white"
+      aria-label="VibeOps — AI Engineering Report Automation for Civil & Construction"
     >
-      {/* Background video */}
-      <motion.div className="absolute inset-0 z-0" style={{ scale: videoScale }}>
-        <motion.div className="absolute inset-0" style={{ opacity: videoOpacity }}>
-          <video
-            src={HERO_VIDEO_SRC}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-            aria-hidden="true"
-          />
+      {/* ── Background layers ── */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {/* Emerald spotlight — desktop only (right half) */}
+        <div className="absolute inset-0 hidden lg:block"
+          style={{ background: 'radial-gradient(ellipse 55% 55% at 75% 50%, rgba(16,185,129,0.055) 0%, transparent 70%)' }} />
+
+        {/* DESKTOP: dark bleeds left→right + top/bottom vignette */}
+        <div className="absolute inset-0 hidden lg:block" style={{
+          background: `
+            linear-gradient(to right,  #060b14 0%, #060b14 38%, rgba(6,11,20,0.85) 52%, rgba(6,11,20,0.3) 65%, transparent 78%),
+            linear-gradient(to bottom, rgba(6,11,20,0.65) 0%, transparent 25%),
+            linear-gradient(to top,    rgba(6,11,20,0.65) 0%, transparent 25%)
+          `,
+        }} />
+
+        {/* MOBILE: dark top → fades to white ~60% down (laptop sits in the light area) */}
+        <div className="absolute inset-0 lg:hidden" style={{
+          background: 'linear-gradient(to bottom, #060b14 0%, #060b14 45%, rgba(6,11,20,0.5) 62%, transparent 78%)',
+        }} />
+      </div>
+
+      {/* ── Main split layout — full-height flex ── */}
+      <div className="relative z-10 flex flex-col lg:flex-row flex-1 w-full pt-24 lg:pt-0">
+
+        {/* Left: copy — takes up left half */}
+        <motion.div
+          className="flex flex-col justify-center flex-1 lg:flex-none lg:w-[50%] px-6 sm:px-10 lg:px-14 xl:px-20 pt-16 pb-8 lg:py-28"
+          style={{ y: contentY }}
+          variants={stagger}
+          initial="hidden"
+          animate="show"
+        >
+          {/* Badge with live-dot */}
+          <motion.a
+            variants={item}
+            href="https://reportly.ca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mb-8 w-fit px-3 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/6 hover:border-emerald-500/45 hover:bg-emerald-500/10 transition-all duration-200"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Reportly</span>
+            <span className="text-[10px] text-white/30">— Early Access</span>
+          </motion.a>
+
+          <motion.h1
+            variants={item}
+            className="font-bold leading-[0.97] tracking-[-0.035em] mb-7"
+            style={{ fontSize: 'clamp(2.6rem, 4.5vw, 3.75rem)' }}
+          >
+            <span className="block text-white">Less formatting.</span>
+            <span className="block text-emerald-400">More engineering.</span>
+          </motion.h1>
+
+          <motion.p variants={item} className="text-[0.92rem] text-white/40 leading-[1.8] mb-9 max-w-[20rem]">
+            AI-powered report automation for civil and construction teams. Plug in your templates and project data, get polished output in minutes.
+          </motion.p>
+
+          <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-5">
+            <motion.a
+              href="https://reportly.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-emerald-400 text-black text-[13px] font-bold hover:bg-emerald-300 transition-colors duration-200"
+              style={{ boxShadow: '0 0 20px rgba(52,211,153,0.25)' }}
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            >
+              Get Started Free <ArrowRight className="w-3.5 h-3.5" />
+            </motion.a>
+            <Btn href="/services">See What We Build</Btn>
+          </motion.div>
+
+          <motion.p variants={item} className="text-[11px] text-white/22 tracking-wide tabular-nums">
+            No credit card required · Free during early access
+          </motion.p>
         </motion.div>
-        {/* Single mid-weight overlay so video is visible but text stays readable */}
-        <div className="absolute inset-0 bg-[#060b14]/80" />
-        {/* Heavier on the left where the headline sits */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#060b14]/100 via-[#060b14]/50 to-transparent" />
-        {/* Bottom fade into stats bar */}
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#060b14] to-transparent" />
-      </motion.div>
 
-      {/* Main content */}
-      <motion.div
-        className="relative z-10 flex flex-col justify-center flex-1 px-6 sm:px-12 lg:px-20 xl:px-28 pt-32 pb-8"
-        style={{ y: contentY }}
-        variants={stagger}
-        initial="hidden"
-        animate="show"
-      >
-        <motion.p
-          variants={item}
-          className="text-[10px] uppercase tracking-[0.42em] text-emerald-400/80 mb-5 font-semibold"
+        {/* Right: laptop — desktop half-column, mobile full-width below text */}
+        <motion.div
+          className="flex w-full lg:w-[50%] flex-shrink-0 items-center justify-center px-6 sm:px-12 lg:px-10 xl:px-16 pb-14 lg:pb-0"
+          initial={{ opacity: 0, x: 40, rotateY: 4 }}
+          animate={{ opacity: 1, x: 0, rotateY: 0 }}
+          transition={{ duration: 1.1, delay: 0.2, ease: EASE }}
+          style={{ y: laptopY, opacity: laptopOpacity, perspective: 1200 }}
         >
-          AI Report Writing for Civil &amp; Construction Engineering
-        </motion.p>
-
-        {/* h1 targets top keyword opportunity: "ai for report writing in civil engineering" */}
-        <motion.h1
-          variants={item}
-          className="text-[2.8rem] sm:text-5xl lg:text-[3.75rem] xl:text-[4.25rem] font-bold leading-[1.04] tracking-[-0.025em] mb-6 max-w-3xl"
-        >
-          <span className="text-white">Less</span>
-          <br />
-          <span className="text-emerald-400">Formatting</span>
-          <br />
-          <span className="text-white">More Engineering</span>
-        </motion.h1>
-
-        <motion.p
-          variants={item}
-          className="text-[0.95rem] sm:text-base text-white/55 leading-[1.8] mb-10 max-w-[30rem]"
-        >
-          Stop spending hours on manual engineering reports. VibeOps automates civil engineering documentation so your team focuses on delivering — not formatting.
-        </motion.p>
-
-        <motion.div variants={item} className="flex flex-wrap gap-3.5">
-          <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>
-          <Btn href="/services">See What We Build</Btn>
+          {/* max-w on mobile so it doesn't get too tiny, fills column on desktop */}
+          <div className="w-full max-w-[560px] lg:max-w-[780px] xl:max-w-[920px]">
+            <LaptopMockup />
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* Stats bar pinned to bottom of hero */}
-      <motion.div
-        className="relative z-10 w-full border-t border-white/10 bg-white/5 backdrop-blur-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.8, ease: EASE }}
-      >
-        <div className="max-w-5xl mx-auto px-6 sm:px-12 lg:px-20 xl:px-28 py-5">
-          <div className="flex flex-wrap gap-8 sm:gap-14 md:gap-20">
+      {/* Bottom fade — mobile only: softens white→dark transition before stats */}
+      <div
+        aria-hidden="true"
+        className="relative z-10 h-16 w-full pointer-events-none lg:hidden"
+        style={{ background: 'linear-gradient(to bottom, transparent 0%, #060b14 100%)', marginBottom: -1 }}
+      />
+
+      {/* Stats bar — no entrance animation; only numbers count up */}
+      <div className="relative z-10 w-full bg-[#060b14]">
+        <div className="max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-20 py-6">
+          <div className="grid grid-cols-3 gap-4 text-center sm:text-left sm:flex sm:justify-evenly sm:gap-0">
             {heroStats.map((s) => (
               <HeroStatItem key={s.label} {...s} />
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
