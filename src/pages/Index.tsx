@@ -15,6 +15,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useVideoTexture, OrbitControls, Float, Environment, RoundedBox, ContactShadows } from '@react-three/drei';
 import { MathUtils, CanvasTexture, Group } from 'three';
 import { DoubleSide, SRGBColorSpace } from 'three';
+import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
 // Hero uses the branded demo video (full background)
 const HERO_VIDEO_SRC = '/vids/demo-vid.mp4';
@@ -97,7 +98,7 @@ function Rule({ className }: { className?: string }) {
   );
 }
 
-// Infinite CSS marquee — 2 copies, translates -50% for a perfect loop
+// Infinite CSS marquee - 2 copies, translates -50% for a perfect loop
 function InfiniteMarquee({ speed = 35 }: { speed?: number }) {
   return (
     <div className="overflow-hidden w-full select-none">
@@ -186,11 +187,11 @@ export default function Index() {
       {/* Hidden internal links for SEO crawlability */}
       <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
         <a href="/services">AI engineering automation services for civil and construction teams</a>
-        <a href="/reportly">Reportly — AI report writing software for civil engineers</a>
+        <a href="/reportly">Reportly - AI report writing software for civil engineers</a>
         <a href="/contact">Book a demo for engineering report automation</a>
         <a href="/team">Meet the VibeOps engineering automation team</a>
         <a href="/blog">AI tools for civil engineering report writing and documentation</a>
-        <a href="https://reportly.ca" rel="noopener">Reportly — automated engineering report generator</a>
+        <a href="https://reportly.ca" rel="noopener">Reportly - automated engineering report generator</a>
       </div>
     </>
   );
@@ -261,7 +262,7 @@ function LaptopMesh() {
     };
   }, [videoTexture]);
 
-  // Canvas texture that draws rows of key shapes — built once
+  // Canvas texture that draws rows of key shapes - built once
   const keyboardTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 800; canvas.height = 300;
@@ -307,7 +308,7 @@ function LaptopMesh() {
     hingeRef.current.rotation.x = MathUtils.lerp(
       hingeRef.current.rotation.x,
       TARGET,
-      0.032,
+      0.004,
     );
 
     if (videoTexture) {
@@ -324,7 +325,7 @@ function LaptopMesh() {
   const screenH = LD - bezelInsetY * 2;
 
   return (
-    <group position={[0, -0.18, 0]}>
+    <group position={[0, 1, 0]}>
 
       {/* ── Base ── */}
       <RoundedBox args={[W, BH, BD]} radius={0.042} smoothness={4} position={[0, BH / 2, 0]}>
@@ -353,7 +354,7 @@ function LaptopMesh() {
         <meshStandardMaterial color="#161619" roughness={0.45} metalness={0.4} />
       </mesh>
 
-      {/* ── Lid pivot — hinge at rear edge of base ── */}
+      {/* ── Lid pivot - hinge at rear edge of base ── */}
       <group position={[0, BH, -(BD / 2) + 0.07]}>
         {/* -Math.PI = closed (lid lying over keyboard); lerps to -1.92 = ~110° open */}
         <group ref={hingeRef} rotation={[-Math.PI, 0, 0]}>
@@ -363,20 +364,20 @@ function LaptopMesh() {
             <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} />
           </RoundedBox>
 
-          {/* Black bezel — on the +Y (inner) face of the lid */}
+          {/* Black bezel - on the +Y (inner) face of the lid */}
           <mesh position={[0, LH / 2 + 0.001, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[W * 0.88, LD * 0.9]} />
             <meshStandardMaterial color="#080808" roughness={0.9} />
           </mesh>
 
-          {/* Video screen — pinned to inner face, same centre as lid */}
+          {/* Video screen - pinned to inner face, same centre as lid */}
           <mesh position={[0, 0.036, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[screenW, screenH]} />
             <meshBasicMaterial map={videoTexture} toneMapped={false} />
           </mesh>
 
           {/* Screen glare */}
-          <mesh position={[W * 0.18, LH / 2 + 0.005, -LD * 0.32]} rotation={[-Math.PI / 2, 0.08, 0]}>
+          <mesh position={[W * 0.18, 0.05, -LD / 2]} rotation={[-Math.PI / 2, 0.08, 0]}>
             <planeGeometry args={[W * 0.22, LD * 0.28]} />
             <meshBasicMaterial color="#ffffff" transparent opacity={0.016} depthWrite={false} />
           </mesh>
@@ -387,11 +388,78 @@ function LaptopMesh() {
   );
 }
 
-/** Interactive 3-D laptop — opens on mount, video pinned to screen */
+function SmartOrbitControls() {
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
+
+  useFrame((_, delta) => {
+    const controls = controlsRef.current;
+    if (!controls) return;
+
+    // Current horizontal orbit angle
+    const azimuth = controls.getAzimuthalAngle();
+
+    // Normalize to 0 -> 2π
+    const normalized = ((azimuth % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+
+    // Choose where the faster 90° zone should happen
+    // This example centers it around the front-right hero angle.
+    const fastCenter = Math.PI * 1.0;
+    const fastWidth = Math.PI / 1.5; // 90 degrees
+    const halfWidth = fastWidth / 2;
+
+    // Small feather zone for fade in / fade out
+    const feather = Math.PI / 7;
+
+    const angleDelta = Math.atan2(
+      Math.sin(normalized - fastCenter),
+      Math.cos(normalized - fastCenter)
+    );
+    const distance = Math.abs(angleDelta);
+
+    const normalSpeed = 0.32;
+    const fastSpeed = 3.0;
+
+    let speedMultiplier = 1;
+
+    if (distance <= halfWidth) {
+      speedMultiplier = fastSpeed / normalSpeed;
+    } else if (distance <= halfWidth + feather) {
+      const t = 1 - (distance - halfWidth) / feather;
+      const eased = t * t * (3 - 2 * t); // smoothstep fade
+      speedMultiplier = MathUtils.lerp(1, fastSpeed / normalSpeed, eased);
+    }
+
+    controls.autoRotateSpeed = normalSpeed * speedMultiplier * 60 * delta;
+    controls.update();
+  });
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      target={[-1.5, 1, 0]}
+      enableZoom={false}
+      enablePan={false}
+      minPolarAngle={Math.PI * 0.18}
+      maxPolarAngle={Math.PI * 0.46}
+      autoRotate
+      enableDamping
+      dampingFactor={0.05}
+    />
+  );
+}
+
+/** Interactive 3-D laptop - opens on mount, video pinned to screen */
 function LaptopMockup() {
   return (
     // Mobile: fixed height. Desktop: fills the full right column height.
-    <div className="relative w-full overflow-visible h-[340px] sm:h-[440px] lg:h-full">
+    <div
+      className="relative h-[340px] sm:h-[440px] lg:h-full"
+      style={{
+        width: 'calc(100% + 18vw)',
+        marginLeft: '-9vw',
+        marginRight: '-9vw',
+      }}
+    >
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -401,7 +469,7 @@ function LaptopMockup() {
       />
 
       <Canvas
-        camera={{ position: [0, 0.8, 10], fov: 32 }}       
+        camera={{ position: [0, 0.8, 10], fov: 24 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
         style={{ width: '100%', height: '100%', overflow: 'visible' }}
@@ -414,13 +482,13 @@ function LaptopMockup() {
 
         <Suspense fallback={null}>
           <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
-            <group scale={1.22}>
+            <group scale={1.6} position={[-1.8, -1.9, 0]}>
               <LaptopMesh />
             </group>
           </Float>
           {/* Subtle ground shadow */}
           <ContactShadows
-            position={[0, -0.25, 0]}
+            position={[-0.1, -0.15, 0]}
             opacity={0.3}
             scale={8}
             blur={2.5}
@@ -428,16 +496,7 @@ function LaptopMockup() {
           />
         </Suspense>
 
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          minPolarAngle={Math.PI * 0.18}
-          maxPolarAngle={Math.PI * 0.46}
-          autoRotate
-          autoRotateSpeed={0.5}
-          enableDamping
-          dampingFactor={0.05}
-        />
+        <SmartOrbitControls />
       </Canvas>
     </div>
   );
@@ -453,12 +512,12 @@ function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col bg-white"
-      aria-label="VibeOps — AI Engineering Report Automation for Civil & Construction"
+      className="relative min-h-screen w-full flex flex-col bg-white overflow-hidden"
+      aria-label="VibeOps - AI Engineering Report Automation for Civil & Construction"
     >
-      {/* ── Background layers — overflow-hidden here so gradients don't escape section ── */}
+      {/* ── Background layers - overflow-hidden here so gradients don't escape section ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {/* Emerald spotlight — desktop only (right half) */}
+        {/* Emerald spotlight - desktop only (right half) */}
         <div className="absolute inset-0 hidden lg:block"
           style={{ background: 'radial-gradient(ellipse 65% 55% at 83% 50%, rgba(16,185,129,0.055) 0%, transparent 70%)' }} />
 
@@ -477,10 +536,10 @@ function HeroSection() {
         }} />
       </div>
 
-      {/* ── Main split layout — full-height flex ── */}
+      {/* ── Main split layout - full-height flex ── */}
       <div className="relative z-10 flex flex-col lg:flex-row flex-1 w-full pt-24 lg:pt-0">
 
-        {/* Left: copy — 1/3 on desktop; text overflows into laptop area on lg */}
+        {/* Left: copy - 1/3 on desktop; text overflows into laptop area on lg */}
         <motion.div
           className="flex flex-col justify-center flex-1 lg:flex-none lg:w-[34%] lg:overflow-visible px-6 sm:px-10 lg:px-12 xl:px-16 pt-16 pb-8 lg:py-28"
           style={{ y: contentY }}
@@ -501,7 +560,7 @@ function HeroSection() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Reportly</span>
-            <span className="text-[10px] text-white/30">— Early Access</span>
+            <span className="text-[10px] text-white/30">- Early Access</span>
           </motion.a>
 
           <motion.h1
@@ -538,7 +597,7 @@ function HeroSection() {
           </motion.p>
         </motion.div>
 
-        {/* Right: laptop — full-height column on desktop, stacked below text on mobile */}
+        {/* Right: laptop - full-height column on desktop, stacked below text on mobile */}
         {/* scroll-based y + opacity handled by MotionValues; intro handled by inner div */}
         <motion.div
           className="flex w-full lg:w-[66%] flex-shrink-0 items-center justify-center lg:items-stretch lg:justify-stretch px-6 sm:px-12 lg:px-0 pb-14 lg:pb-0"
@@ -556,14 +615,14 @@ function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Bottom fade — mobile only: softens white→dark transition before stats */}
+      {/* Bottom fade - mobile only: softens white→dark transition before stats */}
       <div
         aria-hidden="true"
         className="relative z-10 h-16 w-full pointer-events-none lg:hidden"
         style={{ background: 'linear-gradient(to bottom, transparent 0%, #060b14 100%)', marginBottom: -1 }}
       />
 
-      {/* Stats bar — no entrance animation; only numbers count up */}
+      {/* Stats bar - no entrance animation; only numbers count up */}
       <div className="relative z-10 w-full bg-[#060b14]">
         <div className="max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-20 py-6">
           <div className="grid grid-cols-3 gap-4 text-center sm:text-left sm:flex sm:justify-evenly sm:gap-0">
@@ -600,7 +659,7 @@ function Btn({ href, children, primary = false }: { href: string; children: Reac
 }
 
 // =============================================================================
-// Trusted By — infinite scrolling ticker
+// Trusted By - infinite scrolling ticker
 // =============================================================================
 
 function TrustedByTicker() {
@@ -634,7 +693,7 @@ function PlatformSection() {
             <span className="text-emerald-500">Documentation</span>
           </h2>
           <p className="text-center text-[0.9rem] text-zinc-500 max-w-xl mx-auto mb-12 leading-[1.8]">
-            Replace hours of manual civil engineering documentation with minutes of automated, QA-ready output — without changing a single thing about how your team works.
+            Replace hours of manual civil engineering documentation with minutes of automated, QA-ready output - without changing a single thing about how your team works.
           </p>
           <div className="flex justify-center mb-14">
             <Btn href="/services" primary>Explore the Platform <ArrowRight className="w-3.5 h-3.5" /></Btn>
@@ -662,7 +721,7 @@ function PlatformSection() {
               rel="noopener noreferrer"
               className="ml-3 flex-1 text-[10px] text-zinc-500 hover:text-emerald-400 tracking-wide truncate transition-colors"
             >
-              reportly.ca — AI Engineering Report Automation Software
+              reportly.ca - AI Engineering Report Automation Software
             </a>
           </div>
 
@@ -738,7 +797,7 @@ function FeaturesSection() {
         >
           <img
             src="/reportly-features.png"
-            alt="Reportly AI report automation features — template engine, data integration, and QA-ready output for civil engineering"
+            alt="Reportly AI report automation features - template engine, data integration, and QA-ready output for civil engineering"
             className="w-full object-cover"
             loading="lazy"
           />
@@ -808,7 +867,7 @@ function ReportlySection() {
                 <ScrambleText text="Reportly" duration={2.2} trigger="inView" />
               </h2>
               <p className="text-white/45 text-sm md:text-[0.95rem] leading-[1.8] max-w-xs mb-10">
-                Our flagship AI report writing tool for civil engineers. Connect your existing Word templates, feed in field data, and get review-ready engineering reports — automatically.
+                Our flagship AI report writing tool for civil engineers. Connect your existing Word templates, feed in field data, and get review-ready engineering reports - automatically.
               </p>
             </Reveal>
 
@@ -846,7 +905,7 @@ function ReportlySection() {
             >
               <img
                 src="/app-preview.png"
-                alt="Reportly engineering report automation software — automated civil engineering reports in minutes"
+                alt="Reportly engineering report automation software - automated civil engineering reports in minutes"
                 className="w-full object-cover"
                 loading="lazy"
               />
@@ -864,7 +923,7 @@ function ReportlySection() {
         >
           <img
             src="/reportly-bridge.png"
-            alt="Engineering report automation workflow — from raw data to polished civil engineering documentation"
+            alt="Engineering report automation workflow - from raw data to polished civil engineering documentation"
             className="w-full object-cover"
             loading="lazy"
           />
@@ -896,7 +955,7 @@ function ReportlySection() {
 const processSteps = [
   {
     step: '01', title: 'Discovery',
-    description: 'We review your actual civil engineering workflows, tools, and processes. No theoretical frameworks — just how your reporting and documentation really gets done.',
+    description: 'We review your actual civil engineering workflows, tools, and processes. No theoretical frameworks - just how your reporting and documentation really gets done.',
   },
   {
     step: '02', title: 'Prototype',
@@ -918,7 +977,7 @@ function ProcessSection() {
             Custom engineering automation.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.8]">
-            We get one workflow right before moving to the next. Each civil engineering team is different — we build to fit yours.
+            We get one workflow right before moving to the next. Each civil engineering team is different - we build to fit yours.
           </p>
         </Reveal>
 
@@ -1008,7 +1067,7 @@ function TeamSection() {
           >
             <img
               src="/team/full-team-pic-optimized.jpg"
-              alt="VibeOps Technologies founding team — engineering automation specialists based in Vancouver, BC"
+              alt="VibeOps Technologies founding team - engineering automation specialists based in Vancouver, BC"
               className="w-full object-cover object-center"
               style={{ maxHeight: 420 }}
               loading="lazy"
@@ -1016,7 +1075,7 @@ function TeamSection() {
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
-                <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. — Vancouver, BC</p>
+                <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
                 <p className="text-base md:text-lg font-semibold text-white">Building AI tools for civil engineering teams.</p>
               </div>
               <Btn href="/contact" primary>Talk to the Team</Btn>
@@ -1046,7 +1105,7 @@ function TeamSection() {
               <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-white/12 group-hover:border-emerald-500/40 transition-colors duration-300">
                 <img
                   src={member.image}
-                  alt={`${member.name} — ${member.role} at VibeOps Technologies`}
+                  alt={`${member.name} - ${member.role} at VibeOps Technologies`}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -1091,7 +1150,7 @@ function CTASection() {
             <ScrambleText text="Get your engineering time back." duration={1.0} />
           </motion.h2>
           <motion.p variants={item} className="text-white/40 text-sm md:text-[0.95rem] leading-[1.8] mb-10 max-w-sm">
-            Automate your civil engineering reports and documentation so your team can focus on what matters — and deliver more per project.
+            Automate your civil engineering reports and documentation so your team can focus on what matters - and deliver more per project.
           </motion.p>
           <motion.div variants={item} className="flex flex-wrap gap-3">
             <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>
@@ -1111,7 +1170,7 @@ function CTASection() {
           <iframe
             src={PITCH_VIDEO_SRC}
             allow="autoplay; encrypted-media"
-            title="VibeOps engineering automation platform pitch — AI report writing for civil engineers"
+            title="VibeOps engineering automation platform pitch - AI report writing for civil engineers"
             className="absolute inset-0 w-full h-full"
             style={{ border: 'none' }}
             loading="lazy"
