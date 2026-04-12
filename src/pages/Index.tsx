@@ -13,7 +13,7 @@ import { ScrambleText } from '@/components/ScrambleText';
 import { GallerySection3D } from '../components/3d';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useVideoTexture, OrbitControls, Float, Environment, RoundedBox, ContactShadows } from '@react-three/drei';
-import { MathUtils, CanvasTexture, Group } from 'three';
+import { MathUtils, CanvasTexture, Group, Texture, Mesh } from 'three';
 import { DoubleSide, SRGBColorSpace } from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
@@ -220,47 +220,14 @@ function HeroStatItem({ value, suffix, label }: { value: number; suffix: string;
 }
 
 // ─── 3-D laptop mesh (must render inside a Canvas) ───────────────────────────
-function LaptopMesh() {
+function LaptopMesh({
+  videoTexture,
+  opacity = 1,
+}: {
+  videoTexture: Texture;
+  opacity?: number;
+}) {
   const hingeRef = useRef<Group>(null);
-  
-  // 1. Load the texture
-  const videoTexture = useVideoTexture(HERO_VIDEO_SRC, {
-    muted: true,
-    loop: true,
-    playsInline: true,
-    crossOrigin: 'Anonymous',
-  });
-
-  useEffect(() => {
-    const video = videoTexture.image as HTMLVideoElement;
-    if (!video) return;
-
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.crossOrigin = 'anonymous';
-
-    videoTexture.colorSpace = SRGBColorSpace;
-    videoTexture.needsUpdate = true;
-
-    const playVideo = async () => {
-      try {
-        await video.play();
-      } catch (e) {
-        console.warn('Video autoplay failed:', e);
-      }
-    };
-
-    if (video.readyState >= 2) {
-      playVideo();
-    } else {
-      video.addEventListener('loadeddata', playVideo);
-    }
-
-    return () => {
-      video.removeEventListener('loadeddata', playVideo);
-    };
-  }, [videoTexture]);
 
   // Canvas texture that draws rows of key shapes - built once
   const keyboardTexture = useMemo(() => {
@@ -308,16 +275,12 @@ function LaptopMesh() {
     hingeRef.current.rotation.x = MathUtils.lerp(
       hingeRef.current.rotation.x,
       TARGET,
-      0.004,
+      0.01,
     );
-
-    if (videoTexture) {
-      videoTexture.needsUpdate = true;
-    }
   });
 
   // Dimensions (world units)
-  const W = 3.0, BH = 0.08, BD = 1.85, LH = 0.058, LD = 1.72;
+  const W = 2.55, BH = 0.08, BD = 1.45, LH = 0.058, LD = 1.44;
   const bezelInsetX = 0.14; // smaller = screen closer to edges
   const bezelInsetY = 0.10;
 
@@ -329,7 +292,7 @@ function LaptopMesh() {
 
       {/* ── Base ── */}
       <RoundedBox args={[W, BH, BD]} radius={0.042} smoothness={4} position={[0, BH / 2, 0]}>
-        <meshStandardMaterial color="#1d1d21" metalness={0.78} roughness={0.22} />
+        <meshStandardMaterial color="#1d1d21" metalness={0.78} roughness={0.22} transparent opacity={opacity} />
       </RoundedBox>
 
       {/* Keyboard (canvas texture with real key shapes) */}
@@ -341,8 +304,8 @@ function LaptopMesh() {
         {/* Switch to StandardMaterial so it reacts to the city environment lights */}
         <meshStandardMaterial 
           map={keyboardTexture} 
-          transparent={true} 
-          opacity={1}
+          transparent
+          opacity={opacity}
           metalness={0.4}
           roughness={0.1}
         />
@@ -351,7 +314,7 @@ function LaptopMesh() {
       {/* Trackpad */}
       <mesh position={[0, BH + 0.001, BD * 0.28]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[W * 0.27, BD * 0.17]} />
-        <meshStandardMaterial color="#161619" roughness={0.45} metalness={0.4} />
+        <meshStandardMaterial color="#161619" roughness={0.45} metalness={0.4} transparent opacity={opacity} />
       </mesh>
 
       {/* ── Lid pivot - hinge at rear edge of base ── */}
@@ -361,25 +324,25 @@ function LaptopMesh() {
 
           {/* Lid body at -LD/2 so that at -π it sits over the keyboard */}
           <RoundedBox args={[W, LH, LD]} radius={0.032} smoothness={4} position={[0, 0, -LD / 2]}>
-            <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} />
+            <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} transparent opacity={opacity} />
           </RoundedBox>
 
           {/* Black bezel - on the +Y (inner) face of the lid */}
           <mesh position={[0, LH / 2 + 0.001, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[W * 0.88, LD * 0.9]} />
-            <meshStandardMaterial color="#080808" roughness={0.9} />
+            <meshStandardMaterial color="#080808" roughness={0.9} transparent opacity={opacity} />
           </mesh>
 
           {/* Video screen - pinned to inner face, same centre as lid */}
           <mesh position={[0, 0.036, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[screenW, screenH]} />
-            <meshBasicMaterial map={videoTexture} toneMapped={false} />
+            <meshBasicMaterial map={videoTexture} toneMapped={false} transparent opacity={opacity} />
           </mesh>
 
           {/* Screen glare */}
           <mesh position={[W * 0.18, 0.05, -LD / 2]} rotation={[-Math.PI / 2, 0.08, 0]}>
             <planeGeometry args={[W * 0.22, LD * 0.28]} />
-            <meshBasicMaterial color="#ffffff" transparent opacity={0.016} depthWrite={false} />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.016 * opacity} depthWrite={false} />
           </mesh>
 
         </group>
@@ -388,67 +351,347 @@ function LaptopMesh() {
   );
 }
 
-function SmartOrbitControls() {
-  const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
-  useFrame((_, delta) => {
-    const controls = controlsRef.current;
-    if (!controls) return;
-
-    // Current horizontal orbit angle
-    const azimuth = controls.getAzimuthalAngle();
-
-    // Normalize to 0 -> 2π
-    const normalized = ((azimuth % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-
-    // Choose where the faster 90° zone should happen
-    // This example centers it around the front-right hero angle.
-    const fastCenter = Math.PI * 1.0;
-    const fastWidth = Math.PI / 1.5; // 90 degrees
-    const halfWidth = fastWidth / 2;
-
-    // Small feather zone for fade in / fade out
-    const feather = Math.PI / 7;
-
-    const angleDelta = Math.atan2(
-      Math.sin(normalized - fastCenter),
-      Math.cos(normalized - fastCenter)
-    );
-    const distance = Math.abs(angleDelta);
-
-    const normalSpeed = 0.32;
-    const fastSpeed = 3.0;
-
-    let speedMultiplier = 1;
-
-    if (distance <= halfWidth) {
-      speedMultiplier = fastSpeed / normalSpeed;
-    } else if (distance <= halfWidth + feather) {
-      const t = 1 - (distance - halfWidth) / feather;
-      const eased = t * t * (3 - 2 * t); // smoothstep fade
-      speedMultiplier = MathUtils.lerp(1, fastSpeed / normalSpeed, eased);
-    }
-
-    controls.autoRotateSpeed = normalSpeed * speedMultiplier * 60 * delta;
-    controls.update();
-  });
-
+// ─── Phone mesh — landscape orientation ──────────────────────────────────────
+function PhoneMesh({
+  videoTexture,
+  opacity = 1,
+}: {
+  videoTexture: Texture;
+  opacity?: number;
+}) {
+  const W = 1.65, H = 0.82, D = 0.065;
+  const bX = 0.05, bY = 0.05;
   return (
-    <OrbitControls
-      ref={controlsRef}
-      target={[-1.5, 1, 0]}
-      enableZoom={false}
-      enablePan={false}
-      minPolarAngle={Math.PI * 0.18}
-      maxPolarAngle={Math.PI * 0.46}
-      autoRotate
-      enableDamping
-      dampingFactor={0.05}
-    />
+    <group>
+      <RoundedBox args={[W, H, D]} radius={0.075} smoothness={4}>
+        <meshStandardMaterial color="#111115" metalness={0.88} roughness={0.12} transparent opacity={opacity} />
+      </RoundedBox>
+      {/* Screen */}
+      <mesh position={[0, 0, D / 2 + 0.002]}>
+        <planeGeometry args={[W - bX * 2, H - bY * 2]} />
+        <meshBasicMaterial map={videoTexture} toneMapped={false} transparent opacity={opacity} />
+      </mesh>
+      {/* Dynamic island */}
+      <RoundedBox args={[0.13, 0.038, 0.01]} radius={0.015} smoothness={4}
+        position={[0, H / 2 - bY * 0.65, D / 2 + 0.003]}>
+        <meshBasicMaterial color="#000000" transparent opacity={opacity} />
+      </RoundedBox>
+      {/* Power button — right edge */}
+      <mesh position={[W / 2 + 0.005, 0.12, 0]}>
+        <boxGeometry args={[0.012, 0.14, D * 0.55]} />
+        <meshStandardMaterial color="#1a1a1e" metalness={0.9} roughness={0.1} transparent opacity={opacity} />
+      </mesh>
+      {/* Volume up — left edge */}
+      <mesh position={[-(W / 2 + 0.005), 0.16, 0]}>
+        <boxGeometry args={[0.012, 0.09, D * 0.55]} />
+        <meshStandardMaterial color="#1a1a1e" metalness={0.9} roughness={0.1} transparent opacity={opacity} />
+      </mesh>
+      {/* Volume down — left edge */}
+      <mesh position={[-(W / 2 + 0.005), 0.02, 0]}>
+        <boxGeometry args={[0.012, 0.09, D * 0.55]} />
+        <meshStandardMaterial color="#1a1a1e" metalness={0.9} roughness={0.1} transparent opacity={opacity} />
+      </mesh>
+    </group>
   );
 }
 
-/** Interactive 3-D laptop - opens on mount, video pinned to screen */
+// ─── Tablet mesh — landscape orientation ─────────────────────────────────────
+function TabletMesh({
+  videoTexture,
+  opacity = 1,
+}: {
+  videoTexture: Texture;
+  opacity?: number;
+}) {
+  const W = 2.45, H = 1.65, D = 0.048;
+  const bX = 0.055, bY = 0.055;
+  return (
+    <group>
+      <RoundedBox args={[W, H, D]} radius={0.05} smoothness={4}>
+        <meshStandardMaterial color="#1a1a1e" metalness={0.85} roughness={0.14} transparent opacity={opacity} />
+      </RoundedBox>
+      {/* Screen */}
+      <mesh position={[0, 0, D / 2 + 0.002]}>
+        <planeGeometry args={[W - bX * 2, H - bY * 2]} />
+        <meshBasicMaterial map={videoTexture} toneMapped={false} transparent opacity={opacity} />
+      </mesh>
+      {/* Front camera dot — right bezel */}
+      <mesh position={[W / 2 - bX * 0.75, 0, D / 2 + 0.003]}>
+        <circleGeometry args={[0.02, 16]} />
+        <meshBasicMaterial color="#0a0a0a" transparent opacity={opacity} />
+      </mesh>
+      {/* Power button — top edge */}
+      <mesh position={[0.35, H / 2 + 0.004, 0]}>
+        <boxGeometry args={[0.1, 0.01, D * 0.65]} />
+        <meshStandardMaterial color="#222225" metalness={0.9} roughness={0.1} transparent opacity={opacity} />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── Fluid device morph transition ───────────────────────────────────────────
+
+// Each device in its "standing, screen-forward" orientation used during the morph
+const MORPH_CFG = [
+  { w: 2.55, h: 1.58, d: 0.12,  oy: 0, color: '#1b1b1f', insetX: 0.14, insetY: 0.10 }, // laptop (matches LaptopMesh group y)
+  { w: 2.45, h: 1.65, d: 0.048, oy: 0,  color: '#1a1a1e', insetX: 0.055, insetY: 0.055 }, // tablet
+  { w: 1.65, h: 0.82, d: 0.065, oy: 0,  color: '#111115', insetX: 0.05, insetY: 0.05 }, // phone
+] as const;
+
+// Peak rotation at the midpoint of each transition (gives the "fold / tilt" feel)
+const MORPH_ROT: Record<string, [rx: number, ry: number]> = {
+  '0-1': [-0.45,  0.2 ],  // laptop -> tablet
+  '1-2': [ 0.0,   0.35],  // tablet -> phone
+  '2-0': [ 0.45,  0.2 ],  // phone -> laptop
+  '1-0': [ 0.45, -0.2 ],
+  '2-1': [ 0.0,  -0.35],
+  '0-2': [-0.45, -0.2 ],
+};
+
+function MorphTransition({
+  fromIdx,
+  toIdx,
+  progressRef,
+  videoTexture,
+  opacity = 1,
+}: {
+  fromIdx: number;
+  toIdx: number;
+  progressRef: { current: number };
+  videoTexture: Texture;
+  opacity?: number;
+}) {
+  const groupRef      = useRef<Group>(null);
+  const matBody       = useRef<any>(null);
+  const screenMeshRef = useRef<Mesh>(null);
+  const matScreen     = useRef<any>(null);
+  const from = MORPH_CFG[fromIdx];
+  const to   = MORPH_CFG[toIdx];
+  const [rx, ry] = MORPH_ROT[`${fromIdx}-${toIdx}`] ?? [0, 0.3];
+  const maxD = Math.max(from.d, to.d, 0.05);
+
+  useFrame(() => {
+    if (!groupRef.current || !matBody.current || !matScreen.current) return;
+    const p = progressRef.current;
+
+    // Cubic ease-in-out — smooth dimension morph
+    const e = p < 0.5 ? 4*p*p*p : 1 - (-2*p + 2)**3 / 2;
+    // Sine arc — rotation peaks at midpoint, zero at both ends
+    const s = Math.sin(p * Math.PI);
+
+    const localFadeIn = p < 0.2 ? p / 0.2 : 1;
+    const finalOpacity = localFadeIn * opacity;
+
+    const w = from.w + (to.w - from.w) * e;
+    const h = from.h + (to.h - from.h) * e;
+    const d = from.d + (to.d - from.d) * e;
+    const insetX = from.insetX + (to.insetX - from.insetX) * e;
+    const insetY = from.insetY + (to.insetY - from.insetY) * e;
+    const screenW = w - insetX * 2;
+    const screenH = h - insetY * 2;
+    const screenWUnit = screenW / w;
+    const screenHUnit = screenH / h;
+
+    // Scale all 3 axes so thickness morphs too (box is unit 1×1×maxD)
+    groupRef.current.scale.set(w, h, d / maxD);
+    groupRef.current.position.y = from.oy + (to.oy - from.oy) * e;
+    groupRef.current.rotation.x = s * rx;
+    groupRef.current.rotation.y = s * ry;
+
+    matBody.current.opacity = finalOpacity;
+    if (matScreen.current) matScreen.current.opacity = finalOpacity;
+    if (screenMeshRef.current) screenMeshRef.current.scale.set(screenWUnit, screenHUnit, 1);
+  });
+
+  return (
+    <group ref={groupRef}>
+      <RoundedBox args={[1, 1, maxD]} radius={0.06} smoothness={4}>
+        <meshStandardMaterial
+          ref={matBody}
+          color={from.color}
+          metalness={0.88}
+          roughness={0.12}
+          transparent
+        />
+      </RoundedBox>
+      {/* Screen — position in local space; Z-scale moves it to the correct face */}
+      <mesh position={[0, 0, 0.2]} ref={screenMeshRef} renderOrder={1}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial ref={matScreen} map={videoTexture} toneMapped={false} transparent depthWrite={false} />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── Scene: video, smart variable-speed orbit, and per-rotation device switching
+function RotatingDeviceScene() {
+  const videoTexture = useVideoTexture(HERO_VIDEO_SRC, {
+    muted: true,
+    loop: true,
+    playsInline: true,
+    crossOrigin: 'Anonymous',
+  });
+
+  useEffect(() => {
+    const video = videoTexture.image as HTMLVideoElement;
+    if (!video) return;
+    video.muted = true; video.loop = true; video.playsInline = true; video.crossOrigin = 'anonymous';
+    videoTexture.colorSpace = SRGBColorSpace;
+    videoTexture.needsUpdate = true;
+    const play = async () => { try { await video.play(); } catch (e) { console.warn('Video autoplay failed:', e); } };
+    if (video.readyState >= 2) { play(); } else { video.addEventListener('loadeddata', play); }
+    return () => { video.removeEventListener('loadeddata', play); };
+  }, [videoTexture]);
+
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  // Use refs for values read in useFrame to avoid stale closures
+  const deviceIndexRef = useRef(0);
+  const [renderDevice, setRenderDevice] = useState(0);
+  const [showMorph, setShowMorph] = useState(false);
+  const [morphDevices, setMorphDevices] = useState({ from: 0, to: 1 });
+  const transActiveRef = useRef(false);
+  const transProgressRef = useRef(0);
+  const morphOpacityRef = useRef(0);
+  const finalOpacityRef = useRef(0);
+  const [finalFadeDevice, setFinalFadeDevice] = useState<number | null>(null);
+  const lastAngle = useRef<number | null>(null);
+  const cumAngle = useRef(0);
+  const completedRotations = useRef(0);
+  const nextDevice = useRef(0);
+
+  useFrame((_, delta) => {
+    if (videoTexture) videoTexture.needsUpdate = true;
+
+    const controls = controlsRef.current;
+    if (controls) {
+      // ── Variable-speed orbit ──────────────────────────────────────────────
+      const azimuth = controls.getAzimuthalAngle();
+      const normalized = ((azimuth % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      const fastCenter = Math.PI * 1.0;
+      const fastWidth = Math.PI / 1.5;
+      const halfWidth = fastWidth / 2;
+      const feather = Math.PI / 7;
+      const angleDelta = Math.atan2(Math.sin(normalized - fastCenter), Math.cos(normalized - fastCenter));
+      const distance = Math.abs(angleDelta);
+      const normalSpeed = 0.64;
+      const fastSpeed = 6.0;
+      let speedMultiplier = 1;
+      if (distance <= halfWidth) {
+        speedMultiplier = fastSpeed / normalSpeed;
+      } else if (distance <= halfWidth + feather) {
+        const t = 1 - (distance - halfWidth) / feather;
+        speedMultiplier = MathUtils.lerp(1, fastSpeed / normalSpeed, t * t * (3 - 2 * t));
+      }
+      controls.autoRotateSpeed = normalSpeed * speedMultiplier * 60 * delta;
+      controls.update();
+
+      // ── Detect full rotation → kick off particle transition ───────────────
+      if (lastAngle.current !== null) {
+        let d = azimuth - lastAngle.current;
+        if (d > Math.PI) d -= 2 * Math.PI;
+        if (d < -Math.PI) d += 2 * Math.PI;
+        cumAngle.current += d;
+        const completed = Math.floor(Math.abs(cumAngle.current) / (2 * Math.PI));
+        if (completed > completedRotations.current && !transActiveRef.current) {
+          completedRotations.current = completed;
+          const nextDev = (deviceIndexRef.current + 1) % 3;
+          nextDevice.current = nextDev;
+          transProgressRef.current = 0;
+          transActiveRef.current = true;
+          setMorphDevices({ from: deviceIndexRef.current, to: nextDev });
+          setShowMorph(true);
+        }
+      }
+      lastAngle.current = azimuth;
+    }
+
+    // ── Drive particle transition progress ────────────────────────────────
+    if (transActiveRef.current) {
+      transProgressRef.current = Math.min(1, transProgressRef.current + delta * 0.36);
+
+      const p = transProgressRef.current;
+
+      // crossfade over final 20%
+      if (p < 0.8) {
+        morphOpacityRef.current = 1;
+        finalOpacityRef.current = 0;
+        setFinalFadeDevice(null);
+      } else {
+        const t = (p - 0.8) / 0.2;
+        const eased = t * t * (3 - 2 * t);
+        morphOpacityRef.current = 1 - eased;
+        finalOpacityRef.current = eased;
+        setFinalFadeDevice(nextDevice.current);
+      }
+
+      if (transProgressRef.current >= 1) {
+        const nextDev = nextDevice.current;
+        deviceIndexRef.current = nextDev;
+        transActiveRef.current = false;
+        setRenderDevice(nextDev);
+        setShowMorph(false);
+        setFinalFadeDevice(null);
+        morphOpacityRef.current = 0;
+        finalOpacityRef.current = 0;
+      }
+    }
+  });
+
+  return (
+    <>
+      <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
+        <group position={[-1.8, -2, 0]}>
+          <group scale={1.9}>
+            {!showMorph && renderDevice === 0 && <LaptopMesh videoTexture={videoTexture} />}
+            {!showMorph && renderDevice === 1 && <group position={[0, 1.6, 0]}><TabletMesh videoTexture={videoTexture} /></group>}
+            {!showMorph && renderDevice === 2 && <group position={[0, 1.6, 0]}><PhoneMesh videoTexture={videoTexture} /></group>}
+            {showMorph && (
+              <group position={[0, 1.6, 0]}>
+                <MorphTransition
+                  fromIdx={morphDevices.from}
+                  toIdx={morphDevices.to}
+                  progressRef={transProgressRef}
+                  videoTexture={videoTexture}
+                  opacity={morphOpacityRef.current}
+                />
+              </group>
+            )}
+            {finalFadeDevice === 0 && (
+              <group position={[0, 1.6, 0]}>
+                <LaptopMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
+              </group>
+            )}
+            {finalFadeDevice === 1 && (
+              <group position={[0, 1.6, 0]}>
+                <TabletMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
+              </group>
+            )}
+            {finalFadeDevice === 2 && (
+              <group position={[0, 1.6, 0]}>
+                <PhoneMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
+              </group>
+            )}
+          </group>
+        </group>
+      </Float>
+      <ContactShadows position={[-0.1, -0.15, 0]} opacity={0.3} scale={6} blur={2.5} far={3} />
+      <OrbitControls
+        ref={controlsRef}
+        target={[-1.5, 1, 0]}
+        enableZoom={false}
+        enablePan={false}
+        minPolarAngle={Math.PI * 0.18}
+        maxPolarAngle={Math.PI * 0.46}
+        autoRotate
+        enableDamping
+        dampingFactor={0.05}
+      />
+    </>
+  );
+}
+
+/** Interactive device carousel — switches on each full orbit */
 function LaptopMockup() {
   return (
     // Mobile: fixed height. Desktop: fills the full right column height.
@@ -481,22 +724,8 @@ function LaptopMockup() {
         <Environment preset="city" />
 
         <Suspense fallback={null}>
-          <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
-            <group scale={1.6} position={[-1.8, -1.9, 0]}>
-              <LaptopMesh />
-            </group>
-          </Float>
-          {/* Subtle ground shadow */}
-          <ContactShadows
-            position={[-0.1, -0.15, 0]}
-            opacity={0.3}
-            scale={8}
-            blur={2.5}
-            far={3}
-          />
+          <RotatingDeviceScene />
         </Suspense>
-
-        <SmartOrbitControls />
       </Canvas>
     </div>
   );
