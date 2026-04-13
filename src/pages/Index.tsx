@@ -223,9 +223,11 @@ function HeroSection() {
       className="relative min-h-screen w-full flex flex-col overflow-hidden bg-[#050912]"
       aria-label="VibeOps - AI Engineering Report Automation for Civil & Construction"
     >
-      <div className="relative z-10 mx-auto flex w-full max-w-[1660px] flex-1 flex-col px-6 pt-24 sm:px-10 md:flex-row md:items-center md:pl-16 md:pr-0 md:pt-28 lg:pl-22 xl:pl-28">
+      {/* Text + Device — peeks positioned relative to section for full-width reach */}
+      <div className="relative z-10 flex w-full flex-1 flex-col md:flex-row md:items-center">
+        {/* Left text column */}
         <motion.div
-          className="flex flex-col justify-center pb-8 pt-6 md:w-[32%] md:min-w-[340px] md:pb-12 md:pt-0 xl:w-[30%]"
+          className="relative z-20 flex flex-col justify-center px-6 pb-4 pt-20 sm:px-10 md:w-[32%] md:min-w-[320px] md:pb-6 md:pl-14 md:pt-24 lg:pl-20 xl:w-[28%] xl:pl-24"
           style={{ y: contentY }}
           variants={stagger}
           initial="hidden"
@@ -249,13 +251,13 @@ function HeroSection() {
           <motion.h1
             variants={item}
             className="font-bold leading-[0.88] tracking-[-0.065em] mb-5"
-            style={{ fontSize: 'clamp(3rem, 5vw, 5.8rem)' }}
+            style={{ fontSize: 'clamp(2.6rem, 4.2vw, 5rem)' }}
           >
             <span className="block text-white">Less formatting.</span>
             <span className="block text-emerald-300">More engineering.</span>
           </motion.h1>
 
-          <motion.p variants={item} className="mb-8 max-w-[32rem] text-[1.14rem] leading-[1.72] text-white/52 lg:text-[1.2rem]">
+          <motion.p variants={item} className="mb-6 max-w-[28rem] text-[1rem] leading-[1.7] text-white/52 lg:text-[1.08rem]">
             AI-powered report automation for civil and construction teams. Plug in your templates and project data, get polished output in minutes.
           </motion.p>
 
@@ -280,12 +282,13 @@ function HeroSection() {
           </motion.p>
         </motion.div>
 
+        {/* Right device column */}
         <motion.div
-          className="relative flex w-full flex-shrink-0 items-center justify-center self-stretch overflow-hidden pb-2 pt-2 md:w-[68%] md:overflow-visible md:pb-0 md:pt-0 xl:w-[70%]"
-          style={{ y: deviceY, opacity: deviceOpacity, perspective: 1200 }}
+          className="relative z-10 flex w-full items-center justify-center pb-4 pt-4 md:w-[66%] md:pb-0 md:pt-0 xl:w-[70%]"
+          style={{ y: deviceY, opacity: deviceOpacity }}
         >
           <motion.div
-            className="flex h-full w-full items-center md:ml-4 md:mr-0 lg:ml-6 xl:ml-8"
+            className="w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={HOMEPAGE_MOTION.heroFade}
