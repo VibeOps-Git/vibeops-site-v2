@@ -7,14 +7,14 @@ import {
   useInView,
 } from 'framer-motion';
 import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
-import { useRef, useEffect, useState, useMemo, ReactNode, Suspense } from 'react';
+import { useRef, useEffect, useState, ReactNode, Suspense } from 'react';
 import { SEO } from '@/components/SEO';
 import { ScrambleText } from '@/components/ScrambleText';
 import { GallerySection3D } from '../components/3d';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useVideoTexture, OrbitControls, Float, Environment, RoundedBox, ContactShadows } from '@react-three/drei';
-import { MathUtils, CanvasTexture, Group, Texture, Mesh } from 'three';
-import { DoubleSide, SRGBColorSpace } from 'three';
+import { MathUtils, Group, Texture, Mesh } from 'three';
+import { SRGBColorSpace } from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
 // Hero uses the branded demo video (full background)
@@ -219,134 +219,56 @@ function HeroStatItem({ value, suffix, label }: { value: number; suffix: string;
   );
 }
 
-// ─── 3-D laptop mesh (must render inside a Canvas) ───────────────────────────
-function LaptopMesh({
+// ─── MacBook mesh — flat screen slab with open animation ────────────────────
+function MacBookMesh({
   videoTexture,
   opacity = 1,
 }: {
   videoTexture: Texture;
   opacity?: number;
 }) {
-  const hingeRef = useRef<Group>(null);
+  const groupRef = useRef<Group>(null);
 
-  // Canvas texture that draws rows of key shapes - built once
-  const keyboardTexture = useMemo(() => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 800; canvas.height = 300;
-    const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = '#0b0b0d';
-    ctx.fillRect(0, 0, 800, 300);
-    // Key rows: [key-count, key-width, key-height, top-offset]
-    const rows: [number, number, number, number][] = [
-      [14, 50, 34, 10],
-      [13, 54, 40, 53],
-      [12, 58, 40, 102],
-      [11, 62, 40, 151],
-      [10, 68, 40, 200],
-    ];
-    rows.forEach(([n, kw, kh, y]) => {
-      const gap = 4;
-      const total = n * kw + (n - 1) * gap;
-      const x0 = (800 - total) / 2;
-      for (let i = 0; i < n; i++) {
-        ctx.fillStyle = 'rgba(255,255,255,0.08)';
-        ctx.fillRect(x0 + i * (kw + gap), y, kw, kh);
-        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(x0 + i * (kw + gap) + 0.5, y + 0.5, kw - 1, kh - 1);
-      }
-    });
-    // Spacebar
-    ctx.fillStyle = 'rgba(255,255,255,0.1)';
-    ctx.fillRect(225, 250, 350, 42);
-    const tex = new CanvasTexture(canvas);
-    tex.anisotropy = 16; // Fixes blurriness at angles
-    tex.needsUpdate = true;
-    return tex;
-  }, []);
-
-  // Lid opens: starts flat/closed (-Math.PI = over keyboard), lerps to ~110° open (-1.92)
-  const TARGET = -5.0;
+  // Open animation: starts tilted back (screen facing up), rotates to face the camera
   useFrame((state) => {
-    if (!hingeRef.current) return;
-    // Stay closed for the first 2 s so the lid opens as the canvas fades in
+    if (!groupRef.current) return;
     if (state.clock.elapsedTime < 2) return;
-
-    hingeRef.current.rotation.x = MathUtils.lerp(
-      hingeRef.current.rotation.x,
-      TARGET,
-      0.01,
+    // Lerp from -1.2 (tilted back) toward 0 (upright, facing camera)
+    groupRef.current.rotation.x = MathUtils.lerp(
+      groupRef.current.rotation.x,
+      0,
+      0.025,
     );
   });
 
-  // Dimensions (world units)
-  const W = 2.55, BH = 0.06, BD = 1.45, LH = 0.038, LD = 1.44;
-  const bezelInsetX = 0.14; // smaller = screen closer to edges
-  const bezelInsetY = 0.10;
-
-  const screenW = W - bezelInsetX * 2;
-  const screenH = LD - bezelInsetY * 2;
-
+  const W = 2.55, H = 1.6, D = 0.038;
+  const bX = 0.08, bY = 0.06;
   return (
-    <group>
-
-      {/* ── Base ── */}
-      <RoundedBox args={[W, BH, BD]} radius={0.032} smoothness={4} position={[0, BH / 2, 0]}>
-        <meshStandardMaterial color="#1d1d21" metalness={0.78} roughness={0.22} transparent opacity={opacity} />
+    <group ref={groupRef} rotation={[-1.2, 0, 0]}>
+      {/* Body */}
+      <RoundedBox args={[W, H, D]} radius={0.032} smoothness={4}>
+        <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} transparent opacity={opacity} />
       </RoundedBox>
-
-      {/* Keyboard (canvas texture with real key shapes) */}
-      <mesh 
-        position={[0, BH + 0.008, -BD * 0.04]}
-        rotation={[-Math.PI / 2, 0, 0]}
-      >
-        <planeGeometry args={[W * 0.86, BD * 0.72]} />
-        {/* Switch to StandardMaterial so it reacts to the city environment lights */}
-        <meshStandardMaterial 
-          map={keyboardTexture} 
-          transparent
-          opacity={opacity}
-          metalness={0.4}
-          roughness={0.1}
-        />
+      {/* Black bezel */}
+      <mesh position={[0, 0, D / 2 + 0.001]}>
+        <planeGeometry args={[W - 0.04, H - 0.04]} />
+        <meshStandardMaterial color="#080808" roughness={0.9} transparent opacity={opacity} />
       </mesh>
-
-      {/* Trackpad */}
-      <mesh position={[0, BH + 0.001, BD * 0.28]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[W * 0.27, BD * 0.17]} />
-        <meshStandardMaterial color="#161619" roughness={0.45} metalness={0.4} transparent opacity={opacity} />
+      {/* Screen */}
+      <mesh position={[0, 0, D / 2 + 0.002]}>
+        <planeGeometry args={[W - bX * 2, H - bY * 2]} />
+        <meshBasicMaterial map={videoTexture} toneMapped={false} transparent opacity={opacity} />
       </mesh>
-
-      {/* ── Lid pivot - hinge at rear edge of base ── */}
-      <group position={[0, BH, -(BD / 2) + 0.07]}>
-        {/* -Math.PI = closed (lid lying over keyboard); lerps to -1.92 = ~110° open */}
-        <group ref={hingeRef} rotation={[-Math.PI, 0, 0]}>
-
-          {/* Lid body at -LD/2 so that at -π it sits over the keyboard */}
-          <RoundedBox args={[W, LH, LD]} radius={0.024} smoothness={4} position={[0, 0, -LD / 2]}>
-            <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} transparent opacity={opacity} />
-          </RoundedBox>
-
-          {/* Black bezel - on the +Y (inner) face of the lid */}
-          <mesh position={[0, LH / 2 + 0.001, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[W * 0.88, LD * 0.9]} />
-            <meshStandardMaterial color="#080808" roughness={0.9} transparent opacity={opacity} />
-          </mesh>
-
-          {/* Video screen - pinned to inner face, same centre as lid */}
-          <mesh position={[0, 0.036, -LD / 2]} rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[screenW, screenH]} />
-            <meshBasicMaterial map={videoTexture} toneMapped={false} transparent opacity={opacity} />
-          </mesh>
-
-          {/* Screen glare */}
-          <mesh position={[W * 0.18, 0.05, -LD / 2]} rotation={[-Math.PI / 2, 0.08, 0]}>
-            <planeGeometry args={[W * 0.22, LD * 0.28]} />
-            <meshBasicMaterial color="#ffffff" transparent opacity={0.016 * opacity} depthWrite={false} />
-          </mesh>
-
-        </group>
-      </group>
+      {/* Notch */}
+      <RoundedBox args={[0.22, 0.028, 0.008]} radius={0.01} smoothness={4}
+        position={[0, H / 2 - bY * 0.45, D / 2 + 0.003]}>
+        <meshBasicMaterial color="#080808" transparent opacity={opacity} />
+      </RoundedBox>
+      {/* Screen glare */}
+      <mesh position={[W * 0.15, H * 0.1, D / 2 + 0.003]}>
+        <planeGeometry args={[W * 0.2, H * 0.25]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.016 * opacity} depthWrite={false} />
+      </mesh>
     </group>
   );
 }
@@ -434,9 +356,9 @@ function TabletMesh({
 
 // Each device in its "standing, screen-forward" orientation used during the morph
 const MORPH_CFG = [
-  { w: 2.55, h: 1.58, d: 0.09,  oy: -0.6, color: '#1b1b1f', insetX: 0.14, insetY: 0.10 }, // laptop
-  { w: 2.45, h: 1.74, d: 0.042, oy: 0,   color: '#1a1a1e', insetX: 0.045, insetY: 0.045 }, // tablet
-  { w: 1.65, h: 0.82, d: 0.065, oy: 0,   color: '#111115', insetX: 0.05, insetY: 0.05 }, // phone
+  { w: 2.55, h: 1.6,  d: 0.038, oy: 0, color: '#1b1b1f', insetX: 0.08, insetY: 0.06 }, // macbook
+  { w: 2.45, h: 1.74, d: 0.042, oy: 0, color: '#1a1a1e', insetX: 0.045, insetY: 0.045 }, // tablet
+  { w: 1.65, h: 0.82, d: 0.065, oy: 0, color: '#111115', insetX: 0.05, insetY: 0.05 }, // phone
 ] as const;
 
 // Peak rotation at the midpoint of each transition (gives the "fold / tilt" feel)
@@ -643,7 +565,7 @@ function RotatingDeviceScene() {
       <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
         <group position={[-1.8, -2, 0]}>
           <group scale={1.9}>
-            {!showMorph && renderDevice === 0 && <group position={[0, 1.6, 0]}><LaptopMesh videoTexture={videoTexture} /></group>}
+            {!showMorph && renderDevice === 0 && <group position={[0, 1.6, 0]}><MacBookMesh videoTexture={videoTexture} /></group>}
             {!showMorph && renderDevice === 1 && <group position={[0, 1.6, 0]}><TabletMesh videoTexture={videoTexture} /></group>}
             {!showMorph && renderDevice === 2 && <group position={[0, 1.6, 0]}><PhoneMesh videoTexture={videoTexture} /></group>}
             {showMorph && (
@@ -659,7 +581,7 @@ function RotatingDeviceScene() {
             )}
             {finalFadeDevice === 0 && (
               <group position={[0, 1.6, 0]}>
-                <LaptopMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
+                <MacBookMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
               </group>
             )}
             {finalFadeDevice === 1 && (
