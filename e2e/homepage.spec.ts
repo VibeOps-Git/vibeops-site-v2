@@ -26,6 +26,50 @@ test.describe("Homepage", () => {
   test("should be responsive on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await expect(page.locator("body")).toBeVisible();
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible();
+    await expect(page.getByRole("link", { name: /get started free/i })).toBeVisible();
+  });
+
+  test("should keep the homepage layout within the viewport on desktop and show the device stage", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 960 });
+
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible();
+    await expect(page.getByRole("link", { name: /get started free/i })).toBeVisible();
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const { documentElement, body } = document;
+      return Math.max(documentElement.scrollWidth, body.scrollWidth) > window.innerWidth;
+    });
+
+    expect(hasHorizontalOverflow).toBe(false);
+  });
+
+  test("should keep the homepage layout within the viewport on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible();
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const { documentElement, body } = document;
+      return Math.max(documentElement.scrollWidth, body.scrollWidth) > window.innerWidth;
+    });
+
+    expect(hasHorizontalOverflow).toBe(false);
+  });
+
+  test("should render a dark platform section and keep navigation reachable", async ({ page }) => {
+    const platformSection = page.getByTestId("platform-section");
+    await platformSection.scrollIntoViewIfNeeded();
+    await expect(platformSection).toBeVisible();
+
+    const platformBackground = await platformSection.evaluate((element) => {
+      return window.getComputedStyle(element).backgroundColor;
+    });
+
+    expect(platformBackground).not.toBe("rgb(255, 255, 255)");
+    await expect(page.getByRole("link", { name: /explore the platform/i })).toBeVisible();
+    await expect(page.getByRole("navigation")).toBeVisible();
   });
 });
 
