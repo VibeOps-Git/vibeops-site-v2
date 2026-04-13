@@ -23,7 +23,7 @@ const HERO_VIDEO_SRC = '/vids/demo-vid.mp4';
 const PLATFORM_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
 // YouTube pitch embed shown in CTA
 const PITCH_VIDEO_SRC =
-  'https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1';
+  'https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1';
 
 const TICKER_ITEMS = [
   { type: 'logo' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering' },
@@ -270,7 +270,7 @@ function LaptopMesh({
   useFrame((state) => {
     if (!hingeRef.current) return;
     // Stay closed for the first 2 s so the lid opens as the canvas fades in
-    if (state.clock.elapsedTime < 3) return;
+    if (state.clock.elapsedTime < 2) return;
 
     hingeRef.current.rotation.x = MathUtils.lerp(
       hingeRef.current.rotation.x,
@@ -280,7 +280,7 @@ function LaptopMesh({
   });
 
   // Dimensions (world units)
-  const W = 2.55, BH = 0.08, BD = 1.45, LH = 0.058, LD = 1.44;
+  const W = 2.55, BH = 0.06, BD = 1.45, LH = 0.038, LD = 1.44;
   const bezelInsetX = 0.14; // smaller = screen closer to edges
   const bezelInsetY = 0.10;
 
@@ -288,16 +288,16 @@ function LaptopMesh({
   const screenH = LD - bezelInsetY * 2;
 
   return (
-    <group position={[0, 1, 0]}>
+    <group>
 
       {/* ── Base ── */}
-      <RoundedBox args={[W, BH, BD]} radius={0.042} smoothness={4} position={[0, BH / 2, 0]}>
+      <RoundedBox args={[W, BH, BD]} radius={0.032} smoothness={4} position={[0, BH / 2, 0]}>
         <meshStandardMaterial color="#1d1d21" metalness={0.78} roughness={0.22} transparent opacity={opacity} />
       </RoundedBox>
 
       {/* Keyboard (canvas texture with real key shapes) */}
       <mesh 
-        position={[0, BH + 0.02, -BD * 0.04]} // Increased height from 0.001 to 0.02
+        position={[0, BH + 0.008, -BD * 0.04]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[W * 0.86, BD * 0.72]} />
@@ -323,7 +323,7 @@ function LaptopMesh({
         <group ref={hingeRef} rotation={[-Math.PI, 0, 0]}>
 
           {/* Lid body at -LD/2 so that at -π it sits over the keyboard */}
-          <RoundedBox args={[W, LH, LD]} radius={0.032} smoothness={4} position={[0, 0, -LD / 2]}>
+          <RoundedBox args={[W, LH, LD]} radius={0.024} smoothness={4} position={[0, 0, -LD / 2]}>
             <meshStandardMaterial color="#1b1b1f" metalness={0.82} roughness={0.16} transparent opacity={opacity} />
           </RoundedBox>
 
@@ -364,7 +364,7 @@ function PhoneMesh({
   const bX = 0.05, bY = 0.05;
   return (
     <group>
-      <RoundedBox args={[W, H, D]} radius={0.075} smoothness={4}>
+      <RoundedBox args={[W, H, D]} radius={0.09} smoothness={4}>
         <meshStandardMaterial color="#111115" metalness={0.88} roughness={0.12} transparent opacity={opacity} />
       </RoundedBox>
       {/* Screen */}
@@ -373,7 +373,7 @@ function PhoneMesh({
         <meshBasicMaterial map={videoTexture} toneMapped={false} transparent opacity={opacity} />
       </mesh>
       {/* Dynamic island */}
-      <RoundedBox args={[0.13, 0.038, 0.01]} radius={0.015} smoothness={4}
+      <RoundedBox args={[0.12, 0.035, 0.01]} radius={0.015} smoothness={4}
         position={[0, H / 2 - bY * 0.65, D / 2 + 0.003]}>
         <meshBasicMaterial color="#000000" transparent opacity={opacity} />
       </RoundedBox>
@@ -404,11 +404,11 @@ function TabletMesh({
   videoTexture: Texture;
   opacity?: number;
 }) {
-  const W = 2.45, H = 1.65, D = 0.048;
-  const bX = 0.055, bY = 0.055;
+  const W = 2.45, H = 1.74, D = 0.042;
+  const bX = 0.045, bY = 0.045;
   return (
     <group>
-      <RoundedBox args={[W, H, D]} radius={0.05} smoothness={4}>
+      <RoundedBox args={[W, H, D]} radius={0.04} smoothness={4}>
         <meshStandardMaterial color="#1a1a1e" metalness={0.85} roughness={0.14} transparent opacity={opacity} />
       </RoundedBox>
       {/* Screen */}
@@ -434,9 +434,9 @@ function TabletMesh({
 
 // Each device in its "standing, screen-forward" orientation used during the morph
 const MORPH_CFG = [
-  { w: 2.55, h: 1.58, d: 0.12,  oy: 0, color: '#1b1b1f', insetX: 0.14, insetY: 0.10 }, // laptop (matches LaptopMesh group y)
-  { w: 2.45, h: 1.65, d: 0.048, oy: 0,  color: '#1a1a1e', insetX: 0.055, insetY: 0.055 }, // tablet
-  { w: 1.65, h: 0.82, d: 0.065, oy: 0,  color: '#111115', insetX: 0.05, insetY: 0.05 }, // phone
+  { w: 2.55, h: 1.58, d: 0.09,  oy: -0.6, color: '#1b1b1f', insetX: 0.14, insetY: 0.10 }, // laptop
+  { w: 2.45, h: 1.74, d: 0.042, oy: 0,   color: '#1a1a1e', insetX: 0.045, insetY: 0.045 }, // tablet
+  { w: 1.65, h: 0.82, d: 0.065, oy: 0,   color: '#111115', insetX: 0.05, insetY: 0.05 }, // phone
 ] as const;
 
 // Peak rotation at the midpoint of each transition (gives the "fold / tilt" feel)
@@ -643,7 +643,7 @@ function RotatingDeviceScene() {
       <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
         <group position={[-1.8, -2, 0]}>
           <group scale={1.9}>
-            {!showMorph && renderDevice === 0 && <LaptopMesh videoTexture={videoTexture} />}
+            {!showMorph && renderDevice === 0 && <group position={[0, 1.6, 0]}><LaptopMesh videoTexture={videoTexture} /></group>}
             {!showMorph && renderDevice === 1 && <group position={[0, 1.6, 0]}><TabletMesh videoTexture={videoTexture} /></group>}
             {!showMorph && renderDevice === 2 && <group position={[0, 1.6, 0]}><PhoneMesh videoTexture={videoTexture} /></group>}
             {showMorph && (
@@ -696,7 +696,7 @@ function LaptopMockup() {
   return (
     // Mobile: fixed height. Desktop: fills the full right column height.
     <div
-      className="relative h-[340px] sm:h-[440px] lg:h-full"
+      className="relative h-[340px] sm:h-[440px] md:h-full"
       style={{
         width: 'calc(100% + 18vw)',
         marginLeft: '-9vw',
@@ -741,17 +741,17 @@ function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col bg-white overflow-hidden"
+      className="relative min-h-screen w-full flex flex-col bg-[#060b14] overflow-hidden"
       aria-label="VibeOps - AI Engineering Report Automation for Civil & Construction"
     >
       {/* ── Background layers - overflow-hidden here so gradients don't escape section ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {/* Emerald spotlight - desktop only (right half) */}
-        <div className="absolute inset-0 hidden lg:block"
+        <div className="absolute inset-0 hidden md:block"
           style={{ background: 'radial-gradient(ellipse 65% 55% at 83% 50%, rgba(16,185,129,0.055) 0%, transparent 70%)' }} />
 
         {/* DESKTOP: dark bleeds left→right + top/bottom vignette */}
-        <div className="absolute inset-0 hidden lg:block" style={{
+        <div className="absolute inset-0 hidden md:block" style={{
           background: `
             linear-gradient(to right,  #060b14 0%, #060b14 26%, rgba(6,11,20,0.85) 38%, rgba(6,11,20,0.3) 50%, transparent 64%),
             linear-gradient(to bottom, rgba(6,11,20,0.65) 0%, transparent 25%),
@@ -759,18 +759,18 @@ function HeroSection() {
           `,
         }} />
 
-        {/* MOBILE: dark top → fades to white ~60% down (laptop sits in the light area) */}
-        <div className="absolute inset-0 lg:hidden" style={{
-          background: 'linear-gradient(to bottom, #060b14 0%, #060b14 45%, rgba(6,11,20,0.5) 62%, transparent 78%)',
+        {/* MOBILE: fully dark background with subtle lighter area around the 3D scene */}
+        <div className="absolute inset-0 md:hidden" style={{
+          background: 'linear-gradient(to bottom, #060b14 0%, #060b14 50%, rgba(6,11,20,0.92) 70%, #060b14 90%)',
         }} />
       </div>
 
       {/* ── Main split layout - full-height flex ── */}
-      <div className="relative z-10 flex flex-col lg:flex-row flex-1 w-full pt-24 lg:pt-0">
+      <div className="relative z-10 flex flex-col md:flex-row flex-1 w-full pt-24 md:pt-0">
 
         {/* Left: copy - 1/3 on desktop; text overflows into laptop area on lg */}
         <motion.div
-          className="flex flex-col justify-center flex-1 lg:flex-none lg:w-[34%] lg:overflow-visible px-6 sm:px-10 lg:px-12 xl:px-16 pt-16 pb-8 lg:py-28"
+          className="flex flex-col justify-center flex-1 md:flex-none md:w-[34%] md:overflow-visible px-6 sm:px-10 md:px-12 xl:px-16 pt-16 pb-8 md:py-28"
           style={{ y: contentY }}
           variants={stagger}
           initial="hidden"
@@ -794,7 +794,7 @@ function HeroSection() {
 
           <motion.h1
             variants={item}
-            className="font-bold leading-[0.97] tracking-[-0.035em] mb-7 lg:whitespace-nowrap"
+            className="font-bold leading-[0.97] tracking-[-0.035em] mb-7 md:whitespace-nowrap"
             style={{ fontSize: 'clamp(2.6rem, 4.5vw, 4.4rem)' }}
           >
             <span className="block text-white">Less formatting.</span>
@@ -829,12 +829,12 @@ function HeroSection() {
         {/* Right: laptop - full-height column on desktop, stacked below text on mobile */}
         {/* scroll-based y + opacity handled by MotionValues; intro handled by inner div */}
         <motion.div
-          className="flex w-full lg:w-[66%] flex-shrink-0 items-center justify-center lg:items-stretch lg:justify-stretch px-6 sm:px-12 lg:px-0 pb-14 lg:pb-0"
+          className="flex w-full md:w-[66%] flex-shrink-0 items-center justify-center md:items-stretch md:justify-stretch px-6 sm:px-12 md:px-0 pb-14 md:pb-0"
           style={{ y: laptopY, opacity: laptopOpacity, perspective: 1200 }}
         >
           {/* 2 s blank → 2 s fade-in (lid opens in sync via useFrame clock) */}
           <motion.div
-            className="w-full max-w-[520px] lg:max-w-none lg:h-full"
+            className="w-full max-w-[520px] md:max-w-none md:h-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 2, delay: 1, ease: 'easeIn' }}
@@ -844,11 +844,11 @@ function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Bottom fade - mobile only: softens white→dark transition before stats */}
+      {/* Bottom fade - mobile only: ensures seamless transition to stats bar */}
       <div
         aria-hidden="true"
-        className="relative z-10 h-16 w-full pointer-events-none lg:hidden"
-        style={{ background: 'linear-gradient(to bottom, transparent 0%, #060b14 100%)', marginBottom: -1 }}
+        className="relative z-10 h-8 w-full pointer-events-none md:hidden"
+        style={{ background: '#060b14', marginBottom: -1 }}
       />
 
       {/* Stats bar - no entrance animation; only numbers count up */}
