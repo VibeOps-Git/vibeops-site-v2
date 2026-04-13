@@ -223,9 +223,13 @@ function HeroStatItem({ value, suffix, label }: { value: number; suffix: string;
 function LaptopMesh({
   videoTexture,
   opacity = 1,
+  animateOpen = true,
+  initialRotation = -Math.PI,
 }: {
   videoTexture: Texture;
   opacity?: number;
+  animateOpen?: boolean;
+  initialRotation?: number;
 }) {
   const hingeRef = useRef<Group>(null);
 
@@ -268,8 +272,7 @@ function LaptopMesh({
   // Lid opens: starts flat/closed (-Math.PI = over keyboard), lerps to ~110° open (-1.92)
   const TARGET = -5.0;
   useFrame((state) => {
-    if (!hingeRef.current) return;
-    // Stay closed for the first 2 s so the lid opens as the canvas fades in
+    if (!hingeRef.current || !animateOpen) return;
     if (state.clock.elapsedTime < 3) return;
 
     hingeRef.current.rotation.x = MathUtils.lerp(
@@ -320,7 +323,7 @@ function LaptopMesh({
       {/* ── Lid pivot - hinge at rear edge of base ── */}
       <group position={[0, BH, -(BD / 2) + 0.07]}>
         {/* -Math.PI = closed (lid lying over keyboard); lerps to -1.92 = ~110° open */}
-        <group ref={hingeRef} rotation={[-Math.PI, 0, 0]}>
+        <group ref={hingeRef} rotation={[initialRotation, 0, 0]}>
 
           {/* Lid body at -LD/2 so that at -π it sits over the keyboard */}
           <RoundedBox args={[W, LH, LD]} radius={0.032} smoothness={4} position={[0, 0, -LD / 2]}>
@@ -434,16 +437,17 @@ function TabletMesh({
 
 // Each device in its "standing, screen-forward" orientation used during the morph
 const MORPH_CFG = [
-  { w: 2.55, h: 1.58, d: 0.12,  oy: 0, color: '#1b1b1f', insetX: 0.14, insetY: 0.10 }, // laptop (matches LaptopMesh group y)
+  { w: 2.55, h: 1.58, d: 0.12,  oy: -0.5, color: '#1b1b1f', insetX: 0.14, insetY: 0.10 }, // laptop (matches LaptopMesh group y)
   { w: 2.45, h: 1.65, d: 0.048, oy: 0,  color: '#1a1a1e', insetX: 0.055, insetY: 0.055 }, // tablet
   { w: 1.65, h: 0.82, d: 0.065, oy: 0,  color: '#111115', insetX: 0.05, insetY: 0.05 }, // phone
 ] as const;
 
 // Peak rotation at the midpoint of each transition (gives the "fold / tilt" feel)
+// Note: '2-0' (phone → laptop) rx is unused — that transition uses a face-down flip instead.
 const MORPH_ROT: Record<string, [rx: number, ry: number]> = {
   '0-1': [-0.45,  0.2 ],  // laptop -> tablet
   '1-2': [ 0.0,   0.35],  // tablet -> phone
-  '2-0': [ 0.45,  0.2 ],  // phone -> laptop
+  '2-0': [ 0.0,   0.15],  // phone -> laptop (rx handled below; ry is subtle wobble)
   '1-0': [ 0.45, -0.2 ],
   '2-1': [ 0.0,  -0.35],
   '0-2': [-0.45, -0.2 ],
@@ -496,12 +500,24 @@ function MorphTransition({
     // Scale all 3 axes so thickness morphs too (box is unit 1×1×maxD)
     groupRef.current.scale.set(w, h, d / maxD);
     groupRef.current.position.y = from.oy + (to.oy - from.oy) * e;
-    groupRef.current.rotation.x = s * rx;
-    groupRef.current.rotation.y = s * ry;
+
+    // Phone → laptop: screen goes face-down so it looks like a closed laptop lid.
+    // The laptop opens from the down position, so the phone expands to laptop-lid
+    // size and tips forward until horizontal (screen facing the floor = π/2 radians).
+    if (fromIdx === 2 && toIdx === 0) {
+      groupRef.current.rotation.x = e * (Math.PI / 2);  // 0 → 90° face-down
+      groupRef.current.rotation.y = s * ry;              // subtle side wobble
+    } else {
+      groupRef.current.rotation.x = s * rx;
+      groupRef.current.rotation.y = s * ry;
+    }
 
     matBody.current.opacity = finalOpacity;
     if (matScreen.current) matScreen.current.opacity = finalOpacity;
-    if (screenMeshRef.current) screenMeshRef.current.scale.set(screenWUnit, screenHUnit, 1);
+    if (screenMeshRef.current) {
+      screenMeshRef.current.scale.set(screenWUnit, screenHUnit, 1);
+      screenMeshRef.current.position.z = maxD / 2 + 0.016;
+    }
   });
 
   return (
@@ -516,7 +532,7 @@ function MorphTransition({
         />
       </RoundedBox>
       {/* Screen — position in local space; Z-scale moves it to the correct face */}
-      <mesh position={[0, 0, 0.2]} ref={screenMeshRef} renderOrder={1}>
+      <mesh position={[0, 0, 0]} ref={screenMeshRef} renderOrder={1}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial ref={matScreen} map={videoTexture} toneMapped={false} transparent depthWrite={false} />
       </mesh>
@@ -613,7 +629,7 @@ function RotatingDeviceScene() {
       const p = transProgressRef.current;
 
       // crossfade over final 20%
-      if (p < 0.8) {
+      if (p < 0.99999) {
         morphOpacityRef.current = 1;
         finalOpacityRef.current = 0;
         setFinalFadeDevice(null);
@@ -658,9 +674,12 @@ function RotatingDeviceScene() {
               </group>
             )}
             {finalFadeDevice === 0 && (
-              <group position={[0, 1.6, 0]}>
-                <LaptopMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
-              </group>
+              <LaptopMesh
+                videoTexture={videoTexture}
+                opacity={finalOpacityRef.current}
+                animateOpen={false}
+                initialRotation={-5.0}
+              />
             )}
             {finalFadeDevice === 1 && (
               <group position={[0, 1.6, 0]}>
