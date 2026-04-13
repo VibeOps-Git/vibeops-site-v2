@@ -225,13 +225,18 @@ function LaptopMesh({
   opacity = 1,
   animateOpen = true,
   initialRotation = -Math.PI,
+  closeForTransition = false,
+  onLidClosed,
 }: {
   videoTexture: Texture;
   opacity?: number;
   animateOpen?: boolean;
   initialRotation?: number;
+  closeForTransition?: boolean;
+  onLidClosed?: () => void;
 }) {
   const hingeRef = useRef<Group>(null);
+  const lidClosedCalledRef = useRef(false);
 
   // Canvas texture that draws rows of key shapes - built once
   const keyboardTexture = useMemo(() => {
@@ -272,15 +277,43 @@ function LaptopMesh({
   // Lid opens: starts flat/closed (-Math.PI = over keyboard), lerps to ~110° open (-1.92)
   const TARGET = -5.0;
   useFrame((state) => {
-    if (!hingeRef.current || !animateOpen) return;
-    if (state.clock.elapsedTime < 3) return;
+  if (!hingeRef.current) return;
+
+  if (closeForTransition) {
+    // Reset flag while lid is still clearly open (early in the close cycle)
+    if (hingeRef.current.rotation.x > -Math.PI + 0.25) {
+      lidClosedCalledRef.current = false;
+    }
 
     hingeRef.current.rotation.x = MathUtils.lerp(
       hingeRef.current.rotation.x,
-      TARGET,
-      0.01,
+      -Math.PI,
+      0.045,
     );
-  });
+
+    if (
+      !lidClosedCalledRef.current &&
+      onLidClosed &&
+      Math.abs(hingeRef.current.rotation.x + Math.PI) < 0.07
+    ) {
+      lidClosedCalledRef.current = true;
+      onLidClosed();
+    }
+    return;
+  }
+
+  // Normal opening behavior — reset flag so each close cycle starts clean
+  lidClosedCalledRef.current = false;
+
+  if (!animateOpen) return;
+  if (state.clock.elapsedTime < 3) return;
+
+  hingeRef.current.rotation.x = MathUtils.lerp(
+    hingeRef.current.rotation.x,
+    TARGET,
+    0.01,
+  );
+});
 
   // Dimensions (world units)
   const W = 2.55, BH = 0.08, BD = 1.45, LH = 0.058, LD = 1.44;
@@ -466,65 +499,48 @@ function MorphTransition({
   videoTexture: Texture;
   opacity?: number;
 }) {
-  const groupRef      = useRef<Group>(null);
-  const matBody       = useRef<any>(null);
-  const screenMeshRef = useRef<Mesh>(null);
-  const matScreen     = useRef<any>(null);
+  const groupRef = useRef<Group>(null);
+  const matBody = useRef<any>(null);
+  const matScreen = useRef<any>(null);
+  
   const from = MORPH_CFG[fromIdx];
-  const to   = MORPH_CFG[toIdx];
+  const to = MORPH_CFG[toIdx];
   const [rx, ry] = MORPH_ROT[`${fromIdx}-${toIdx}`] ?? [0, 0.3];
   const maxD = Math.max(from.d, to.d, 0.05);
 
   useFrame(() => {
     if (!groupRef.current || !matBody.current || !matScreen.current) return;
+    
+    // We allow p to go up to 1.1 for a buffer, but clamp logic at 1.0
     const p = progressRef.current;
+    const logicP = Math.min(1, p);
 
-    // Cubic ease-in-out — smooth dimension morph
-    const e = p < 0.5 ? 4*p*p*p : 1 - (-2*p + 2)**3 / 2;
-    // Sine arc — rotation peaks at midpoint, zero at both ends
-    const s = Math.sin(p * Math.PI);
+    const e = logicP < 0.5 ? 4 * logicP ** 3 : 1 - (-2 * logicP + 2) ** 3 / 2;
+    const s = Math.sin(logicP * Math.PI);
 
-    const localFadeIn = p < 0.2 ? p / 0.2 : 1;
-    const finalOpacity = localFadeIn * opacity;
+    // Dissolve: Fade out starts at 0.9 and ends at 1.1 for a soft handoff
+    const fadeIn = MathUtils.smoothstep(p, 0, 0.1);
+    const fadeOut = 1 - MathUtils.smoothstep(p, 0.9, 1.1); 
+    const finalOpacity = MathUtils.clamp(fadeIn * fadeOut * opacity, 0, 1);
 
     const w = from.w + (to.w - from.w) * e;
     const h = from.h + (to.h - from.h) * e;
     const d = from.d + (to.d - from.d) * e;
-    const insetX = from.insetX + (to.insetX - from.insetX) * e;
-    const insetY = from.insetY + (to.insetY - from.insetY) * e;
-    const screenW = w - insetX * 2;
-    const screenH = h - insetY * 2;
-    const screenWUnit = screenW / w;
-    const screenHUnit = screenH / h;
-
-    // Scale all 3 axes so thickness morphs too (box is unit 1×1×maxD)
+    
     groupRef.current.scale.set(w, h, d / maxD);
-    let y = from.oy + (to.oy - from.oy) * e;
+    groupRef.current.position.y = from.oy + (to.oy - from.oy) * e;
 
-    // lift only the laptop -> tablet start
-    if (fromIdx === 0 && toIdx === 1) {
-      y += (1 - e) * 0.6;
-    }
-
-    groupRef.current.position.y = y;
-
-    // Phone → laptop: screen goes face-down so it looks like a closed laptop lid.
-    // The laptop opens from the down position, so the phone expands to laptop-lid
-    // size and tips forward until horizontal (screen facing the floor = π/2 radians).
     if (fromIdx === 2 && toIdx === 0) {
-      groupRef.current.rotation.x = e * (Math.PI / 2);  // 0 → 90° face-down
-      groupRef.current.rotation.y = s * ry;              // subtle side wobble
+      groupRef.current.rotation.x = e * (Math.PI / 2);
+    } else if (fromIdx === 0 && toIdx === 1) {
+      groupRef.current.rotation.x = (Math.PI / 2) * (1 - e);
     } else {
       groupRef.current.rotation.x = s * rx;
-      groupRef.current.rotation.y = s * ry;
     }
+    groupRef.current.rotation.y = s * ry;
 
     matBody.current.opacity = finalOpacity;
-    if (matScreen.current) matScreen.current.opacity = finalOpacity;
-    if (screenMeshRef.current) {
-      screenMeshRef.current.scale.set(screenWUnit, screenHUnit, 1);
-      screenMeshRef.current.position.z = maxD / 2 + 0.016;
-    }
+    matScreen.current.opacity = finalOpacity;
   });
 
   return (
@@ -536,12 +552,12 @@ function MorphTransition({
           metalness={0.88}
           roughness={0.12}
           transparent
+          side={DoubleSide}
         />
       </RoundedBox>
-      {/* Screen — position in local space; Z-scale moves it to the correct face */}
-      <mesh position={[0, 0, 0]} ref={screenMeshRef} renderOrder={1}>
-        <planeGeometry args={[1, 1]} />
-        <meshBasicMaterial ref={matScreen} map={videoTexture} toneMapped={false} transparent depthWrite={false} />
+      <mesh position={[0, 0, maxD / 2 + 0.01]}>
+        <planeGeometry args={[0.92, 0.92]} />
+        <meshBasicMaterial ref={matScreen} map={videoTexture} transparent toneMapped={false} />
       </mesh>
     </group>
   );
@@ -568,20 +584,34 @@ function RotatingDeviceScene() {
   }, [videoTexture]);
 
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
-  // Use refs for values read in useFrame to avoid stale closures
   const deviceIndexRef = useRef(0);
   const [renderDevice, setRenderDevice] = useState(0);
   const [showMorph, setShowMorph] = useState(false);
   const [morphDevices, setMorphDevices] = useState({ from: 0, to: 1 });
   const transActiveRef = useRef(false);
   const transProgressRef = useRef(0);
-  const morphOpacityRef = useRef(0);
-  const finalOpacityRef = useRef(0);
-  const [finalFadeDevice, setFinalFadeDevice] = useState<number | null>(null);
   const lastAngle = useRef<number | null>(null);
   const cumAngle = useRef(0);
   const completedRotations = useRef(0);
   const nextDevice = useRef(0);
+  // Persistent laptop lid state — survives remounts across cycles
+  const [laptopInitialRotation, setLaptopInitialRotation] = useState(-Math.PI);
+  const [laptopAnimateOpen, setLaptopAnimateOpen] = useState(true);
+  // Pre-morph lid-close phase (laptop → tablet only)
+  const [closingLaptop, setClosingLaptop] = useState(false);
+
+  const startMorph = (from: number, to: number) => {
+    nextDevice.current = to;
+    transProgressRef.current = 0;
+    transActiveRef.current = true;
+    setMorphDevices({ from, to });
+    setShowMorph(true);
+  };
+
+  const handleLidClosed = () => {
+    setClosingLaptop(false);
+    startMorph(0, 1);
+  };
 
   useFrame((_, delta) => {
     if (videoTexture) videoTexture.needsUpdate = true;
@@ -609,54 +639,51 @@ function RotatingDeviceScene() {
       controls.autoRotateSpeed = normalSpeed * speedMultiplier * 60 * delta;
       controls.update();
 
-      // ── Detect full rotation → kick off particle transition ───────────────
+      // ── Detect full rotation → kick off transition ────────────────────────
       if (lastAngle.current !== null) {
         let d = azimuth - lastAngle.current;
         if (d > Math.PI) d -= 2 * Math.PI;
         if (d < -Math.PI) d += 2 * Math.PI;
         cumAngle.current += d;
         const completed = Math.floor(Math.abs(cumAngle.current) / (2 * Math.PI));
-        if (completed > completedRotations.current && !transActiveRef.current) {
+        if (completed > completedRotations.current && !transActiveRef.current && !closingLaptop) {
           completedRotations.current = completed;
           const nextDev = (deviceIndexRef.current + 1) % 3;
-          nextDevice.current = nextDev;
-          transProgressRef.current = 0;
-          transActiveRef.current = true;
-          setMorphDevices({ from: deviceIndexRef.current, to: nextDev });
-          setShowMorph(true);
+          if (deviceIndexRef.current === 0 && nextDev === 1) {
+            // Laptop → tablet: close lid first, morph fires via handleLidClosed
+            nextDevice.current = 1;
+            setClosingLaptop(true);
+          } else {
+            startMorph(deviceIndexRef.current, nextDev);
+          }
         }
       }
       lastAngle.current = azimuth;
     }
 
-    // ── Drive particle transition progress ────────────────────────────────
-    if (transActiveRef.current) {
-      transProgressRef.current = Math.min(1, transProgressRef.current + delta * 0.36);
+    // ── Drive morph progress ──────────────────────────────────────────────
+  if (transActiveRef.current) {
+      // Increase buffer to 1.1 to allow the morph to fade out while the final is already visible
+      transProgressRef.current = Math.min(1.1, transProgressRef.current + delta * 0.7);
 
-      const p = transProgressRef.current;
-
-      // crossfade over final 20%
-      if (p < 0.99999) {
-        morphOpacityRef.current = 1;
-        finalOpacityRef.current = 0;
-        setFinalFadeDevice(null);
-      } else {
-        const t = (p - 0.8) / 0.2;
-        const eased = t * t * (3 - 2 * t);
-        morphOpacityRef.current = 1 - eased;
-        finalOpacityRef.current = eased;
-        setFinalFadeDevice(nextDevice.current);
+      // Trigger the state swap slightly BEFORE the morph is fully gone (at 0.95)
+      if (transProgressRef.current >= 0.95 && !showMorph === false) {
+         const nextDev = nextDevice.current;
+         if (nextDev === 0) {
+           setLaptopInitialRotation(-5.0);
+           setLaptopAnimateOpen(false);
+         } else {
+           setLaptopInitialRotation(-Math.PI);
+           setLaptopAnimateOpen(true);
+         }
+         setRenderDevice(nextDev);
       }
 
-      if (transProgressRef.current >= 1) {
-        const nextDev = nextDevice.current;
-        deviceIndexRef.current = nextDev;
+      // Finally kill the morph component once it's fully transparent
+      if (transProgressRef.current >= 1.1) {
+        deviceIndexRef.current = nextDevice.current;
         transActiveRef.current = false;
-        setRenderDevice(nextDev);
         setShowMorph(false);
-        setFinalFadeDevice(null);
-        morphOpacityRef.current = 0;
-        finalOpacityRef.current = 0;
       }
     }
   });
@@ -666,9 +693,23 @@ function RotatingDeviceScene() {
       <Float speed={0.9} rotationIntensity={0.05} floatIntensity={0.1}>
         <group position={[-1.8, -2, 0]}>
           <group scale={1.9}>
-            {!showMorph && renderDevice === 0 && <LaptopMesh videoTexture={videoTexture} />}
-            {!showMorph && renderDevice === 1 && <group position={[0, 1.6, 0]}><TabletMesh videoTexture={videoTexture} /></group>}
-            {!showMorph && renderDevice === 2 && <group position={[0, 1.6, 0]}><PhoneMesh videoTexture={videoTexture} /></group>}
+            {/* The final device renders if we aren't morphing OR if we are in the last 15% of a morph */}
+            {(!showMorph || transProgressRef.current > 0.95) && (
+              <>
+                {renderDevice === 0 && (
+                  <LaptopMesh
+                    videoTexture={videoTexture}
+                    initialRotation={laptopInitialRotation}
+                    animateOpen={laptopAnimateOpen}
+                    closeForTransition={closingLaptop}
+                    onLidClosed={handleLidClosed}
+                  />
+                )}
+                {renderDevice === 1 && <group position={[0, 1.6, 0]}><TabletMesh videoTexture={videoTexture} /></group>}
+                {renderDevice === 2 && <group position={[0, 1.6, 0]}><PhoneMesh videoTexture={videoTexture} /></group>}
+              </>
+            )}
+            
             {showMorph && (
               <group position={[0, 1.6, 0]}>
                 <MorphTransition
@@ -676,26 +717,8 @@ function RotatingDeviceScene() {
                   toIdx={morphDevices.to}
                   progressRef={transProgressRef}
                   videoTexture={videoTexture}
-                  opacity={morphOpacityRef.current}
+                  opacity={1}
                 />
-              </group>
-            )}
-            {finalFadeDevice === 0 && (
-              <LaptopMesh
-                videoTexture={videoTexture}
-                opacity={finalOpacityRef.current}
-                animateOpen={false}
-                initialRotation={-5.0}
-              />
-            )}
-            {finalFadeDevice === 1 && (
-              <group position={[0, 1.6, 0]}>
-                <TabletMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
-              </group>
-            )}
-            {finalFadeDevice === 2 && (
-              <group position={[0, 1.6, 0]}>
-                <PhoneMesh videoTexture={videoTexture} opacity={finalOpacityRef.current} />
               </group>
             )}
           </group>
@@ -767,7 +790,7 @@ function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col bg-white overflow-hidden"
+      className="relative min-h-screen w-full flex flex-col bg-[#060b14] overflow-hidden"
       aria-label="VibeOps - AI Engineering Report Automation for Civil & Construction"
     >
       {/* ── Background layers - overflow-hidden here so gradients don't escape section ── */}
@@ -787,7 +810,7 @@ function HeroSection() {
 
         {/* MOBILE: dark top → fades to white ~60% down (laptop sits in the light area) */}
         <div className="absolute inset-0 lg:hidden" style={{
-          background: 'linear-gradient(to bottom, #060b14 0%, #060b14 45%, rgba(6,11,20,0.5) 62%, transparent 78%)',
+          background: 'linear-gradient(to bottom, #060b14 0%, #060b14 50%, rgba(6,11,20,0.92) 70%, #060b14 90%)',
         }} />
       </div>
 
@@ -820,14 +843,14 @@ function HeroSection() {
 
           <motion.h1
             variants={item}
-            className="font-bold leading-[0.97] tracking-[-0.035em] mb-7 lg:whitespace-nowrap"
-            style={{ fontSize: 'clamp(2.6rem, 4.5vw, 4.4rem)' }}
+            className="font-bold leading-[0.88] tracking-[-0.065em] mb-5"
+            style={{ fontSize: 'clamp(3rem, 5vw, 5.8rem)' }}
           >
             <span className="block text-white">Less formatting.</span>
-            <span className="block text-emerald-400">More engineering.</span>
+            <span className="block text-emerald-300">More engineering.</span>
           </motion.h1>
 
-          <motion.p variants={item} className="text-[0.92rem] text-white/40 leading-[1.8] mb-9 max-w-[20rem]">
+          <motion.p variants={item} className="mb-8 max-w-[32rem] text-[1.14rem] leading-[1.72] text-white/52 lg:text-[1.2rem]">
             AI-powered report automation for civil and construction teams. Plug in your templates and project data, get polished output in minutes.
           </motion.p>
 
@@ -874,7 +897,7 @@ function HeroSection() {
       <div
         aria-hidden="true"
         className="relative z-10 h-16 w-full pointer-events-none lg:hidden"
-        style={{ background: 'linear-gradient(to bottom, transparent 0%, #060b14 100%)', marginBottom: -1 }}
+        style={{ background: '#060b14', marginBottom: -1 }}
       />
 
       {/* Stats bar - no entrance animation; only numbers count up */}
