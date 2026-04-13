@@ -13,7 +13,7 @@ import { ScrambleText } from '@/components/ScrambleText';
 import { GallerySection3D } from '../components/3d';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useVideoTexture, OrbitControls, Float, Environment, RoundedBox, ContactShadows } from '@react-three/drei';
-import { MathUtils, CanvasTexture, Group, Texture, Mesh } from 'three';
+import { MathUtils, CanvasTexture, Group, Texture, Mesh, ACESFilmicToneMapping } from 'three';
 import { DoubleSide, SRGBColorSpace } from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
@@ -499,7 +499,14 @@ function MorphTransition({
 
     // Scale all 3 axes so thickness morphs too (box is unit 1×1×maxD)
     groupRef.current.scale.set(w, h, d / maxD);
-    groupRef.current.position.y = from.oy + (to.oy - from.oy) * e;
+    let y = from.oy + (to.oy - from.oy) * e;
+
+    // lift only the laptop -> tablet start
+    if (fromIdx === 0 && toIdx === 1) {
+      y += (1 - e) * 0.6;
+    }
+
+    groupRef.current.position.y = y;
 
     // Phone → laptop: screen goes face-down so it looks like a closed laptop lid.
     // The laptop opens from the down position, so the phone expands to laptop-lid
