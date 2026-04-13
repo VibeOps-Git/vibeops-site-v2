@@ -168,7 +168,7 @@ export default function Index() {
       <HeroSection />
       <SectionBridge from="#050912" to="#08111b" height={8} />
       <PlatformSection />
-      <SectionBridge from="#08111b" to="#060b14" height={88} />
+      <SectionBridge from="#08111b" to="#060b14" height={8} />
       <FeaturesSection />
       <ReportlySection />
       <ProcessSection />
@@ -354,7 +354,7 @@ function Btn({ href, children, primary = false }: { href: string; children: Reac
 
 function PlatformSection() {
   return (
-    <section className="relative overflow-hidden bg-[#08111b] pt-16 pb-24 md:pt-20 md:pb-32" data-testid="platform-section">
+    <section className="relative overflow-hidden bg-[#08111b] pt-20 pb-20 md:pt-24 md:pb-24" data-testid="platform-section">
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
@@ -459,7 +459,7 @@ const services = [
 
 function FeaturesSection() {
   return (
-    <section className="bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <Label>What We Build</Label>
@@ -528,7 +528,7 @@ function ReportlySection() {
   const imgY = useTransform(scrollYProgress, [0, 1], [35, -35]);
 
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10" ref={sectionRef}>
 
         <Reveal>
@@ -653,7 +653,7 @@ const processSteps = [
 
 function ProcessSection() {
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <Label>How We Work</Label>
@@ -720,7 +720,7 @@ const teamMembers = [
 
 function TeamSection() {
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
@@ -812,7 +812,7 @@ function TeamSection() {
 
 function CTASection() {
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-28 pb-24 md:pt-36">
+    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Rule className="mb-20" />
 
