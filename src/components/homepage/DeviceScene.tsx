@@ -45,38 +45,62 @@ function AutoVideo({ src, className = "" }: { src: string; className?: string })
 }
 
 
+function EdgeGlow({ color = "emerald" }: { color?: "emerald" | "cyan" }) {
+  const c = color === "emerald"
+    ? "rgba(52,211,153,0.12)"
+    : "rgba(125,211,252,0.12)";
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-[-1px] rounded-[inherit]"
+      style={{ boxShadow: `inset 0 0 20px 1px ${c}, 0 0 24px 2px ${c}` }}
+      animate={{ opacity: [0.4, 1, 0.4] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+    />
+  );
+}
+
 function LaptopDevice({ videoSrc, reducedMotion }: { videoSrc: string; reducedMotion: boolean }) {
   return (
     <motion.div
       className="relative z-20 w-full max-w-[1320px]"
-      initial={reducedMotion ? false : { opacity: 0, y: 26, rotateX: 22, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-      transition={{ duration: reducedMotion ? 0 : 0.72, ease: [0.22, 1, 0.36, 1] }}
-      style={{ transformStyle: "preserve-3d", transformOrigin: "center bottom" }}
+      style={{ perspective: 1200 }}
     >
+      {/* Lid — the screen half that rotates open */}
       <motion.div
         className="relative"
-        animate={reducedMotion ? undefined : { y: [0, -8, 0], rotateZ: [0, -0.35, 0] }}
-        transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+        initial={reducedMotion ? false : { rotateX: -85, opacity: 0 }}
+        animate={{ rotateX: 0, opacity: 1 }}
+        transition={{
+          rotateX: { duration: reducedMotion ? 0 : 2.4, ease: [0.22, 1, 0.36, 1] },
+          opacity: { duration: 0.6 },
+        }}
+        style={{ transformOrigin: "center bottom", transformStyle: "preserve-3d" }}
       >
-        <div className="relative rounded-[28px] border border-white/16 bg-[linear-gradient(180deg,#dbe2ea_0%,#9da6b1_20%,#4d5662_56%,#1b212a_100%)] p-[10px] shadow-[0_40px_120px_rgba(0,0,0,0.4)]">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-[#05070c]">
-            <div className="absolute inset-[10px] overflow-hidden rounded-[14px] bg-black">
-              <AutoVideo
-                src={videoSrc}
-                className="h-full w-full scale-[1.06] object-cover object-top brightness-[1.12] contrast-[1.06]"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(135deg,transparent_32%,rgba(255,255,255,0.07)_58%,transparent_82%)]" />
+        <motion.div
+          className="relative"
+          animate={reducedMotion ? undefined : { y: [0, -8, 0], rotateZ: [0, -0.35, 0] }}
+          transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="relative rounded-[28px] border border-white/16 bg-[linear-gradient(180deg,#dbe2ea_0%,#9da6b1_20%,#4d5662_56%,#1b212a_100%)] p-[10px] shadow-[0_40px_120px_rgba(0,0,0,0.4)]">
+            {!reducedMotion && <EdgeGlow color="emerald" />}
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-[#05070c]">
+              <div className="absolute inset-[10px] overflow-hidden rounded-[14px] bg-black">
+                <AutoVideo
+                  src={videoSrc}
+                  className="h-full w-full scale-[1.06] object-cover object-top brightness-[1.12] contrast-[1.06]"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(135deg,transparent_32%,rgba(255,255,255,0.07)_58%,transparent_82%)]" />
+              </div>
+
+              <div className="absolute left-1/2 top-[5px] h-[8px] w-[118px] -translate-x-1/2 rounded-b-[10px] bg-[#05070c]" />
+              <div className="absolute left-1/2 top-[9px] h-[8px] w-[8px] -translate-x-1/2 rounded-full bg-[#141922] ring-1 ring-white/10" />
             </div>
-
-            <div className="absolute left-1/2 top-[5px] h-[8px] w-[118px] -translate-x-1/2 rounded-b-[10px] bg-[#05070c]" />
-            <div className="absolute left-1/2 top-[9px] h-[8px] w-[8px] -translate-x-1/2 rounded-full bg-[#141922] ring-1 ring-white/10" />
           </div>
-        </div>
 
-        <div className="relative mx-auto -mt-[2px] h-[18px] w-[104%] max-w-[1020px] rounded-b-[28px] border-x border-b border-white/12 bg-[linear-gradient(180deg,#d8dee6_0%,#adb5bf_32%,#7e8895_72%,#69727f_100%)] shadow-[0_30px_50px_rgba(0,0,0,0.22)]">
-          <div className="mx-auto mt-[4px] h-[6px] w-[22%] rounded-full bg-[#8993a0]" />
-        </div>
+          <div className="relative mx-auto -mt-[2px] h-[18px] w-[104%] max-w-[1020px] rounded-b-[28px] border-x border-b border-white/12 bg-[linear-gradient(180deg,#d8dee6_0%,#adb5bf_32%,#7e8895_72%,#69727f_100%)] shadow-[0_30px_50px_rgba(0,0,0,0.22)]">
+            <div className="mx-auto mt-[4px] h-[6px] w-[22%] rounded-full bg-[#8993a0]" />
+          </div>
+        </motion.div>
       </motion.div>
     </motion.div>
   );
@@ -100,7 +124,7 @@ function TabletDevice({
       className="absolute bottom-[0%] right-[-8%] z-30 hidden w-[34%] min-w-[260px] max-w-[400px] md:block xl:right-[-5%]"
       initial={reducedMotion ? false : { opacity: 0, x: 36, y: 26, rotateZ: 2, scale: 0.92 }}
       animate={{ opacity: 1, x: 0, y: 0, rotateZ: -8, scale: 1 }}
-      transition={{ duration: reducedMotion ? 0 : 0.66, delay: reducedMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: reducedMotion ? 0 : 1.2, delay: reducedMotion ? 0 : 1.6, ease: [0.22, 1, 0.36, 1] }}
       style={{ x: translateX, y: translateY, rotateZ }}
     >
       <motion.div
@@ -108,6 +132,7 @@ function TabletDevice({
         transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
       >
         <div className="relative rounded-[34px] border border-white/12 bg-[linear-gradient(180deg,#7f8792_0%,#49525d_40%,#1a2027_100%)] p-[12px] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
+          {!reducedMotion && <EdgeGlow color="cyan" />}
           <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[#05070c]">
             <div className="absolute inset-[10px] overflow-hidden rounded-[18px] bg-black">
               <AutoVideo
@@ -146,7 +171,7 @@ function PhoneDevice({
       className="absolute bottom-[2%] left-[-6%] z-40 hidden w-[17%] min-w-[140px] max-w-[200px] md:block lg:left-[-4%]"
       initial={reducedMotion ? false : { opacity: 0, x: -28, y: 18, rotateZ: -11, scale: 0.9 }}
       animate={{ opacity: 1, x: 0, y: 0, rotateZ: 9, scale: 1 }}
-      transition={{ duration: reducedMotion ? 0 : 0.64, delay: reducedMotion ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: reducedMotion ? 0 : 1.2, delay: reducedMotion ? 0 : 1.9, ease: [0.22, 1, 0.36, 1] }}
       style={{ x: translateX, y: translateY, rotateZ }}
     >
       <motion.div
@@ -154,6 +179,7 @@ function PhoneDevice({
         transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut" }}
       >
         <div className="relative rounded-[30px] border border-white/12 bg-[linear-gradient(180deg,#818994_0%,#49515d_36%,#161b22_100%)] p-[7px] shadow-[0_22px_70px_rgba(0,0,0,0.4)]">
+          {!reducedMotion && <EdgeGlow color="emerald" />}
           <div className="relative aspect-[9/19.5] overflow-hidden rounded-[24px] bg-[#05070c]">
             <div className="absolute inset-[6px] overflow-hidden rounded-[18px] bg-black">
               <AutoVideo
