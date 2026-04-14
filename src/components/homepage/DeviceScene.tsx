@@ -65,7 +65,7 @@ function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMot
           {!reducedMotion && <EdgeGlow color="emerald" />}
           <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-[#05070c]">
             <div className="absolute inset-[10px] overflow-hidden rounded-[14px] bg-black">
-              <AutoVideo src={videoSrc} className="h-full w-full scale-[1.06] object-cover object-top brightness-[1.12] contrast-[1.06]" />
+              <AutoVideo src={videoSrc} className="h-full w-full object-cover object-center brightness-[1.12] contrast-[1.06]" />
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(135deg,transparent_32%,rgba(255,255,255,0.07)_58%,transparent_82%)]" />
             </div>
             <div className="absolute left-1/2 top-[5px] h-[8px] w-[118px] -translate-x-1/2 rounded-b-[10px] bg-[#05070c]" />
@@ -85,8 +85,8 @@ function TabletShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMot
     <div className="relative rounded-[34px] border border-white/12 bg-[linear-gradient(180deg,#7f8792_0%,#49525d_40%,#1a2027_100%)] p-[12px] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
       {!reducedMotion && <EdgeGlow color="cyan" />}
       <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-[#05070c]">
-        <div className="absolute inset-[10px] overflow-hidden rounded-[18px] bg-black">
-          <AutoVideo src={videoSrc} className="h-full w-full scale-[1.08] object-cover object-center brightness-[1.1] contrast-[1.04]" />
+        <div className="absolute inset-[6px] overflow-hidden rounded-[18px] bg-black">
+          <AutoVideo src={videoSrc} className="h-full w-full object-cover object-center brightness-[1.1] contrast-[1.04]" />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.09),transparent_36%,transparent_68%,rgba(255,255,255,0.08))]" />
         </div>
         <div className="absolute left-1/2 top-[8px] h-[10px] w-[10px] -translate-x-1/2 rounded-full bg-[#151a22] ring-1 ring-white/10" />
@@ -102,8 +102,8 @@ function PhoneShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMoti
     <div className="relative rounded-[30px] border border-white/12 bg-[linear-gradient(180deg,#818994_0%,#49515d_36%,#161b22_100%)] p-[7px] shadow-[0_22px_70px_rgba(0,0,0,0.4)]">
       {!reducedMotion && <EdgeGlow color="emerald" />}
       <div className="relative aspect-[19.5/9] overflow-hidden rounded-[24px] bg-[#05070c]">
-        <div className="absolute inset-[6px] overflow-hidden rounded-[18px] bg-black">
-          <AutoVideo src={videoSrc} className="h-full w-full scale-[1.1] object-cover object-center brightness-[1.08] contrast-[1.04]" />
+        <div className="absolute inset-[4px] overflow-hidden rounded-[18px] bg-black">
+          <AutoVideo src={videoSrc} className="h-full w-full object-cover object-center brightness-[1.08] contrast-[1.04]" />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.1),transparent_32%,transparent_70%,rgba(255,255,255,0.08))]" />
         </div>
         <div className="absolute left-[7px] top-1/2 h-[52px] w-[20px] -translate-y-1/2 rounded-full bg-[#05070c]" />
@@ -123,18 +123,18 @@ const DEVICES = ["laptop", "tablet", "phone"] as const;
 type DeviceType = (typeof DEVICES)[number];
 
 const DEVICE_MAX_W: Record<DeviceType, string> = {
-  laptop: "max-w-[780px]",
-  tablet: "max-w-[560px]",
-  phone: "max-w-[580px]",
+  laptop: "max-w-[840px]",
+  tablet: "max-w-[760px]",
+  phone: "max-w-[840px]",
 };
 
 const PEEK_W: Record<DeviceType, string> = {
-  laptop: "w-[300px]",
-  tablet: "w-[240px]",
-  phone: "w-[250px]",
+  laptop: "w-[330px]",
+  tablet: "w-[300px]",
+  phone: "w-[330px]",
 };
 
-const AUTO_ROTATE_MS = 5000;
+const AUTO_ROTATE_MS = 8000;
 
 const slideTransition = {
   x: { type: "spring" as const, stiffness: 180, damping: 26, mass: 0.9 },

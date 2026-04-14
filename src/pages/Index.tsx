@@ -227,7 +227,7 @@ function HeroSection() {
       <div className="relative z-10 flex w-full flex-1 flex-col md:flex-row md:items-center">
         {/* Left text column */}
         <motion.div
-          className="relative z-20 flex flex-col justify-center px-6 pb-4 pt-20 sm:px-10 md:w-[32%] md:min-w-[320px] md:pb-6 md:pl-14 md:pt-24 lg:pl-20 xl:w-[28%] xl:pl-24"
+          className="relative z-20 flex flex-col justify-center px-6 pb-4 pt-20 sm:px-10 md:w-[38%] md:min-w-[400px] md:pb-6 md:pl-14 md:pt-24 lg:pl-20 xl:w-[34%] xl:pl-24"
           style={{ y: contentY }}
           variants={stagger}
           initial="hidden"
@@ -251,22 +251,22 @@ function HeroSection() {
           <motion.h1
             variants={item}
             className="font-bold leading-[0.88] tracking-[-0.065em] mb-5"
-            style={{ fontSize: 'clamp(2.6rem, 4.2vw, 5rem)' }}
+            style={{ fontSize: 'clamp(2.2rem, 3.6vw, 4.2rem)' }}
           >
             <span className="block text-white">Less formatting.</span>
             <span className="block text-emerald-300">More engineering.</span>
           </motion.h1>
 
-          <motion.p variants={item} className="mb-6 max-w-[28rem] text-[1rem] leading-[1.7] text-white/52 lg:text-[1.08rem]">
+          <motion.p variants={item} className="mb-6 max-w-[26rem] text-[0.92rem] leading-[1.65] text-white/52 lg:text-[0.98rem]">
             AI-powered report automation for civil and construction teams. Plug in your templates and project data, get polished output in minutes.
           </motion.p>
 
-          <motion.div variants={item} className="flex flex-wrap items-center gap-4 mb-4">
+          <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-4">
             <motion.a
               href="https://reportly.ca"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[15px] font-bold hover:from-emerald-200 hover:to-emerald-300 transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[13.5px] font-bold whitespace-nowrap hover:from-emerald-200 hover:to-emerald-300 transition-colors duration-200"
               style={{ boxShadow: '0 18px 46px rgba(52, 211, 153, 0.18)' }}
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={{ scale: 0.97 }}
@@ -332,7 +332,7 @@ function Btn({ href, children, primary = false }: { href: string; children: Reac
   return (
     <motion.a
       href={href}
-      className={`inline-flex items-center gap-2 px-7 py-3 rounded-full text-[15px] font-semibold transition-colors duration-300 ${
+      className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-[13.5px] font-semibold whitespace-nowrap transition-colors duration-300 ${
         primary
           ? 'bg-gradient-to-r from-emerald-300 to-emerald-400 text-black hover:from-emerald-200 hover:to-emerald-300'
           : 'border border-white/14 bg-white/[0.03] text-white/78 hover:border-white/28 hover:bg-white/[0.06] hover:text-white'
