@@ -7,7 +7,7 @@ import {
   useInView,
   useReducedMotion,
 } from 'framer-motion';
-import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight, ChevronDown } from 'lucide-react';
 import { useRef, useEffect, useState, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
 import { ScrambleText } from '@/components/ScrambleText';
@@ -24,8 +24,8 @@ const PITCH_VIDEO_SRC =
   'https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1';
 
 const TICKER_ITEMS = [
-  { type: 'logo' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering' },
-  { type: 'logo' as const, src: '/clients/ubc-eng.jpg', alt: 'UBC Engineering' },
+  { type: 'logo' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering', url: 'https://senseengineering.com/' },
+  { type: 'logo' as const, src: '/clients/ubc-eng.jpg', alt: 'UBC Engineering', url: 'https://engineering.ubc.ca/' },
   { type: 'text' as const, label: 'Techcouver', url: 'https://techcouver.com/2026/03/30/ubc-ventures-take-stage-at-investor-showcase/' },
   { type: 'text' as const, label: 'UBC Investor Showcase', url: 'https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase' },
   { type: 'text' as const, label: 'Venture Founder Cohort', url: 'https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort' },
@@ -105,12 +105,23 @@ function InfiniteMarquee({ speed = 35 }: { speed?: number }) {
             {TICKER_ITEMS.map((t, i) => (
               <span key={`${pass}-${i}`} className="inline-flex items-center gap-3 px-6">
                 {t.type === 'logo' ? (
-                  <img
-                    src={t.src}
-                    alt={t.alt}
-                    className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-65 transition-opacity duration-300 grayscale brightness-150"
-                    loading="lazy"
-                  />
+                  t.url ? (
+                    <a href={t.url} target="_blank" rel="noopener noreferrer" aria-label={t.alt}>
+                      <img
+                        src={t.src}
+                        alt={t.alt}
+                        className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-70 transition-opacity duration-300 grayscale brightness-150"
+                        loading="lazy"
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={t.src}
+                      alt={t.alt}
+                      className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-65 transition-opacity duration-300 grayscale brightness-150"
+                      loading="lazy"
+                    />
+                  )
                 ) : (
                   <a
                     href={t.url}
@@ -166,11 +177,14 @@ export default function Index() {
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
-      <SectionBridge from="#050912" to="#08111b" height={8} />
+      <SectionBridge from="#050912" to="#030810" height={48} />
+      <PainSection />
+      <SectionBridge from="#030810" to="#08111b" height={48} />
       <PlatformSection />
-      <SectionBridge from="#08111b" to="#060b14" height={8} />
+      <SectionBridge from="#08111b" to="#060b14" height={24} />
       <FeaturesSection />
       <ReportlySection />
+      <InterruptSection />
       <ProcessSection />
       <TeamSection />
       <CTASection />
@@ -298,9 +312,24 @@ function HeroSection() {
         </motion.div>
       </div>
 
+      {/* Scroll hint — fades as you leave the hero */}
+      <motion.div
+        className="relative z-10 flex justify-center pb-3 pt-1 pointer-events-none"
+        style={{ opacity: useTransform(scrollYProgress, [0, 0.12], [1, 0]) }}
+      >
+        <motion.div
+          className="flex flex-col items-center gap-1.5"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        >
+          <span className="text-[8px] uppercase tracking-[0.35em] text-white/18 font-medium">scroll</span>
+          <ChevronDown className="w-4 h-4 text-white/18" />
+        </motion.div>
+      </motion.div>
+
       <div
         aria-hidden="true"
-        className="relative z-10 h-8 w-full pointer-events-none md:hidden"
+        className="relative z-10 h-4 w-full pointer-events-none md:hidden"
         style={{ background: '#050912', marginBottom: -1 }}
       />
 
@@ -435,28 +464,65 @@ function PlatformSection() {
 
 const services = [
   {
-    icon: FileText, title: 'Report Automation', subtitle: 'Reportly Engine',
-    description: 'Transform hours of manual formatting into minutes using your existing templates.',
-    features: ['Template automation', 'Charts & tables from live data', 'Photo appendices', 'QA-ready output'],
-    href: '/services#reportly', highlight: true, machineType: 'printer' as const,
+    icon: FileText,
+    title: 'Report Automation',
+    subtitle: 'Reportly — Flagship Product',
+    description: 'Automate civil engineering report formatting using your existing Word and Excel templates. Feed in field data, photos, tables, and charts — get polished, QA-ready output in minutes.',
+    features: [
+      'Word & Excel template automation',
+      'Photos, tables & charts from live project data',
+      'QA-ready, brand-consistent output',
+      'No changes to your existing workflow',
+    ],
+    href: '/reportly',
+    highlight: true,
+    cta: 'Explore Reportly',
+    machineType: 'printer' as const,
   },
   {
-    icon: Wrench, title: 'Workflow Automation', subtitle: 'Custom Builds',
-    description: 'Remove repetitive documentation from engineering and construction workflows.',
-    features: ['Field data ingestion', 'Inspection checklists', 'Site documentation', 'White-labeled tools'],
-    href: '/services', machineType: 'conveyor' as const,
+    icon: Wrench,
+    title: 'Custom Rollouts',
+    subtitle: 'Implementation',
+    description: 'We adapt Reportly to your firm\'s templates, QA process, reporting standards, and approval workflow — so your team can adopt it without disruption.',
+    features: [
+      'Firm-specific template library setup',
+      'QA and approval workflow integration',
+      'Reporting standard compliance',
+      'Team onboarding and documentation',
+    ],
+    href: '/services',
+    cta: 'Learn more',
+    machineType: 'conveyor' as const,
   },
   {
-    icon: BarChart3, title: 'Engineering Dashboards', subtitle: 'Data Visualization',
-    description: 'Turn raw technical data into actionable insight for instrumentation and construction tracking.',
-    features: ['Instrument dashboards', 'Construction tracking', 'Map-based views', 'Shareable dashboards'],
-    href: '/services', machineType: 'controlPanel' as const,
+    icon: BarChart3,
+    title: 'Data Integrations',
+    subtitle: 'Workflow Connections',
+    description: 'We connect Reportly to the tools your team already uses — Excel, SharePoint, Bluebeam, project management systems, inspection forms, and internal databases.',
+    features: [
+      'Excel, SharePoint & Bluebeam integrations',
+      'Project data and CRM pipelines',
+      'Inspection and field data ingestion',
+      'Custom API and database connectors',
+    ],
+    href: '/services',
+    cta: 'Learn more',
+    machineType: 'controlPanel' as const,
   },
   {
-    icon: Layers, title: 'Internal Tools', subtitle: 'Lightweight Apps',
-    description: 'Rapid engineering calculators and tools that mirror your workflows without overhead.',
-    features: ['Cost estimators', 'Asset tracking', 'Pilot tools', 'Secure deployment'],
-    href: '/services', machineType: 'toolbox' as const,
+    icon: Layers,
+    title: 'Add-On Tools',
+    subtitle: 'Custom Development',
+    description: 'We build lightweight dashboards, calculators, and reporting add-ons that support your engineering workflow alongside Reportly.',
+    features: [
+      'Instrumentation & construction dashboards',
+      'Engineering calculators and estimators',
+      'Reporting workflow add-ons',
+      'Secure internal deployment',
+    ],
+    href: '/services',
+    cta: 'Learn more',
+    machineType: 'toolbox' as const,
   },
 ];
 
@@ -465,15 +531,38 @@ function FeaturesSection() {
     <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
-          <Label>What We Build</Label>
-          {/* h2 targets "engineering automation" + "civil engineering" */}
+          <Label>Product &amp; Services</Label>
           <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-2xl mb-5 leading-[1.08] mt-4">
-            Engineering automation for civil &amp; construction teams.
+            Reportly. Plus the implementation behind it.
           </h2>
-          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-16 leading-[1.8]">
-            We eliminate repetitive civil engineering documentation and reporting so your team can deliver more per project.
+          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-10 leading-[1.8]">
+            Reportly is our flagship report automation platform for civil and construction teams. We also handle custom rollouts, data integrations, and add-ons so firms can adopt it end-to-end.
           </p>
         </Reveal>
+
+        {/* Dual-identity block — explicit startup + consulting positioning */}
+        <motion.div
+          className="grid sm:grid-cols-2 gap-3 mb-14"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
+        >
+          <div className="flex gap-4 p-5 rounded-xl border border-white/7 bg-white/[0.018]">
+            <div className="flex-shrink-0 w-0.5 self-stretch rounded-full bg-emerald-500/55" />
+            <div>
+              <p className="text-[10px] font-semibold text-emerald-400/80 uppercase tracking-[0.22em] mb-1.5">The Product</p>
+              <p className="text-[13px] text-white/52 leading-relaxed">Reportly is our AI report automation software for civil and construction engineering teams. Plug in your existing templates and project data, get QA-ready reports in minutes.</p>
+            </div>
+          </div>
+          <div className="flex gap-4 p-5 rounded-xl border border-white/7 bg-white/[0.018]">
+            <div className="flex-shrink-0 w-0.5 self-stretch rounded-full bg-cyan-400/38" />
+            <div>
+              <p className="text-[10px] font-semibold text-cyan-300/58 uppercase tracking-[0.22em] mb-1.5">The Consulting</p>
+              <p className="text-[13px] text-white/52 leading-relaxed">We implement Reportly for your firm. Roll out your templates, connect your data sources, wire up your approval flow, and build any custom add-ons your workflow needs.</p>
+            </div>
+          </div>
+        </motion.div>
 
         <motion.div
           className="rounded-2xl overflow-hidden border border-white/8 mb-16"
@@ -877,5 +966,104 @@ function Label({ children }: { children: ReactNode }) {
     <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/70 font-semibold">
       {children}
     </p>
+  );
+}
+
+// =============================================================================
+// Pain Section — problem-before-solution hook, pattern interrupt
+// TikTok principle: establish the pain before revealing the payoff.
+// =============================================================================
+
+function PainSection() {
+  const { ref: ref1, val: val1 } = useCountUp(4, 1.5);
+  const { ref: ref2, val: val2 } = useCountUp(80, 1.7);
+
+  return (
+    <section className="bg-[#030810] py-20 md:py-24 border-t border-white/5">
+      <div className="max-w-5xl mx-auto px-6 md:px-10">
+        <Reveal>
+          <p className="text-[9px] uppercase tracking-[0.38em] text-white/22 mb-5 font-medium">
+            The Problem
+          </p>
+          <h2
+            className="font-black tracking-[-0.04em] text-white leading-[1.04] mb-5 max-w-3xl"
+            style={{ fontSize: 'clamp(2rem, 4.5vw, 3.6rem)' }}
+          >
+            The report takes 2 hours to write. It takes 4 more to format.
+          </h2>
+          <p className="text-white/35 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.8]">
+            Copy-paste from Excel. Resize the photos. Fix the header. Send for review. Start over.
+            Every engineer. Every project. Every time.
+          </p>
+        </Reveal>
+
+        <motion.div
+          className="grid sm:grid-cols-3 gap-px bg-white/5 border border-white/6 rounded-2xl overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.65, ease: HOMEPAGE_EASE }}
+        >
+          <div className="bg-[#030810] px-8 py-10">
+            <div className="flex items-baseline gap-1 mb-2">
+              <span ref={ref1} className="text-[3rem] font-black text-white leading-none tracking-tight tabular-nums">
+                {val1}
+              </span>
+              <span className="text-[1.7rem] font-black text-emerald-400/65 leading-none">+ hrs</span>
+            </div>
+            <p className="text-[11px] text-white/28 leading-snug max-w-[20ch]">
+              per report lost to formatting, not engineering
+            </p>
+          </div>
+          <div className="bg-[#030810] px-8 py-10">
+            <div className="flex items-baseline gap-1 mb-2">
+              <span ref={ref2} className="text-[3rem] font-black text-white leading-none tracking-tight tabular-nums">
+                {val2}
+              </span>
+              <span className="text-[1.7rem] font-black text-emerald-400/65 leading-none">%</span>
+            </div>
+            <p className="text-[11px] text-white/28 leading-snug max-w-[20ch]">
+              of that time eliminated with Reportly
+            </p>
+          </div>
+          <div className="bg-[#030810] px-8 py-10">
+            <div className="flex items-baseline gap-0.5 mb-2">
+              <span className="text-[3rem] font-black text-white leading-none tracking-tight">0</span>
+            </div>
+            <p className="text-[11px] text-white/28 leading-snug max-w-[20ch]">
+              templates you need to change to get started
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// Interrupt Section — mid-scroll reward, reframes the stakes before the process
+// TikTok principle: variable reward. Unexpected tone/format keeps you scrolling.
+// =============================================================================
+
+function InterruptSection() {
+  return (
+    <section className="py-20 md:py-24 bg-[#060b14] border-t border-white/6">
+      <div className="max-w-4xl mx-auto px-6 md:px-10">
+        <Rule className="mb-16" />
+        <Reveal>
+          <p
+            className="text-center font-bold text-white/58 leading-[1.28] tracking-[-0.022em] max-w-3xl mx-auto"
+            style={{ fontSize: 'clamp(1.4rem, 3vw, 2.4rem)' }}
+          >
+            Engineering firms lose 30 to 40 percent of every project budget to documentation,
+            coordination, and reporting overhead. Most of it is preventable.
+          </p>
+          <p className="text-center text-[10px] uppercase tracking-[0.32em] text-emerald-500/52 font-semibold mt-8">
+            Reportly was built to give that back.
+          </p>
+        </Reveal>
+        <Rule className="mt-16" />
+      </div>
+    </section>
   );
 }

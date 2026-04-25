@@ -20,15 +20,15 @@ const navGroups: NavGroup[] = [
   {
     label: "Solutions",
     links: [
-      { path: "/services", label: "Services" },
-      { path: "/case-studies", label: "Case Studies" },
       { path: "/reportly", label: "Reportly", badge: "New" },
+      { path: "/services", label: "Consulting" },
     ],
   },
   {
     label: "Company",
     links: [
       { path: "/team", label: "Team" },
+      { path: "/case-studies", label: "Testimonials" },
       { path: "/blog", label: "Blog" },
     ],
   },

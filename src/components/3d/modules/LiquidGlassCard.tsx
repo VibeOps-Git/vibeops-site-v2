@@ -1,17 +1,6 @@
-/**
- * LiquidGlassCard - Glassmorphism Card with Click-to-Zoom
- *
- * Features:
- * - Liquid glass/glassmorphism effect
- * - Click to zoom and expand
- * - Summary view by default
- * - Full content on zoom
- */
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { VIBE_3D_THEME } from '@/lib/3d/theme';
-import { ScrambleText } from '@/components/ScrambleText';
+import { ArrowRight, Check, X } from 'lucide-react';
 
 interface LiquidGlassCardProps {
   title: string;
@@ -23,6 +12,9 @@ interface LiquidGlassCardProps {
   isZoomed: boolean;
   onZoom: () => void;
   onClose: () => void;
+  highlight?: boolean;
+  href?: string;
+  cta?: string;
 }
 
 export function LiquidGlassCard({
@@ -35,224 +27,228 @@ export function LiquidGlassCard({
   isZoomed,
   onZoom,
   onClose,
+  highlight = false,
+  href,
+  cta = 'Learn more',
 }: LiquidGlassCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const bg = highlight
+    ? isHovered
+      ? 'linear-gradient(135deg, rgba(52,211,153,0.1) 0%, rgba(52,211,153,0.04) 100%)'
+      : 'linear-gradient(135deg, rgba(52,211,153,0.07) 0%, rgba(52,211,153,0.02) 100%)'
+    : isHovered
+    ? 'rgba(255,255,255,0.044)'
+    : 'rgba(255,255,255,0.02)';
+
+  const borderColor = highlight
+    ? isHovered
+      ? 'rgba(52,211,153,0.3)'
+      : 'rgba(52,211,153,0.16)'
+    : isHovered
+    ? 'rgba(255,255,255,0.12)'
+    : 'rgba(255,255,255,0.07)';
+
+  const shadow = isHovered
+    ? highlight
+      ? '0 12px 40px rgba(52,211,153,0.07)'
+      : '0 8px 28px rgba(0,0,0,0.18)'
+    : 'none';
+
   return (
     <>
-      {/* Card in grid */}
+      {/* Card */}
       <motion.div
         className="relative h-full"
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
         onClick={onZoom}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{
-          opacity: 1,
-          y: 0,
-          scale: isHovered && !isZoomed ? 1.02 : 1,
-        }}
-        transition={{
-          delay: index * 0.1,
-          scale: { duration: 0.2 }
-        }}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0, scale: isHovered && !isZoomed ? 1.012 : 1 }}
+        transition={{ delay: index * 0.08, scale: { duration: 0.22 } }}
       >
-        {/* Liquid glass background */}
+        {/* Background layer */}
         <div
-          className="absolute inset-0 rounded-2xl backdrop-blur-xl border transition-all duration-300 cursor-pointer"
-          style={{
-            background: isHovered
-              ? 'linear-gradient(135deg, rgba(0, 255, 204, 0.15) 0%, rgba(0, 255, 204, 0.05) 100%)'
-              : 'linear-gradient(135deg, rgba(0, 255, 204, 0.1) 0%, rgba(0, 255, 204, 0.02) 100%)',
-            borderColor: isHovered ? 'rgba(0, 255, 204, 0.4)' : 'rgba(0, 255, 204, 0.2)',
-            boxShadow: isHovered
-              ? '0 8px 32px 0 rgba(0, 255, 204, 0.2)'
-              : '0 4px 16px 0 rgba(0, 255, 204, 0.1)',
-          }}
-        />
-
-        {/* Animated gradient orb */}
-        <motion.div
-          className="absolute inset-0 rounded-2xl opacity-0 pointer-events-none"
-          animate={{
-            opacity: isHovered ? 0.15 : 0,
-          }}
-          style={{
-            background: `radial-gradient(circle at ${isHovered ? '50%' : '100%'} ${isHovered ? '50%' : '0%'}, ${VIBE_3D_THEME.colors.primary} 0%, transparent 70%)`,
-          }}
-          transition={{ duration: 0.6 }}
+          className="absolute inset-0 rounded-2xl border transition-all duration-300 cursor-pointer"
+          style={{ background: bg, borderColor, boxShadow: shadow }}
         />
 
         {/* Content */}
-        <div className="relative p-8 h-full flex flex-col">
-          {/* Icon */}
-          {Icon && (
-            <div className="mb-4 text-[#00ffcc]">
-              <Icon className="w-8 h-8" />
+        <div
+          className={`relative h-full cursor-pointer flex gap-6 ${
+            highlight ? 'p-7 flex-col md:flex-row md:gap-10' : 'p-7 flex-col'
+          }`}
+        >
+          {/* Main column */}
+          <div className={`flex flex-col gap-4 ${highlight ? 'flex-1' : ''}`}>
+            {highlight && (
+              <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/30 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                Flagship Product
+              </span>
+            )}
+
+            <div className="flex items-start gap-3">
+              {Icon && (
+                <div className={`flex-shrink-0 mt-0.5 ${highlight ? 'text-emerald-400' : 'text-white/35'}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+              )}
+              <div>
+                <h3 className="text-base font-semibold text-white leading-snug mb-1">{title}</h3>
+                <p
+                  className={`text-[11px] font-medium tracking-wide ${
+                    highlight ? 'text-emerald-400/60' : 'text-white/30'
+                  }`}
+                >
+                  {subtitle}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-[13px] text-white/45 leading-relaxed">
+              {highlight
+                ? description
+                : description.length > 120
+                ? description.slice(0, 120) + '...'
+                : description}
+            </p>
+
+            <div
+              className={`flex items-center gap-1.5 text-[12px] font-medium transition-colors duration-200 mt-auto ${
+                highlight
+                  ? isHovered
+                    ? 'text-emerald-300'
+                    : 'text-emerald-400'
+                  : isHovered
+                  ? 'text-white/65'
+                  : 'text-white/35'
+              }`}
+            >
+              {cta} <ArrowRight className="w-3 h-3" />
+            </div>
+          </div>
+
+          {/* Feature list — shown inline for featured card on desktop */}
+          {highlight && features.length > 0 && (
+            <div className="md:w-56 flex-shrink-0 flex flex-col justify-center">
+              <p className="text-[9px] uppercase tracking-[0.25em] text-white/25 font-medium mb-3">
+                What's included
+              </p>
+              <ul className="space-y-2">
+                {features.map((f, i) => (
+                  <li key={i} className="flex items-start gap-2 text-[12px] text-white/55">
+                    <Check className="w-3.5 h-3.5 text-emerald-500/70 flex-shrink-0 mt-0.5" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-
-          {/* Title */}
-          <h3 className="text-2xl font-bold mb-2 text-white">
-            <ScrambleText text={title}/>
-          </h3>
-
-          {/* Subtitle */}
-          <p className="text-[#00ffcc]/70 text-sm mb-4">
-            {subtitle}
-          </p>
-
-          {/* Short description */}
-          <p className="text-gray-300 text-sm leading-relaxed mb-4 flex-grow">
-            {description.slice(0, 120)}...
-          </p>
-
-          {/* Click to expand hint */}
-          <div className="flex items-center gap-2 text-[#00ffcc]/50 text-xs">
-            <span className="inline-block w-1.5 h-1.5 bg-[#00ffcc] rounded-full animate-pulse" />
-            Click to explore
-          </div>
         </div>
       </motion.div>
 
-      {/* Zoomed overlay */}
+      {/* Zoom modal */}
       <AnimatePresence>
         {isZoomed && (
           <>
-            {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onClose}
             />
-
-            {/* Zoomed card */}
             <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center p-8 pointer-events-none"
+              className="fixed inset-0 z-50 flex items-center justify-center p-6 md:p-10 pointer-events-none"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               <motion.div
-                className="relative max-w-3xl w-full max-h-[80vh] overflow-y-auto pointer-events-auto"
-                initial={{ scale: 0.8, y: 50 }}
+                className="relative max-w-2xl w-full max-h-[84vh] overflow-y-auto pointer-events-auto"
+                initial={{ scale: 0.92, y: 28 }}
                 animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.8, y: 50 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                exit={{ scale: 0.92, y: 28 }}
+                transition={{ type: 'spring', damping: 28, stiffness: 320 }}
               >
-                {/* Liquid glass background */}
                 <div
-                  className="absolute inset-0 rounded-3xl backdrop-blur-2xl border"
+                  className="absolute inset-0 rounded-2xl border"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(0, 255, 204, 0.15) 0%, rgba(0, 255, 204, 0.05) 100%)',
-                    borderColor: 'rgba(0, 255, 204, 0.4)',
-                    boxShadow: '0 24px 64px 0 rgba(0, 255, 204, 0.3)',
+                    background: 'rgba(7,12,22,0.97)',
+                    borderColor: highlight ? 'rgba(52,211,153,0.22)' : 'rgba(255,255,255,0.09)',
+                    boxShadow: highlight
+                      ? '0 40px 90px rgba(52,211,153,0.06)'
+                      : '0 40px 90px rgba(0,0,0,0.5)',
                   }}
                 />
-
-                {/* Animated gradient orb */}
-                <div
-                  className="absolute inset-0 rounded-3xl opacity-20 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(circle at 50% 50%, ${VIBE_3D_THEME.colors.primary} 0%, transparent 70%)`,
-                  }}
-                />
-
-                {/* Content */}
-                <div className="relative p-12">
-                  {/* Close button */}
+                <div className="relative p-8 md:p-10">
                   <button
                     onClick={onClose}
-                    className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all"
+                    className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full border border-white/10 text-white/40 hover:text-white/75 hover:border-white/18 transition-all"
+                    aria-label="Close"
                   >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <X className="w-4 h-4" />
                   </button>
 
-                  {/* Icon */}
-                  {Icon && (
-                    <motion.div
-                      className="mb-6 text-[#00ffcc]"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.1 }}
-                    >
-                      <Icon className="w-12 h-12" />
-                    </motion.div>
+                  {highlight && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/30 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em] mb-5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                      Flagship Product
+                    </span>
                   )}
 
-                  {/* Title */}
-                  <motion.h2
-                    className="text-4xl font-bold mb-3 text-white"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.15 }}
-                  >
-                    {title}
-                  </motion.h2>
+                  {Icon && (
+                    <div className={`mb-4 ${highlight ? 'text-emerald-400' : 'text-white/45'}`}>
+                      <Icon className="w-9 h-9" />
+                    </div>
+                  )}
 
-                  {/* Subtitle */}
-                  <motion.p
-                    className="text-[#00ffcc]/70 text-lg mb-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">{title}</h2>
+                  <p
+                    className={`text-sm mb-5 ${
+                      highlight ? 'text-emerald-400/65' : 'text-white/35'
+                    }`}
                   >
                     {subtitle}
-                  </motion.p>
+                  </p>
+                  <p className="text-white/55 text-sm leading-relaxed mb-7">{description}</p>
 
-                  {/* Full description */}
-                  <motion.p
-                    className="text-gray-300 text-base leading-relaxed mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 }}
-                  >
-                    {description}
-                  </motion.p>
-
-                  {/* Features */}
                   {features.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <h3 className="text-xl font-semibold mb-4 text-white">
-                        Key Features
-                      </h3>
-                      <ul className="space-y-3">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[0.25em] text-white/25 font-medium mb-4">
+                        What's included
+                      </p>
+                      <ul className="space-y-2.5">
                         {features.map((feature, i) => (
-                          <motion.li
-                            key={i}
-                            className="flex items-start gap-3 text-gray-300"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.35 + i * 0.05 }}
-                          >
-                            <span className="inline-block w-1.5 h-1.5 bg-[#00ffcc] rounded-full mt-2 flex-shrink-0" />
-                            <span>{feature}</span>
-                          </motion.li>
+                          <li key={i} className="flex items-start gap-2.5 text-[13px] text-white/55">
+                            <Check
+                              className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
+                                highlight ? 'text-emerald-500' : 'text-white/28'
+                              }`}
+                            />
+                            {feature}
+                          </li>
                         ))}
                       </ul>
-                    </motion.div>
+                    </div>
                   )}
 
-                  {/* Press ESC hint */}
-                  <motion.div
-                    className="mt-8 pt-6 border-t border-[#00ffcc]/20 flex items-center gap-2 text-[#00ffcc]/50 text-sm"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <kbd className="px-2 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-xs">
-                      ESC
-                    </kbd>
-                    <span>Press to close</span>
-                  </motion.div>
+                  {href && (
+                    <div className="mt-8 pt-5 border-t border-white/7">
+                      <a
+                        href={href}
+                        className={`inline-flex items-center gap-2 text-sm font-semibold transition-colors ${
+                          highlight
+                            ? 'text-emerald-400 hover:text-emerald-300'
+                            : 'text-white/55 hover:text-white/85'
+                        }`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {cta} <ArrowRight className="w-4 h-4" />
+                      </a>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>

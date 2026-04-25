@@ -293,7 +293,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} onOpen={() => setSelectedMember(member)} />
+                <TeamCard member={member} />
               </AnimatedContent>
             ))}
           </div>
@@ -335,7 +335,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} onOpen={() => setSelectedMember(member)} />
+                <TeamCard member={member} />
               </AnimatedContent>
             ))}
             <AnimatedContent
@@ -483,13 +483,9 @@ export default function Team() {
   );
 }
 
-function TeamCard({
-  member,
-  onOpen,
-}: {
-  member: TeamMember;
-  onOpen: () => void;
-}) {
+function TeamCard({ member }: { member: TeamMember }) {
+  const contactHref = `/contact?mode=email&contact=${encodeURIComponent(member.email)}`;
+
   return (
     <VibeCard
       variant="glow"
@@ -519,13 +515,12 @@ function TeamCard({
       </p>
 
       <div className="mt-6 flex w-full flex-wrap items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={onOpen}
+        <Link
+          to={contactHref}
           className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
         >
-          View Profile
-        </button>
+          Get in Touch
+        </Link>
 
         {member.linkedin && (
           <a
