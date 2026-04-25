@@ -77,6 +77,15 @@ const coFounders: TeamMember[] = [
 
 const contributors: TeamMember[] = [
   {
+    name: "Sam Khalil",
+    role: "Contributor · Sales & Outreach",
+    focus: "Sales, Partnerships & Growth",
+    image: "/team/sam.PNG",
+    email: "team@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/sam-khalil-41ab6635b/",
+    bio: `Sam is a Civil Engineering student at the University of Waterloo who supports VibeOps’ sales management and outreach. He focuses on building strong relationships, connecting technical insight with business strategy, and helping identify growth opportunities with prospective customers and partners.`,
+  },
+  {
     name: "Edmund Zhang",
     role: "Contributor · Creative & Video",
     focus: "Content, Media & Growth",
