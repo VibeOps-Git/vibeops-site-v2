@@ -77,6 +77,15 @@ const coFounders: TeamMember[] = [
 
 const contributors: TeamMember[] = [
   {
+    name: "Sam Khalil",
+    role: "Contributor · Sales & Outreach",
+    focus: "Sales, Partnerships & Growth",
+    image: "/team/sam.PNG",
+    email: "team@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/sam-khalil-41ab6635b/",
+    bio: `Sam is a Civil Engineering student at the University of Waterloo who supports VibeOps’ sales management and outreach. He focuses on building strong relationships, connecting technical insight with business strategy, and helping identify growth opportunities with prospective customers and partners.`,
+  },
+  {
     name: "Edmund Zhang",
     role: "Contributor · Creative & Video",
     focus: "Content, Media & Growth",
@@ -483,7 +492,13 @@ export default function Team() {
   );
 }
 
-function TeamCard({ member }: { member: TeamMember }) {
+function TeamCard({
+  member,
+  onOpen,
+}: {
+  member: TeamMember;
+  onOpen?: () => void;
+}) {
   const contactHref = `/contact?mode=email&contact=${encodeURIComponent(member.email)}`;
 
   return (
@@ -515,6 +530,16 @@ function TeamCard({ member }: { member: TeamMember }) {
       </p>
 
       <div className="mt-6 flex w-full flex-wrap items-center justify-center gap-3">
+        {onOpen && (
+          <button
+            type="button"
+            onClick={onOpen}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+          >
+            View Profile
+          </button>
+        )}
+
         <Link
           to={contactHref}
           className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
