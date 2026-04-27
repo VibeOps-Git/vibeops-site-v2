@@ -278,7 +278,7 @@ function HeroSection() {
 
         {/* Right device column */}
         <motion.div
-          className="relative z-10 flex w-full items-center justify-center pb-4 pt-4 md:w-[66%] md:pb-0 md:pt-0 xl:w-[70%]"
+          className="relative z-10 flex w-full items-center justify-center pb-4 pt-8 md:w-[66%] md:pb-0 md:pt-10 xl:w-[70%]"
           style={{ y: deviceY, opacity: deviceOpacity }}
         >
           <motion.div className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={HOMEPAGE_MOTION.heroFade}>
@@ -294,7 +294,6 @@ function HeroSection() {
         style={{ opacity: cueOpacity }}
       >
         <div className="flex flex-col items-center">
-          <span className="text-[8px] uppercase tracking-[0.35em] text-white/16 font-medium mb-2">scroll</span>
           <div className="relative h-14 w-px overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-400/22 to-transparent" />
             {!reducedMotion && (
