@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
 import { ScrambleText } from "@/components/ScrambleText";
@@ -119,10 +120,20 @@ Thanks,
 type ContactMode = "initial" | "calendar" | "email";
 
 export default function Contact() {
-  const [mode, setMode] = useState<ContactMode>("initial");
-  const [selectedChannel, setSelectedChannel] = useState<ContactChannel | null>(null);
-  const [draftSubject, setDraftSubject] = useState("");
-  const [draftBody, setDraftBody] = useState("");
+  const [searchParams] = useSearchParams();
+  const contactParam = searchParams.get("contact");
+  const modeParam = searchParams.get("mode");
+
+  const initialChannel = contactParam
+    ? (contactChannels.find((c) => c.email === contactParam) ?? null)
+    : null;
+
+  const [mode, setMode] = useState<ContactMode>(
+    modeParam === "email" ? "email" : modeParam === "calendar" ? "calendar" : "initial"
+  );
+  const [selectedChannel, setSelectedChannel] = useState<ContactChannel | null>(initialChannel);
+  const [draftSubject, setDraftSubject] = useState(initialChannel?.subject ?? "");
+  const [draftBody, setDraftBody] = useState(initialChannel?.body ?? "");
   const [connecting, setConnecting] = useState(false);
 
 

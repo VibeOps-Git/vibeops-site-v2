@@ -302,7 +302,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} onOpen={() => setSelectedMember(member)} />
+                <TeamCard member={member} />
               </AnimatedContent>
             ))}
           </div>
@@ -344,7 +344,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} onOpen={() => setSelectedMember(member)} />
+                <TeamCard member={member} />
               </AnimatedContent>
             ))}
             <AnimatedContent
@@ -497,8 +497,10 @@ function TeamCard({
   onOpen,
 }: {
   member: TeamMember;
-  onOpen: () => void;
+  onOpen?: () => void;
 }) {
+  const contactHref = `/contact?mode=email&contact=${encodeURIComponent(member.email)}`;
+
   return (
     <VibeCard
       variant="glow"
@@ -528,13 +530,22 @@ function TeamCard({
       </p>
 
       <div className="mt-6 flex w-full flex-wrap items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={onOpen}
+        {onOpen && (
+          <button
+            type="button"
+            onClick={onOpen}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+          >
+            View Profile
+          </button>
+        )}
+
+        <Link
+          to={contactHref}
           className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
         >
-          View Profile
-        </button>
+          Get in Touch
+        </Link>
 
         {member.linkedin && (
           <a
