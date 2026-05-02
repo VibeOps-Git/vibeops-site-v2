@@ -28,7 +28,9 @@ jobs:
               // Issue form fields appear as "### Label\n\nValue"
               const regex = new RegExp(`### ${label}\\s*\\n\\n([\\s\\S]*?)(?=\\n### |$)`);
               const match = body.match(regex);
-              return match ? match[1].trim() : '';
+              const value = match ? match[1].trim() : '';
+              // GitHub renders blank optional fields as "_No response_"
+              return value === '_No response_' ? '' : value;
             }
 
             const title = getField('Blog Title');
