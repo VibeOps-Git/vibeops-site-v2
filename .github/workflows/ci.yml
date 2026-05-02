@@ -80,6 +80,8 @@ jobs:
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.1-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -88,16 +90,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-
       - name: Run E2E tests
-        run: npm run test:e2e -- --project=chromium
+        run: npx playwright test --project=chromium
+        env:
+          HOME: /root
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
