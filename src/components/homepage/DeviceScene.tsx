@@ -123,9 +123,9 @@ const DEVICES = ["laptop", "tablet", "phone"] as const;
 type DeviceType = (typeof DEVICES)[number];
 
 const DEVICE_MAX_W: Record<DeviceType, string> = {
-  laptop: "max-w-[960px]",
-  tablet: "max-w-[920px]",
-  phone: "max-w-[980px]",
+  laptop: "max-w-[1200px]",
+  tablet: "max-w-[1100px]",
+  phone: "max-w-[1200px]",
 };
 
 const PEEK_W: Record<DeviceType, string> = {
