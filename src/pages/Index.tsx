@@ -346,10 +346,10 @@ function ModelSection() {
         <Reveal>
           <Label>The Suite</Label>
           <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-3xl mb-5 leading-[1.08] mt-4">
-            One platform. Three products for engineering teams.
+            Two products. One implementation team. Zero workflow disruption.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-xl mb-14 leading-[1.8]">
-            Start with a location. Understand the governing code environment. Then generate reports using that verified context. VibeOps is the team that builds, implements, and extends it all.
+            MapleCodes identifies every applicable building code for your project site. Reportly turns that context into polished, QA-ready engineering reports. And we customize both to fit exactly how your firm works.
           </p>
         </Reveal>
 
@@ -371,7 +371,7 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">MapleCodes</h3>
             </div>
             <p className="text-[11px] text-[#d92f37]/70 font-medium tracking-wide mb-5">
-              Canadian building code lookup by address
+              Every applicable code for any Canadian address — in seconds
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
@@ -453,7 +453,7 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">Custom Rollouts</h3>
             </div>
             <p className="text-[11px] text-cyan-300/45 font-medium tracking-wide mb-5">
-              We make the suite fit your firm's exact workflow
+              We implement the suite around your firm's exact workflow
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
@@ -684,13 +684,13 @@ function PatternInterruptA() {
           className="font-bold text-white/52 leading-[1.32] tracking-[-0.018em]"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          Not a generic AI chatbot. Not a generic dev agency.
+          Not a chatbot. Not a dev shop. Not another AI wrapper.
         </p>
         <p
           className="font-bold text-white/88 leading-[1.32] tracking-[-0.018em] mt-2"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          A reporting product, customized around real civil workflows.
+          A reporting platform and code intelligence layer, custom-fit to how civil teams actually work.
         </p>
       </Reveal>
     </section>

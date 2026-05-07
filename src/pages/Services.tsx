@@ -1,4 +1,4 @@
-import { FileText, Wrench, BarChart3, Layers, Check } from 'lucide-react';
+import { FileText, Wrench, BarChart3, Layers, Check, MapPin, ArrowRight, Database, Shield, Globe } from 'lucide-react';
 import { SEO } from '@/components/SEO';
 import AnimatedContent from '../components/AnimatedContent';
 import { SectionDivider } from '../components/ui/Section';
@@ -80,8 +80,8 @@ export default function Services() {
   return (
     <>
       <SEO
-        title="Services — Report Automation and Engineering Implementation"
-        description="VibeOps builds Reportly, an AI-powered report automation platform for civil and construction engineering teams. We implement it, integrate it with your existing tools, and build add-ons that fit your workflow."
+        title="Services — Report Automation, Building Code Intelligence & Custom Engineering Tools"
+        description="VibeOps builds Reportly and MapleCodes — AI report automation and building code intelligence for civil and construction teams. We implement, integrate, and build custom solutions powered by our proprietary code data layer."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
@@ -101,11 +101,10 @@ export default function Services() {
                 Product and Services
               </p>
               <h1 className="text-4xl md:text-[2.8rem] font-bold text-white mb-6 tracking-tight leading-[1.1]">
-                Engineering report automation, built for civil and construction.
+                Your reports. Your codes. Handled.
               </h1>
               <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                Reportly is our flagship product for automating engineering reports. We also implement
-                it for your firm, connect it to your existing tools, and build add-ons where needed.
+                Reportly automates engineering reports. MapleCodes handles building code research. Together, they give civil and construction teams their hours back — and we customize both to fit exactly how your firm works.
               </p>
             </div>
           </AnimatedContent>
@@ -135,9 +134,7 @@ export default function Services() {
                     Reportly
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    AI-powered report automation for civil and construction engineering teams. Connect
-                    your existing Word templates and project data and get review-ready reports in
-                    minutes, not hours.
+                    Your engineers already have the templates and the data. Reportly connects the two — pulling in field photos, tables, charts, and project data to generate review-ready reports in minutes, not hours. No workflow changes. No learning curve.
                   </p>
                   <ul className="space-y-3 mb-9">
                     {reportlyFeatures.map((f) => (
@@ -177,6 +174,125 @@ export default function Services() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
+        {/* MapleCodes / Building Code Intelligence */}
+        <section className="py-20 px-4">
+          <AnimatedContent
+            distance={60}
+            direction="vertical"
+            duration={0.75}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            threshold={0.15}
+          >
+            <div className="container mx-auto max-w-5xl">
+              <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+                {/* Text */}
+                <div className="flex-1">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-[#d92f37]/70 mb-3 font-semibold">
+                    Building Code Intelligence
+                  </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight leading-tight">
+                    MapleCodes
+                  </h2>
+                  <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-md">
+                    Enter a Canadian address. Get every applicable building code — federal, provincial, and municipal — in seconds. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
+                  </p>
+                  <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
+                    That same intelligence layer is available as the foundation for custom tools we build for your firm. If it touches Canadian building codes, we've already done the hard part.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href="/maplecodes"
+                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#d92f37] text-white text-[13.5px] font-semibold hover:bg-[#e54950] transition-colors"
+                    >
+                      Explore MapleCodes <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                    <VibeLinkButton href="/contact" variant="outline" size="lg">
+                      Discuss Custom Solutions
+                    </VibeLinkButton>
+                  </div>
+                </div>
+
+                {/* Proprietary IP card */}
+                <div className="lg:w-[400px] xl:w-[440px] flex-shrink-0 w-full">
+                  <div className="rounded-2xl overflow-hidden border border-[#d92f37]/15 bg-gradient-to-br from-[#d92f37]/8 to-transparent p-7">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-[#d92f37]/60 font-semibold mb-6">Proprietary Data Layer</p>
+                    <div className="space-y-5">
+                      <div className="flex items-start gap-3">
+                        <Database className="w-4 h-4 text-[#d92f37]/70 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="text-[13px] font-medium text-white/80">85+ building codes indexed</p>
+                          <p className="text-[11px] text-white/35 mt-0.5">Federal, provincial, and municipal coverage across Canada</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Shield className="w-4 h-4 text-[#d92f37]/70 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="text-[13px] font-medium text-white/80">375+ referenced standards</p>
+                          <p className="text-[11px] text-white/35 mt-0.5">CSA, ASTM, ULC, and other standards bodies mapped to code sections</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <MapPin className="w-4 h-4 text-[#d92f37]/70 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="text-[13px] font-medium text-white/80">GIS jurisdiction detection</p>
+                          <p className="text-[11px] text-white/35 mt-0.5">Point-in-polygon matching against municipal, provincial, and federal boundaries</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Globe className="w-4 h-4 text-[#d92f37]/70 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="text-[13px] font-medium text-white/80">AI-powered code analysis</p>
+                          <p className="text-[11px] text-white/35 mt-0.5">RAG pipeline with vector search for code-aware Q&A and governing briefs</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* How firms use the IP */}
+              <div className="mt-16">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-white/30 font-semibold mb-6">
+                  Three ways to use it
+                </p>
+                <div className="grid md:grid-cols-3 gap-5">
+                  <div className="p-6 rounded-xl border border-white/6 bg-white/[0.02] hover:border-[#d92f37]/20 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-[#d92f37]/10 border border-[#d92f37]/20 flex items-center justify-center mb-4">
+                      <MapPin className="w-4 h-4 text-[#d92f37]/70" />
+                    </div>
+                    <h3 className="text-[14px] font-semibold text-white mb-2">Use MapleCodes directly</h3>
+                    <p className="text-[12.5px] text-white/40 leading-relaxed">
+                      Instant building code lookups for any Canadian address. Know which codes, standards, and bylaws apply before the first drawing is stamped.
+                    </p>
+                  </div>
+                  <div className="p-6 rounded-xl border border-white/6 bg-white/[0.02] hover:border-emerald-500/20 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+                      <ArrowRight className="w-4 h-4 text-emerald-400/70" />
+                    </div>
+                    <h3 className="text-[14px] font-semibold text-white mb-2">Feed codes into Reportly</h3>
+                    <p className="text-[12.5px] text-white/40 leading-relaxed">
+                      One-click handoff from code lookup to report generation. Your reports cite the right codes for the right jurisdiction automatically.
+                    </p>
+                  </div>
+                  <div className="p-6 rounded-xl border border-white/6 bg-white/[0.02] hover:border-cyan-500/20 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-4">
+                      <Wrench className="w-4 h-4 text-cyan-400/70" />
+                    </div>
+                    <h3 className="text-[14px] font-semibold text-white mb-2">Custom solutions on our IP</h3>
+                    <p className="text-[12.5px] text-white/40 leading-relaxed">
+                      Compliance checkers, permit documentation, code cross-referencing — whatever your firm needs, built on our indexed code intelligence layer.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AnimatedContent>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
         {/* Services section header */}
         <section className="pt-20 pb-4 px-4">
           <div className="container mx-auto max-w-5xl">
@@ -193,12 +309,10 @@ export default function Services() {
                 How We Work With Your Firm
               </p>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight leading-tight">
-                From product to full deployment.
+                How we actually work with firms.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm has different templates, approval processes, and data sources. We handle
-                the full rollout from mapping your templates to connecting your existing tools and
-                building any add-ons your workflow needs.
+                Every firm runs differently — different templates, different approval chains, different tools. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever custom pieces your workflow needs.
               </p>
             </AnimatedContent>
           </div>
@@ -230,11 +344,10 @@ export default function Services() {
                   Get started
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-                  Start with your biggest reporting bottleneck.
+                  Start with the report that takes the longest.
                 </h2>
                 <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  We scope the first automation, ship a working prototype against your actual
-                  templates, and walk it through your QA process. Usually takes a few weeks.
+                  Tell us which report eats the most hours. We'll scope an automation around your actual templates, build a working prototype, and walk it through your QA process. If it works — and it will — we keep going.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">
