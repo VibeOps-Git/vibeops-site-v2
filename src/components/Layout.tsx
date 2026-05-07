@@ -24,7 +24,7 @@ const navGroups: NavGroup[] = [
     links: [
       { path: "/reportly", label: "Reportly", badge: "New" },
       { path: "/maplecodes", label: "MapleCodes", badge: "New", badgeColor: "#d92f37" },
-      { path: "/services", label: "Consulting" },
+      { path: "/services", label: "Services & API" },
     ],
   },
   {
@@ -326,7 +326,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="h-8 w-auto object-contain mb-4"
               />
               <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
-                Engineering automation for civil, construction, and infrastructure teams. Less formatting, more engineering.
+                AI-powered report automation, building code intelligence, and developer API for civil, structural, geotechnical, and environmental engineering teams. Less formatting, more engineering.
               </p>
             </div>
 
@@ -343,7 +343,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <span className="px-1.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-wider bg-[#d92f37]/15 text-[#d92f37] rounded-full">New</span>
                 </Link>
                 <Link to="/services" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
-                  Custom Rollouts
+                  Developer API & Custom Rollouts
                 </Link>
               </div>
             </div>
@@ -371,7 +371,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-sm font-semibold text-white mb-4">Get Started</h4>
               <p className="text-gray-400 text-sm mb-4 leading-relaxed">
-                Book a free 30-minute call to see how we can help.
+                Book a free 30-minute call. We'll look at the report that costs you the most hours.
               </p>
               <Link
                 to="/contact"
