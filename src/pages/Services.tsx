@@ -11,7 +11,7 @@ const reportlyFeatures = [
   'Embeds photos, measurements, tables, and field data automatically',
   'Produces QA-ready reports with accurate references and exec summaries',
   'Supports firm-specific formatting, approval chains, and compliance',
-  'No workflow changes — your team keeps working the way they do now',
+  'No workflow changes. Your team keeps working the way they do now',
 ];
 
 const services = [
@@ -20,7 +20,7 @@ const services = [
     title: 'Report Automation',
     subtitle: 'Reportly, our flagship product',
     description:
-      'Feed in inspection data, field notes, photos, and measurements. Get formatted reports with embedded images, accurate references, and proper executive summaries — in your existing templates. No more hours lost to copy-paste assembly and formatting cleanup.',
+      'Feed in inspection data, field notes, photos, and measurements. Get formatted reports with embedded images, accurate references, and proper executive summaries in your existing templates. No more hours lost to copy-paste assembly and formatting cleanup.',
     features: [
       'Your Word and Excel templates, automated',
       'Photos, field data, and measurements embedded',

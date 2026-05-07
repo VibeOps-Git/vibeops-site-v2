@@ -263,7 +263,7 @@ function HeroSection() {
           </motion.h1>
 
           <motion.p variants={item} className="mb-6 max-w-[26rem] text-[0.92rem] leading-[1.65] text-white/52 lg:text-[0.98rem]">
-            Your team spends hours on formatting, not engineering. Reportly takes your existing Word templates, inspection data, and field notes and produces QA-ready reports in minutes — with accurate references and consistent formatting every time.
+            Your team spends hours on formatting, not engineering. Reportly takes your existing Word templates, inspection data, and field notes and produces QA-ready reports in minutes, with accurate references and consistent formatting every time.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-3">
@@ -289,7 +289,7 @@ function HeroSection() {
 
         {/* Right device column */}
         <motion.div
-          className="relative z-10 flex w-full items-center justify-center pb-4 pt-16 md:w-[66%] md:pb-0 md:pt-24 xl:w-[70%]"
+          className="relative z-10 flex w-full items-center justify-center px-4 pb-4 pt-16 sm:px-6 md:w-[66%] md:px-0 md:pb-0 md:pt-24 xl:w-[70%]"
           style={{ y: deviceY, opacity: deviceOpacity }}
         >
           <motion.div className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={HOMEPAGE_MOTION.heroFade}>
@@ -356,7 +356,7 @@ function ModelSection() {
             Two products. One implementation team. Zero workflow disruption.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-xl mb-14 leading-[1.8]">
-            MapleCodes finds every applicable building code for your project address. Reportly takes your inspection data, field notes, and templates and produces formatted, reference-accurate reports. We customize both to fit your firm's existing process — no new tools to learn.
+            MapleCodes finds every applicable building code for your project address. Reportly takes your inspection data, field notes, and templates and produces formatted, reference-accurate reports. We customize both to fit your firm's existing process. No new tools to learn.
           </p>
         </Reveal>
 
@@ -378,7 +378,7 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">MapleCodes</h3>
             </div>
             <p className="text-[11px] text-[#d92f37]/70 font-medium tracking-wide mb-5">
-              Every applicable code for any Canadian address — in seconds
+              Every applicable code for any Canadian address, in seconds
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
@@ -517,7 +517,7 @@ function PlatformSection() {
             Your templates in. <span className="text-emerald-300">Polished reports out.</span>
           </h2>
           <p className="text-center text-[0.95rem] text-white/48 max-w-xl mx-auto mb-12 leading-[1.8]">
-            Stop losing hours to formatting, reference hunting, and copy-paste assembly. Upload your data, pick your template, and get a QA-ready draft with accurate references — without changing how your team works.
+            Stop losing hours to formatting, reference hunting, and copy-paste assembly. Upload your data, pick your template, and get a QA-ready draft with accurate references. No changes to how your team works.
           </p>
           <div className="flex justify-center mb-14">
             <Btn href="/reportly" primary>Explore Reportly <ArrowRight className="w-3.5 h-3.5" /></Btn>
@@ -560,7 +560,7 @@ const featureItems = [
   'Works with the Word and Excel templates you already use',
   'Photos, measurements, tables, and field data embedded automatically',
   'Accurate references, executive summaries, and consistent formatting',
-  'No workflow changes — fits your existing QA and approval process',
+  'No workflow changes. Fits your existing QA and approval process',
 ];
 
 const stats = [
@@ -607,7 +607,7 @@ function ReportlySection() {
                 <ScrambleText text="Reportly" duration={2.2} trigger="inView" />
               </h2>
               <p className="text-white/45 text-sm md:text-[0.95rem] leading-[1.8] max-w-xs mb-10">
-                Connect your existing Word templates. Feed in inspection data, field notes, photos, and measurements. Get a formatted first draft with embedded images, accurate references, and a proper executive summary — ready for QA review.
+                Connect your existing Word templates. Feed in inspection data, field notes, photos, and measurements. Get a formatted first draft with embedded images, accurate references, and a proper executive summary, ready for QA review.
               </p>
             </Reveal>
 
@@ -691,13 +691,13 @@ function PatternInterruptA() {
           className="font-bold text-white/52 leading-[1.32] tracking-[-0.018em]"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          Not Copilot. Not a chatbot. Not another AI wrapper that half-works.
+          Not a chatbot. Not a generic document tool. Not built for marketing teams.
         </p>
         <p
           className="font-bold text-white/88 leading-[1.32] tracking-[-0.018em] mt-2"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          A reporting platform built for how civil and construction teams actually produce documents — with your templates, your references, your QA process.
+          A reporting platform built for how civil and construction teams actually produce documents. Your templates. Your references. Your QA process.
         </p>
       </Reveal>
     </section>
@@ -717,7 +717,7 @@ const adoptionSteps = [
     icon: FileText,
     title: 'Reportly Platform',
     subtitle: 'Core SaaS',
-    description: 'Generate formatted reports from your existing Word and Excel templates. Feed in inspection data, field notes, photos, and measurements. Get drafts with embedded images, accurate references, and executive summaries — ready for QA.',
+    description: 'Generate formatted reports from your existing Word and Excel templates. Feed in inspection data, field notes, photos, and measurements. Get drafts with embedded images, accurate references, and executive summaries, ready for QA.',
     features: [
       'Your Word and Excel templates, automated',
       'Photos, field data, and measurements embedded',
@@ -732,7 +732,7 @@ const adoptionSteps = [
     icon: Wrench,
     title: 'Template + QA Rollout',
     subtitle: 'Implementation',
-    description: "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do — the formatting and assembly happens automatically.",
+    description: "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do. The formatting and assembly happens automatically.",
     href: '/services',
     cta: 'Learn more',
   },
@@ -741,7 +741,7 @@ const adoptionSteps = [
     icon: BarChart3,
     title: 'Data + Workflow Integrations',
     subtitle: 'Connections',
-    description: 'Connect the tools your team already uses — Excel, SharePoint, Bluebeam, inspection forms, project folders — so data flows into Reportly without manual re-entry.',
+    description: 'Connect the tools your team already uses: Excel, SharePoint, Bluebeam, inspection forms, and project folders. Data flows into Reportly without manual re-entry.',
     href: '/services',
     cta: 'Learn more',
   },
@@ -845,7 +845,7 @@ function FeaturesSection() {
             Start with the report that takes the longest.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-14 leading-[1.8]">
-            Pick one report type — inspection reports, environmental assessments, O&amp;M manuals, compliance docs. Automate it. Then expand from there.
+            Pick one report type: inspection reports, environmental assessments, O&amp;M manuals, compliance docs. Automate it. Then expand from there.
           </p>
         </Reveal>
 
@@ -877,7 +877,7 @@ function FeaturesSection() {
 const processSteps = [
   {
     step: '01', title: 'Discovery',
-    description: 'We look at the report that costs you the most hours — the one with the most formatting, the most data sources, the most back-and-forth. That is where we start.',
+    description: 'We look at the report that costs you the most hours. The one with the most formatting, the most data sources, the most back-and-forth. That is where we start.',
   },
   {
     step: '02', title: 'Prototype',
@@ -885,7 +885,7 @@ const processSteps = [
   },
   {
     step: '03', title: 'Rollout',
-    description: 'Once the first report type is trusted and approved, we expand to the next. Proper versioning, access control, and secure deployment — including on-premise if required.',
+    description: 'Once the first report type is trusted and approved, we expand to the next. Proper versioning, access control, and secure deployment, including on-premise if required.',
   },
 ];
 
@@ -1064,7 +1064,7 @@ function CTASection() {
             Get your engineering hours back.
           </motion.h2>
           <motion.p variants={item} className="text-white/40 text-sm md:text-[0.95rem] leading-[1.8] mb-10 max-w-sm">
-            The average engineer loses 30-40% of their week to formatting, reference assembly, and report revisions. Reportly handles all of it — so your team delivers more projects, not more documents.
+            The average engineer loses 30-40% of their week to formatting, reference assembly, and report revisions. Reportly handles all of it so your team delivers more projects, not more documents.
           </motion.p>
           <motion.div variants={item} className="flex flex-wrap gap-3">
             <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>

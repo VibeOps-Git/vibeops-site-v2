@@ -64,7 +64,7 @@ function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMot
         </div>
 
         {/* BASE */}
-        <div className="relative mx-auto w-[103%] -ml-[1.5%] overflow-hidden" style={{ height: "clamp(42px,4.5vw,60px)", border: "5px solid #33363d", borderTop: "none", borderRadius: "0 0 8px 8px", background: "linear-gradient(180deg,#22252b,#2a2d34 50%,#33363d)", boxShadow: "0 16px 40px rgba(0,0,0,0.3)" }}>
+        <div className="relative mx-auto w-full sm:w-[103%] sm:-ml-[1.5%] overflow-hidden" style={{ height: "clamp(42px,4.5vw,60px)", border: "5px solid #33363d", borderTop: "none", borderRadius: "0 0 8px 8px", background: "linear-gradient(180deg,#22252b,#2a2d34 50%,#33363d)", boxShadow: "0 16px 40px rgba(0,0,0,0.3)" }}>
           <div className="absolute -bottom-[1px] -left-[1px] w-4 h-4 rounded-tr-lg bg-[#1a1c20] z-10" />
           <div className="absolute -bottom-[1px] -right-[1px] w-4 h-4 rounded-tl-lg bg-[#1a1c20] z-10" />
           {/* Keyboard */}
@@ -195,7 +195,7 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
   }, [activeIdx]);
 
   return (
-    <div className="relative w-full" data-testid="hero-device-stage">
+    <div className="relative w-full overflow-hidden" data-testid="hero-device-stage">
       <div className="absolute inset-x-[15%] bottom-0 h-[18%] rounded-full bg-black/25 blur-3xl" />
 
       {/* Fixed-height wrapper so the section doesn't jump between device sizes.
@@ -208,11 +208,11 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
           return (
             <motion.div
               key={device}
-              className={`absolute inset-0 flex items-center justify-center`}
+              className={`absolute inset-0 flex items-center justify-center px-2 sm:px-0`}
               animate={isActive ? { x: 0, scale: 1, opacity: 1, zIndex: 2 } : { x: `${xDir * 80}%`, scale: 0.8, opacity: 0, zIndex: 1 }}
               transition={slideTransition}
             >
-              <div className={`w-full ${DEVICE_MAX_W[device]}`}>
+              <div className={`w-full mx-auto ${DEVICE_MAX_W[device]}`}>
                 <DeviceShellByType device={device} videoSrc={videoSrc} reducedMotion={reducedMotion} />
               </div>
             </motion.div>
