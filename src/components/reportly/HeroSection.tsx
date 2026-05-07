@@ -55,11 +55,10 @@ export function HeroSection() {
         delay={0.2}
       >
         <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-2xl text-center">
-          Stop wasting time on report formatting.
+          Your inspection data and field notes deserve better than copy-paste.
         </p>
         <p className="text-lg text-gray-500 max-w-xl text-center mb-10">
-          Automated, audit-ready reports from your existing Word and Excel templates.
-          Built by engineers, for engineers.
+          Upload your existing Word templates. Feed in photos, measurements, and project data. Get formatted, reference-accurate reports — with proper executive summaries — in minutes.
         </p>
       </AnimatedContent>
 

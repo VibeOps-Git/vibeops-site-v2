@@ -7,11 +7,11 @@ import { GallerySection3D } from '../components/3d/sections/GallerySection3D';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 
 const reportlyFeatures = [
-  'Works with the Word and Excel templates your team already has',
-  'Pulls in photos, tables, charts, and field data automatically',
-  'Outputs QA-ready, brand-consistent PDF and Word reports',
-  'Supports firm-specific formatting and approval processes',
-  'No workflow changes required for your team',
+  'Works with the Word and Excel templates your team already uses',
+  'Embeds photos, measurements, tables, and field data automatically',
+  'Produces QA-ready reports with accurate references and exec summaries',
+  'Supports firm-specific formatting, approval chains, and compliance',
+  'No workflow changes — your team keeps working the way they do now',
 ];
 
 const services = [
@@ -20,13 +20,13 @@ const services = [
     title: 'Report Automation',
     subtitle: 'Reportly, our flagship product',
     description:
-      'Automate civil engineering report formatting using your existing Word and Excel templates. Feed in field data, photos, tables, and charts and get polished, QA-ready output in minutes. Works with your current approval process from day one.',
+      'Feed in inspection data, field notes, photos, and measurements. Get formatted reports with embedded images, accurate references, and proper executive summaries — in your existing templates. No more hours lost to copy-paste assembly and formatting cleanup.',
     features: [
-      'Word and Excel template automation',
-      'Photos, charts and tables from live project data',
-      'QA-ready, brand-consistent output',
-      'PDF and Word delivery in firm-specific formats',
-      'No changes to your existing reporting workflow',
+      'Your Word and Excel templates, automated',
+      'Photos, field data, and measurements embedded',
+      'Accurate references, exec summaries, consistent formatting',
+      'PDF and Word delivery in your firm-specific format',
+      'No workflow changes — fits your existing QA process',
     ],
     highlight: true,
     href: '/reportly',
@@ -37,12 +37,12 @@ const services = [
     title: 'Custom Rollouts',
     subtitle: 'Implementation',
     description:
-      "We adapt Reportly to your firm's exact templates, QA requirements, reporting standards, and approval workflow. Engineers adopt it without changing how they work.",
+      "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do — the formatting and assembly happens in the background.",
     features: [
-      'Template library setup and mapping',
-      'QA checklist and approval workflow integration',
-      'Reporting format and standard compliance',
-      'Onboarding, training, and documentation',
+      'Your full template library, mapped and configured',
+      'QA checklists and multi-stage approval workflows',
+      'Compliance formatting for municipal and provincial standards',
+      'Onboarding, training, and secure deployment',
     ],
     cta: 'Learn more',
   },
@@ -51,12 +51,12 @@ const services = [
     title: 'Data Integrations',
     subtitle: 'Workflow connections',
     description:
-      'We connect Reportly to the tools your team already uses. Excel, SharePoint, Bluebeam, project management systems, inspection forms, and internal databases.',
+      'Your data already exists in Excel, SharePoint, Bluebeam, and inspection forms. We connect those sources directly to Reportly so nothing needs to be re-entered or copy-pasted.',
     features: [
-      'Excel, SharePoint and Bluebeam integrations',
-      'Project management and CRM data pipelines',
-      'Inspection and field data ingestion',
-      'Custom API and database connectors',
+      'Excel, SharePoint, and Bluebeam integrations',
+      'Inspection form and field data pipelines',
+      'Project management and document system connectors',
+      'On-premise compatible — PIPEDA-ready deployment',
     ],
     cta: 'Learn more',
   },
@@ -65,12 +65,12 @@ const services = [
     title: 'Add-On Tools',
     subtitle: 'Custom development',
     description:
-      'We build lightweight dashboards, calculators, and reporting add-ons that extend Reportly and support the broader engineering reporting workflow.',
+      'Compliance trackers, asset dashboards, engineering calculators, and internal tools that plug into your reporting workflow. Built on our code intelligence layer and deployed securely.',
     features: [
-      'Instrumentation and construction dashboards',
+      'Asset management and compliance dashboards',
       'Engineering calculators and estimators',
-      'Reporting workflow add-ons',
-      'Secure internal deployment',
+      'Daily report and O&M documentation tools',
+      'Secure internal or on-premise deployment',
     ],
     cta: 'Learn more',
   },
@@ -101,10 +101,10 @@ export default function Services() {
                 Product and Services
               </p>
               <h1 className="text-4xl md:text-[2.8rem] font-bold text-white mb-6 tracking-tight leading-[1.1]">
-                Your reports. Your codes. Handled.
+                Stop formatting. Start delivering.
               </h1>
               <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                Reportly automates engineering reports. MapleCodes handles building code research. Together, they give civil and construction teams their hours back — and we customize both to fit exactly how your firm works.
+                Engineers told us the biggest time sink is formatting reports — not the engineering work itself. Reportly automates the formatting, reference assembly, and document production. MapleCodes handles code research. We customize both to fit exactly how your firm already works.
               </p>
             </div>
           </AnimatedContent>
@@ -134,7 +134,7 @@ export default function Services() {
                     Reportly
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    Your engineers already have the templates and the data. Reportly connects the two — pulling in field photos, tables, charts, and project data to generate review-ready reports in minutes, not hours. No workflow changes. No learning curve.
+                    Your team already has the templates and the inspection data. Reportly connects the two — pulling in field photos, measurements, tables, and project data to produce formatted drafts with accurate references and executive summaries. No workflow changes. No learning curve.
                   </p>
                   <ul className="space-y-3 mb-9">
                     {reportlyFeatures.map((f) => (
@@ -309,10 +309,10 @@ export default function Services() {
                 How We Work With Your Firm
               </p>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight leading-tight">
-                How we actually work with firms.
+                Built around your firm, not ours.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm runs differently — different templates, different approval chains, different tools. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever custom pieces your workflow needs.
+                Every firm has different templates, different approval chains, and different tools. We've talked to 80+ engineering teams to understand these differences. We handle the full rollout — from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
               </p>
             </AnimatedContent>
           </div>
@@ -347,7 +347,7 @@ export default function Services() {
                   Start with the report that takes the longest.
                 </h2>
                 <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  Tell us which report eats the most hours. We'll scope an automation around your actual templates, build a working prototype, and walk it through your QA process. If it works — and it will — we keep going.
+                  Tell us which report eats the most hours — the inspection report, the EA, the O&amp;M manual. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">

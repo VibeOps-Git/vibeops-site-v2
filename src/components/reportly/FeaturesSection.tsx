@@ -4,39 +4,39 @@ import { ScrambleText } from "../ScrambleText";
 
 const features = [
   {
-    icon: Cog,
-    title: "Eng-Specific Automation",
-    description: "Built for civil engineering workflows, not generic documents.",
+    icon: FileText,
+    title: "Your Templates, Automated",
+    description: "Upload your existing Word and Excel templates. Reportly maps your fields and produces reports in your exact format.",
     highlight: true,
   },
   {
     icon: Brain,
-    title: "AI Engineering Reports",
-    description: "Intelligent document parsing that understands engineering context.",
+    title: "Accurate References",
+    description: "Correct code editions, municipal bylaws, and standards — automatically cited for the right jurisdiction. No more outdated references.",
     highlight: true,
   },
   {
-    icon: FileText,
-    title: "Uses Your Templates",
-    description: "Upload your existing Word and Excel templates. We work with them.",
+    icon: Cog,
+    title: "Photos & Data Embedded",
+    description: "Field photos, measurements, tables, and inspection data placed into your report without breaking the layout.",
     highlight: true,
   },
   {
     icon: Calculator,
-    title: "Cost Sheet Automation",
-    description: "Automatically populate calculations and cost estimates.",
+    title: "Executive Summaries",
+    description: "Auto-generated executive summaries and key findings, with adjustable report length so the output matches the scope.",
     highlight: true,
   },
   {
     icon: Wand2,
-    title: "No-Code Setup",
-    description: "No technical skills required. Just upload templates and go.",
+    title: "No Workflow Changes",
+    description: "No new tools to learn. No IT approval headaches. Works alongside Word, Excel, SharePoint, and Bluebeam.",
     highlight: true,
   },
   {
     icon: HardHat,
-    title: "Structural & Civil Focus",
-    description: "Purpose-built for structural and civil engineering firms.",
+    title: "Built for AEC Teams",
+    description: "Inspection reports, EAs, O&M manuals, compliance docs, asset assessments — purpose-built for civil, construction, and environmental work.",
     highlight: true,
   },
 ];
@@ -74,7 +74,7 @@ export function FeaturesSection() {
               <span className="text-[#00ffcc]"><ScrambleText text="Civil Engineering" /></span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              We're not a generic reporting tool. Reportly is purpose-built for civil and structural engineering workflows.
+              Not a generic AI document tool. Not Copilot. Reportly is purpose-built for the way civil and construction engineers actually produce reports.
             </p>
           </div>
         </AnimatedContent>

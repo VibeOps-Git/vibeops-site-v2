@@ -5,30 +5,30 @@ import { ScrambleText } from "../ScrambleText";
 const problems = [
   {
     icon: Copy,
-    title: "Copy-Paste Hell",
+    title: "Copy-Paste Assembly",
     stat: "6+ hrs/week",
-    description: "Engineers spend hours copying data between Word reports and Excel calculations. Every project, every time.",
+    description: "Copying inspection data from Excel into Word, pulling images from Revit that break your formatting, manually assembling 10,000-page O&M manuals. Every project.",
     color: "red",
   },
   {
     icon: FileWarning,
-    title: "Template Chaos",
+    title: "Inconsistent Formatting",
     stat: "40% rework",
-    description: "Templates break when specs change mid-project. One error cascades across dozens of documents.",
+    description: "Reports that are too long, too short, or formatted differently every time. Embedded photos shift everything. References are outdated. Continuity is lost across revisions.",
     color: "orange",
   },
   {
     icon: ShieldAlert,
-    title: "Compliance Risk",
-    stat: "$50k+ fines",
-    description: "Missing signatures, outdated formats, lost archives. Each error is a potential audit failure.",
+    title: "Wrong References",
+    stat: "Compliance risk",
+    description: "Citing the wrong code edition, missing municipal bylaws, or outdated standards. In compliance-critical work, one bad reference can invalidate the entire report.",
     color: "yellow",
   },
   {
     icon: Clock,
-    title: "Talent Wasted",
+    title: "Engineering Time Lost",
     stat: "35% of time",
-    description: "Your best engineers spend a third of their time formatting instead of engineering.",
+    description: "Your best engineers spend a third of their week on formatting and document assembly — not on the technical work you hired them to do.",
     color: "red",
   },
 ];
@@ -163,7 +163,7 @@ export function ProblemSection() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400"><ScrambleText text="Broken" /></span>
                 </h2>
                 <p className="text-gray-400 mb-8">
-                  Validated through meetings with <span className="text-white font-semibold">20+ firms</span> and engineers across Vancouver and beyond.
+                  Validated through <span className="text-white font-semibold">80+ discovery calls</span> with engineering firms — from Stantec and AECOM to mid-size civil shops and municipal teams across Canada.
                 </p>
               </div>
             </AnimatedContent>

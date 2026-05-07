@@ -877,15 +877,15 @@ function FeaturesSection() {
 const processSteps = [
   {
     step: '01', title: 'Discovery',
-    description: 'We review your actual civil engineering workflows, tools, and processes. No theoretical frameworks. Just how your reporting and documentation really gets done.',
+    description: 'We look at the report that costs you the most hours — the one with the most formatting, the most data sources, the most back-and-forth. That is where we start.',
   },
   {
     step: '02', title: 'Prototype',
-    description: 'We build a narrow but complete automation: ingest data, generate the report, and walk it through your QA process.',
+    description: 'We build a working automation around your actual template. Real field data goes in, a formatted draft comes out, and we walk it through your QA process together.',
   },
   {
     step: '03', title: 'Rollout',
-    description: 'Once the first workflow is trusted, we expand carefully. Proper versioning, access control, and full documentation.',
+    description: 'Once the first report type is trusted and approved, we expand to the next. Proper versioning, access control, and secure deployment — including on-premise if required.',
   },
 ];
 
@@ -961,7 +961,7 @@ function TeamSection() {
           <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
             <div>
               <Label>The People</Label>
-              <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mt-4">Built by engineers, for engineers.</h2>
+              <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mt-4">We've talked to 80+ firms. We built what they asked for.</h2>
             </div>
             <motion.a href="/team" className="flex items-center gap-1.5 text-[11px] text-white/30 uppercase tracking-[0.15em] hover:text-white/70 transition-colors duration-200" whileHover={{ x: 1 }} transition={{ duration: 0.15 }}>
               Full team <ArrowUpRight className="w-3 h-3" />
@@ -982,7 +982,7 @@ function TeamSection() {
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
-                <p className="text-base md:text-lg font-semibold text-white">Building AI tools for civil engineering teams.</p>
+                <p className="text-base md:text-lg font-semibold text-white">Built from 80+ discovery calls with engineering firms across Canada.</p>
               </div>
               <Btn href="/contact" primary>Talk to the Team</Btn>
             </div>
@@ -1036,13 +1036,13 @@ function CTASection() {
         <Reveal className="text-center mb-14">
           <div className="space-y-1.5">
             <p className="font-semibold text-white/35 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
-              Your team already has the templates.
+              Your engineers already have the field data.
             </p>
             <p className="font-semibold text-white/35 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
-              Your team already has the data.
+              Your firm already has the templates.
             </p>
             <p className="font-bold text-white/80 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
-              The missing piece is the automation layer.
+              Stop spending the hours in between on formatting.
             </p>
           </div>
         </Reveal>
@@ -1061,10 +1061,10 @@ function CTASection() {
             variants={item}
             className="text-[2.5rem] sm:text-5xl md:text-[3.5rem] font-bold tracking-[-0.03em] text-white mb-6 mt-4 leading-[1.06]"
           >
-            Get your engineering time back.
+            Get your engineering hours back.
           </motion.h2>
           <motion.p variants={item} className="text-white/40 text-sm md:text-[0.95rem] leading-[1.8] mb-10 max-w-sm">
-            Automate your civil engineering reports and documentation so your team can focus on what matters and deliver more per project.
+            The average engineer loses 30-40% of their week to formatting, reference assembly, and report revisions. Reportly handles all of it — so your team delivers more projects, not more documents.
           </motion.p>
           <motion.div variants={item} className="flex flex-wrap gap-3">
             <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>
