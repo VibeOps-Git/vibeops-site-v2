@@ -1,3 +1,4 @@
+import "devices.css/dist/devices.min.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -33,22 +34,49 @@ function AutoVideo({ src, className = "" }: { src: string; className?: string })
   );
 }
 
-function EdgeGlow({ color = "emerald" }: { color?: "emerald" | "cyan" }) {
-  const c = color === "emerald" ? "rgba(52,211,153,0.12)" : "rgba(125,211,252,0.12)";
+// ---------------------------------------------------------------------------
+// Device shells — using devices.css for iPhone & iPad, custom for rugged laptop
+// ---------------------------------------------------------------------------
+
+/** iPhone 14 Pro — landscape via CSS rotation. devices.css provides the
+ *  accurate frame, Dynamic Island, buttons, and all hardware details. */
+function PhoneShell({ videoSrc }: { videoSrc: string }) {
   return (
-    <motion.div
-      className="pointer-events-none absolute inset-[-1px] rounded-[inherit]"
-      style={{ boxShadow: `inset 0 0 20px 1px ${c}, 0 0 24px 2px ${c}` }}
-      animate={{ opacity: [0.4, 1, 0.4] }}
-      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-    />
+    <div className="flex items-center justify-center" style={{ transform: "rotate(-90deg) scale(0.52)", transformOrigin: "center center" }}>
+      <div className="device device-iphone-14-pro">
+        <div className="device-frame">
+          <AutoVideo src={videoSrc} className="device-screen" />
+        </div>
+        <div className="device-stripe" />
+        <div className="device-header" />
+        <div className="device-sensors" />
+        <div className="device-btns" />
+        <div className="device-power" />
+      </div>
+    </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Device shells
-// ---------------------------------------------------------------------------
+/** iPad Pro — devices.css provides accurate bezels, camera, and buttons. */
+function TabletShell({ videoSrc }: { videoSrc: string }) {
+  return (
+    <div className="flex items-center justify-center" style={{ transform: "scale(0.72)", transformOrigin: "center center" }}>
+      <div className="device device-ipad-pro">
+        <div className="device-frame">
+          <AutoVideo src={videoSrc} className="device-screen" />
+        </div>
+        <div className="device-stripe" />
+        <div className="device-header" />
+        <div className="device-sensors" />
+        <div className="device-btns" />
+        <div className="device-power" />
+      </div>
+    </div>
+  );
+}
 
+/** Rugged field laptop — Toughbook / Dell Latitude Rugged style.
+ *  Thick bezels, reinforced corners, industrial aesthetic, rubber bumpers. */
 function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMotion: boolean }) {
   return (
     <div className="w-full" style={{ perspective: 1400 }}>
@@ -61,108 +89,116 @@ function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMot
         }}
         style={{ transformOrigin: "center bottom", transformStyle: "preserve-3d" }}
       >
-        {/* MacBook Pro lid — space black aluminum */}
+        {/* === SCREEN / LID === */}
         <div
-          className="relative rounded-t-[14px] rounded-b-[2px] p-[5px] shadow-[0_40px_100px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)]"
-          style={{ background: "linear-gradient(180deg, #2c2e33 0%, #1d1f23 50%, #151618 100%)" }}
+          className="relative overflow-hidden"
+          style={{
+            borderRadius: "10px 10px 3px 3px",
+            border: "6px solid #2d3038",
+            background: "linear-gradient(180deg, #393d44 0%, #2d3038 30%, #22252b 100%)",
+            boxShadow: "0 40px 100px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)",
+          }}
         >
-          {!reducedMotion && <EdgeGlow color="emerald" />}
-          {/* Screen with thin bezel */}
-          <div className="relative aspect-[16/10] overflow-hidden rounded-t-[10px] rounded-b-[2px] bg-[#000]">
-            {/* MacBook notch — camera housing */}
+          {/* Rubber bumper corners */}
+          <div className="absolute top-0 left-0 w-[18px] h-[18px] rounded-br-[8px] bg-[#1a1c20] z-10" />
+          <div className="absolute top-0 right-0 w-[18px] h-[18px] rounded-bl-[8px] bg-[#1a1c20] z-10" />
+          <div className="absolute bottom-0 left-0 w-[14px] h-[14px] rounded-tr-[6px] bg-[#1a1c20] z-10" />
+          <div className="absolute bottom-0 right-0 w-[14px] h-[14px] rounded-tl-[6px] bg-[#1a1c20] z-10" />
+
+          {/* Thick bezel area */}
+          <div className="p-[14px]">
+            {/* Webcam */}
+            <div className="flex justify-center mb-[6px]">
+              <div className="w-[8px] h-[8px] rounded-full bg-[#15171b] border border-[#3a3d44]" />
+            </div>
+            {/* Screen */}
             <div
-              className="absolute left-1/2 top-0 z-20 -translate-x-1/2 rounded-b-[8px]"
-              style={{ width: "14%", height: "3.2%", background: "#000" }}
-            />
-            {/* Camera dot inside notch */}
-            <div
-              className="absolute left-1/2 z-20 -translate-x-1/2 rounded-full"
-              style={{ top: "0.6%", width: "4px", height: "4px", background: "#1a1c20", boxShadow: "inset 0 0 2px rgba(255,255,255,0.15)" }}
-            />
-            {/* Actual screen content */}
-            <div className="absolute inset-0 overflow-hidden bg-black">
+              className="relative overflow-hidden bg-black"
+              style={{ aspectRatio: "16 / 10", borderRadius: 4, border: "2px solid #15171b" }}
+            >
               <AutoVideo src={videoSrc} className="h-full w-full object-cover object-center" />
-              {/* Subtle glass reflection */}
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.04)_0%,transparent_40%,transparent_60%,rgba(255,255,255,0.02)_100%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.03)_0%,transparent_40%)]" />
+            </div>
+            {/* Model label under screen */}
+            <div className="flex justify-center mt-[6px]">
+              <span className="text-[7px] font-bold tracking-[0.25em] uppercase text-white/12 select-none">Toughbook</span>
             </div>
           </div>
+
+          {/* Latch notch at bottom center */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40px] h-[5px] rounded-t-[3px] bg-[#1a1c20]" />
         </div>
-        {/* MacBook base / chin — wedge profile matching lid width */}
+
+        {/* === HINGE === */}
         <div
-          className="relative mx-auto -mt-px w-full rounded-b-[8px] shadow-[0_20px_40px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.05)]"
-          style={{ height: 14, background: "linear-gradient(180deg, #35373c 0%, #28292e 40%, #1e2023 100%)" }}
+          className="relative mx-auto -mt-px w-[96%]"
+          style={{
+            height: 8,
+            background: "linear-gradient(180deg, #1a1c20 0%, #2d3038 100%)",
+            borderRadius: "0 0 3px 3px",
+          }}
         >
-          {/* Hinge line */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />
-          {/* Trackpad indent */}
-          <div className="absolute left-1/2 top-[4px] h-[4px] w-[20%] -translate-x-1/2 rounded-full bg-white/[0.03]" />
+          {/* Hinge barrels */}
+          <div className="absolute top-0 left-[15%] w-[12%] h-full rounded-b-[2px] bg-[#3a3d44]" />
+          <div className="absolute top-0 left-[44%] w-[12%] h-full rounded-b-[2px] bg-[#3a3d44]" />
+          <div className="absolute top-0 left-[73%] w-[12%] h-full rounded-b-[2px] bg-[#3a3d44]" />
         </div>
+
+        {/* === BASE / KEYBOARD DECK === */}
+        <div
+          className="relative mx-auto w-[102%] -ml-[1%] overflow-hidden"
+          style={{
+            height: "clamp(50px, 5vw, 70px)",
+            borderRadius: "0 0 10px 10px",
+            border: "6px solid #2d3038",
+            borderTop: "none",
+            background: "linear-gradient(180deg, #22252b 0%, #2d3038 40%, #393d44 100%)",
+            boxShadow: "0 20px 50px rgba(0,0,0,0.35)",
+          }}
+        >
+          {/* Rubber bumper corners on base */}
+          <div className="absolute bottom-0 left-0 w-[18px] h-[18px] rounded-tr-[8px] bg-[#1a1c20] z-10" />
+          <div className="absolute bottom-0 right-0 w-[18px] h-[18px] rounded-tl-[8px] bg-[#1a1c20] z-10" />
+
+          {/* Keyboard area */}
+          <div className="absolute inset-x-[8%] top-[15%] bottom-[30%] rounded-[3px] bg-[#15171b] border border-[#3a3d44]/30 overflow-hidden">
+            {/* Key rows */}
+            <div className="grid grid-rows-3 gap-[2px] p-[4px] h-full">
+              <div className="grid grid-cols-14 gap-[2px]">
+                {Array.from({ length: 14 }).map((_, i) => (
+                  <div key={i} className="rounded-[1px] bg-[#2a2d33]" />
+                ))}
+              </div>
+              <div className="grid grid-cols-13 gap-[2px]">
+                {Array.from({ length: 13 }).map((_, i) => (
+                  <div key={i} className="rounded-[1px] bg-[#2a2d33]" />
+                ))}
+              </div>
+              <div className="grid grid-cols-12 gap-[2px]">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="rounded-[1px] bg-[#2a2d33]" />
+                ))}
+                <div className="col-span-6 rounded-[1px] bg-[#2a2d33]" />
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={`r${i}`} className="rounded-[1px] bg-[#2a2d33]" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Trackpad */}
+          <div className="absolute bottom-[8%] left-1/2 -translate-x-1/2 w-[18%] h-[20%] rounded-[3px] bg-[#1e2025] border border-[#3a3d44]/25" />
+
+          {/* Status LEDs */}
+          <div className="absolute top-[18%] right-[5%] flex gap-[4px]">
+            <div className="w-[4px] h-[4px] rounded-full bg-emerald-500/40" />
+            <div className="w-[4px] h-[4px] rounded-full bg-amber-500/25" />
+          </div>
+        </div>
+
         {/* Contact shadow */}
-        <div className="mx-auto h-[4px] w-[88%] rounded-b-full bg-black/15 blur-[3px]" />
+        <div className="mx-auto h-[5px] w-[90%] rounded-b-full bg-black/20 blur-[4px]" />
       </motion.div>
-    </div>
-  );
-}
-
-function TabletShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMotion: boolean }) {
-  return (
-    <div
-      className="relative rounded-[18px] p-[6px] shadow-[0_30px_80px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)]"
-      style={{ background: "linear-gradient(180deg, #2c2e33 0%, #1d1f23 50%, #151618 100%)" }}
-    >
-      {!reducedMotion && <EdgeGlow color="cyan" />}
-      {/* iPad Pro screen — thin uniform bezels, no home button */}
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[12px] bg-[#000]">
-        {/* Front camera — landscape position (centered on the short edge) */}
-        <div
-          className="absolute left-1/2 top-[4px] z-10 -translate-x-1/2 rounded-full"
-          style={{ width: 5, height: 5, background: "#111", boxShadow: "inset 0 0 2px rgba(255,255,255,0.12)" }}
-        />
-        {/* Screen content — edge-to-edge */}
-        <div className="absolute inset-0 overflow-hidden rounded-[12px] bg-black">
-          <AutoVideo src={videoSrc} className="h-full w-full object-cover object-center" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(125deg,rgba(255,255,255,0.03)_0%,transparent_45%,transparent_65%,rgba(255,255,255,0.02)_100%)]" />
-        </div>
-      </div>
-      {/* Side buttons */}
-      <div className="absolute right-[-2px] top-[16%] h-[4%] w-[2.5px] rounded-full bg-[#3a3d42]" />
-      <div className="absolute right-[-2px] top-[24%] h-[8%] w-[2.5px] rounded-full bg-[#3a3d42]" />
-      <div className="absolute left-[-2px] top-[20%] h-[10%] w-[2.5px] rounded-full bg-[#3a3d42]" />
-    </div>
-  );
-}
-
-function PhoneShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMotion: boolean }) {
-  return (
-    <div
-      className="relative rounded-[18px] p-[5px] shadow-[0_22px_60px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)]"
-      style={{ background: "linear-gradient(180deg, #2c2e33 0%, #1d1f23 50%, #151618 100%)" }}
-    >
-      {!reducedMotion && <EdgeGlow color="emerald" />}
-      {/* iPhone 16 Pro landscape — edge-to-edge */}
-      <div className="relative aspect-[19.5/9] overflow-hidden rounded-[14px] bg-[#000]">
-        {/* Dynamic Island — on the left edge in landscape orientation */}
-        <div
-          className="absolute left-[6px] top-1/2 z-10 -translate-y-1/2 rounded-full bg-[#000]"
-          style={{ width: 10, height: "26%" }}
-        />
-        {/* Camera lens inside Dynamic Island */}
-        <div
-          className="absolute left-[8px] z-10 rounded-full"
-          style={{ top: "calc(50% - 3px)", width: 6, height: 6, background: "#111", boxShadow: "inset 0 0 2px rgba(255,255,255,0.1)" }}
-        />
-        {/* Screen content */}
-        <div className="absolute inset-0 overflow-hidden rounded-[14px] bg-black">
-          <AutoVideo src={videoSrc} className="h-full w-full object-cover object-center" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(125deg,rgba(255,255,255,0.03)_0%,transparent_45%,transparent_65%,rgba(255,255,255,0.02)_100%)]" />
-        </div>
-        {/* Home indicator — bottom center */}
-        <div className="absolute bottom-[3px] left-1/2 z-10 h-[3px] w-[18%] -translate-x-1/2 rounded-full bg-white/25" />
-      </div>
-      {/* Hardware buttons — power on top edge, volume on bottom edge in landscape */}
-      <div className="absolute top-[-2px] right-[18%] w-[10%] h-[2.5px] rounded-full bg-[#3a3d42]" />
-      <div className="absolute bottom-[-2px] left-[16%] w-[5%] h-[2.5px] rounded-full bg-[#3a3d42]" />
-      <div className="absolute bottom-[-2px] left-[24%] w-[8%] h-[2.5px] rounded-full bg-[#3a3d42]" />
     </div>
   );
 }
@@ -195,13 +231,13 @@ const slideTransition = {
 };
 
 // ---------------------------------------------------------------------------
-// Peek device — positioned from viewport edges
+// Shell dispatcher & peek devices
 // ---------------------------------------------------------------------------
 
 function DeviceShellByType({ device, videoSrc, reducedMotion }: { device: DeviceType; videoSrc: string; reducedMotion: boolean }) {
   if (device === "laptop") return <LaptopShell videoSrc={videoSrc} reducedMotion={reducedMotion} />;
-  if (device === "tablet") return <TabletShell videoSrc={videoSrc} reducedMotion={reducedMotion} />;
-  return <PhoneShell videoSrc={videoSrc} reducedMotion={reducedMotion} />;
+  if (device === "tablet") return <TabletShell videoSrc={videoSrc} />;
+  return <PhoneShell videoSrc={videoSrc} />;
 }
 
 function PeekDevice({
@@ -237,7 +273,6 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
   const reducedMotion = Boolean(useReducedMotion());
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Continuous auto-rotate — never pauses, never resets
   useEffect(() => {
     if (reducedMotion) return;
     const id = setInterval(() => {
@@ -254,43 +289,29 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
     [activeIdx],
   );
 
-  const activeDevice = DEVICES[activeIdx];
   const prevIdx = (activeIdx - 1 + DEVICES.length) % DEVICES.length;
   const nextIdx = (activeIdx + 1) % DEVICES.length;
 
   return (
     <>
-      {/* Peek devices — spans full viewport width using the 100vw trick */}
+      {/* Peek devices — spans full viewport width */}
       <div
         className="pointer-events-none absolute inset-y-0 z-[5] hidden md:block"
         style={{ width: "100vw", left: "50%", transform: "translateX(-50%)" }}
       >
         <div className="relative h-full w-full">
-          <PeekDevice
-            device={DEVICES[prevIdx]}
-            videoSrc={videoSrc}
-            reducedMotion={reducedMotion}
-            side="left"
-            onClick={() => handleManual(prevIdx)}
-          />
-          <PeekDevice
-            device={DEVICES[nextIdx]}
-            videoSrc={videoSrc}
-            reducedMotion={reducedMotion}
-            side="right"
-            onClick={() => handleManual(nextIdx)}
-          />
+          <PeekDevice device={DEVICES[prevIdx]} videoSrc={videoSrc} reducedMotion={reducedMotion} side="left" onClick={() => handleManual(prevIdx)} />
+          <PeekDevice device={DEVICES[nextIdx]} videoSrc={videoSrc} reducedMotion={reducedMotion} side="right" onClick={() => handleManual(nextIdx)} />
         </div>
       </div>
 
-      {/* Main carousel — all devices stay mounted so videos keep playing */}
+      {/* Main carousel */}
       <div className="relative w-full" data-testid="hero-device-stage">
         <div className="absolute inset-x-[15%] bottom-0 h-[18%] rounded-full bg-black/25 blur-3xl" />
 
         <div className="relative flex items-center justify-center">
           {DEVICES.map((device, i) => {
             const isActive = i === activeIdx;
-            // Circular offset: figure out which direction the inactive item is
             const offset = ((i - activeIdx + DEVICES.length) % DEVICES.length);
             const xDir = offset === 0 ? 0 : offset <= DEVICES.length / 2 ? 1 : -1;
 
