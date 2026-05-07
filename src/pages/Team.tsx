@@ -46,18 +46,10 @@ const coFounders: TeamMember[] = [
     linkedin: "https://www.linkedin.com/in/gabrielcomla/",
     bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms, less formatting, fewer errors, and more time spent on real engineering.`,
   },
-  {
-    name: "Eric Balanecki",
-    role: "Co-Founder & CTO",
-    focus: "Architecture & Automation Engine",
-    image: "/team/eric-optimized.jpg",
-    email: "eric@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/eric-balanecki/",
-    bio: `Eric leads the technical architecture behind Reportly’s automation engine, from template parsing to document generation. He focuses on reliability, versioning, and making sure the system behaves like real infrastructure, not a toy app.`,
-  },
+
   {
     name: "Qazi Omair Ahmed",
-    role: "Co-Founder & Head of Engineering",
+    role: "Co-Founder & CTO",
     focus: "Systems Design & Product Delivery",
     image: "/team/omair-optimized.jpg",
     email: "omair@vibeops.ca",
@@ -72,6 +64,15 @@ const coFounders: TeamMember[] = [
     email: "hrudai@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/hrudai-rajesh/",
     bio: `Hrudai helped coordinate delivery, timelines, and implementation during the first year so firms could adopt automation without disrupting active projects. From onboarding templates to rollout planning, he helped make early changes more controlled, traceable, and predictable.`,
+  },
+  {
+    name: "Eric Balanecki",
+    role: "Co-Founder",
+    focus: "Architecture & Automation Engine",
+    image: "/team/eric-optimized.jpg",
+    email: "eric@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/eric-balanecki/",
+    bio: `Eric helped build the technical architecture behind Reportly’s automation engine, from template parsing to document generation. He focused on reliability, versioning, and making sure the system behaved like real infrastructure, not a toy app.`,
   },
 ];
 
