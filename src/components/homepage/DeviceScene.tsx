@@ -92,66 +92,58 @@ function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMot
 }
 
 // ---------------------------------------------------------------------------
-// 2. iPad Pro — LANDSCAPE, thin uniform bezels
+// 2. iPad Pro — LANDSCAPE (screen 3:2 = clearly wider than tall)
 // ---------------------------------------------------------------------------
 
 function TabletShell({ videoSrc }: { videoSrc: string }) {
   return (
     <div className="w-full">
-      {/* Outer frame — landscape iPad Pro (silver) */}
-      <div className="relative" style={{ border: "1px solid #babdbf", borderRadius: 18, background: "#0d0d0d", padding: 12, boxShadow: "inset 0 0 0 3px #e2e3e4, 0 30px 80px rgba(0,0,0,0.45)" }}>
-        {/* Screen — 4:3 landscape */}
-        <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "4/3", borderRadius: 8, border: "2px solid #121212" }}>
-          <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
+      <div className="relative" style={{ border: "1px solid #babdbf", borderRadius: 14, background: "#0d0d0d", boxShadow: "inset 0 0 0 3px #e2e3e4, 0 30px 80px rgba(0,0,0,0.45)" }}>
+        {/* Frame padding — thinner on long edges (top/bottom), thicker on short edges (left/right) for landscape iPad */}
+        <div style={{ padding: "10px 14px" }}>
+          <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "16/10", borderRadius: 6, border: "2px solid #121212" }}>
+            <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
+          </div>
         </div>
-        {/* Front camera — right edge in landscape */}
-        <div className="absolute right-[6px] top-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full bg-[#1a1a1a] ring-1 ring-[#333]" />
-        {/* Buttons — top edge in landscape = power */}
-        <div className="absolute top-[-2px] right-[15%] w-[6%] h-[2px] rounded-full bg-[#babdbf]" />
-        {/* Volume — left edge */}
-        <div className="absolute left-[-2px] top-[20%] h-[4%] w-[2px] rounded-full bg-[#babdbf]" />
-        <div className="absolute left-[-2px] top-[27%] h-[4%] w-[2px] rounded-full bg-[#babdbf]" />
+        {/* Front camera — right short edge in landscape */}
+        <div className="absolute right-[5px] top-1/2 -translate-y-1/2 w-[5px] h-[5px] rounded-full bg-[#1a1a1a] ring-1 ring-[#333]" />
+        {/* Power — top long edge */}
+        <div className="absolute top-[-2px] right-[12%] w-[5%] h-[2px] rounded-full bg-[#babdbf]" />
+        {/* Volume — left short edge */}
+        <div className="absolute left-[-2px] top-[25%] h-[6%] w-[2px] rounded-full bg-[#babdbf]" />
+        <div className="absolute left-[-2px] top-[35%] h-[6%] w-[2px] rounded-full bg-[#babdbf]" />
       </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// 3. iPhone 14 Pro — LANDSCAPE, Dynamic Island
+// 3. iPhone 14 Pro — LANDSCAPE (screen 16:9 to match demo video)
 // ---------------------------------------------------------------------------
 
 function PhoneShell({ videoSrc }: { videoSrc: string }) {
   return (
     <div className="w-full">
-      {/* Outer frame — landscape iPhone (deep purple / space black) */}
-      <div className="relative" style={{ border: "1px solid #1b1721", borderRadius: 32, background: "#010101", padding: 9, boxShadow: "inset 0 0 4px 2px #c0b7cd, inset 0 0 0 6px #342c3f, 0 25px 70px rgba(0,0,0,0.5)" }}>
-        {/* Screen — 19.5:9 landscape */}
-        <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "19.5/9", borderRadius: 23 }}>
-          <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
-          {/* Dynamic Island — left side in landscape */}
-          <div className="absolute left-[12px] top-1/2 -translate-y-1/2 z-10 bg-black rounded-full" style={{ width: 24, height: "32%", minHeight: 28 }}>
-            {/* Camera lens */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[10px] h-[10px] rounded-full bg-[#0a0a12] ring-1 ring-[#222]">
-              <div className="absolute top-[2px] left-[2px] w-[3px] h-[3px] rounded-full bg-[#1a1a2e]" />
+      <div className="relative" style={{ border: "1px solid #1b1721", borderRadius: 20, background: "#010101", boxShadow: "inset 0 0 4px 2px #c0b7cd, inset 0 0 0 5px #342c3f, 0 25px 70px rgba(0,0,0,0.5)" }}>
+        {/* Frame padding — thin bezel on long edges, slightly thicker on short edges */}
+        <div style={{ padding: "6px 10px" }}>
+          <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "16/9", borderRadius: 14 }}>
+            <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
+            {/* Dynamic Island — left short edge in landscape */}
+            <div className="absolute left-[10px] top-1/2 -translate-y-1/2 z-10 bg-black rounded-full" style={{ width: 18, height: "28%", minHeight: 22 }}>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[#0a0a12] ring-1 ring-[#222]" />
             </div>
+            {/* Home indicator */}
+            <div className="absolute bottom-[4px] left-1/2 -translate-x-1/2 z-10 w-[20%] h-[3px] rounded-full bg-white/20" />
           </div>
-          {/* Home indicator */}
-          <div className="absolute bottom-[5px] left-1/2 -translate-x-1/2 z-10 w-[22%] h-[4px] rounded-full bg-white/20" />
         </div>
-
-        {/* Side stripe accents (antenna lines) */}
-        <div className="absolute top-[-1px] left-[28%] w-[5px] h-[1px] bg-[rgba(1,1,1,0.25)]" />
-        <div className="absolute top-[-1px] right-[28%] w-[5px] h-[1px] bg-[rgba(1,1,1,0.25)]" />
-        <div className="absolute bottom-[-1px] left-[28%] w-[5px] h-[1px] bg-[rgba(1,1,1,0.25)]" />
-        <div className="absolute bottom-[-1px] right-[28%] w-[5px] h-[1px] bg-[rgba(1,1,1,0.25)]" />
-
-        {/* Power button — top edge in landscape */}
-        <div className="absolute top-[-2px] right-[12%] w-[8%] h-[3px] rounded-full bg-[#342c3f]" />
-        {/* Volume buttons — bottom edge in landscape */}
-        <div className="absolute bottom-[-2px] left-[10%] w-[4%] h-[3px] rounded-full bg-[#342c3f]" />
-        <div className="absolute bottom-[-2px] left-[16%] w-[6%] h-[3px] rounded-full bg-[#342c3f]" />
+        {/* Power — top long edge in landscape */}
+        <div className="absolute top-[-2px] right-[14%] w-[7%] h-[2px] rounded-full bg-[#342c3f]" />
+        {/* Volume — bottom long edge in landscape */}
+        <div className="absolute bottom-[-2px] left-[12%] w-[4%] h-[2px] rounded-full bg-[#342c3f]" />
+        <div className="absolute bottom-[-2px] left-[18%] w-[5%] h-[2px] rounded-full bg-[#342c3f]" />
         {/* Mute switch */}
-        <div className="absolute bottom-[-2px] left-[7%] w-[2%] h-[3px] rounded-full bg-[#342c3f]" />
+        <div className="absolute bottom-[-2px] left-[8%] w-[2%] h-[2px] rounded-full bg-[#342c3f]" />
       </div>
     </div>
   );
