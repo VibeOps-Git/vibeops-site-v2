@@ -357,7 +357,7 @@ export function ShowcaseSection() {
                           <span className="text-[#00ffcc] text-sm">✓</span>
                         </div>
                         <p className="text-gray-300">
-                          <span className="text-white font-medium">Upload once</span> — your existing Word and Excel templates work instantly
+                          <span className="text-white font-medium">Upload once</span>. Your existing Word and Excel templates work instantly
                         </p>
                       </div>
                       <div className="flex items-start gap-3">
@@ -365,7 +365,7 @@ export function ShowcaseSection() {
                           <span className="text-[#00ffcc] text-sm">✓</span>
                         </div>
                         <p className="text-gray-300">
-                          <span className="text-white font-medium">AI-powered</span> — understands engineering context and terminology
+                          <span className="text-white font-medium">AI-powered</span>. Understands engineering context and terminology
                         </p>
                       </div>
                       <div className="flex items-start gap-3">
@@ -373,7 +373,7 @@ export function ShowcaseSection() {
                           <span className="text-[#00ffcc] text-sm">✓</span>
                         </div>
                         <p className="text-gray-300">
-                          <span className="text-white font-medium">Audit-ready</span> — compliant reports every time, no manual checks
+                          <span className="text-white font-medium">Audit-ready</span>. Compliant reports every time, no manual checks
                         </p>
                       </div>
                     </div>

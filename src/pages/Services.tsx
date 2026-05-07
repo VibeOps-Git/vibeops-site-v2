@@ -26,7 +26,7 @@ const services = [
       'Photos, field data, and measurements embedded',
       'Accurate references, exec summaries, consistent formatting',
       'PDF and Word delivery in your firm-specific format',
-      'No workflow changes — fits your existing QA process',
+      'No workflow changes. Fits your existing QA process',
     ],
     highlight: true,
     href: '/reportly',
@@ -37,7 +37,7 @@ const services = [
     title: 'Custom Rollouts',
     subtitle: 'Implementation',
     description:
-      "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do — the formatting and assembly happens in the background.",
+      "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do. The formatting and assembly happens in the background.",
     features: [
       'Your full template library, mapped and configured',
       'QA checklists and multi-stage approval workflows',
@@ -56,7 +56,7 @@ const services = [
       'Excel, SharePoint, and Bluebeam integrations',
       'Inspection form and field data pipelines',
       'Project management and document system connectors',
-      'On-premise compatible — PIPEDA-ready deployment',
+      'On-premise compatible, PIPEDA-ready deployment',
     ],
     cta: 'Learn more',
   },
@@ -80,7 +80,7 @@ export default function Services() {
   return (
     <>
       <SEO
-        title="Services — Report Automation, Building Code Intelligence & Custom Engineering Tools"
+        title="Services | Report Automation, Building Code Intelligence & Custom Engineering Tools"
         description="Engineers told us formatting is their biggest time sink. Reportly automates report formatting, reference assembly, and document production around your existing templates. MapleCodes handles building code research. We customize both to fit your firm."
         canonical="https://www.vibeops.ca/services"
       />
@@ -104,7 +104,7 @@ export default function Services() {
                 Stop formatting. Start delivering.
               </h1>
               <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                Engineers told us the biggest time sink is formatting reports — not the engineering work itself. Reportly automates the formatting, reference assembly, and document production. MapleCodes handles code research. We customize both to fit exactly how your firm already works.
+                Engineers told us the biggest time sink is formatting reports, not the engineering work itself. Reportly automates the formatting, reference assembly, and document production. MapleCodes handles code research. We customize both to fit exactly how your firm already works.
               </p>
             </div>
           </AnimatedContent>
@@ -134,7 +134,7 @@ export default function Services() {
                     Reportly
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    Your team already has the templates and the inspection data. Reportly connects the two — pulling in field photos, measurements, tables, and project data to produce formatted drafts with accurate references and executive summaries. No workflow changes. No learning curve.
+                    Your team already has the templates and the inspection data. Reportly connects the two, pulling in field photos, measurements, tables, and project data to produce formatted drafts with accurate references and executive summaries. No workflow changes. No learning curve.
                   </p>
                   <ul className="space-y-3 mb-9">
                     {reportlyFeatures.map((f) => (
@@ -196,7 +196,7 @@ export default function Services() {
                     MapleCodes
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-md">
-                    Enter a Canadian address. Get every applicable building code — federal, provincial, and municipal — in seconds. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
+                    Enter a Canadian address. Get every applicable building code (federal, provincial, and municipal) in seconds. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
                   </p>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
                     That same intelligence layer is available as the foundation for custom tools we build for your firm. If it touches Canadian building codes, we've already done the hard part.
@@ -282,7 +282,7 @@ export default function Services() {
                     </div>
                     <h3 className="text-[14px] font-semibold text-white mb-2">Custom solutions on our IP</h3>
                     <p className="text-[12.5px] text-white/40 leading-relaxed">
-                      Compliance checkers, permit documentation, code cross-referencing — whatever your firm needs, built on our indexed code intelligence layer.
+                      Compliance checkers, permit documentation, code cross-referencing, and more. Built on our indexed code intelligence layer.
                     </p>
                   </div>
                 </div>
@@ -312,7 +312,7 @@ export default function Services() {
                 Built around your firm, not ours.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm has different templates, different approval chains, and different tools. We've talked to 80+ engineering teams to understand these differences. We handle the full rollout — from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
+                Every firm has different templates, different approval chains, and different tools. We've talked to 80+ engineering teams to understand these differences. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
               </p>
             </AnimatedContent>
           </div>
@@ -347,7 +347,7 @@ export default function Services() {
                   Start with the report that takes the longest.
                 </h2>
                 <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  Tell us which report eats the most hours — the inspection report, the EA, the O&amp;M manual. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
+                  Tell us which report eats the most hours. The inspection report, the EA, the O&amp;M manual. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">

@@ -15,7 +15,7 @@ const problems = [
     title: "Jurisdiction Confusion",
     stat: "3 levels deep",
     description:
-      "Federal, provincial, and municipal codes stack and overlap. Missing one level means incomplete compliance — and potential liability.",
+      "Federal, provincial, and municipal codes stack and overlap. Missing one level means incomplete compliance and potential liability.",
   },
   {
     icon: ShieldAlert,

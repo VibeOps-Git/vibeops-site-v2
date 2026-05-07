@@ -79,7 +79,7 @@ const metrics = [
     value: 3,
     suffix: "",
     label: "Jurisdiction Levels",
-    context: "Federal, provincial, and municipal — layered automatically",
+    context: "Federal, provincial, and municipal, layered automatically",
   },
 ];
 
@@ -176,7 +176,7 @@ export function MetricsSection() {
           delay={0.5}
         >
           <p className="text-center text-gray-400 mt-12 text-lg">
-            Every project sits under <span className="text-white font-semibold">multiple overlapping jurisdictions</span> —
+            Every project sits under <span className="text-white font-semibold">multiple overlapping jurisdictions</span>.
             MapleCodes resolves the stack instantly.
           </p>
         </AnimatedContent>

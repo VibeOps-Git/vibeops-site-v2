@@ -46,7 +46,7 @@ export function CTASection() {
 
               {/* Subheadline */}
               <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-                Upload your template. Feed in your data. Get a formatted, reference-accurate first draft in minutes — not hours. Your team keeps working the way they already do.
+                Upload your template. Feed in your data. Get a formatted, reference-accurate first draft in minutes, not hours. Your team keeps working the way they already do.
               </p>
 
               {/* CTA Buttons */}

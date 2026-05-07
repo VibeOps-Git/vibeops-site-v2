@@ -115,7 +115,7 @@ export function HeroSection() {
         </p>
         <p className="text-base text-gray-500 max-w-lg text-center mb-10">
           Jurisdiction stack, applicable building codes, municipal bylaws,
-          referenced standards, and an AI governing brief — in seconds.
+          referenced standards, and an AI governing brief in seconds.
         </p>
       </AnimatedContent>
 

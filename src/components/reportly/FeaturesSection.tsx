@@ -12,7 +12,7 @@ const features = [
   {
     icon: Brain,
     title: "Accurate References",
-    description: "Correct code editions, municipal bylaws, and standards — automatically cited for the right jurisdiction. No more outdated references.",
+    description: "Correct code editions, municipal bylaws, and standards, automatically cited for the right jurisdiction. No more outdated references.",
     highlight: true,
   },
   {
@@ -36,7 +36,7 @@ const features = [
   {
     icon: HardHat,
     title: "Built for AEC Teams",
-    description: "Inspection reports, EAs, O&M manuals, compliance docs, asset assessments — purpose-built for civil, construction, and environmental work.",
+    description: "Inspection reports, EAs, O&M manuals, compliance docs, and asset assessments. Purpose-built for civil, construction, and environmental work.",
     highlight: true,
   },
 ];
@@ -74,7 +74,7 @@ export function FeaturesSection() {
               <span className="text-[#00ffcc]"><ScrambleText text="Civil Engineering" /></span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Not a generic AI document tool. Not Copilot. Reportly is purpose-built for the way civil and construction engineers actually produce reports.
+              Not a generic document tool. Reportly is purpose-built for the way civil and construction engineers actually produce reports.
             </p>
           </div>
         </AnimatedContent>

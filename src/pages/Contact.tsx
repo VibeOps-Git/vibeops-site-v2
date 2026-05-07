@@ -27,7 +27,7 @@ const contactChannels: ContactChannel[] = [
     email: "zander@vibeops.ca",
     blurb:
       "Big-picture questions, partnerships, and how Reportly or custom tools could fit your firm.",
-    subject: "VibeOps / Reportly — Strategy & Product Fit",
+    subject: "VibeOps / Reportly | Strategy & Product Fit",
     body: `Hi Zander,
 
 I'd like to connect about how VibeOps could fit into our workflows.
@@ -50,7 +50,7 @@ Thanks,
     email: "felix@vibeops.ca",
     blurb:
       "Pricing, pilots, procurement, and mapping automation to business outcomes and ROI.",
-    subject: "VibeOps — Sales / Partnership Inquiry",
+    subject: "VibeOps | Sales / Partnership Inquiry",
     body: `Hi Felix,
 
 I'm reaching out about a potential engagement with VibeOps.
@@ -75,7 +75,7 @@ Best,
     email: "eric@vibeops.ca",
     blurb:
       "Technical architecture, integrations, data flows, and how the automation engine works under the hood.",
-    subject: "VibeOps — Technical / Integration Discussion",
+    subject: "VibeOps | Technical / Integration Discussion",
     body: `Hi Eric,
 
 I'd like to talk through technical details for a potential build.
@@ -100,7 +100,7 @@ Best,
     email: "gabriel@vibeops.ca",
     blurb:
       "Content, storytelling, case studies, and how we talk about real engineering outcomes.",
-    subject: "VibeOps — Marketing / Storytelling",
+    subject: "VibeOps | Marketing / Storytelling",
     body: `Hi Gabe,
 
 Reaching out about marketing / storytelling.

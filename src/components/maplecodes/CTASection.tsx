@@ -42,7 +42,7 @@ export function CTASection() {
 
               <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
                 Stop hunting through government portals. Enter an address and get
-                the full building code picture — then create your report with Reportly.
+                the full building code picture, then create your report with Reportly.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

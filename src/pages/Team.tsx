@@ -151,7 +151,7 @@ export default function Team() {
     <>
       <SEO
         title="Team"
-        description="Meet the team building VibeOps. We build custom software for engineering and construction teams—reports, dashboards, field data tools, and internal applications."
+        description="Meet the team building VibeOps. We build custom software for engineering and construction teams: reports, dashboards, field data tools, and internal applications."
         canonical="https://www.vibeops.ca/team"
       />
       <div className="pt-24">
@@ -174,7 +174,7 @@ export default function Team() {
               <ScrambleText text="Meet the Team Building Your Tools" trigger="mount" />
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              We build custom software for engineering and construction teams—reports,
+              We build custom software for engineering and construction teams: reports,
               dashboards, field data tools, and internal applications that fit how you
               actually work.
             </p>
@@ -261,7 +261,7 @@ export default function Team() {
             <p className="text-gray-400">
               VibeOps exists to build{" "}
               <span className="font-semibold text-white">focused software</span>{" "}
-              that fits real workflows—so teams can spend more time on actual engineering
+              that fits real workflows so teams can spend more time on actual engineering
               and less time fighting their tools.
             </p>
           </div>
@@ -447,7 +447,7 @@ export default function Team() {
                 <div>
                   <h2 className="text-2xl font-semibold text-white mb-3"><ScrambleText text="Our Approach" /></h2>
                   <p className="text-gray-400 mb-6">
-                    We build custom software for engineering teams—reports, dashboards,
+                    We build custom software for engineering teams: reports, dashboards,
                     workflow tools, and internal applications. One focused solution at a time.
                   </p>
                   <div className="grid gap-4 md:grid-cols-2 text-sm">

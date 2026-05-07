@@ -7,7 +7,7 @@ const features = [
     icon: MapPin,
     title: "GIS Boundary Matching",
     description:
-      "Ray-casting point-in-polygon detection against real Canadian jurisdiction polygons. No guessing — exact municipal, provincial, and federal zones resolved instantly.",
+      "Ray-casting point-in-polygon detection against real Canadian jurisdiction polygons. No guessing. Exact municipal, provincial, and federal zones resolved instantly.",
   },
   {
     icon: Zap,
@@ -19,7 +19,7 @@ const features = [
     icon: Globe,
     title: "Full Jurisdiction Stack",
     description:
-      "Federal (NBCC, NFC), provincial (BC Building Code, OBC, etc.), and municipal bylaws — all three layers resolved and shown together.",
+      "Federal (NBCC, NFC), provincial (BC Building Code, OBC, etc.), and municipal bylaws. All three layers resolved and shown together.",
   },
   {
     icon: Brain,
@@ -37,7 +37,7 @@ const features = [
     icon: Link2,
     title: "One-Click Reportly Handoff",
     description:
-      "Click \"Create Report\" to trigger the full Pinecone RAG pipeline. References land in Reportly pre-approved — no re-entering anything.",
+      "Click \"Create Report\" to trigger the full Pinecone RAG pipeline. References land in Reportly pre-approved. No re-entering anything.",
   },
 ];
 

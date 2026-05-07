@@ -58,7 +58,7 @@ export function HeroSection() {
           Your inspection data and field notes deserve better than copy-paste.
         </p>
         <p className="text-lg text-gray-500 max-w-xl text-center mb-10">
-          Upload your existing Word templates. Feed in photos, measurements, and project data. Get formatted, reference-accurate reports — with proper executive summaries — in minutes.
+          Upload your existing Word templates. Feed in photos, measurements, and project data. Get formatted, reference-accurate reports with proper executive summaries in minutes.
         </p>
       </AnimatedContent>
 

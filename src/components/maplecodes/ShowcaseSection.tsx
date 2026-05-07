@@ -423,7 +423,7 @@ export function ShowcaseSection() {
                   Prepare Report Context
                 </div>
                 <p className="text-[11px] text-gray-600 mt-3">
-                  Part of the VibeOps suite — MapleCodes + Reportly
+                  Part of the VibeOps suite: MapleCodes + Reportly
                 </p>
               </div>
             </div>
