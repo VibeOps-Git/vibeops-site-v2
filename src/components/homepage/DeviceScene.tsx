@@ -206,7 +206,9 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
     <div className="relative w-full" data-testid="hero-device-stage">
       <div className="absolute inset-x-[15%] bottom-0 h-[18%] rounded-full bg-black/25 blur-3xl" />
 
-      <div className="relative flex items-center justify-center">
+      {/* Fixed-height wrapper so the section doesn't jump between device sizes.
+          aspect-ratio 16/10 matches the tallest device (laptop). */}
+      <div className="relative w-full" style={{ aspectRatio: "16 / 9.5" }}>
         {DEVICES.map((device, i) => {
           const isActive = i === activeIdx;
           const offset = ((i - activeIdx + DEVICES.length) % DEVICES.length);
@@ -214,11 +216,13 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
           return (
             <motion.div
               key={device}
-              className={`${isActive ? "relative" : "absolute"} w-full ${DEVICE_MAX_W[device]}`}
+              className={`absolute inset-0 flex items-center justify-center`}
               animate={isActive ? { x: 0, scale: 1, opacity: 1, zIndex: 2 } : { x: `${xDir * 80}%`, scale: 0.8, opacity: 0, zIndex: 1 }}
               transition={slideTransition}
             >
-              <DeviceShellByType device={device} videoSrc={videoSrc} reducedMotion={reducedMotion} />
+              <div className={`w-full ${DEVICE_MAX_W[device]}`}>
+                <DeviceShellByType device={device} videoSrc={videoSrc} reducedMotion={reducedMotion} />
+              </div>
             </motion.div>
           );
         })}
