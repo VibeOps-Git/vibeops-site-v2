@@ -199,9 +199,9 @@ export default function Index() {
 // =============================================================================
 
 const heroStats = [
-  { value: 80, suffix: '%+', label: 'Documentation Time Saved' },
-  { value: 3, suffix: ' min', label: 'Avg. Report Generation Time' },
-  { value: 100, suffix: '%', label: 'Existing Template Compatible' },
+  { value: 80, suffix: '%+', label: 'Less Time on Formatting' },
+  { value: 3, suffix: ' min', label: 'From Field Data to First Draft' },
+  { value: 100, suffix: '%', label: 'Your Existing Templates' },
 ];
 
 function HeroStatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
@@ -263,7 +263,7 @@ function HeroSection() {
           </motion.h1>
 
           <motion.p variants={item} className="mb-6 max-w-[26rem] text-[0.92rem] leading-[1.65] text-white/52 lg:text-[0.98rem]">
-            We build Reportly, the AI reporting platform for civil and construction teams, and customize it around your firm's templates, QA process, and data workflows.
+            Your team spends hours on formatting, not engineering. Reportly takes your existing Word templates, inspection data, and field notes and produces QA-ready reports in minutes — with accurate references and consistent formatting every time.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-3">
@@ -283,7 +283,7 @@ function HeroSection() {
           <motion.p variants={item} className="max-w-[28rem] text-[11px] text-white/22 tracking-wide leading-relaxed">
             <a href="/reportly" className="hover:text-emerald-400/50 transition-colors">Reportly</a> &middot;{' '}
             <a href="/maplecodes" className="hover:text-[#d92f37]/50 transition-colors">MapleCodes</a> &middot;{' '}
-            <a href="/services" className="hover:text-cyan-400/50 transition-colors">Custom Rollouts</a> &middot; Built for civil and construction teams
+            <a href="/services" className="hover:text-cyan-400/50 transition-colors">Custom Rollouts</a> &middot; Trusted by civil, construction &amp; environmental teams
           </motion.p>
         </motion.div>
 
@@ -356,7 +356,7 @@ function ModelSection() {
             Two products. One implementation team. Zero workflow disruption.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-xl mb-14 leading-[1.8]">
-            MapleCodes identifies every applicable building code for your project site. Reportly turns that context into polished, QA-ready engineering reports. And we customize both to fit exactly how your firm works.
+            MapleCodes finds every applicable building code for your project address. Reportly takes your inspection data, field notes, and templates and produces formatted, reference-accurate reports. We customize both to fit your firm's existing process — no new tools to learn.
           </p>
         </Reveal>
 
@@ -382,9 +382,9 @@ function ModelSection() {
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
-                'Enter address, get jurisdiction stack',
-                '85+ building codes, 375+ standards',
-                'AI-powered governing briefs',
+                'Enter address, get full jurisdiction stack',
+                '85+ codes, 375+ standards, 55+ bylaws',
+                'Municipality-specific compliance briefs',
                 'One-click handoff to Reportly',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
@@ -419,14 +419,14 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">Reportly</h3>
             </div>
             <p className="text-[11px] text-emerald-400/58 font-medium tracking-wide mb-5">
-              AI report automation for civil and construction teams
+              From inspection data and field notes to formatted reports
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
-                'Existing Word and Excel templates',
-                'Photos, tables, charts, and project data',
-                'QA-ready branded outputs',
-                'Built for civil and construction reports',
+                'Your existing Word and Excel templates',
+                'Photos, field data, tables, and charts',
+                'Accurate references and exec summaries',
+                'Consistent formatting across every report',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
                   <Check className="w-3.5 h-3.5 text-emerald-500/65 flex-shrink-0 mt-0.5" /> {f}
@@ -460,14 +460,14 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">Custom Rollouts</h3>
             </div>
             <p className="text-[11px] text-cyan-300/45 font-medium tracking-wide mb-5">
-              We implement the suite around your firm's exact workflow
+              Adapted to your templates, approval chain, and existing tools
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
-                'Firm-specific template library setup',
-                'QA and approval workflow mapping',
-                'SharePoint, Bluebeam, CRM integrations',
-                'Custom add-ons and extensions',
+                'Your template library, mapped and ready',
+                'QA checklists and approval workflows built in',
+                'SharePoint, Bluebeam, Excel pipelines',
+                'On-premise deployment available',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
                   <Check className="w-3.5 h-3.5 text-white/25 flex-shrink-0 mt-0.5" /> {f}
@@ -517,7 +517,7 @@ function PlatformSection() {
             Your templates in. <span className="text-emerald-300">Polished reports out.</span>
           </h2>
           <p className="text-center text-[0.95rem] text-white/48 max-w-xl mx-auto mb-12 leading-[1.8]">
-            QA-ready, brand-consistent civil engineering reports in minutes. Without changing a single thing about how your team works.
+            Stop losing hours to formatting, reference hunting, and copy-paste assembly. Upload your data, pick your template, and get a QA-ready draft with accurate references — without changing how your team works.
           </p>
           <div className="flex justify-center mb-14">
             <Btn href="/reportly" primary>Explore Reportly <ArrowRight className="w-3.5 h-3.5" /></Btn>
@@ -557,16 +557,16 @@ function PlatformSection() {
 // =============================================================================
 
 const featureItems = [
-  'Works with the Word templates you already use',
-  'Charts, tables, and photos from live engineering data',
-  'Brand-consistent, QA-ready civil engineering reports',
-  'No changes to your existing workflow',
+  'Works with the Word and Excel templates you already use',
+  'Photos, measurements, tables, and field data embedded automatically',
+  'Accurate references, executive summaries, and consistent formatting',
+  'No workflow changes — fits your existing QA and approval process',
 ];
 
 const stats = [
-  { value: 80, suffix: '%+', label: 'Time saved on documentation' },
-  { value: 3, suffix: ' min', label: 'Avg. report generation time' },
-  { value: 100, suffix: '%', label: 'Template compatible' },
+  { value: 80, suffix: '%+', label: 'Less time formatting reports' },
+  { value: 3, suffix: ' min', label: 'From raw data to first draft' },
+  { value: 100, suffix: '%', label: 'Your existing templates' },
 ];
 
 function StatCard({ value, suffix, label }: { value: number; suffix: string; label: string }) {
@@ -607,7 +607,7 @@ function ReportlySection() {
                 <ScrambleText text="Reportly" duration={2.2} trigger="inView" />
               </h2>
               <p className="text-white/45 text-sm md:text-[0.95rem] leading-[1.8] max-w-xs mb-10">
-                Our flagship AI report writing tool for civil engineers. Connect your existing Word templates, feed in field data, and get review-ready engineering reports automatically.
+                Connect your existing Word templates. Feed in inspection data, field notes, photos, and measurements. Get a formatted first draft with embedded images, accurate references, and a proper executive summary — ready for QA review.
               </p>
             </Reveal>
 
@@ -691,13 +691,13 @@ function PatternInterruptA() {
           className="font-bold text-white/52 leading-[1.32] tracking-[-0.018em]"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          Not a chatbot. Not a dev shop. Not another AI wrapper.
+          Not Copilot. Not a chatbot. Not another AI wrapper that half-works.
         </p>
         <p
           className="font-bold text-white/88 leading-[1.32] tracking-[-0.018em] mt-2"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          A reporting platform and code intelligence layer, custom-fit to how civil teams actually work.
+          A reporting platform built for how civil and construction teams actually produce documents — with your templates, your references, your QA process.
         </p>
       </Reveal>
     </section>
@@ -717,11 +717,11 @@ const adoptionSteps = [
     icon: FileText,
     title: 'Reportly Platform',
     subtitle: 'Core SaaS',
-    description: 'Generate formatted civil engineering reports from your existing Word and Excel templates, photos, tables, charts, and live project data. QA-ready output every time.',
+    description: 'Generate formatted reports from your existing Word and Excel templates. Feed in inspection data, field notes, photos, and measurements. Get drafts with embedded images, accurate references, and executive summaries — ready for QA.',
     features: [
-      'Word and Excel template automation',
-      'Photos, tables and charts from project data',
-      'QA-ready, brand-consistent output',
+      'Your Word and Excel templates, automated',
+      'Photos, field data, and measurements embedded',
+      'Accurate references and consistent formatting',
     ],
     href: '/reportly',
     cta: 'Explore Reportly',
@@ -732,7 +732,7 @@ const adoptionSteps = [
     icon: Wrench,
     title: 'Template + QA Rollout',
     subtitle: 'Implementation',
-    description: "Adapt Reportly to your firm's templates, QA process, approval workflow, and reporting standards. Engineers adopt it without changing how they work.",
+    description: "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do — the formatting and assembly happens automatically.",
     href: '/services',
     cta: 'Learn more',
   },
@@ -741,7 +741,7 @@ const adoptionSteps = [
     icon: BarChart3,
     title: 'Data + Workflow Integrations',
     subtitle: 'Connections',
-    description: 'Connect Excel, SharePoint, Bluebeam workflows, inspection forms, project folders, CRMs, and internal databases to feed Reportly automatically.',
+    description: 'Connect the tools your team already uses — Excel, SharePoint, Bluebeam, inspection forms, project folders — so data flows into Reportly without manual re-entry.',
     href: '/services',
     cta: 'Learn more',
   },
@@ -750,7 +750,7 @@ const adoptionSteps = [
     icon: Layers,
     title: 'Custom Add-ons',
     subtitle: 'Extensions',
-    description: 'Build dashboards, calculators, estimators, and lightweight internal tools that extend Reportly and support the broader reporting workflow.',
+    description: 'Dashboards, calculators, compliance trackers, and internal tools that plug into your reporting workflow and extend what Reportly can do for your firm.',
     href: '/services',
     cta: 'Learn more',
   },
@@ -842,10 +842,10 @@ function FeaturesSection() {
         <Reveal>
           <Label>Implementation Path</Label>
           <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-2xl mb-5 leading-[1.08] mt-4">
-            From first report to full workflow automation.
+            Start with the report that takes the longest.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-14 leading-[1.8]">
-            Start with Reportly. Then expand into the integrations, dashboards, and tools your civil team actually needs.
+            Pick one report type — inspection reports, environmental assessments, O&amp;M manuals, compliance docs. Automate it. Then expand from there.
           </p>
         </Reveal>
 
@@ -896,10 +896,10 @@ function ProcessSection() {
         <Reveal>
           <Label>How We Work</Label>
           <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mb-5 mt-4">
-            Custom engineering automation.
+            We work the way your firm does.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.8]">
-            We get one workflow right before moving to the next. Each civil engineering team is different. We build to fit yours.
+            Every firm has different templates, different approval chains, different tools. We get one workflow right before touching the next. No disruption, no learning curve.
           </p>
         </Reveal>
 
