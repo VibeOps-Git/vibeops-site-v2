@@ -163,7 +163,7 @@ export function ProblemSection() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400"><ScrambleText text="Broken" /></span>
                 </h2>
                 <p className="text-gray-400 mb-8">
-                  Validated through <span className="text-white font-semibold">80+ discovery calls</span> with engineering firms, from Stantec and AECOM to mid-size civil shops and municipal teams across Canada.
+                  Validated through <span className="text-white font-semibold">200+ discovery calls</span> with engineering firms, from Stantec and AECOM to mid-size civil shops and municipal teams across Canada.
                 </p>
               </div>
             </AnimatedContent>

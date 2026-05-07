@@ -961,7 +961,7 @@ function TeamSection() {
           <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
             <div>
               <Label>The People</Label>
-              <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mt-4">We've talked to 80+ firms. We built what they asked for.</h2>
+              <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mt-4">We've talked to 200+ firms. We built what they asked for.</h2>
             </div>
             <motion.a href="/team" className="flex items-center gap-1.5 text-[11px] text-white/30 uppercase tracking-[0.15em] hover:text-white/70 transition-colors duration-200" whileHover={{ x: 1 }} transition={{ duration: 0.15 }}>
               Full team <ArrowUpRight className="w-3 h-3" />
@@ -982,7 +982,7 @@ function TeamSection() {
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
-                <p className="text-base md:text-lg font-semibold text-white">Built from 80+ discovery calls with engineering firms across Canada.</p>
+                <p className="text-base md:text-lg font-semibold text-white">Built from 200+ discovery calls with engineering firms across Canada.</p>
               </div>
               <Btn href="/contact" primary>Talk to the Team</Btn>
             </div>

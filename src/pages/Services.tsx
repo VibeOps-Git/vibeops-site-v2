@@ -312,7 +312,7 @@ export default function Services() {
                 Built around your firm, not ours.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm has different templates, different approval chains, and different tools. We've talked to 80+ engineering teams to understand these differences. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
+                Every firm has different templates, different approval chains, and different tools. We've talked to 200+ engineering teams to understand these differences. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
               </p>
             </AnimatedContent>
           </div>
