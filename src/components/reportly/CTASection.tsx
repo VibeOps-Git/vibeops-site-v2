@@ -50,16 +50,26 @@ export function CTASection() {
                 Less formatting, more engineering.
               </p>
 
-              {/* CTA Button */}
-              <a
-                href="https://reportly.ca/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
-              >
-                <span>Try Reportly</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="https://reportly.ca/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
+                >
+                  <span>Try Reportly</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+                <Link
+                  to="/maplecodes"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-[#d92f37]/30 bg-[#d92f37]/5 font-semibold hover:border-[#d92f37]/50 hover:bg-[#d92f37]/10 transition-all group"
+                  style={{ color: '#d92f37' }}
+                >
+                  <span>Try MapleCodes</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
           </div>
         </AnimatedContent>

@@ -7,7 +7,7 @@ import {
   useInView,
   useReducedMotion,
 } from 'framer-motion';
-import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight, MapPin } from 'lucide-react';
 import { useRef, useEffect, useState, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
 import { ScrambleText } from '@/components/ScrambleText';
@@ -150,7 +150,7 @@ export default function Index() {
     <>
       <SEO
         title="AI Engineering Report Automation | VibeOps Technologies"
-        description="VibeOps builds Reportly, the AI report automation platform for civil and construction engineering teams, and implements it around your firm's templates, QA process, and data workflows."
+        description="VibeOps builds Reportly and MapleCodes — the AI report automation platform and building code intelligence tool for civil and construction engineering teams."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
@@ -169,10 +169,12 @@ export default function Index() {
       <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
         <a href="/services">AI engineering automation services for civil and construction teams</a>
         <a href="/reportly">Reportly - AI report writing software for civil engineers</a>
+        <a href="/maplecodes">MapleCodes - Canadian building code intelligence by address</a>
         <a href="/contact">Book a demo for engineering report automation</a>
         <a href="/team">Meet the VibeOps engineering automation team</a>
         <a href="/blog">AI tools for civil engineering report writing and documentation</a>
         <a href="https://reportly.ca" rel="noopener">Reportly - automated engineering report generator</a>
+        <a href="https://maplecodes.ca" rel="noopener">MapleCodes - Canadian building code lookup</a>
       </div>
     </>
   );
@@ -272,7 +274,9 @@ function HeroSection() {
           </motion.div>
 
           <motion.p variants={item} className="max-w-[28rem] text-[11px] text-white/22 tracking-wide leading-relaxed">
-            Flagship SaaS product &middot; Custom engineering rollouts &middot; Built for civil and construction teams
+            <a href="/reportly" className="hover:text-emerald-400/50 transition-colors">Reportly</a> &middot;{' '}
+            <a href="/maplecodes" className="hover:text-[#d92f37]/50 transition-colors">MapleCodes</a> &middot;{' '}
+            <a href="/services" className="hover:text-cyan-400/50 transition-colors">Custom Rollouts</a> &middot; Built for civil and construction teams
           </motion.p>
         </motion.div>
 
@@ -340,29 +344,73 @@ function ModelSection() {
     <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
-          <Label>The Model</Label>
+          <Label>The Suite</Label>
           <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-3xl mb-5 leading-[1.08] mt-4">
-            One startup. Two ways to help engineering teams move faster.
+            One platform. Three products for engineering teams.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-xl mb-14 leading-[1.8]">
-            Reportly is the product. VibeOps is the team that implements it, integrates it, and extends it to fit how your firm actually works.
+            Start with a location. Understand the governing code environment. Then generate reports using that verified context. VibeOps is the team that builds, implements, and extends it all.
           </p>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* MapleCodes card */}
+          <motion.div
+            className="group flex flex-col p-7 rounded-2xl border border-[#d92f37]/20 bg-gradient-to-br from-[#d92f37]/8 to-transparent"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
+            whileHover={{ borderColor: 'rgba(217,47,55,0.35)', y: -3 }}
+          >
+            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#d92f37]/10 border border-[#d92f37]/25 text-[9px] font-semibold text-[#d92f37] uppercase tracking-[0.22em] mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d92f37] inline-block" /> Code Intelligence
+            </span>
+            <div className="flex items-center gap-2.5 mb-1">
+              <MapPin className="w-5 h-5 text-[#d92f37]" />
+              <h3 className="text-xl font-bold text-white">MapleCodes</h3>
+            </div>
+            <p className="text-[11px] text-[#d92f37]/70 font-medium tracking-wide mb-5">
+              Canadian building code lookup by address
+            </p>
+            <ul className="space-y-2.5 mb-8 flex-1">
+              {[
+                'Enter address, get jurisdiction stack',
+                '85+ building codes, 375+ standards',
+                'AI-powered governing briefs',
+                'One-click handoff to Reportly',
+              ].map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
+                  <Check className="w-3.5 h-3.5 text-[#d92f37]/65 flex-shrink-0 mt-0.5" /> {f}
+                </li>
+              ))}
+            </ul>
+            <motion.a
+              href="/maplecodes"
+              className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-[#d92f37] hover:text-[#e54950] transition-colors"
+              whileHover={{ x: 2 }}
+              transition={{ duration: 0.15 }}
+            >
+              View MapleCodes <ArrowRight className="w-3.5 h-3.5" />
+            </motion.a>
+          </motion.div>
+
           {/* Reportly SaaS card */}
           <motion.div
             className="group flex flex-col p-7 rounded-2xl border border-emerald-500/18 bg-gradient-to-br from-emerald-950/22 to-transparent"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
+            transition={{ duration: 0.55, delay: 0.06, ease: HOMEPAGE_EASE }}
             whileHover={{ borderColor: 'rgba(52,211,153,0.28)', y: -3 }}
           >
             <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/28 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em] mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" /> Flagship Product
             </span>
-            <h3 className="text-xl font-bold text-white mb-1">Reportly SaaS</h3>
+            <div className="flex items-center gap-2.5 mb-1">
+              <FileText className="w-5 h-5 text-emerald-400" />
+              <h3 className="text-xl font-bold text-white">Reportly</h3>
+            </div>
             <p className="text-[11px] text-emerald-400/58 font-medium tracking-wide mb-5">
               AI report automation for civil and construction teams
             </p>
@@ -394,22 +442,25 @@ function ModelSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, delay: 0.08, ease: HOMEPAGE_EASE }}
+            transition={{ duration: 0.55, delay: 0.12, ease: HOMEPAGE_EASE }}
             whileHover={{ borderColor: 'rgba(103,232,249,0.16)', y: -3 }}
           >
             <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/30 border border-cyan-500/20 text-[9px] font-semibold text-cyan-400/80 uppercase tracking-[0.22em] mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/70 inline-block" /> Implementation Partner
             </span>
-            <h3 className="text-xl font-bold text-white mb-1">Custom Rollouts</h3>
+            <div className="flex items-center gap-2.5 mb-1">
+              <Wrench className="w-5 h-5 text-cyan-400/70" />
+              <h3 className="text-xl font-bold text-white">Custom Rollouts</h3>
+            </div>
             <p className="text-[11px] text-cyan-300/45 font-medium tracking-wide mb-5">
-              We make Reportly fit your firm's exact workflow
+              We make the suite fit your firm's exact workflow
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
                 'Firm-specific template library setup',
                 'QA and approval workflow mapping',
-                'SharePoint, Bluebeam, CRM and database integrations',
-                'Custom add-ons where the product needs to go further',
+                'SharePoint, Bluebeam, CRM integrations',
+                'Custom add-ons and extensions',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
                   <Check className="w-3.5 h-3.5 text-white/25 flex-shrink-0 mt-0.5" /> {f}

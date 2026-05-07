@@ -2,13 +2,15 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown } from "lucide-react";
+import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown, LogOut } from "lucide-react";
 import SpaceField from "./SpaceField";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NavLink {
   path: string;
   label: string;
   badge?: string;
+  badgeColor?: string;
 }
 
 interface NavGroup {
@@ -21,6 +23,7 @@ const navGroups: NavGroup[] = [
     label: "Solutions",
     links: [
       { path: "/reportly", label: "Reportly", badge: "New" },
+      { path: "/maplecodes", label: "MapleCodes", badge: "New", badgeColor: "#d92f37" },
       { path: "/services", label: "Consulting" },
     ],
   },
@@ -46,6 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileExpandedGroups, setMobileExpandedGroups] = useState<string[]>([]);
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { user, openLogin, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -156,13 +160,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             to={link.path}
                             className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${
                               isActive(link.path)
-                                ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                                ? link.badgeColor ? `text-white bg-white/10` : "text-[#00ffcc] bg-[#00ffcc]/10"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                             }`}
                           >
                             {link.label}
                             {link.badge && (
-                              <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                              <span
+                                className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-white rounded-full"
+                                style={{ backgroundColor: link.badgeColor || '#00ffcc', color: '#fff' }}
+                              >
                                 {link.badge}
                               </span>
                             )}
@@ -186,12 +193,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Contact
               </Link>
 
-              <Link
-                to="https://reportly.ca/login"
-                className="ml-4 px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all duration-200 hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
-              >
-                Login
-              </Link>
+              {user ? (
+                <div className="ml-4 flex items-center gap-2">
+                  <span className="text-xs text-gray-400 truncate max-w-[140px]">{user.email}</span>
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-white/10 text-sm text-gray-400 transition-all duration-200 hover:text-white hover:border-white/20 hover:bg-white/5"
+                  >
+                    <LogOut size={14} /> Sign Out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={openLogin}
+                  className="ml-4 px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all duration-200 hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
+                >
+                  Login
+                </button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -238,13 +257,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           to={link.path}
                           className={`flex items-center justify-between py-3 px-4 rounded-xl text-sm transition-colors ${
                             isActive(link.path)
-                              ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                              ? link.badgeColor ? "text-white bg-white/10" : "text-[#00ffcc] bg-[#00ffcc]/10"
                               : "text-gray-400 hover:text-white hover:bg-white/5"
                           }`}
                         >
                           {link.label}
                           {link.badge && (
-                            <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                            <span
+                              className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-white rounded-full"
+                              style={{ backgroundColor: link.badgeColor || '#00ffcc' }}
+                            >
                               {link.badge}
                             </span>
                           )}
@@ -268,12 +290,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
 
               <div className="pt-2">
-                <Link
-                  to="https://reportly.ca/login"
-                  className="block w-full py-3 px-4 rounded-xl bg-[#00ffcc] text-black text-sm font-semibold text-center"
-                >
-                  Login to Reportly
-                </Link>
+                {user ? (
+                  <button
+                    onClick={logout}
+                    className="block w-full py-3 px-4 rounded-xl border border-white/10 text-gray-400 text-sm font-semibold text-center transition-colors hover:text-white hover:bg-white/5"
+                  >
+                    Sign Out ({user.email})
+                  </button>
+                ) : (
+                  <button
+                    onClick={openLogin}
+                    className="block w-full py-3 px-4 rounded-xl bg-[#00ffcc] text-black text-sm font-semibold text-center"
+                  >
+                    Login
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -286,7 +317,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 bg-[#0a0a0f]/80 backdrop-blur-sm">
         <div className="container mx-auto pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-16 pb-[max(4rem,env(safe-area-inset-bottom))]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-10">
             {/* Brand */}
             <div>
               <img
@@ -299,21 +330,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </p>
             </div>
 
-            {/* Links */}
+            {/* Products */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Products</h4>
+              <div className="space-y-3 text-sm">
+                <Link to="/reportly" className="flex items-center gap-2 text-gray-400 hover:text-[#00ffcc] transition-colors">
+                  Reportly
+                  <span className="px-1.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-wider bg-[#00ffcc]/15 text-[#00ffcc] rounded-full">SaaS</span>
+                </Link>
+                <Link to="/maplecodes" className="flex items-center gap-2 text-gray-400 hover:text-[#d92f37] transition-colors">
+                  MapleCodes
+                  <span className="px-1.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-wider bg-[#d92f37]/15 text-[#d92f37] rounded-full">New</span>
+                </Link>
+                <Link to="/services" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
+                  Custom Rollouts
+                </Link>
+              </div>
+            </div>
+
+            {/* Company */}
             <div>
               <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
               <div className="space-y-3 text-sm">
                 <Link to="/" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Home
                 </Link>
-                <Link to="/services" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
-                  Services
-                </Link>
                 <Link to="/team" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Team
                 </Link>
                 <Link to="/case-studies" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
                   Case Studies
+                </Link>
+                <Link to="/blog" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
+                  Blog
                 </Link>
               </div>
             </div>
