@@ -71,12 +71,12 @@ Best,
   },
   {
     label: "Architecture & Development",
-    person: "Eric Balanecki",
-    email: "eric@vibeops.ca",
+    person: "Qazi Omair Ahmed",
+    email: "omair@vibeops.ca",
     blurb:
       "Technical architecture, integrations, data flows, and how the automation engine works under the hood.",
     subject: "VibeOps | Technical / Integration Discussion",
-    body: `Hi Eric,
+    body: `Hi Omair,
 
 I'd like to talk through technical details for a potential build.
 
