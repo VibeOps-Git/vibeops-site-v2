@@ -157,7 +157,7 @@ export default function Index() {
     <>
       <SEO
         title="AI Engineering Report Automation | VibeOps Technologies"
-        description="VibeOps builds Reportly and MapleCodes — the AI report automation platform and building code intelligence tool for civil and construction engineering teams."
+        description="Reportly turns your existing Word templates, inspection data, and field notes into formatted, reference-accurate engineering reports in minutes. MapleCodes handles building code research. Built for civil, construction, and environmental teams."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />

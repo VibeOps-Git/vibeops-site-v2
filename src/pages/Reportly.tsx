@@ -27,7 +27,7 @@ export default function Reportly() {
     <>
       <SEO
         title="Reportly"
-        description="Automated engineering report generation. Transform hours of manual formatting into minutes. Works with your existing Word templates, generates charts and tables from live data."
+        description="Stop losing hours to report formatting. Reportly takes your existing Word templates, inspection data, field photos, and measurements and produces QA-ready reports with accurate references and executive summaries — in minutes, not hours."
         canonical="https://www.vibeops.ca/reportly"
       />
       <div className="relative">

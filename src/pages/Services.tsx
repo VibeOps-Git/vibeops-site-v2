@@ -81,7 +81,7 @@ export default function Services() {
     <>
       <SEO
         title="Services — Report Automation, Building Code Intelligence & Custom Engineering Tools"
-        description="VibeOps builds Reportly and MapleCodes — AI report automation and building code intelligence for civil and construction teams. We implement, integrate, and build custom solutions powered by our proprietary code data layer."
+        description="Engineers told us formatting is their biggest time sink. Reportly automates report formatting, reference assembly, and document production around your existing templates. MapleCodes handles building code research. We customize both to fit your firm."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
