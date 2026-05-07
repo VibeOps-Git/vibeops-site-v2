@@ -110,32 +110,39 @@ function SectionBridge({ from, to, height = 80 }: { from: string; to: string; he
   );
 }
 
+function MarqueeSet() {
+  return (
+    <span className="inline-flex items-center shrink-0">
+      {TICKER_ITEMS.map((t, i) => (
+        <span key={i} className="inline-flex items-center gap-3 px-6">
+          {t.type === 'logo' ? (
+            t.url ? (
+              <a href={t.url} target="_blank" rel="noopener noreferrer" aria-label={t.alt}>
+                <img src={t.src} alt={t.alt} className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-70 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
+              </a>
+            ) : (
+              <img src={t.src} alt={t.alt} className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-65 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
+            )
+          ) : (
+            <a href={t.url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.28em] text-white/35 hover:text-white/70 transition-colors duration-200 font-medium">
+              {t.label}
+            </a>
+          )}
+          <span className="w-1 h-1 rounded-full bg-white/15 flex-shrink-0" aria-hidden="true" />
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function InfiniteMarquee({ speed = 35 }: { speed?: number }) {
   return (
     <div className="overflow-hidden w-full select-none">
-      <div className="flex whitespace-nowrap w-max" style={{ animation: `marquee-scroll ${speed}s linear infinite` }}>
-        {[0, 1].map((pass) => (
-          <span key={pass} className="flex items-center shrink-0">
-            {TICKER_ITEMS.map((t, i) => (
-              <span key={`${pass}-${i}`} className="inline-flex items-center gap-3 px-6">
-                {t.type === 'logo' ? (
-                  t.url ? (
-                    <a href={t.url} target="_blank" rel="noopener noreferrer" aria-label={t.alt}>
-                      <img src={t.src} alt={t.alt} className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-70 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
-                    </a>
-                  ) : (
-                    <img src={t.src} alt={t.alt} className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-65 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
-                  )
-                ) : (
-                  <a href={t.url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.28em] text-white/35 hover:text-white/70 transition-colors duration-200 font-medium">
-                    {t.label}
-                  </a>
-                )}
-                <span className="w-1 h-1 rounded-full bg-white/15 flex-shrink-0" aria-hidden="true" />
-              </span>
-            ))}
-          </span>
-        ))}
+      <div className="inline-flex whitespace-nowrap" style={{ animation: `marquee-scroll ${speed}s linear infinite` }}>
+        <MarqueeSet />
+        <MarqueeSet />
+        <MarqueeSet />
+        <MarqueeSet />
       </div>
     </div>
   );
@@ -282,7 +289,7 @@ function HeroSection() {
 
         {/* Right device column */}
         <motion.div
-          className="relative z-10 flex w-full items-center justify-center pb-4 pt-8 md:w-[66%] md:pb-0 md:pt-10 xl:w-[70%]"
+          className="relative z-10 flex w-full items-center justify-center pb-4 pt-16 md:w-[66%] md:pb-0 md:pt-24 xl:w-[70%]"
           style={{ y: deviceY, opacity: deviceOpacity }}
         >
           <motion.div className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={HOMEPAGE_MOTION.heroFade}>
