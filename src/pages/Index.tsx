@@ -156,8 +156,8 @@ export default function Index() {
   return (
     <>
       <SEO
-        title="AI Engineering Report Automation | VibeOps Technologies"
-        description="Reportly turns your existing Word templates, inspection data, and field notes into formatted, reference-accurate engineering reports in minutes. MapleCodes handles building code research. Built for civil, construction, and environmental teams."
+        title="AI Engineering Automation Platform | Report Generation, Building Code Compliance & Developer API | VibeOps"
+        description="VibeOps automates engineering documentation for civil, structural, geotechnical, and environmental teams. Reportly generates QA-ready inspection reports, O&M manuals, and compliance docs from your templates. MapleCodes provides instant Canadian building code lookups by address. Built from 200+ discovery calls with firms like AECOM, Stantec, and Jacobs."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
@@ -199,9 +199,9 @@ export default function Index() {
 // =============================================================================
 
 const heroStats = [
-  { value: 80, suffix: '%+', label: 'Less Time on Formatting' },
-  { value: 3, suffix: ' min', label: 'From Field Data to First Draft' },
-  { value: 100, suffix: '%', label: 'Your Existing Templates' },
+  { value: 80, suffix: '%+', label: 'Less Time on Report Formatting' },
+  { value: 85, suffix: '+', label: 'Building Codes Indexed' },
+  { value: 200, suffix: '+', label: 'Engineering Firms Consulted' },
 ];
 
 function HeroStatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
@@ -227,7 +227,7 @@ function HeroSection() {
     <section
       ref={sectionRef}
       className="relative min-h-screen w-full flex flex-col overflow-hidden bg-[#050912]"
-      aria-label="VibeOps - AI Engineering Report Automation for Civil and Construction"
+      aria-label="VibeOps - AI Engineering Automation Platform for Civil, Structural, Geotechnical and Construction Teams"
     >
       <div className="relative z-10 flex w-full flex-1 flex-col md:flex-row md:items-center">
         {/* Left text column */}
@@ -263,27 +263,27 @@ function HeroSection() {
           </motion.h1>
 
           <motion.p variants={item} className="mb-6 max-w-[26rem] text-[0.92rem] leading-[1.65] text-white/52 lg:text-[0.98rem]">
-            Your team spends hours on formatting, not engineering. Reportly takes your existing Word templates, inspection data, and field notes and produces QA-ready reports in minutes, with accurate references and consistent formatting every time.
+            Your engineers spend a third of their week formatting reports, not doing engineering. VibeOps automates the entire documentation workflow: report generation from your templates, building code compliance research by address, and a developer API to embed code intelligence into your own tools.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-3">
             <motion.a
-              href="/reportly"
+              href="/services"
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[13.5px] font-bold whitespace-nowrap hover:from-emerald-200 hover:to-emerald-300 transition-colors duration-200"
               style={{ boxShadow: '0 18px 46px rgba(52, 211, 153, 0.18)' }}
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={{ scale: 0.97 }}
               transition={HOMEPAGE_MOTION.hoverSpring}
             >
-              Explore Reportly <ArrowRight className="w-3.5 h-3.5" />
+              See Our Products <ArrowRight className="w-3.5 h-3.5" />
             </motion.a>
-            <Btn href="/services">See Custom Rollouts</Btn>
+            <Btn href="/contact">Book a Demo</Btn>
           </motion.div>
 
           <motion.p variants={item} className="max-w-[28rem] text-[11px] text-white/22 tracking-wide leading-relaxed">
             <a href="/reportly" className="hover:text-emerald-400/50 transition-colors">Reportly</a> &middot;{' '}
             <a href="/maplecodes" className="hover:text-[#d92f37]/50 transition-colors">MapleCodes</a> &middot;{' '}
-            <a href="/services" className="hover:text-cyan-400/50 transition-colors">Custom Rollouts</a> &middot; Trusted by civil, construction &amp; environmental teams
+            <a href="/services" className="hover:text-cyan-400/50 transition-colors">Custom Rollouts</a> &middot; Trusted by civil, structural, geotechnical &amp; environmental teams across Canada
           </motion.p>
         </motion.div>
 
@@ -351,12 +351,12 @@ function ModelSection() {
     <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
-          <Label>The Suite</Label>
+          <Label>The Platform</Label>
           <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-3xl mb-5 leading-[1.08] mt-4">
-            Two products. One implementation team. Zero workflow disruption.
+            Report automation, code intelligence, and a developer API. One platform.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-xl mb-14 leading-[1.8]">
-            MapleCodes finds every applicable building code for your project address. Reportly takes your inspection data, field notes, and templates and produces formatted, reference-accurate reports. We customize both to fit your firm's existing process. No new tools to learn.
+            MapleCodes finds every applicable building code, bylaw, and referenced standard for your project address. Reportly turns your inspection data, field notes, and existing templates into formatted, reference-accurate reports. Our API lets you build custom compliance tools on top of the same intelligence layer. We implement all of it around how your firm already works.
           </p>
         </Reveal>
 
@@ -378,14 +378,14 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">MapleCodes</h3>
             </div>
             <p className="text-[11px] text-[#d92f37]/70 font-medium tracking-wide mb-5">
-              Every applicable code for any Canadian address, in seconds
+              Instant building code compliance lookup for any Canadian project address
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
-                'Enter address, get full jurisdiction stack',
-                '85+ codes, 375+ standards, 55+ bylaws',
-                'Municipality-specific compliance briefs',
-                'One-click handoff to Reportly',
+                'Federal, provincial, and municipal jurisdiction stack',
+                '85+ codes, 375+ standards, 55+ bylaws indexed',
+                'AI-powered compliance briefs and code Q&A',
+                'One-click handoff to Reportly for report generation',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
                   <Check className="w-3.5 h-3.5 text-[#d92f37]/65 flex-shrink-0 mt-0.5" /> {f}
