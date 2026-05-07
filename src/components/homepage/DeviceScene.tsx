@@ -20,7 +20,7 @@ function AutoVideo({ src, className = "" }: { src: string; className?: string })
 }
 
 // ---------------------------------------------------------------------------
-// 1. Rugged Field Laptop — Toughbook / Dell Latitude Rugged
+// 1. Rugged Field Laptop - Toughbook / Dell Latitude Rugged
 // ---------------------------------------------------------------------------
 
 function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMotion: boolean }) {
@@ -92,24 +92,24 @@ function LaptopShell({ videoSrc, reducedMotion }: { videoSrc: string; reducedMot
 }
 
 // ---------------------------------------------------------------------------
-// 2. iPad Pro — LANDSCAPE (screen 3:2 = clearly wider than tall)
+// 2. iPad Pro - LANDSCAPE (screen 3:2 = clearly wider than tall)
 // ---------------------------------------------------------------------------
 
 function TabletShell({ videoSrc }: { videoSrc: string }) {
   return (
     <div className="w-full">
       <div className="relative" style={{ border: "1px solid #babdbf", borderRadius: 14, background: "#0d0d0d", boxShadow: "inset 0 0 0 3px #e2e3e4, 0 30px 80px rgba(0,0,0,0.45)" }}>
-        {/* Frame padding — thinner on long edges (top/bottom), thicker on short edges (left/right) for landscape iPad */}
+        {/* Frame padding - thinner on long edges (top/bottom), thicker on short edges (left/right) for landscape iPad */}
         <div style={{ padding: "10px 14px" }}>
           <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "16/10", borderRadius: 6, border: "2px solid #121212" }}>
             <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
           </div>
         </div>
-        {/* Front camera — right short edge in landscape */}
+        {/* Front camera - right short edge in landscape */}
         <div className="absolute right-[5px] top-1/2 -translate-y-1/2 w-[5px] h-[5px] rounded-full bg-[#1a1a1a] ring-1 ring-[#333]" />
-        {/* Power — top long edge */}
+        {/* Power - top long edge */}
         <div className="absolute top-[-2px] right-[12%] w-[5%] h-[2px] rounded-full bg-[#babdbf]" />
-        {/* Volume — left short edge */}
+        {/* Volume - left short edge */}
         <div className="absolute left-[-2px] top-[25%] h-[6%] w-[2px] rounded-full bg-[#babdbf]" />
         <div className="absolute left-[-2px] top-[35%] h-[6%] w-[2px] rounded-full bg-[#babdbf]" />
       </div>
@@ -118,18 +118,18 @@ function TabletShell({ videoSrc }: { videoSrc: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// 3. iPhone 14 Pro — LANDSCAPE (screen 16:9 to match demo video)
+// 3. iPhone 14 Pro - LANDSCAPE (screen 16:9 to match demo video)
 // ---------------------------------------------------------------------------
 
 function PhoneShell({ videoSrc }: { videoSrc: string }) {
   return (
     <div className="w-full">
       <div className="relative" style={{ border: "1px solid #1b1721", borderRadius: 20, background: "#010101", boxShadow: "inset 0 0 4px 2px #c0b7cd, inset 0 0 0 5px #342c3f, 0 25px 70px rgba(0,0,0,0.5)" }}>
-        {/* Frame padding — thin bezel on long edges, slightly thicker on short edges */}
+        {/* Frame padding - thin bezel on long edges, slightly thicker on short edges */}
         <div style={{ padding: "6px 10px" }}>
           <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "16/9", borderRadius: 14 }}>
             <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
-            {/* Dynamic Island — left short edge in landscape */}
+            {/* Dynamic Island - left short edge in landscape */}
             <div className="absolute left-[10px] top-1/2 -translate-y-1/2 z-10 bg-black rounded-full" style={{ width: 18, height: "28%", minHeight: 22 }}>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[#0a0a12] ring-1 ring-[#222]" />
             </div>
@@ -137,9 +137,9 @@ function PhoneShell({ videoSrc }: { videoSrc: string }) {
             <div className="absolute bottom-[4px] left-1/2 -translate-x-1/2 z-10 w-[20%] h-[3px] rounded-full bg-white/20" />
           </div>
         </div>
-        {/* Power — top long edge in landscape */}
+        {/* Power - top long edge in landscape */}
         <div className="absolute top-[-2px] right-[14%] w-[7%] h-[2px] rounded-full bg-[#342c3f]" />
-        {/* Volume — bottom long edge in landscape */}
+        {/* Volume - bottom long edge in landscape */}
         <div className="absolute bottom-[-2px] left-[12%] w-[4%] h-[2px] rounded-full bg-[#342c3f]" />
         <div className="absolute bottom-[-2px] left-[18%] w-[5%] h-[2px] rounded-full bg-[#342c3f]" />
         {/* Mute switch */}
@@ -150,7 +150,7 @@ function PhoneShell({ videoSrc }: { videoSrc: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Carousel — no peek devices, clean centered carousel
+// Carousel - no peek devices, clean centered carousel
 // ---------------------------------------------------------------------------
 
 const DEVICES = ["laptop", "tablet", "phone"] as const;

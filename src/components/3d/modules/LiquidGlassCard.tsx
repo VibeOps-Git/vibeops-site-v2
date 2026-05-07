@@ -129,7 +129,7 @@ export function LiquidGlassCard({
             </div>
           </div>
 
-          {/* Feature list — shown inline for featured card on desktop */}
+          {/* Feature list - shown inline for featured card on desktop */}
           {highlight && features.length > 0 && (
             <div className="md:w-56 flex-shrink-0 flex flex-col justify-center">
               <p className="text-[9px] uppercase tracking-[0.25em] text-white/25 font-medium mb-3">

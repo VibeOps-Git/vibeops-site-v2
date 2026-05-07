@@ -12,7 +12,7 @@ Location: Vancouver, BC, Canada
 ### Reportly (Flagship Product)
 Automated, audit-ready reports from your existing Word and Excel templates. Built by engineers, for engineers.
 - Transforms hours of manual formatting into minutes (3 min avg. report time)
-- 100% template-compatible — works with existing Word and Excel templates, zero workflow changes
+- 100% template-compatible - works with existing Word and Excel templates, zero workflow changes
 - Features: template automation, live data charts and tables, photo appendices, QA-ready output, section-level AI
 - Website: https://reportly.ca
 
@@ -45,31 +45,31 @@ Engineers lose 700+ hours per year on manual documentation and report formatting
 
 ## Our Approach
 
-1. Discovery — review your actual workflows, tools, and templates
-2. Prototype — build a narrow but complete solution with QA walkthrough
-3. Rollout — expand carefully with versioning and access control
+1. Discovery - review your actual workflows, tools, and templates
+2. Prototype - build a narrow but complete solution with QA walkthrough
+3. Rollout - expand carefully with versioning and access control
 
 Working prototype in weeks, not months.
 
 ## Team
 
 ### Co-Founders
-- Zander Dent — CEO & Co-Founder. Civil engineering workflows and product vision. zander@vibeops.ca
-- Felix Stewart — Sales & Operations. Strategy, partnerships, business development. felix@vibeops.ca
-- Gabriel Comla — CMO & Co-Founder. Storytelling for engineers, marketing. gabriel@vibeops.ca
-- Eric Balanecki — CTO & Co-Founder. Technical architecture, automation engine. eric@vibeops.ca
-- Qazi Omair Ahmed — Head of Engineering & Co-Founder. Systems design, product delivery. omair@vibeops.ca
-- Hrudai Rajesh — Co-Founder. Implementation and delivery. hrudai@vibeops.ca
+- Zander Dent - CEO & Co-Founder. Civil engineering workflows and product vision. zander@vibeops.ca
+- Felix Stewart - Sales & Operations. Strategy, partnerships, business development. felix@vibeops.ca
+- Gabriel Comla - CMO & Co-Founder. Storytelling for engineers, marketing. gabriel@vibeops.ca
+- Eric Balanecki - CTO & Co-Founder. Technical architecture, automation engine. eric@vibeops.ca
+- Qazi Omair Ahmed - Head of Engineering & Co-Founder. Systems design, product delivery. omair@vibeops.ca
+- Hrudai Rajesh - Co-Founder. Implementation and delivery. hrudai@vibeops.ca
 
 ### Advisors
-- Dr. Tamara Etmannski — UBC Assistant Professor, Civil Engineering
-- Dr. Noboru Yonemitsu — UBC Associate Professor, Hydrotechnical Engineering
+- Dr. Tamara Etmannski - UBC Assistant Professor, Civil Engineering
+- Dr. Noboru Yonemitsu - UBC Associate Professor, Hydrotechnical Engineering
 
 ## Press & Recognition
 
-- Techcouver — "UBC Ventures Take Stage at Investor Showcase" (March 2026)
-- UBC Innovation Investor Showcase — Featured presenter (March 2026)
-- UBC Venture Founder Cohort — Member (February 2026)
+- Techcouver - "UBC Ventures Take Stage at Investor Showcase" (March 2026)
+- UBC Innovation Investor Showcase - Featured presenter (March 2026)
+- UBC Venture Founder Cohort - Member (February 2026)
 
 ## Contact
 

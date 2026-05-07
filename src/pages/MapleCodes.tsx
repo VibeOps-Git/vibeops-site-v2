@@ -37,7 +37,7 @@ export default function MapleCodes() {
         {/* Section 2: Problem Statement */}
         <ProblemSection />
 
-        {/* Section 3: Product Showcase — the real app */}
+        {/* Section 3: Product Showcase - the real app */}
         <ShowcaseSection />
 
         {/* Section 4: Code Landscape Metrics */}

@@ -194,7 +194,7 @@ export default function Index() {
 
 // =============================================================================
 // Hero
-// Research basis: NN/g — information scent above the fold determines whether
+// Research basis: NN/g - information scent above the fold determines whether
 // users scroll. Hero must answer "who are you", "what do you do", and "why
 // should I keep reading" in the first viewport. The dual-identity positioning
 // line below the CTAs does this explicitly.
@@ -303,7 +303,7 @@ function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Scroll path cue — glow bead traveling downward implies depth + pulls the eye.
+      {/* Scroll path cue - glow bead traveling downward implies depth + pulls the eye.
           Fades out when user starts scrolling (already engaged). */}
       <motion.div
         className="relative z-10 flex justify-center pb-2 pt-0 pointer-events-none"
@@ -345,8 +345,8 @@ function HeroSection() {
 }
 
 // =============================================================================
-// Model Section — dual-identity proof, the business model in two cards.
-// Research basis: BJ Fogg's behavior model — reduce ambiguity to reduce
+// Model Section - dual-identity proof, the business model in two cards.
+// Research basis: BJ Fogg's behavior model - reduce ambiguity to reduce
 // cognitive load. Visitors who understand "what kind of company is this"
 // within 10 seconds have dramatically lower bounce rates.
 // =============================================================================
@@ -495,7 +495,7 @@ function ModelSection() {
 }
 
 // =============================================================================
-// Platform Showcase — product "wow" moment. Comes after the model explanation
+// Platform Showcase - product "wow" moment. Comes after the model explanation
 // so the demo lands with context: "ok I understand what this is, now show me."
 // =============================================================================
 
@@ -557,7 +557,7 @@ function PlatformSection() {
 }
 
 // =============================================================================
-// Reportly — flagship product deep dive. Now positioned AFTER the model and
+// Reportly - flagship product deep dive. Now positioned AFTER the model and
 // demo so visitors arrive here already understanding "this is their product."
 // =============================================================================
 
@@ -682,7 +682,7 @@ function ReportlySection() {
 }
 
 // =============================================================================
-// Pattern Interrupt A — copy-based disruptor between product proof and the
+// Pattern Interrupt A - copy-based disruptor between product proof and the
 // adoption ladder. Research basis: Cialdini's contrast principle. After the
 // product section, a sharp reframe ("not a generic X") resets expectations and
 // makes the following services section land with more specificity.
@@ -710,7 +710,7 @@ function PatternInterruptA() {
 }
 
 // =============================================================================
-// Features / Adoption Ladder — replaces the equal-weight services grid.
+// Features / Adoption Ladder - replaces the equal-weight services grid.
 // Research basis: Fitts's Law and progressive disclosure. A numbered progression
 // (start here, then expand) is cognitively easier than four equal options.
 // Reportly is visually dominant as step 01; the others are secondary steps.
@@ -767,7 +767,7 @@ function AdoptionLadder() {
 
   return (
     <div className="relative py-10 flex flex-col gap-3">
-      {/* Step 01 — full-width featured */}
+      {/* Step 01 - full-width featured */}
       <motion.a
         href={primary.href}
         className="group relative flex flex-col md:flex-row gap-8 p-7 md:p-8 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/25 to-transparent cursor-pointer"
@@ -806,7 +806,7 @@ function AdoptionLadder() {
         <div className="w-px h-5 bg-gradient-to-b from-white/10 to-transparent" />
       </div>
 
-      {/* Steps 02-04 — 3-column grid */}
+      {/* Steps 02-04 - 3-column grid */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-3 gap-3"
         variants={{ ...stagger, show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } } }}
@@ -1026,7 +1026,7 @@ function TeamSection() {
 }
 
 // =============================================================================
-// CTA — pre-CTA pattern interrupt (PatternInterruptB) lands just before the
+// CTA - pre-CTA pattern interrupt (PatternInterruptB) lands just before the
 // conversion ask. Research basis: reciprocity + the "almost there" effect.
 // Naming what the visitor already has (templates, data) frames Reportly as
 // the obvious missing piece rather than an unfamiliar new investment.
@@ -1037,7 +1037,7 @@ function CTASection() {
     <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
 
-        {/* Pattern Interrupt B — frames Reportly as the obvious missing piece */}
+        {/* Pattern Interrupt B - frames Reportly as the obvious missing piece */}
         <Reveal className="text-center mb-14">
           <div className="space-y-1.5">
             <p className="font-semibold text-white/35 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
