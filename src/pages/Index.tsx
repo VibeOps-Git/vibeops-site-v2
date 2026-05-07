@@ -501,7 +501,7 @@ function PlatformSection() {
           `,
         }}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
+      <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
           <p className="text-center text-[10px] uppercase tracking-[0.38em] text-emerald-300/80 mb-5 font-semibold">
             See It In Action
