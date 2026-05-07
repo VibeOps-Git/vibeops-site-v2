@@ -7,28 +7,28 @@ const problems = [
     icon: Copy,
     title: "Copy-Paste Assembly",
     stat: "6+ hrs/week",
-    description: "Copying inspection data from Excel into Word, pulling images from Revit that break your formatting, manually assembling 10,000-page O&M manuals. Every project.",
+    description: "Copying inspection data from Excel into Word, embedding photos that break formatting, manually assembling O&M manuals from six different spreadsheets. Every project, every team member.",
     color: "red",
   },
   {
     icon: FileWarning,
     title: "Inconsistent Formatting",
     stat: "40% rework",
-    description: "Reports that are too long, too short, or formatted differently every time. Embedded photos shift everything. References are outdated. Continuity is lost across revisions.",
+    description: "Reports formatted differently by every engineer. Templates drift across projects. Embedded photos shift layouts. Continuity is lost across revisions. QA catches it too late.",
     color: "orange",
   },
   {
     icon: ShieldAlert,
-    title: "Wrong References",
+    title: "Wrong Code References",
     stat: "Compliance risk",
-    description: "Citing the wrong code edition, missing municipal bylaws, or outdated standards. In compliance-critical work, one bad reference can invalidate the entire report.",
+    description: "Citing the wrong code edition, missing municipal bylaws, or referencing outdated standards. In compliance-critical work, one bad reference in an inspection report or EA can invalidate the entire submission.",
     color: "yellow",
   },
   {
     icon: Clock,
     title: "Engineering Time Lost",
     stat: "35% of time",
-    description: "Your best engineers spend a third of their week on formatting and document assembly instead of the technical work you hired them to do.",
+    description: "Your structural, geotech, and environmental engineers spend a third of their week on formatting and document assembly instead of the technical work that drives revenue.",
     color: "red",
   },
 ];
@@ -163,7 +163,7 @@ export function ProblemSection() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400"><ScrambleText text="Broken" /></span>
                 </h2>
                 <p className="text-gray-400 mb-8">
-                  Validated through <span className="text-white font-semibold">200+ discovery calls</span> with engineering firms, from Stantec and AECOM to mid-size civil shops and municipal teams across Canada.
+                  Validated through <span className="text-white font-semibold">200+ discovery calls</span> with engineering firms, from Stantec, AECOM, Jacobs, and Tetra Tech to mid-size civil, geotechnical, and environmental consultancies across Canada.
                 </p>
               </div>
             </AnimatedContent>
@@ -224,7 +224,7 @@ export function ProblemSection() {
               <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-red-500/10 via-orange-500/5 to-transparent border border-red-500/20">
                 <p className="text-sm text-gray-300">
                   <span className="text-2xl font-bold text-white">$35,000</span>
-                  <span className="text-gray-400 ml-2">wasted per engineer annually on report formatting</span>
+                  <span className="text-gray-400 ml-2">wasted per engineer annually on report formatting and document assembly</span>
                 </p>
               </div>
             </AnimatedContent>

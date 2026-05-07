@@ -174,14 +174,19 @@ export default function Index() {
       <CTASection />
       {/* Hidden internal links for SEO crawlability */}
       <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
-        <a href="/services">AI engineering automation services for civil and construction teams</a>
-        <a href="/reportly">Reportly - AI report writing software for civil engineers</a>
-        <a href="/maplecodes">MapleCodes - Canadian building code intelligence by address</a>
-        <a href="/contact">Book a demo for engineering report automation</a>
-        <a href="/team">Meet the VibeOps engineering automation team</a>
-        <a href="/blog">AI tools for civil engineering report writing and documentation</a>
-        <a href="https://reportly.ca" rel="noopener">Reportly - automated engineering report generator</a>
-        <a href="https://maplecodes.ca" rel="noopener">MapleCodes - Canadian building code lookup</a>
+        <a href="/services">AI engineering automation services for civil, structural, and geotechnical teams</a>
+        <a href="/reportly">Reportly - AI report writing software for civil engineers and construction firms</a>
+        <a href="/maplecodes">MapleCodes - Canadian building code compliance lookup by project address</a>
+        <a href="/contact">Book a demo for engineering report automation and building code intelligence</a>
+        <a href="/team">Meet the VibeOps engineering automation team - Vancouver, BC</a>
+        <a href="/blog">AI tools for civil engineering report writing, inspection reports, and documentation</a>
+        <a href="https://reportly.ca" rel="noopener">Reportly - automated inspection report, O&amp;M manual, and environmental assessment generator</a>
+        <a href="https://maplecodes.ca" rel="noopener">MapleCodes - Canadian building code lookup, bylaw search, and compliance tool</a>
+        <a href="/services">Geotechnical report automation software for engineering consultants</a>
+        <a href="/services">Structural engineering report formatting and compliance documentation</a>
+        <a href="/services">Construction document automation and QA workflow software</a>
+        <a href="/services">Engineering proposal automation and template management for AEC firms</a>
+        <a href="/services">Building code API and developer tools for compliance software</a>
       </div>
     </>
   );
@@ -419,14 +424,14 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">Reportly</h3>
             </div>
             <p className="text-[11px] text-emerald-400/58 font-medium tracking-wide mb-5">
-              From inspection data and field notes to formatted reports
+              Inspection reports, O&amp;M manuals, EAs, and compliance docs from your templates
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
-                'Your existing Word and Excel templates',
-                'Photos, field data, tables, and charts',
-                'Accurate references and exec summaries',
-                'Consistent formatting across every report',
+                'Your existing Word and Excel templates, automated',
+                'Photos, field data, tables, and measurements embedded',
+                'Code-grounded references and executive summaries',
+                'Consistent formatting across every project and team',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
                   <Check className="w-3.5 h-3.5 text-emerald-500/65 flex-shrink-0 mt-0.5" /> {f}
@@ -460,14 +465,14 @@ function ModelSection() {
               <h3 className="text-xl font-bold text-white">Custom Rollouts</h3>
             </div>
             <p className="text-[11px] text-cyan-300/45 font-medium tracking-wide mb-5">
-              Adapted to your templates, approval chain, and existing tools
+              Your templates, approval chains, data sources, and developer API access
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
               {[
-                'Your template library, mapped and ready',
-                'QA checklists and approval workflows built in',
-                'SharePoint, Bluebeam, Excel pipelines',
-                'On-premise deployment available',
+                'Template library mapping and QA workflow setup',
+                'SharePoint, Bluebeam, and Excel integrations',
+                'Building code API for custom compliance tools',
+                'On-premise and PIPEDA-ready deployment',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
                   <Check className="w-3.5 h-3.5 text-white/25 flex-shrink-0 mt-0.5" /> {f}
@@ -514,10 +519,10 @@ function PlatformSection() {
             See It In Action
           </p>
           <h2 className="text-center text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.025em] text-white leading-[1.1] mb-5 max-w-3xl mx-auto">
-            Your templates in. <span className="text-emerald-300">Polished reports out.</span>
+            Your templates in. <span className="text-emerald-300">QA-ready reports out.</span>
           </h2>
           <p className="text-center text-[0.95rem] text-white/48 max-w-xl mx-auto mb-12 leading-[1.8]">
-            Stop losing hours to formatting, reference hunting, and copy-paste assembly. Upload your data, pick your template, and get a QA-ready draft with accurate references. No changes to how your team works.
+            Stop losing hours to formatting, reference hunting, and copy-paste assembly. Upload inspection data, field notes, or measurements. Pick your template. Get a QA-ready draft with code-grounded references, embedded photos, and consistent formatting. No changes to how your team works.
           </p>
           <div className="flex justify-center mb-14">
             <Btn href="/reportly" primary>Explore Reportly <ArrowRight className="w-3.5 h-3.5" /></Btn>
@@ -557,9 +562,9 @@ function PlatformSection() {
 // =============================================================================
 
 const featureItems = [
-  'Works with the Word and Excel templates you already use',
+  'Inspection reports, environmental assessments, O&M manuals, and compliance docs',
   'Photos, measurements, tables, and field data embedded automatically',
-  'Accurate references, executive summaries, and consistent formatting',
+  'Building-code-grounded references, executive summaries, and consistent formatting',
   'No workflow changes. Fits your existing QA and approval process',
 ];
 
@@ -607,7 +612,7 @@ function ReportlySection() {
                 <ScrambleText text="Reportly" duration={2.2} trigger="inView" />
               </h2>
               <p className="text-white/45 text-sm md:text-[0.95rem] leading-[1.8] max-w-xs mb-10">
-                Connect your existing Word templates. Feed in inspection data, field notes, photos, and measurements. Get a formatted first draft with embedded images, accurate references, and a proper executive summary, ready for QA review.
+                Connect your existing Word templates. Feed in inspection data, field notes, photos, and measurements. Get a formatted first draft with embedded images, code-grounded references via MapleCodes, and a proper executive summary, ready for QA review.
               </p>
             </Reveal>
 
@@ -691,13 +696,13 @@ function PatternInterruptA() {
           className="font-bold text-white/52 leading-[1.32] tracking-[-0.018em]"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          Not a chatbot. Not a generic document tool. Not built for marketing teams.
+          Not a chatbot. Not a generic document tool. Not another SaaS that doesn't understand engineering.
         </p>
         <p
           className="font-bold text-white/88 leading-[1.32] tracking-[-0.018em] mt-2"
           style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
         >
-          A reporting platform built for how civil and construction teams actually produce documents. Your templates. Your references. Your QA process.
+          An automation platform built for how civil, structural, geotechnical, and environmental teams actually produce documents. Your templates. Your building codes. Your QA process.
         </p>
       </Reveal>
     </section>
@@ -717,11 +722,11 @@ const adoptionSteps = [
     icon: FileText,
     title: 'Reportly Platform',
     subtitle: 'Core SaaS',
-    description: 'Generate formatted reports from your existing Word and Excel templates. Feed in inspection data, field notes, photos, and measurements. Get drafts with embedded images, accurate references, and executive summaries, ready for QA.',
+    description: 'Generate formatted inspection reports, O&M manuals, environmental assessments, and compliance docs from your existing Word and Excel templates. Feed in field data, photos, and measurements. Get drafts with embedded images, code-grounded references via MapleCodes, and executive summaries.',
     features: [
       'Your Word and Excel templates, automated',
-      'Photos, field data, and measurements embedded',
-      'Accurate references and consistent formatting',
+      'Building-code-grounded references via MapleCodes',
+      'Inspection reports, EAs, O&M manuals, and compliance docs',
     ],
     href: '/reportly',
     cta: 'Explore Reportly',
@@ -732,7 +737,7 @@ const adoptionSteps = [
     icon: Wrench,
     title: 'Template + QA Rollout',
     subtitle: 'Implementation',
-    description: "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do. The formatting and assembly happens automatically.",
+    description: "We map your firm's templates, QA checklists, and approval chains into the platform. Your engineers keep working the way they already do. The formatting and assembly happens automatically.",
     href: '/services',
     cta: 'Learn more',
   },
@@ -741,7 +746,7 @@ const adoptionSteps = [
     icon: BarChart3,
     title: 'Data + Workflow Integrations',
     subtitle: 'Connections',
-    description: 'Connect the tools your team already uses: Excel, SharePoint, Bluebeam, inspection forms, and project folders. Data flows into Reportly without manual re-entry.',
+    description: 'Connect the tools your team already uses: Excel, SharePoint, Bluebeam, inspection forms, and project folders. Data flows into the platform without manual re-entry or copy-paste assembly.',
     href: '/services',
     cta: 'Learn more',
   },
@@ -750,7 +755,7 @@ const adoptionSteps = [
     icon: Layers,
     title: 'Custom Add-ons',
     subtitle: 'Extensions',
-    description: 'Dashboards, calculators, compliance trackers, and internal tools that plug into your reporting workflow and extend what Reportly can do for your firm.',
+    description: 'Compliance trackers, asset dashboards, engineering calculators, and custom tools built on our building code intelligence API. Extend the platform for your firm\'s specific workflows.',
     href: '/services',
     cta: 'Learn more',
   },
@@ -842,10 +847,10 @@ function FeaturesSection() {
         <Reveal>
           <Label>Implementation Path</Label>
           <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-2xl mb-5 leading-[1.08] mt-4">
-            Start with the report that takes the longest.
+            Start with the report that costs you the most hours.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-14 leading-[1.8]">
-            Pick one report type: inspection reports, environmental assessments, O&amp;M manuals, compliance docs. Automate it. Then expand from there.
+            Inspection reports, geotechnical assessments, environmental reviews, O&amp;M manuals, structural compliance docs, or proposal packages. Pick one. We automate it around your actual templates. Then expand from there.
           </p>
         </Reveal>
 
@@ -877,15 +882,15 @@ function FeaturesSection() {
 const processSteps = [
   {
     step: '01', title: 'Discovery',
-    description: 'We look at the report that costs you the most hours. The one with the most formatting, the most data sources, the most back-and-forth. That is where we start.',
+    description: 'We look at the report that costs you the most hours. The inspection report with 50 photos. The O&M manual pulling from six spreadsheets. The compliance doc with outdated code references. That is where we start.',
   },
   {
     step: '02', title: 'Prototype',
-    description: 'We build a working automation around your actual template. Real field data goes in, a formatted draft comes out, and we walk it through your QA process together.',
+    description: 'We build a working automation around your actual template. Real field data goes in, a formatted draft comes out with code-grounded references and embedded images. We walk it through your QA process together.',
   },
   {
     step: '03', title: 'Rollout',
-    description: 'Once the first report type is trusted and approved, we expand to the next. Proper versioning, access control, and secure deployment, including on-premise if required.',
+    description: 'Once the first report type is trusted and approved, we expand to the next. Proper versioning, access control, API integrations, and secure deployment, including on-premise and PIPEDA-compliant options.',
   },
 ];
 
@@ -899,7 +904,7 @@ function ProcessSection() {
             We work the way your firm does.
           </h2>
           <p className="text-white/40 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.8]">
-            Every firm has different templates, different approval chains, different tools. We get one workflow right before touching the next. No disruption, no learning curve.
+            Every firm has different templates, different approval chains, different tools. From mid-size civil shops to firms like AECOM and Stantec, we get one workflow right before touching the next. No disruption, no learning curve.
           </p>
         </Reveal>
 
@@ -982,7 +987,7 @@ function TeamSection() {
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
-                <p className="text-base md:text-lg font-semibold text-white">Built from 200+ discovery calls with engineering firms across Canada.</p>
+                <p className="text-base md:text-lg font-semibold text-white">Built from 200+ discovery calls with civil, structural, geotechnical, and environmental firms across Canada.</p>
               </div>
               <Btn href="/contact" primary>Talk to the Team</Btn>
             </div>

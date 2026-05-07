@@ -7,24 +7,24 @@ import { GallerySection3D } from '../components/3d/sections/GallerySection3D';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 
 const reportlyFeatures = [
+  'Inspection reports, O&M manuals, environmental assessments, geotechnical reports, and compliance docs',
   'Works with the Word and Excel templates your team already uses',
   'Embeds photos, measurements, tables, and field data automatically',
-  'Produces QA-ready reports with accurate references and exec summaries',
-  'Supports firm-specific formatting, approval chains, and compliance',
-  'No workflow changes. Your team keeps working the way they do now',
+  'Building-code-grounded references via MapleCodes, executive summaries, and consistent formatting',
+  'No workflow changes. Fits your existing QA, approval chains, and delivery process',
 ];
 
 const services = [
   {
     icon: FileText,
     title: 'Report Automation',
-    subtitle: 'Reportly, our flagship product',
+    subtitle: 'Reportly - Flagship product',
     description:
-      'Feed in inspection data, field notes, photos, and measurements. Get formatted reports with embedded images, accurate references, and proper executive summaries in your existing templates. No more hours lost to copy-paste assembly and formatting cleanup.',
+      'Feed in inspection data, field notes, photos, and measurements. Get formatted inspection reports, environmental assessments, O&M manuals, geotechnical reports, and compliance docs with embedded images, code-grounded references, and proper executive summaries. All in your existing templates.',
     features: [
       'Your Word and Excel templates, automated',
       'Photos, field data, and measurements embedded',
-      'Accurate references, exec summaries, consistent formatting',
+      'Building-code-grounded references via MapleCodes',
       'PDF and Word delivery in your firm-specific format',
       'No workflow changes. Fits your existing QA process',
     ],
@@ -35,9 +35,9 @@ const services = [
   {
     icon: Wrench,
     title: 'Custom Rollouts',
-    subtitle: 'Implementation',
+    subtitle: 'Implementation partner',
     description:
-      "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do. The formatting and assembly happens in the background.",
+      "We map your firm's templates, QA checklists, and approval chains into the platform. Your engineers keep working the way they already do. The formatting, reference assembly, and code compliance checks happen automatically.",
     features: [
       'Your full template library, mapped and configured',
       'QA checklists and multi-stage approval workflows',
@@ -51,7 +51,7 @@ const services = [
     title: 'Data Integrations',
     subtitle: 'Workflow connections',
     description:
-      'Your data already exists in Excel, SharePoint, Bluebeam, and inspection forms. We connect those sources directly to Reportly so nothing needs to be re-entered or copy-pasted.',
+      'Your data already exists in Excel, SharePoint, Bluebeam, and inspection forms. We connect those sources directly to the platform so nothing needs to be re-entered or copy-pasted between systems.',
     features: [
       'Excel, SharePoint, and Bluebeam integrations',
       'Inspection form and field data pipelines',
@@ -62,15 +62,15 @@ const services = [
   },
   {
     icon: Layers,
-    title: 'Add-On Tools',
-    subtitle: 'Custom development',
+    title: 'Developer API & Custom Tools',
+    subtitle: 'Build on our intelligence layer',
     description:
-      'Compliance trackers, asset dashboards, engineering calculators, and internal tools that plug into your reporting workflow. Built on our code intelligence layer and deployed securely.',
+      'Access our building code intelligence via API. Build compliance checkers, permit documentation tools, asset dashboards, and engineering calculators on top of the same code corpus that powers MapleCodes and Reportly.',
     features: [
+      'Building code research and compliance API',
+      'Code-grounded AI generation endpoints',
       'Asset management and compliance dashboards',
-      'Engineering calculators and estimators',
-      'Daily report and O&M documentation tools',
-      'Secure internal or on-premise deployment',
+      'Secure on-premise or cloud deployment',
     ],
     cta: 'Learn more',
   },
@@ -80,8 +80,8 @@ export default function Services() {
   return (
     <>
       <SEO
-        title="Services | Report Automation, Building Code Intelligence & Custom Engineering Tools"
-        description="Engineers told us formatting is their biggest time sink. Reportly automates report formatting, reference assembly, and document production around your existing templates. MapleCodes handles building code research. We customize both to fit your firm."
+        title="Engineering Automation Services | Report Generation, Building Code Compliance, API & Custom Tools | VibeOps"
+        description="Automate inspection reports, O&M manuals, environmental assessments, and compliance documentation. Reportly generates QA-ready reports from your templates. MapleCodes provides instant building code lookups. Our API lets you build custom compliance tools. Built from 200+ conversations with civil, structural, geotechnical, and environmental firms."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
@@ -104,7 +104,7 @@ export default function Services() {
                 Stop formatting. Start delivering.
               </h1>
               <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                Engineers told us the biggest time sink is formatting reports, not the engineering work itself. Reportly automates the formatting, reference assembly, and document production. MapleCodes handles code research. We customize both to fit exactly how your firm already works.
+                In 200+ conversations with engineering firms, the same problems kept coming up: too many hours lost to report formatting, outdated code references, inconsistent templates across teams. VibeOps automates the documentation workflow end-to-end. Reportly handles report generation. MapleCodes handles building code compliance. Our API lets you build custom tools. We implement everything around how your firm already works.
               </p>
             </div>
           </AnimatedContent>
@@ -134,7 +134,7 @@ export default function Services() {
                     Reportly
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    Your team already has the templates and the inspection data. Reportly connects the two, pulling in field photos, measurements, tables, and project data to produce formatted drafts with accurate references and executive summaries. No workflow changes. No learning curve.
+                    Your team already has the templates and the inspection data. Reportly connects the two, pulling in field photos, measurements, tables, and project data to produce formatted drafts with code-grounded references and executive summaries. Whether it's a site inspection report, an environmental assessment, or a 10,000-page O&amp;M manual, the formatting and assembly happens automatically.
                   </p>
                   <ul className="space-y-3 mb-9">
                     {reportlyFeatures.map((f) => (
@@ -196,10 +196,10 @@ export default function Services() {
                     MapleCodes
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-md">
-                    Enter a Canadian address. Get every applicable building code (federal, provincial, and municipal) in seconds. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
+                    Enter a Canadian project address. Get every applicable building code, bylaw, and referenced standard in seconds, organized by federal, provincial, and municipal jurisdiction. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
                   </p>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    That same intelligence layer is available as the foundation for custom tools we build for your firm. If it touches Canadian building codes, we've already done the hard part.
+                    The same intelligence layer powers Reportly's reference engine and is available via our developer API. Build compliance checkers, permit documentation tools, or code cross-referencing systems on top of our indexed code corpus. If it touches Canadian building codes, we've already done the hard part.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <a
@@ -312,7 +312,7 @@ export default function Services() {
                 Built around your firm, not ours.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm has different templates, different approval chains, and different tools. We've talked to 200+ engineering teams to understand these differences. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
+                Every firm has different templates, different approval chains, and different tools. We've talked to 200+ engineering teams, from mid-size civil shops to firms like AECOM, Stantec, and Jacobs. We handle the full rollout: mapping your templates, connecting your existing systems, setting up code compliance checks, and building whatever your documentation workflow needs.
               </p>
             </AnimatedContent>
           </div>
@@ -344,10 +344,10 @@ export default function Services() {
                   Get started
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-                  Start with the report that takes the longest.
+                  Start with the report that costs you the most hours.
                 </h2>
                 <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  Tell us which report eats the most hours. The inspection report, the EA, the O&amp;M manual. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
+                  Tell us which report eats the most hours. The inspection report, the geotechnical assessment, the EA, the O&amp;M manual, the structural compliance doc. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">
@@ -363,7 +363,7 @@ export default function Services() {
         </section>
       </div>
 
-      {/* Hidden SEO content targeting high-intent civil engineering search queries */}
+      {/* Hidden SEO content targeting high-intent engineering search queries */}
       <div
         aria-hidden="true"
         style={{
@@ -377,21 +377,31 @@ export default function Services() {
           whiteSpace: 'nowrap',
         }}
       >
-        <h2>Are Civil Engineers Still in High Demand?</h2>
+        <h2>Best AI Tools for Civil Engineers in 2026</h2>
         <p>
-          Yes, civil engineers are still in high demand across infrastructure, construction, and environmental sectors. Firms that invest in automation tools like Reportly help their civil engineers spend less time on report formatting and more time on high-value technical work, making them more competitive when hiring and retaining top engineers.
+          VibeOps builds AI-powered automation tools specifically for civil, structural, geotechnical, and environmental engineering teams. Reportly automates report generation from your existing Word and Excel templates, cutting report formatting time by over 80 percent. MapleCodes provides instant Canadian building code lookups by project address, covering 85+ codes, 375+ referenced standards, and 55+ municipal bylaws. Our developer API lets firms build custom compliance tools on our code intelligence layer.
         </p>
-        <h2>How Much Does It Cost to Hire a Civil Engineer?</h2>
+        <h2>How to Automate Engineering Report Writing</h2>
         <p>
-          The cost to hire a civil engineer varies by region, experience, and project scope, but engineering firms can significantly reduce overhead by automating report generation and documentation workflows. Tools like Reportly cut civil engineering report time by over 80 percent, reducing the billable hours spent on formatting and letting firms deliver more value per project.
+          Engineering report automation software like Reportly takes your existing templates and combines them with inspection data, field notes, photos, and measurements to produce QA-ready reports automatically. It handles inspection reports, environmental assessments, O&amp;M manuals, geotechnical reports, structural compliance documents, and proposal packages. References are grounded in actual building codes via MapleCodes, ensuring compliance accuracy.
         </p>
-        <h2>How to Choose the Right Civil Engineer for Your Project</h2>
+        <h2>Canadian Building Code Compliance Software</h2>
         <p>
-          When choosing a civil engineering firm, look for teams with strong QA processes, clear documentation workflows, and modern reporting tools. Firms using civil engineering report automation software like Reportly deliver faster turnarounds, more consistent outputs, and QA-ready reports across every project type.
+          MapleCodes by VibeOps is a building code intelligence platform that maps every applicable federal, provincial, and municipal code to a Canadian project address using GIS jurisdiction boundaries. Engineers and architects use it for instant code lookups, compliance briefs, and to feed verified code references directly into reports generated by Reportly.
+        </p>
+        <h2>Engineering Report Automation for AEC Firms</h2>
+        <p>
+          AEC firms like AECOM, Stantec, Jacobs, WSP, Tetra Tech, and McElhanney face the same documentation bottleneck: engineers spending 35 percent of their time formatting reports instead of doing technical work. VibeOps solves this with Reportly for report generation, MapleCodes for building code compliance, and custom rollouts that integrate with SharePoint, Bluebeam, and existing QA workflows.
         </p>
         <a href="/reportly">AI report automation software for civil engineers</a>
-        <a href="/services">Civil engineering consulting and report automation services</a>
-        <a href="/contact">Book a civil engineering automation demo</a>
+        <a href="/maplecodes">Canadian building code lookup and compliance tool</a>
+        <a href="/services">Engineering report automation and building code compliance services</a>
+        <a href="/contact">Book a demo for engineering documentation automation</a>
+        <a href="/services">Geotechnical report automation software</a>
+        <a href="/services">Structural engineering compliance documentation tool</a>
+        <a href="/services">Environmental assessment report automation</a>
+        <a href="/services">O&amp;M manual automation for construction and infrastructure</a>
+        <a href="/services">Building code API for engineering software developers</a>
       </div>
     </>
   );
