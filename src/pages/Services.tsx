@@ -7,24 +7,24 @@ import { GallerySection3D } from '../components/3d/sections/GallerySection3D';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 
 const reportlyFeatures = [
-  'Inspection reports, O&M manuals, environmental assessments, geotechnical reports, and compliance docs',
   'Works with the Word and Excel templates your team already uses',
   'Embeds photos, measurements, tables, and field data automatically',
-  'Building-code-grounded references via MapleCodes, executive summaries, and consistent formatting',
-  'No workflow changes. Fits your existing QA, approval chains, and delivery process',
+  'Produces QA-ready reports with accurate references and exec summaries',
+  'Supports firm-specific formatting, approval chains, and compliance',
+  'No workflow changes. Your team keeps working the way they do now',
 ];
 
 const services = [
   {
     icon: FileText,
     title: 'Report Automation',
-    subtitle: 'Reportly - Flagship product',
+    subtitle: 'Reportly, our flagship product',
     description:
-      'Feed in inspection data, field notes, photos, and measurements. Get formatted inspection reports, environmental assessments, O&M manuals, geotechnical reports, and compliance docs with embedded images, code-grounded references, and proper executive summaries. All in your existing templates.',
+      'Feed in inspection data, field notes, photos, and measurements. Get formatted reports with embedded images, accurate references, and proper executive summaries in your existing templates. No more hours lost to copy-paste assembly and formatting cleanup.',
     features: [
       'Your Word and Excel templates, automated',
       'Photos, field data, and measurements embedded',
-      'Building-code-grounded references via MapleCodes',
+      'Accurate references, exec summaries, consistent formatting',
       'PDF and Word delivery in your firm-specific format',
       'No workflow changes. Fits your existing QA process',
     ],
@@ -35,9 +35,9 @@ const services = [
   {
     icon: Wrench,
     title: 'Custom Rollouts',
-    subtitle: 'Implementation partner',
+    subtitle: 'Implementation',
     description:
-      "We map your firm's templates, QA checklists, and approval chains into the platform. Your engineers keep working the way they already do. The formatting, reference assembly, and code compliance checks happen automatically.",
+      "We map your firm's templates, QA checklists, and approval chains into Reportly. Your engineers keep working the way they already do. The formatting and assembly happens in the background.",
     features: [
       'Your full template library, mapped and configured',
       'QA checklists and multi-stage approval workflows',
@@ -51,7 +51,7 @@ const services = [
     title: 'Data Integrations',
     subtitle: 'Workflow connections',
     description:
-      'Your data already exists in Excel, SharePoint, Bluebeam, and inspection forms. We connect those sources directly to the platform so nothing needs to be re-entered or copy-pasted between systems.',
+      'Your data already exists in Excel, SharePoint, Bluebeam, and inspection forms. We connect those sources directly to Reportly so nothing needs to be re-entered or copy-pasted.',
     features: [
       'Excel, SharePoint, and Bluebeam integrations',
       'Inspection form and field data pipelines',
@@ -62,15 +62,15 @@ const services = [
   },
   {
     icon: Layers,
-    title: 'Developer API & Custom Tools',
-    subtitle: 'Build on our intelligence layer',
+    title: 'Add-On Tools',
+    subtitle: 'Custom development',
     description:
-      'Access our building code intelligence via API. Build compliance checkers, permit documentation tools, asset dashboards, and engineering calculators on top of the same code corpus that powers MapleCodes and Reportly.',
+      'Compliance trackers, asset dashboards, engineering calculators, and internal tools that plug into your reporting workflow. Built on our code intelligence layer and deployed securely.',
     features: [
-      'Building code research and compliance API',
-      'Code-grounded AI generation endpoints',
       'Asset management and compliance dashboards',
-      'Secure on-premise or cloud deployment',
+      'Engineering calculators and estimators',
+      'Daily report and O&M documentation tools',
+      'Secure internal or on-premise deployment',
     ],
     cta: 'Learn more',
   },
@@ -80,8 +80,8 @@ export default function Services() {
   return (
     <>
       <SEO
-        title="Engineering Automation Services | Report Generation, Building Code Compliance, API & Custom Tools | VibeOps"
-        description="Automate inspection reports, O&M manuals, environmental assessments, and compliance documentation. Reportly generates QA-ready reports from your templates. MapleCodes provides instant building code lookups. Our API lets you build custom compliance tools. Built from 200+ conversations with civil, structural, geotechnical, and environmental firms."
+        title="Services | Report Automation, Building Code Intelligence & Custom Engineering Tools"
+        description="Engineers told us formatting is their biggest time sink. Reportly automates report formatting, reference assembly, and document production around your existing templates. MapleCodes handles building code research. We customize both to fit your firm."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
@@ -104,7 +104,7 @@ export default function Services() {
                 Stop formatting. Start delivering.
               </h1>
               <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                In 200+ conversations with engineering firms, the same problems kept coming up: too many hours lost to report formatting, outdated code references, inconsistent templates across teams. VibeOps automates the documentation workflow end-to-end. Reportly handles report generation. MapleCodes handles building code compliance. Our API lets you build custom tools. We implement everything around how your firm already works.
+                Engineers told us the biggest time sink is formatting reports, not the engineering work itself. Reportly automates the formatting, reference assembly, and document production. MapleCodes handles code research. We customize both to fit exactly how your firm already works.
               </p>
             </div>
           </AnimatedContent>
@@ -134,7 +134,7 @@ export default function Services() {
                     Reportly
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    Your team already has the templates and the inspection data. Reportly connects the two, pulling in field photos, measurements, tables, and project data to produce formatted drafts with code-grounded references and executive summaries. Whether it's a site inspection report, an environmental assessment, or a 10,000-page O&amp;M manual, the formatting and assembly happens automatically.
+                    Your team already has the templates and the inspection data. Reportly connects the two, pulling in field photos, measurements, tables, and project data to produce formatted drafts with accurate references and executive summaries. No workflow changes. No learning curve.
                   </p>
                   <ul className="space-y-3 mb-9">
                     {reportlyFeatures.map((f) => (
@@ -196,10 +196,10 @@ export default function Services() {
                     MapleCodes
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-md">
-                    Enter a Canadian project address. Get every applicable building code, bylaw, and referenced standard in seconds, organized by federal, provincial, and municipal jurisdiction. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
+                    Enter a Canadian address. Get every applicable building code (federal, provincial, and municipal) in seconds. 85+ codes, 375+ referenced standards, and 55+ municipal bylaws, all mapped to GIS jurisdiction boundaries.
                   </p>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    The same intelligence layer powers Reportly's reference engine and is available via our developer API. Build compliance checkers, permit documentation tools, or code cross-referencing systems on top of our indexed code corpus. If it touches Canadian building codes, we've already done the hard part.
+                    That same intelligence layer is available as the foundation for custom tools we build for your firm. If it touches Canadian building codes, we've already done the hard part.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <a
@@ -312,7 +312,7 @@ export default function Services() {
                 Built around your firm, not ours.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm has different templates, different approval chains, and different tools. We've talked to 200+ engineering teams, from mid-size civil shops to firms like AECOM, Stantec, and Jacobs. We handle the full rollout: mapping your templates, connecting your existing systems, setting up code compliance checks, and building whatever your documentation workflow needs.
+                Every firm has different templates, different approval chains, and different tools. We've talked to 200+ engineering teams to understand these differences. We handle the full rollout, from mapping your templates to connecting your existing systems to building whatever your reporting workflow needs.
               </p>
             </AnimatedContent>
           </div>
@@ -344,10 +344,10 @@ export default function Services() {
                   Get started
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-                  Start with the report that costs you the most hours.
+                  Start with the report that takes the longest.
                 </h2>
                 <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  Tell us which report eats the most hours. The inspection report, the geotechnical assessment, the EA, the O&amp;M manual, the structural compliance doc. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
+                  Tell us which report eats the most hours. The inspection report, the EA, the O&amp;M manual. We'll automate it around your actual templates, walk it through your QA process, and prove it works before we touch anything else.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">

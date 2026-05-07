@@ -24,7 +24,7 @@ const navGroups: NavGroup[] = [
     links: [
       { path: "/reportly", label: "Reportly", badge: "New" },
       { path: "/maplecodes", label: "MapleCodes", badge: "New", badgeColor: "#d92f37" },
-      { path: "/services", label: "Services & API" },
+      { path: "/services", label: "Consulting" },
     ],
   },
   {
