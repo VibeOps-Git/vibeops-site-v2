@@ -5,39 +5,39 @@ import { ScrambleText } from "../ScrambleText";
 const features = [
   {
     icon: MapPin,
-    title: "GIS Jurisdiction Detection",
+    title: "GIS Boundary Matching",
     description:
-      "Point-in-polygon boundary matching pinpoints exactly which jurisdictions govern any Canadian address.",
+      "Ray-casting point-in-polygon detection against real Canadian jurisdiction polygons. No guessing — exact municipal, provincial, and federal zones resolved instantly.",
   },
   {
     icon: Zap,
-    title: "Instant Results",
+    title: "Sub-Second Lookups",
     description:
-      "No waiting for research agents. Get the full code stack in under a second from our indexed corpus.",
+      "85+ codes, 375+ standards, and 55+ bylaws indexed locally. Results appear before you finish reading the address.",
   },
   {
     icon: Globe,
-    title: "Pan-Canadian Coverage",
+    title: "Full Jurisdiction Stack",
     description:
-      "Federal, provincial, and municipal codes from coast to coast — continuously updated as regulations change.",
+      "Federal (NBCC, NFC), provincial (BC Building Code, OBC, etc.), and municipal bylaws — all three layers resolved and shown together.",
   },
   {
     icon: Brain,
     title: "AI Governing Briefs",
     description:
-      "LLM-generated summaries explain why each code applies and what compliance questions to resolve first.",
+      "Azure OpenAI generates a plain-language brief explaining the code hierarchy, overlap points, and compliance questions worth resolving first.",
   },
   {
     icon: ShieldCheck,
-    title: "Edition Tracking",
+    title: "Edition & Status Tracking",
     description:
-      "Know the current enforceable edition vs. the latest published edition for every code and standard.",
+      "Every code shows its enforceable edition year and adoption status. No more accidentally referencing a superseded code.",
   },
   {
     icon: Link2,
-    title: "Reportly Integration",
+    title: "One-Click Reportly Handoff",
     description:
-      "One click sends verified code references into Reportly to create a report with context already attached.",
+      "Click \"Create Report\" to trigger the full Pinecone RAG pipeline. References land in Reportly pre-approved — no re-entering anything.",
   },
 ];
 
@@ -68,8 +68,8 @@ export function FeaturesSection() {
               </span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              MapleCodes is purpose-built for the Canadian regulatory environment.
-              Not a generic code lookup — a complete building code intelligence layer.
+              Not a generic PDF search. MapleCodes is a purpose-built intelligence layer
+              for the Canadian building code regulatory environment.
             </p>
           </div>
         </AnimatedContent>

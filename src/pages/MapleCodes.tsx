@@ -2,7 +2,7 @@ import {
   HeroSection,
   MetricsSection,
   ProblemSection,
-  HowItWorksSection,
+  ShowcaseSection,
   FeaturesSection,
   IntegrationSection,
   CTASection,
@@ -13,10 +13,10 @@ import { SEO } from "@/components/SEO";
  * MapleCodes Landing Page
  *
  * Structure:
- * 1. HeroSection - Full viewport intro with title and CTA
- * 2. MetricsSection - Building code landscape stats
- * 3. ProblemSection - Pain points of manual code research
- * 4. HowItWorksSection - Step-by-step flow from address to code context
+ * 1. HeroSection - Full viewport intro with typewriter search and CTA
+ * 2. ProblemSection - Pain points of manual code research
+ * 3. ShowcaseSection - Rich product mockup with real data
+ * 4. MetricsSection - Building code landscape stats
  * 5. FeaturesSection - Key features and capabilities
  * 6. IntegrationSection - How MapleCodes connects with Reportly
  * 7. CTASection - Final CTA
@@ -34,14 +34,14 @@ export default function MapleCodes() {
         {/* Section 1: Hero */}
         <HeroSection />
 
-        {/* Section 2: Code Landscape Metrics */}
-        <MetricsSection />
-
-        {/* Section 3: Problem Statement */}
+        {/* Section 2: Problem Statement */}
         <ProblemSection />
 
-        {/* Section 4: How It Works */}
-        <HowItWorksSection />
+        {/* Section 3: Product Showcase — the real app */}
+        <ShowcaseSection />
+
+        {/* Section 4: Code Landscape Metrics */}
+        <MetricsSection />
 
         {/* Section 5: Features */}
         <FeaturesSection />

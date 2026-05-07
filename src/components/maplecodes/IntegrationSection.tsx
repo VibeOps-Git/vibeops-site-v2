@@ -8,13 +8,23 @@ const flow = [
     step: "MapleCodes",
     icon: MapPin,
     color: "amber",
-    items: ["Enter address", "Detect jurisdictions", "View applicable codes", "AI governing brief"],
+    items: [
+      "Enter project address",
+      "GIS detects jurisdictions",
+      "View codes, bylaws, standards",
+      "AI generates governing brief",
+    ],
   },
   {
     step: "Reportly",
     icon: FileText,
     color: "cyan",
-    items: ["Select template", "Codes pre-loaded", "AI generates report", "Export audit-ready PDF"],
+    items: [
+      "Pinecone RAG verifies references",
+      "Select your Word/Excel template",
+      "AI generates report sections",
+      "Download audit-ready document",
+    ],
   },
 ];
 
@@ -44,8 +54,8 @@ export function IntegrationSection() {
               </span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              MapleCodes finds the codes. Reportly builds the report. Together they eliminate
-              the entire front-end research phase of every project.
+              MapleCodes finds the code context. Reportly turns it into a professional report.
+              Together they eliminate the entire front-end research phase of every project.
             </p>
           </div>
         </AnimatedContent>
