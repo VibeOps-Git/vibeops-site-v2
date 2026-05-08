@@ -17,7 +17,7 @@ import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
 const HERO_VIDEO_SRC = '/vids/demo-vid.mp4';
 const PLATFORM_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
 const PITCH_VIDEO_SRC =
-  'https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1';
+  'https://www.youtube.com/embed/Ul6O1bC7TzE?autoplay=1&mute=0&loop=1&playlist=Ul6O1bC7TzE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1';
 
 const TICKER_ITEMS = [
   { type: 'logo' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering', url: 'https://senseengineering.com/' },
@@ -231,7 +231,7 @@ function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col overflow-hidden bg-[#050912]"
+      className="relative min-h-screen w-full flex flex-col bg-[#050912]"
       aria-label="VibeOps - AI Engineering Automation Platform for Civil, Structural, Geotechnical and Construction Teams"
     >
       <div className="relative z-10 flex w-full flex-1 flex-col md:flex-row md:items-center">

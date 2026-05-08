@@ -195,7 +195,7 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
   }, [activeIdx]);
 
   return (
-    <div className="relative w-full overflow-x-hidden" data-testid="hero-device-stage">
+    <div className="relative w-full" data-testid="hero-device-stage">
       <div className="absolute inset-x-[15%] bottom-0 h-[18%] rounded-full bg-black/25 blur-3xl" />
 
       {/* Fixed-height wrapper so the section doesn't jump between device sizes.
