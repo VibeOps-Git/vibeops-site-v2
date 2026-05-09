@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { APPLE_HOVER_SPRING, getTransition } from '@/lib/motion';
 
 // ---------------------------------------------------------------------------
 // Shared helpers
@@ -34,7 +35,8 @@ function AutoVideo({ src, className = "" }: { src: string; className?: string })
 }
 
 function EdgeGlow({ color = "emerald" }: { color?: "emerald" | "cyan" }) {
-  const c = color === "emerald" ? "rgba(52,211,153,0.12)" : "rgba(125,211,252,0.12)";
+  // Unification: cyan legacy mapped to emerald-accent (PR03)
+  const c = "rgba(52,211,153,0.12)"; // emerald-accent
   return (
     <motion.div
       className="pointer-events-none absolute inset-[-1px] rounded-[inherit]"
@@ -182,17 +184,40 @@ function PeekDevice({
 // ---------------------------------------------------------------------------
 
 export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
-  const reducedMotion = Boolean(useReducedMotion());
+  const reduced = useReducedMotion() ?? false;
   const [activeIdx, setActiveIdx] = useState(0);
+
+  // Mouse tilt for cinematic hero device (PR03: ±5° desktop, spring return) — 2D CSS only
+  const tiltRef = useRef<HTMLDivElement>(null);
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(tiltY, [-140, 140], [-5, 5]), APPLE_HOVER_SPRING);
+  const rotateY = useSpring(useTransform(tiltX, [-140, 140], [5, -5]), APPLE_HOVER_SPRING); // inverted for natural
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (reduced) return;
+    const rect = tiltRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    tiltX.set((e.clientX - cx) * 0.6);
+    tiltY.set((e.clientY - cy) * 0.5);
+  }, [reduced, tiltX, tiltY]);
+
+  const handlePointerLeave = useCallback(() => {
+    if (reduced) return;
+    tiltX.set(0);
+    tiltY.set(0);
+  }, [reduced, tiltX, tiltY]);
 
   // Continuous auto-rotate — never pauses, never resets
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reduced) return;
     const id = setInterval(() => {
       setActiveIdx((i) => (i + 1) % DEVICES.length);
     }, AUTO_ROTATE_MS);
     return () => clearInterval(id);
-  }, [reducedMotion]);
+  }, [reduced]);
 
   const handleManual = useCallback(
     (idx: number) => {
@@ -217,22 +242,34 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
           <PeekDevice
             device={DEVICES[prevIdx]}
             videoSrc={videoSrc}
-            reducedMotion={reducedMotion}
+            reducedMotion={reduced}
             side="left"
             onClick={() => handleManual(prevIdx)}
           />
           <PeekDevice
             device={DEVICES[nextIdx]}
             videoSrc={videoSrc}
-            reducedMotion={reducedMotion}
+            reducedMotion={reduced}
             side="right"
             onClick={() => handleManual(nextIdx)}
           />
         </div>
       </div>
 
-      {/* Main carousel — all devices stay mounted so videos keep playing */}
-      <div className="relative w-full" data-testid="hero-device-stage">
+      {/* Main carousel (PR03 enhanced: mouse tilt ±5° desktop via useMotionValue+useSpring + APPLE_HOVER_SPRING, reduced-motion instant/no tilt) */}
+      <motion.div
+        ref={tiltRef}
+        className="relative w-full"
+        data-testid="hero-device-stage"
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        style={{
+          perspective: 1100,
+          rotateX: reduced ? 0 : rotateX,
+          rotateY: reduced ? 0 : rotateY,
+        }}
+        transition={getTransition(reduced, APPLE_HOVER_SPRING)}
+      >
         <div className="absolute inset-x-[15%] bottom-0 h-[18%] rounded-full bg-black/25 blur-3xl" />
 
         <div className="relative flex items-center justify-center">
@@ -258,7 +295,7 @@ export function HomepageDeviceStage({ videoSrc }: { videoSrc: string }) {
             );
           })}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

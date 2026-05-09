@@ -37,10 +37,10 @@ const colorClasses = {
     glow: "group-hover:border-blue-500/30",
   },
   green: {
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
-    text: "text-emerald-400",
-    glow: "group-hover:border-emerald-500/30",
+    bg: "bg-[var(--emerald-accent)]/10",
+    border: "border-[var(--emerald-accent)]/20",
+    text: "text-[var(--emerald-accent)]",
+    glow: "group-hover:border-[var(--emerald-accent)]/30",
   },
   orange: {
     bg: "bg-orange-500/10",
@@ -60,7 +60,7 @@ export function WhyVibeOpsSection() {
   return (
     <section className="relative py-24 px-4 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#00ffcc]/3 to-[#0a0a0f]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[var(--emerald-accent)]/3 to-[#0a0a0f]" />
 
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section header */}
@@ -74,11 +74,11 @@ export function WhyVibeOpsSection() {
           threshold={0.2}
         >
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[var(--emerald-accent)] border border-[var(--emerald-accent)]/30 bg-[var(--emerald-accent)]/5 mb-4">
               Why Us
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="Why" />{" "}<span className="text-[#00ffcc]"><ScrambleText text="VibeOps" /></span>?
+              <ScrambleText text="Why" />{" "}<span className="text-[var(--emerald-accent)]"><ScrambleText text="VibeOps" /></span>?
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               We're not just building software. We're solving a problem we've experienced firsthand.

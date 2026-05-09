@@ -19,12 +19,12 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPa
     >
       {/* Large glow effect */}
       <div
-        className="absolute -inset-8 sm:-inset-12 md:-inset-16 bg-gradient-to-br from-[#00ffcc]/30 via-[#00ffcc]/10 to-transparent rounded-[3rem] sm:rounded-[4rem] blur-3xl opacity-60"
+        className="absolute -inset-8 sm:-inset-12 md:-inset-16 bg-gradient-to-br from-[#34d399]/30 via-[#34d399]/10 to-transparent rounded-[3rem] sm:rounded-[4rem] blur-3xl opacity-60"
         style={{ transition: "all 0.6s ease-out" }}
       />
 
       {/* Secondary glow */}
-      <div className="absolute -inset-4 sm:-inset-8 bg-[#00ffcc]/20 rounded-[2rem] sm:rounded-[3rem] blur-2xl animate-pulse" />
+      <div className="absolute -inset-4 sm:-inset-8 bg-[#34d399]/20 rounded-[2rem] sm:rounded-[3rem] blur-2xl animate-pulse" />
 
       {/* iPad Frame */}
       <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-[1.75rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-2 sm:p-3 shadow-2xl border border-white/10">
@@ -52,7 +52,7 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPa
       </div>
 
       {/* Reflection */}
-      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-gradient-to-t from-[#00ffcc]/10 to-transparent blur-2xl opacity-50" />
+      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-gradient-to-t from-[#34d399]/10 to-transparent blur-2xl opacity-50" />
     </div>
   );
 }

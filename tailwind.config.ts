@@ -58,6 +58,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        /* Precision Luxury emerald + gold (PR01) — backed by CSS vars for easy theming */
+        'emerald-deep': 'var(--emerald-deep)',
+        'emerald-accent': 'var(--emerald-accent)',
+        gold: 'var(--gold)',
       },
       borderRadius: {
         lg: "var(--radius)",

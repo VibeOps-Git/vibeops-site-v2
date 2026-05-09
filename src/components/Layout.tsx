@@ -3,7 +3,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
 import SpaceField from "./SpaceField";
+import { VibeLinkButton } from "./ui/VibeButton";
+import { useNavScroll } from "@/hooks/useNavScroll";
 
 interface NavLink {
   path: string;
@@ -41,17 +44,12 @@ const topLevelLinks: NavLink[] = [
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpandedGroups, setMobileExpandedGroups] = useState<string[]>([]);
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { hidden, isScrolled, style: navYStyle } = useNavScroll();
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -91,11 +89,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="pointer-events-none fixed inset-0 z-[1] bg-gradient-to-b from-[#0a0a0f]/30 via-transparent to-[#0a0a0f]/60" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_top,_transparent_0%,_rgba(10,10,15,0.4)_70%)]" />
 
-      {/* Navigation */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      {/* Navigation (PR02: velocity hide + premium glass elevation) */}
+      <motion.header
+        style={navYStyle}
+        className={`fixed top-0 left-0 right-0 z-50 ${
           isScrolled || isMenuOpen
-            ? "bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/5"
+            ? "bg-[#02050a]/92 backdrop-blur-3xl border-b border-white/8"
             : "bg-transparent"
         }`}
       >
@@ -120,7 +119,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 to="/"
                 className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
                   isActive("/")
-                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -135,7 +134,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     onMouseEnter={() => setActiveDropdown(group.label)}
                     className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm transition-all duration-200 ${
                       group.links.some(link => isActive(link.path))
-                        ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                        ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                         : "text-gray-400 hover:text-white hover:bg-white/5"
                     }`}
                   >
@@ -156,13 +155,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             to={link.path}
                             className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${
                               isActive(link.path)
-                                ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                                ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                             }`}
                           >
                             {link.label}
                             {link.badge && (
-                              <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                              <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[var(--emerald-accent)] text-black rounded-full">
                                 {link.badge}
                               </span>
                             )}
@@ -179,19 +178,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 to="/contact"
                 className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
                   isActive("/contact")
-                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
                 Contact
               </Link>
 
-              <Link
-                to="https://reportly.ca/login"
-                className="ml-4 px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all duration-200 hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
-              >
+              <VibeLinkButton href="https://reportly.ca/login" variant="primary" size="md">
                 Login
-              </Link>
+              </VibeLinkButton>
             </div>
 
             {/* Mobile Menu Button */}
@@ -212,7 +208,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 to="/"
                 className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
                   isActive("/")
-                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -238,13 +234,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           to={link.path}
                           className={`flex items-center justify-between py-3 px-4 rounded-xl text-sm transition-colors ${
                             isActive(link.path)
-                              ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                              ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                               : "text-gray-400 hover:text-white hover:bg-white/5"
                           }`}
                         >
                           {link.label}
                           {link.badge && (
-                            <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[#00ffcc] text-black rounded-full">
+                            <span className="px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider bg-[var(--emerald-accent)] text-black rounded-full">
                               {link.badge}
                             </span>
                           )}
@@ -260,7 +256,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 to="/contact"
                 className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
                   isActive("/contact")
-                    ? "text-[#00ffcc] bg-[#00ffcc]/10"
+                    ? "text-[var(--emerald-accent)] bg-[var(--emerald-accent)]/10"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -268,17 +264,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
 
               <div className="pt-2">
-                <Link
-                  to="https://reportly.ca/login"
-                  className="block w-full py-3 px-4 rounded-xl bg-[#00ffcc] text-black text-sm font-semibold text-center"
-                >
+                <VibeLinkButton href="https://reportly.ca/login" variant="primary" size="md" className="w-full justify-center">
                   Login to Reportly
-                </Link>
+                </VibeLinkButton>
               </div>
             </div>
           )}
         </nav>
-      </header>
+      </motion.header>
 
       {/* Main Content */}
       <main className="relative z-10">{children}</main>
@@ -303,16 +296,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
               <div className="space-y-3 text-sm">
-                <Link to="/" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
+                <Link to="/" className="block text-gray-400 hover:text-[var(--emerald-accent)] transition-colors">
                   Home
                 </Link>
-                <Link to="/services" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
+                <Link to="/services" className="block text-gray-400 hover:text-[var(--emerald-accent)] transition-colors">
                   Services
                 </Link>
-                <Link to="/team" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
+                <Link to="/team" className="block text-gray-400 hover:text-[var(--emerald-accent)] transition-colors">
                   Team
                 </Link>
-                <Link to="/case-studies" className="block text-gray-400 hover:text-[#00ffcc] transition-colors">
+                <Link to="/case-studies" className="block text-gray-400 hover:text-[var(--emerald-accent)] transition-colors">
                   Case Studies
                 </Link>
               </div>
@@ -324,28 +317,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <p className="text-gray-400 text-sm mb-4 leading-relaxed">
                 Book a free 30-minute call to see how we can help.
               </p>
-              <Link
-                to="/contact"
-                className="inline-block px-5 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all hover:bg-[#00ffcc]/90 hover:shadow-lg hover:shadow-[#00ffcc]/20"
-              >
+              <VibeLinkButton href="/contact" variant="primary" size="md">
                 Book a Vibe Check
-              </Link>
+              </VibeLinkButton>
             </div>
           </div>
 
           <div className="border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
             <p>© {new Date().getFullYear()} VibeOps Technologies Inc.</p>
             <div className="flex items-center gap-6">
-              <Link to="/blog" className="hover:text-[#00ffcc] transition-colors">
+              <Link to="/blog" className="hover:text-[var(--emerald-accent)] transition-colors">
                 Blog
               </Link>
-              <Link to="/contact" className="hover:text-[#00ffcc] transition-colors">
+              <Link to="/contact" className="hover:text-[var(--emerald-accent)] transition-colors">
                 Contact
               </Link>
-              <Link to="/privacy" className="hover:text-[#00ffcc] transition-colors">
+              <Link to="/privacy" className="hover:text-[var(--emerald-accent)] transition-colors">
                 Privacy
               </Link>
-              <Link to="/terms" className="hover:text-[#00ffcc] transition-colors">
+              <Link to="/terms" className="hover:text-[var(--emerald-accent)] transition-colors">
                 Terms
               </Link>
               <span className="text-gray-600">|</span>
@@ -353,7 +343,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href="https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#00ffcc] transition-colors"
+                className="hover:text-[var(--emerald-accent)] transition-colors"
               >
                 UBC Investor Showcase
               </a>
@@ -361,7 +351,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href="https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#00ffcc] transition-colors"
+                className="hover:text-[var(--emerald-accent)] transition-colors"
               >
                 Venture Cohort
               </a>
@@ -371,7 +361,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href="https://www.linkedin.com/company/vibeops"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#00ffcc] transition-colors"
+                className="text-gray-400 hover:text-[var(--emerald-accent)] transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={20} />
@@ -380,7 +370,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href="https://x.com/vibeops_ca"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#00ffcc] transition-colors"
+                className="text-gray-400 hover:text-[var(--emerald-accent)] transition-colors"
                 aria-label="X"
               >
                 <Twitter size={20} />
@@ -389,7 +379,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href="https://instagram.com/vibeops"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#00ffcc] transition-colors"
+                className="text-gray-400 hover:text-[var(--emerald-accent)] transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />

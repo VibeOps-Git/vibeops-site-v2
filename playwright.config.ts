@@ -33,6 +33,15 @@ export default defineConfig({
       name: "Mobile Safari",
       use: { ...devices["iPhone 12"] },
     },
+    // Per design doc PR08 / PR4b success criteria
+    {
+      name: "iPhone 14",
+      use: { ...devices["iPhone 14"] }, // 390×844
+    },
+    {
+      name: "iPad Air",
+      use: { ...devices["iPad Air"] }, // 820×1180 portrait
+    },
   ],
   webServer: {
     command: "npm run dev",

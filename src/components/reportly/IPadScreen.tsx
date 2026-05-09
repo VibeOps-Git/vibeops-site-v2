@@ -1,4 +1,6 @@
 import { FileText, FileSpreadsheet, Upload, CheckCircle, Sparkles } from "lucide-react";
+import { motion, useReducedMotion } from 'framer-motion';
+import { getTransition, APPLE_EASE, CROSSFADE_MS } from '@/lib/motion';
 
 interface IPadScreenProps {
   sceneIndex: number;
@@ -6,7 +8,8 @@ interface IPadScreenProps {
 }
 
 export function IPadScreen({ sceneIndex, launchProgress }: IPadScreenProps) {
-  // Calculate opacities for launch-to-step1 crossfade
+  const reduced = useReducedMotion() ?? false;
+  // Calculate opacities for launch-to-step1 crossfade (620ms APPLE_EASE per spec)
   const showLaunch = launchProgress !== undefined;
   const launchOpacity = showLaunch
     ? (launchProgress <= 1 ? 1 : Math.max(0, 1 - (launchProgress - 1) * 2))
@@ -19,32 +22,28 @@ export function IPadScreen({ sceneIndex, launchProgress }: IPadScreenProps) {
     <div className="w-full h-full bg-gradient-to-br from-[#0f1115] to-[#0a0a0f] overflow-hidden relative">
       {/* Launch screen - visible during intro, fades out during transition */}
       {showLaunch && (
-        <div
+        <motion.div
           className="absolute inset-0 z-10"
-          style={{
-            opacity: launchOpacity,
-            transition: "opacity 0.3s ease-out",
-          }}
+          animate={{ opacity: launchOpacity }}
+          transition={getTransition(reduced, { duration: 0.3, ease: APPLE_EASE })}
         >
           <LaunchScreen progress={Math.min(1, launchProgress)} />
-        </div>
+        </motion.div>
       )}
 
-      {/* Scene screens - crossfade between them */}
+      {/* Scene screens - crossfade 620ms APPLE_EASE (PR4b) */}
       {[0, 1, 2].map((i) => (
-        <div
+        <motion.div
           key={i}
           className="absolute inset-0"
-          style={{
-            opacity: sceneIndex === i ? sceneOpacity : 0,
-            transition: "opacity 0.4s ease-out",
-            pointerEvents: sceneIndex === i && sceneOpacity > 0.5 ? "auto" : "none",
-          }}
+          animate={{ opacity: sceneIndex === i ? sceneOpacity : 0 }}
+          transition={getTransition(reduced, { duration: CROSSFADE_MS / 1000, ease: APPLE_EASE })}
+          style={{ pointerEvents: sceneIndex === i && sceneOpacity > 0.5 ? "auto" : "none" }}
         >
           {i === 0 && <UploadScreen />}
           {i === 1 && <TransformScreen />}
           {i === 2 && <OutputScreen />}
-        </div>
+        </motion.div>
       ))}
     </div>
   );
@@ -56,7 +55,7 @@ function LaunchScreen({ progress }: { progress: number }) {
       {/* App icon with glow */}
       <div className="relative mb-4 sm:mb-6 md:mb-8 will-change-transform">
         <div
-          className="absolute inset-0 bg-[#00ffcc]/30 rounded-2xl sm:rounded-3xl blur-xl sm:blur-2xl will-change-[opacity,transform]"
+          className="absolute inset-0 bg-[#34d399]/30 rounded-2xl sm:rounded-3xl blur-xl sm:blur-2xl will-change-[opacity,transform]"
           style={{
             opacity: 0.3 + progress * 0.5,
             transform: `scale(${1 + progress * 0.3}) translateZ(0)`,
@@ -64,13 +63,13 @@ function LaunchScreen({ progress }: { progress: number }) {
           }}
         />
         <div
-          className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#00ffcc]/20 to-[#00ffcc]/5 border border-[#00ffcc]/30 flex items-center justify-center will-change-transform"
+          className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#34d399]/20 to-[#34d399]/5 border border-[#34d399]/30 flex items-center justify-center will-change-transform"
           style={{
             transform: `scale(${0.9 + progress * 0.1}) translateZ(0)`,
             transition: "transform 0.15s ease-out",
           }}
         >
-          <FileText className="w-7 h-7 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#00ffcc]" />
+          <FileText className="w-7 h-7 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#34d399]" />
         </div>
       </div>
 
@@ -92,7 +91,7 @@ function LaunchScreen({ progress }: { progress: number }) {
       <div className="w-32 sm:w-48 md:w-56">
         <div className="h-1 sm:h-1.5 md:h-2 bg-white/10 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/70 rounded-full"
+            className="h-full bg-gradient-to-r from-[#34d399] to-[#34d399]/70 rounded-full"
             style={{
               width: `${progress * 100}%`,
               transition: "width 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -115,19 +114,19 @@ function UploadScreen() {
     <div className="w-full h-full p-2 sm:p-4 md:p-6 flex flex-col">
       {/* App Header */}
       <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-4 md:mb-6">
-        <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-[#00ffcc]/20 flex items-center justify-center">
-          <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#00ffcc]" />
+        <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-[#34d399]/20 flex items-center justify-center">
+          <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#34d399]" />
         </div>
         <span className="text-xs sm:text-sm md:text-base font-medium text-white">Reportly</span>
       </div>
 
       {/* Upload Zone */}
-      <div className="flex-1 border-2 border-dashed border-[#00ffcc]/30 rounded-xl sm:rounded-2xl bg-[#00ffcc]/5 flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 relative overflow-hidden">
+      <div className="flex-1 border-2 border-dashed border-[#34d399]/30 rounded-xl sm:rounded-2xl bg-[#34d399]/5 flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 relative overflow-hidden">
         {/* Animated upload icon */}
         <div className="relative mb-2 sm:mb-4 md:mb-6">
-          <div className="absolute inset-0 bg-[#00ffcc]/20 rounded-full blur-lg sm:blur-xl animate-pulse" />
-          <div className="relative p-2 sm:p-4 md:p-5 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/30">
-            <Upload className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#00ffcc]" />
+          <div className="absolute inset-0 bg-[#34d399]/20 rounded-full blur-lg sm:blur-xl animate-pulse" />
+          <div className="relative p-2 sm:p-4 md:p-5 rounded-full bg-[#34d399]/10 border border-[#34d399]/30">
+            <Upload className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#34d399]" />
           </div>
         </div>
         <p className="text-[10px] sm:text-sm md:text-base text-white font-medium mb-0.5 sm:mb-1">Drop your templates</p>
@@ -161,8 +160,8 @@ function TransformScreen() {
       {/* App Header */}
       <div className="flex items-center justify-between mb-2 sm:mb-4 md:mb-6">
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-[#00ffcc]/20 flex items-center justify-center">
-            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#00ffcc]" />
+          <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-[#34d399]/20 flex items-center justify-center">
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#34d399]" />
           </div>
           <span className="text-[10px] sm:text-sm md:text-base font-medium text-white">Processing...</span>
         </div>
@@ -189,18 +188,18 @@ function TransformScreen() {
         {/* Transformation arrows */}
         <div className="flex items-center justify-center py-1 sm:py-2 md:py-3">
           <div className="flex items-center gap-1 sm:gap-2">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full bg-[#00ffcc] animate-pulse" />
-            <div className="w-4 sm:w-8 md:w-12 h-0.5 bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/30" />
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full bg-[#00ffcc]/50 animate-pulse delay-100" />
-            <div className="w-4 sm:w-8 md:w-12 h-0.5 bg-gradient-to-r from-[#00ffcc]/30 to-[#00ffcc]/10" />
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full bg-[#00ffcc]/30 animate-pulse delay-200" />
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full bg-[#34d399] animate-pulse" />
+            <div className="w-4 sm:w-8 md:w-12 h-0.5 bg-gradient-to-r from-[#34d399] to-[#34d399]/30" />
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full bg-[#34d399]/50 animate-pulse delay-100" />
+            <div className="w-4 sm:w-8 md:w-12 h-0.5 bg-gradient-to-r from-[#34d399]/30 to-[#34d399]/10" />
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full bg-[#34d399]/30 animate-pulse delay-200" />
           </div>
         </div>
 
         {/* Output preview */}
-        <div className="flex-1 bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-[#00ffcc]/20">
+        <div className="flex-1 bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-[#34d399]/20">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-3">
-            <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#00ffcc]" />
+            <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#34d399]" />
             <span className="text-[8px] sm:text-xs md:text-sm text-gray-400">Building Report...</span>
           </div>
           {/* Animated placeholder lines */}
@@ -208,7 +207,7 @@ function TransformScreen() {
             <div className="h-2 sm:h-3 md:h-4 bg-white/10 rounded w-3/4 animate-shimmer" />
             <div className="h-2 sm:h-3 md:h-4 bg-white/10 rounded w-full animate-shimmer delay-75" />
             <div className="h-2 sm:h-3 md:h-4 bg-white/10 rounded w-5/6 animate-shimmer delay-150" />
-            <div className="h-5 sm:h-8 md:h-10 bg-[#00ffcc]/10 rounded mt-1.5 sm:mt-3 md:mt-4 animate-shimmer delay-200" />
+            <div className="h-5 sm:h-8 md:h-10 bg-[#34d399]/10 rounded mt-1.5 sm:mt-3 md:mt-4 animate-shimmer delay-200" />
           </div>
         </div>
       </div>
@@ -217,10 +216,10 @@ function TransformScreen() {
       <div className="mt-2 sm:mt-4 md:mt-6">
         <div className="flex justify-between text-[8px] sm:text-xs md:text-sm mb-1 sm:mb-2">
           <span className="text-gray-500">Applying formatting...</span>
-          <span className="text-[#00ffcc]">67%</span>
+          <span className="text-[#34d399]">67%</span>
         </div>
         <div className="h-1.5 sm:h-2 md:h-2.5 bg-white/10 rounded-full overflow-hidden">
-          <div className="h-full w-2/3 bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/70 rounded-full animate-pulse" />
+          <div className="h-full w-2/3 bg-gradient-to-r from-[#34d399] to-[#34d399]/70 rounded-full animate-pulse" />
         </div>
       </div>
     </div>
@@ -233,13 +232,13 @@ function OutputScreen() {
       {/* App Header */}
       <div className="flex items-center justify-between mb-2 sm:mb-4 md:mb-6">
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-[#00ffcc]/20 flex items-center justify-center">
-            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#00ffcc]" />
+          <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-[#34d399]/20 flex items-center justify-center">
+            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#34d399]" />
           </div>
           <span className="text-[10px] sm:text-sm md:text-base font-medium text-white">Report Ready</span>
         </div>
-        <div className="px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[#00ffcc]/20 border border-[#00ffcc]/30">
-          <span className="text-[8px] sm:text-xs md:text-sm text-[#00ffcc]">Complete</span>
+        <div className="px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[#34d399]/20 border border-[#34d399]/30">
+          <span className="text-[8px] sm:text-xs md:text-sm text-[#34d399]">Complete</span>
         </div>
       </div>
 
@@ -248,7 +247,7 @@ function OutputScreen() {
         {/* Document header */}
         <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-2 sm:p-3 md:p-4">
           <div className="flex items-center gap-1.5 sm:gap-3">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-md sm:rounded-lg bg-[#00ffcc] flex items-center justify-center">
+            <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-md sm:rounded-lg bg-[#34d399] flex items-center justify-center">
               <span className="text-[8px] sm:text-[10px] md:text-xs font-bold text-black">AC</span>
             </div>
             <div>
@@ -298,7 +297,7 @@ function OutputScreen() {
 
       {/* Action buttons */}
       <div className="mt-2 sm:mt-4 md:mt-6 flex gap-1.5 sm:gap-3">
-        <button className="flex-1 px-2 sm:px-4 py-1.5 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl bg-[#00ffcc] text-black text-[8px] sm:text-xs md:text-sm font-semibold hover:bg-[#00ffcc]/90 transition-colors">
+        <button className="flex-1 px-2 sm:px-4 py-1.5 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl bg-[#34d399] text-black text-[8px] sm:text-xs md:text-sm font-semibold hover:bg-[#34d399]/90 transition-colors">
           Download
         </button>
         <button className="flex-1 px-2 sm:px-4 py-1.5 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl bg-white/10 text-white text-[8px] sm:text-xs md:text-sm font-semibold border border-white/20 hover:bg-white/20 transition-colors">
@@ -347,7 +346,7 @@ function DataRow({ label, value, highlight }: { label: string; value: string; hi
   return (
     <div className="flex items-center justify-between">
       <span className="text-[8px] sm:text-xs md:text-sm text-gray-500">{label}</span>
-      <span className={`text-[8px] sm:text-xs md:text-sm ${highlight ? "text-[#00ffcc]" : "text-white"}`}>{value}</span>
+      <span className={`text-[8px] sm:text-xs md:text-sm ${highlight ? "text-[#34d399]" : "text-white"}`}>{value}</span>
     </div>
   );
 }
