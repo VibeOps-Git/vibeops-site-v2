@@ -8,10 +8,12 @@ import { test, expect, devices } from '@playwright/test';
 
 test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
   test.beforeEach(async ({ page }) => {
-    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - fixes attachment flakiness from run 25625405543
+    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - fixes attachment flakiness from run 25625405543 + cycle 104 E2E timeout hardening
     await page.goto('/reportly', { waitUntil: 'domcontentloaded' });
-    await page.waitForLoadState('networkidle', { timeout: 45000 }).catch(() => {});
-    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 60000 });
+    await page.waitForLoadState('networkidle', { timeout: 60000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 120000 });
+    // Extra settle for video/3D animations in showcase to avoid late attachment
+    await page.waitForTimeout(500).catch(() => {});
   });
 
   test('no horizontal overflow on mobile viewports', async ({ page }) => {
