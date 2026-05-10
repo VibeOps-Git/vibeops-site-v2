@@ -8,14 +8,15 @@ import { test, expect, devices } from '@playwright/test';
 
 test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
   test.beforeEach(async ({ page }) => {
-    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - cycle 112 E2E fix after run 25630073117 ci_failed (hardens attachment for showcase + toggle + announcer)
+    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - cycle 115 hardening after run 25633211634 ci_failed (timeout/attachment for 3D/video/scroll elements in homepage + reportly)
     await page.goto('/reportly', { waitUntil: 'domcontentloaded', timeout: 180000 });
     await page.waitForLoadState('load', { timeout: 180000 }).catch(() => {});
     await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
     await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 180000 });
-    // Extra waits for video/3D/scroll animations + key interactive elements
+    // Extra waits for video/3D/scroll animations + key interactive elements (cycle 115: extra video + canvas for heavy pinned content)
     await page.waitForSelector('[data-testid="play-demo-toggle"], [data-testid="showcase-progress"]', { timeout: 120000 }).catch(() => {});
-    await page.waitForTimeout(800).catch(() => {});
+    await page.waitForSelector('video, canvas', { timeout: 120000 }).catch(() => {});
+    await page.waitForTimeout(1500).catch(() => {});
   });
 
   test('no horizontal overflow on mobile viewports', async ({ page }) => {
