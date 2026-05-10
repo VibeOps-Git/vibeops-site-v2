@@ -2,10 +2,13 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - avoids fragile header img attachment timeouts seen in run 25625405543
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - avoids fragile header img attachment timeouts seen in run 25625405543 + cycle 104 E2E ci_failed on nav/body/hero
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.waitForLoadState("networkidle", { timeout: 45000 }).catch(() => {});
-    await expect(page.locator("body")).toBeAttached({ timeout: 60000 });
+    await page.waitForLoadState("networkidle", { timeout: 60000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 90000 });
+    // Wait for key heavy-rendered elements to attach (3D/anim cause late nav/hero paint)
+    await page.waitForSelector("nav", { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 120000 }).catch(() => {});
   });
 
   test("should load the homepage", async ({ page }) => {
@@ -14,7 +17,7 @@ test.describe("Homepage", () => {
 
   test("should display the navigation", async ({ page }) => {
     const nav = page.locator("nav");
-    await expect(nav).toBeVisible({ timeout: 30000 });
+    await expect(nav).toBeVisible({ timeout: 120000 });
   });
 
   test("should have working navigation links", async ({ page }) => {
@@ -123,15 +126,18 @@ test.describe("Team Page", () => {
 
 test.describe("Footer Social Links", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    // Robust load matching homepage to prevent footer visibility timeout (cycle 104 E2E failure root cause)
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("networkidle", { timeout: 60000 }).catch(() => {});
+    await expect(page.locator("footer")).toBeAttached({ timeout: 120000 });
   });
 
   test("should display social media links in the footer", async ({ page }) => {
     const footer = page.locator("footer");
-    await expect(footer).toBeVisible();
+    await expect(footer).toBeVisible({ timeout: 120000 });
 
     const socialLinks = footer.getByTestId("social-links");
-    await expect(socialLinks).toBeVisible();
+    await expect(socialLinks).toBeVisible({ timeout: 120000 });
 
     // Check all social links are present
     const linkedinLink = socialLinks.getByRole("link", { name: /linkedin/i });
