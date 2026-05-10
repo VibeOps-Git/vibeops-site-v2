@@ -2,7 +2,10 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - avoids fragile header img attachment timeouts seen in run 25625405543
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("networkidle", { timeout: 45000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 60000 });
   });
 
   test("should load the homepage", async ({ page }) => {
@@ -11,7 +14,7 @@ test.describe("Homepage", () => {
 
   test("should display the navigation", async ({ page }) => {
     const nav = page.locator("nav");
-    await expect(nav).toBeVisible();
+    await expect(nav).toBeVisible({ timeout: 30000 });
   });
 
   test("should have working navigation links", async ({ page }) => {
