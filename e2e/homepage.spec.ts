@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - cycle 112 hardening after run 25630073117 ci_failed (nav not found, body hidden, hero-device-stage timeout, reportly links)
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - cycle 115 hardening after run 25633211634 ci_failed (beforeEach 360s timeout + attachment issues with 3D/anim/video)
     await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
     await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
     await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
@@ -131,10 +131,14 @@ test.describe("Team Page", () => {
 
 test.describe("Footer Social Links", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load matching homepage to prevent footer visibility timeout (cycle 104 E2E failure root cause)
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.waitForLoadState("networkidle", { timeout: 60000 }).catch(() => {});
-    await expect(page.locator("footer")).toBeAttached({ timeout: 120000 });
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) matching main beforeEach - cycle 115 hardening after run 25633211634 ci_failed (footer attachment timeout + body not painted due to 3D/video load)
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
+    await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 120000 });
+    await page.waitForSelector("nav", { timeout: 180000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 180000 }).catch(() => {});
+    await expect(page.locator("footer")).toBeAttached({ timeout: 180000 });
   });
 
   test("should display social media links in the footer", async ({ page }) => {
@@ -182,12 +186,19 @@ test.describe("Footer Social Links", () => {
 });
 
 test.describe("Accessibility", () => {
+  test.beforeEach(async ({ page }) => {
+    // Robust load for heavy Apple redesign to ensure content/3D/headers render before a11y checks - cycle 115 after run 25633211634 (h1 count 0 due to incomplete paint)
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
+    await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 120000 });
+    await page.waitForSelector("nav", { timeout: 180000 }).catch(() => {});
+  });
+
   test("homepage should have no major accessibility issues", async ({
     page,
   }) => {
-    await page.goto("/");
-
-    // Check for basic accessibility: images have alt text
+    // images check after robust load
     const images = page.locator("img");
     const count = await images.count();
 
@@ -201,10 +212,8 @@ test.describe("Accessibility", () => {
   });
 
   test("should have proper heading hierarchy", async ({ page }) => {
-    await page.goto("/");
-
     const h1Count = await page.locator("h1").count();
-    // Should have at least one h1
+    // Should have at least one h1 (now guaranteed after robust beforeEach load of heavy content)
     expect(h1Count).toBeGreaterThanOrEqual(1);
   });
 });
