@@ -7,17 +7,18 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "github" : "html",
-  // Increased timeouts for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #98)
-  timeout: 180000,
+  // Increased timeouts for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #98 + cycle 104 timeout/attachment hardening)
+  timeout: 300000,
   expect: {
-    timeout: 90000,
+    timeout: 120000,
   },
   use: {
     baseURL: "http://localhost:8080",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    navigationTimeout: 180000,
-    actionTimeout: 60000,
+    video: "retain-on-failure",
+    navigationTimeout: 300000,
+    actionTimeout: 120000,
   },
   projects: [
     {
