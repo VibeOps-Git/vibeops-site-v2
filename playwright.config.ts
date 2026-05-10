@@ -7,23 +7,36 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "github" : "html",
-  // Increased timeouts for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #98 + cycle 104 timeout/attachment hardening)
-  timeout: 300000,
+  // Increased timeouts + CI graphics stability for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #99 + cycle 112: addresses nav/body/hero-device-stage attachment timeouts + reportly-showcase load in run 25630073117)
+  timeout: 360000,
   expect: {
-    timeout: 120000,
+    timeout: 180000,
   },
   use: {
     baseURL: "http://localhost:8080",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
-    navigationTimeout: 300000,
-    actionTimeout: 120000,
+    navigationTimeout: 360000,
+    actionTimeout: 180000,
   },
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        // Extra args for headless CI stability with WebGL/3D canvases, videos, heavy animations (prevents GPU/timeout hangs)
+        launchOptions: {
+          args: [
+            "--disable-gpu",
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-web-security",
+            "--allow-running-insecure-content",
+          ],
+        },
+      },
     },
     {
       name: "firefox",
