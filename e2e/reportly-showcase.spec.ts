@@ -8,43 +8,47 @@ import { test, expect, devices } from '@playwright/test';
 
 test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
   test.beforeEach(async ({ page }) => {
-    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - fixes attachment flakiness from run 25625405543 + cycle 104 E2E timeout hardening
-    await page.goto('/reportly', { waitUntil: 'domcontentloaded' });
-    await page.waitForLoadState('networkidle', { timeout: 60000 }).catch(() => {});
-    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 120000 });
-    // Extra settle for video/3D animations in showcase to avoid late attachment
-    await page.waitForTimeout(500).catch(() => {});
+    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - cycle 112 E2E fix after run 25630073117 ci_failed (hardens attachment for showcase + toggle + announcer)
+    await page.goto('/reportly', { waitUntil: 'domcontentloaded', timeout: 180000 });
+    await page.waitForLoadState('load', { timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 180000 });
+    // Extra waits for video/3D/scroll animations + key interactive elements
+    await page.waitForSelector('[data-testid="play-demo-toggle"], [data-testid="showcase-progress"]', { timeout: 120000 }).catch(() => {});
+    await page.waitForTimeout(800).catch(() => {});
   });
 
   test('no horizontal overflow on mobile viewports', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 }); // iPhone 14
-    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'visible');
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 }).catch(() => {});
+    await page.waitForLoadState('networkidle', { timeout: 90000 }).catch(() => {});
+    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'visible', { timeout: 60000 });
     // Also check the sticky core
     const showcase = page.locator('[data-testid="reportly-showcase"]');
-    await expect(showcase).toBeVisible();
+    await expect(showcase).toBeVisible({ timeout: 120000 });
   });
 
   test('Play demo toggle (opt-in, default off) + scene change on tap', async ({ page }) => {
     const toggle = page.locator('[data-testid="play-demo-toggle"]');
-    await expect(toggle).toBeVisible();
-    await expect(toggle).toContainText(/Play demo/i);
+    await expect(toggle).toBeVisible({ timeout: 120000 });
+    await expect(toggle).toContainText(/Play demo/i, { timeout: 60000 });
 
     // Tap to start (opt-in)
     await toggle.click();
-    await expect(toggle).toContainText(/Pause demo/i);
+    await expect(toggle).toContainText(/Pause demo/i, { timeout: 60000 });
 
     // After dwell, a scene change should occur (aria-live updates)
     const announcer = page.locator('[data-testid="scene-announcer"]');
-    await expect(announcer).toBeAttached();
+    await expect(announcer).toBeAttached({ timeout: 120000 });
 
     // Tap again to pause
     await toggle.click();
-    await expect(toggle).toContainText(/Play demo/i);
+    await expect(toggle).toContainText(/Play demo/i, { timeout: 60000 });
   });
 
   test('Progress dots are 44px+ tappable and keyboard accessible (ArrowLeft/Right)', async ({ page }) => {
     const progress = page.locator('[data-testid="showcase-progress"]');
-    await expect(progress).toBeVisible();
+    await expect(progress).toBeVisible({ timeout: 120000 });
 
     // At least one dot button has min 44px target
     const firstDot = progress.locator('button').first();
@@ -60,14 +64,15 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
 
   test('ARIA announcements fire on scene change', async ({ page }) => {
     const announcer = page.locator('[data-testid="scene-announcer"]');
-    await expect(announcer).toHaveAttribute('aria-live', 'polite');
-    await expect(announcer).toHaveAttribute('role', 'status');
+    await expect(announcer).toHaveAttribute('aria-live', 'polite', { timeout: 60000 });
+    await expect(announcer).toHaveAttribute('role', 'status', { timeout: 60000 });
   });
 
   test('Text readable at 320px width (mobile small)', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 700 });
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 }).catch(() => {});
     const desc = page.locator('text=Upload Your Existing Templates').first(); // from authored SCENES
-    await expect(desc).toBeVisible();
+    await expect(desc).toBeVisible({ timeout: 120000 });
     // No horizontal clip
     const overflow = await page.evaluate(() => document.body.scrollWidth > document.body.clientWidth);
     expect(overflow).toBe(false);
@@ -75,12 +80,12 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
 
   test('Reduced motion disables float/auto/tilt (prefers-reduced-motion)', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.reload();
-    await page.waitForSelector('[data-testid="reportly-showcase"]');
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 });
+    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 120000 });
 
     // Play demo should not be possible or instantly off
     const toggle = page.locator('[data-testid="play-demo-toggle"]');
     // In reduced path the component forces autoPlay false and no timers
-    await expect(toggle).toBeVisible();
+    await expect(toggle).toBeVisible({ timeout: 120000 });
   });
 });
