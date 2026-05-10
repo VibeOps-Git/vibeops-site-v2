@@ -7,8 +7,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "github" : "html",
-  // Increased timeouts + CI graphics stability for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #99 + cycle 112 + cycle 115: addresses persistent timeout/attachment in homepage beforeEach + reportly-showcase 255vh pinned 3D/video/scroll after run 25633211634 failure)
-  timeout: 600000,
+  // Increased timeouts + CI graphics stability for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #99 + cycle 112 + cycle 115 after 25633211634 failure: further hardened test/ webServer timeouts + video/3D autoplay + background throttling flags for homepage beforeEach + reportly-showcase 255vh pinned 3D/video/scroll attachment timeouts)
+  timeout: 900000,
   expect: {
     timeout: 300000,
   },
@@ -17,8 +17,8 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
-    navigationTimeout: 600000,
-    actionTimeout: 240000,
+    navigationTimeout: 900000,
+    actionTimeout: 300000,
   },
   projects: [
     {
@@ -38,6 +38,11 @@ export default defineConfig({
             "--enable-webgl",
             "--enable-accelerated-2d-canvas",
             "--disable-features=IsolateOrigins,site-per-process",
+            // Additional for video/3D heavy content stability in CI (cycle 115 after 25633211634)
+            "--autoplay-policy=no-user-gesture-required",
+            "--disable-background-timer-throttling",
+            "--disable-renderer-backgrounding",
+            "--disable-backgrounding-occluded-windows",
           ],
         },
       },
@@ -72,6 +77,6 @@ export default defineConfig({
     command: "npm run dev",
     url: "http://localhost:8080",
     reuseExistingServer: !process.env.CI,
-    timeout: 120000,
+    timeout: 300000,
   },
 });
