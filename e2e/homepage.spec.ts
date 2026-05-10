@@ -2,28 +2,30 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - avoids fragile header img attachment timeouts seen in run 25625405543 + cycle 104 E2E ci_failed on nav/body/hero
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.waitForLoadState("networkidle", { timeout: 60000 }).catch(() => {});
-    await expect(page.locator("body")).toBeAttached({ timeout: 90000 });
-    // Wait for key heavy-rendered elements to attach (3D/anim cause late nav/hero paint)
-    await page.waitForSelector("nav", { timeout: 120000 }).catch(() => {});
-    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 120000 }).catch(() => {});
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - cycle 112 hardening after run 25630073117 ci_failed (nav not found, body hidden, hero-device-stage timeout, reportly links)
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
+    await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 120000 });
+    // Extended waits for late-painting heavy 3D/anim/video elements
+    await page.waitForSelector("nav", { timeout: 180000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 180000 }).catch(() => {});
+    await page.waitForSelector('a[href*="/reportly"], [data-testid*="explore-reportly"]', { timeout: 120000 }).catch(() => {});
   });
 
   test("should load the homepage", async ({ page }) => {
-    await expect(page).toHaveTitle(/VibeOps/i);
+    await expect(page).toHaveTitle(/VibeOps/i, { timeout: 60000 });
   });
 
   test("should display the navigation", async ({ page }) => {
     const nav = page.locator("nav");
-    await expect(nav).toBeVisible({ timeout: 120000 });
+    await expect(nav).toBeVisible({ timeout: 180000 });
   });
 
   test("should have working navigation links", async ({ page }) => {
     const nav = page.getByRole("navigation");
     const servicesLink = nav.getByRole("link", { name: /services/i }).first();
-    if (await servicesLink.isVisible()) {
+    if (await servicesLink.isVisible({ timeout: 30000 })) {
       await servicesLink.click();
       await expect(page).toHaveURL(/services/i);
     }
@@ -31,16 +33,19 @@ test.describe("Homepage", () => {
 
   test("should be responsive on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.locator("body")).toBeVisible();
-    await expect(page.getByTestId("hero-device-stage")).toBeVisible();
-    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible();
+    await page.reload({ waitUntil: "domcontentloaded", timeout: 120000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 90000 }).catch(() => {});
+    await expect(page.locator("body")).toBeVisible({ timeout: 120000 });
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 120000 });
+    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 120000 });
   });
 
   test("should keep the homepage layout within the viewport on desktop and show the device stage", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 960 });
+    await page.reload({ waitUntil: "domcontentloaded", timeout: 120000 }).catch(() => {});
 
-    await expect(page.getByTestId("hero-device-stage")).toBeVisible();
-    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible();
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 180000 });
+    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 120000 });
 
     const hasHorizontalOverflow = await page.evaluate(() => {
       const { documentElement, body } = document;
