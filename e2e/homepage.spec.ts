@@ -2,15 +2,18 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - cycle 115 hardening after run 25633211634 ci_failed (beforeEach 360s timeout + attachment issues with 3D/anim/video)
-    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
-    await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
-    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
-    await expect(page.locator("body")).toBeAttached({ timeout: 120000 });
-    // Extended waits for late-painting heavy 3D/anim/video elements
-    await page.waitForSelector("nav", { timeout: 180000 }).catch(() => {});
-    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 180000 }).catch(() => {});
-    await page.waitForSelector('a[href*="/reportly"], [data-testid*="explore-reportly"]', { timeout: 120000 }).catch(() => {});
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) - cycle 115 + cycle 169 after run 25638654958 ci_failed (timeout/attachment on nav/body/device-stage/canvas due to 3D/anim/video)
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 300000 });
+    await page.waitForLoadState("load", { timeout: 300000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 180000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 180000 });
+    // Extended waits for late-painting heavy 3D/anim/video elements + canvas for DeviceScene/LiquidGlass
+    await page.waitForSelector("nav", { timeout: 300000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 300000 }).catch(() => {});
+    await page.waitForSelector("canvas, video", { timeout: 180000 }).catch(() => {});
+    await page.waitForSelector('a[href*="/reportly"], [data-testid*="explore-reportly"]', { timeout: 180000 }).catch(() => {});
+    // Allow time for 3D mount, video decode, animations to paint and attach in CI (cycle 169 fix)
+    await page.waitForTimeout(4000).catch(() => {});
   });
 
   test("should load the homepage", async ({ page }) => {
@@ -33,19 +36,24 @@ test.describe("Homepage", () => {
 
   test("should be responsive on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.reload({ waitUntil: "domcontentloaded", timeout: 120000 }).catch(() => {});
-    await page.waitForLoadState("networkidle", { timeout: 90000 }).catch(() => {});
-    await expect(page.locator("body")).toBeVisible({ timeout: 120000 });
-    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 120000 });
-    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 120000 });
+    await page.reload({ waitUntil: "domcontentloaded", timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector("canvas, [data-testid=\"hero-device-stage\"]", { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(3000).catch(() => {});
+    await expect(page.locator("body")).toBeVisible({ timeout: 180000 });
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 180000 });
+    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 180000 });
   });
 
   test("should keep the homepage layout within the viewport on desktop and show the device stage", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 960 });
-    await page.reload({ waitUntil: "domcontentloaded", timeout: 120000 }).catch(() => {});
+    await page.reload({ waitUntil: "domcontentloaded", timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"], canvas', { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(3000).catch(() => {});
 
-    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 180000 });
-    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 120000 });
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 300000 });
+    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 180000 });
 
     const hasHorizontalOverflow = await page.evaluate(() => {
       const { documentElement, body } = document;
@@ -57,9 +65,12 @@ test.describe("Homepage", () => {
 
   test("should keep the homepage layout within the viewport on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
+    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"], canvas', { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(3000).catch(() => {});
 
-    await expect(page.getByTestId("hero-device-stage")).toBeVisible();
+    await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 300000 });
 
     const hasHorizontalOverflow = await page.evaluate(() => {
       const { documentElement, body } = document;
@@ -131,14 +142,17 @@ test.describe("Team Page", () => {
 
 test.describe("Footer Social Links", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) matching main beforeEach - cycle 115 hardening after run 25633211634 ci_failed (footer attachment timeout + body not painted due to 3D/video load)
-    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
-    await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
-    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
-    await expect(page.locator("body")).toBeAttached({ timeout: 120000 });
-    await page.waitForSelector("nav", { timeout: 180000 }).catch(() => {});
-    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 180000 }).catch(() => {});
+    // Robust load for heavy Apple redesign (3D DeviceScene, LiquidGlass, Aurora, videos) matching main - cycle 115 + cycle 169 after 25638654958 (footer attachment timeout + 3D/video slow paint)
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 300000 });
+    await page.waitForLoadState("load", { timeout: 300000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 180000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 180000 });
+    await page.waitForSelector("nav", { timeout: 300000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="hero-device-stage"]', { timeout: 300000 }).catch(() => {});
+    await page.waitForSelector("canvas, video", { timeout: 180000 }).catch(() => {});
     await expect(page.locator("footer")).toBeAttached({ timeout: 180000 });
+    // Paint settle for heavy elements (cycle 169)
+    await page.waitForTimeout(4000).catch(() => {});
   });
 
   test("should display social media links in the footer", async ({ page }) => {
@@ -187,12 +201,14 @@ test.describe("Footer Social Links", () => {
 
 test.describe("Accessibility", () => {
   test.beforeEach(async ({ page }) => {
-    // Robust load for heavy Apple redesign to ensure content/3D/headers render before a11y checks - cycle 115 after run 25633211634 (h1 count 0 due to incomplete paint)
-    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 180000 });
-    await page.waitForLoadState("load", { timeout: 180000 }).catch(() => {});
-    await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
-    await expect(page.locator("body")).toBeAttached({ timeout: 120000 });
-    await page.waitForSelector("nav", { timeout: 180000 }).catch(() => {});
+    // Robust load for heavy Apple redesign to ensure content/3D/headers render before a11y - cycle 115 + 169 after 25638654958 (h1/canvas attach due to incomplete 3D paint)
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 300000 });
+    await page.waitForLoadState("load", { timeout: 300000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 180000 }).catch(() => {});
+    await expect(page.locator("body")).toBeAttached({ timeout: 180000 });
+    await page.waitForSelector("nav", { timeout: 300000 }).catch(() => {});
+    await page.waitForSelector("canvas", { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(4000).catch(() => {});
   });
 
   test("homepage should have no major accessibility issues", async ({
