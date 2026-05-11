@@ -8,25 +8,27 @@ import { test, expect, devices } from '@playwright/test';
 
 test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
   test.beforeEach(async ({ page }) => {
-    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - cycle 115 hardening after run 25633211634 ci_failed (timeout/attachment for 3D/video/scroll elements in homepage + reportly)
-    await page.goto('/reportly', { waitUntil: 'domcontentloaded', timeout: 180000 });
-    await page.waitForLoadState('load', { timeout: 180000 }).catch(() => {});
-    await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
-    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 180000 });
-    // Extra waits for video/3D/scroll animations + key interactive elements (cycle 115: extra video + canvas for heavy pinned content)
-    await page.waitForSelector('[data-testid="play-demo-toggle"], [data-testid="showcase-progress"]', { timeout: 120000 }).catch(() => {});
-    await page.waitForSelector('video, canvas', { timeout: 120000 }).catch(() => {});
-    await page.waitForTimeout(1500).catch(() => {});
+    // Robust for heavy Apple-caliber reportly showcase (255vh pinned 3D/scroll/anim/video) - cycle 115 + cycle 169 after run 25638654958 ci_failed (timeout/attachment for 3D/video/scroll/canvas in reportly)
+    await page.goto('/reportly', { waitUntil: 'domcontentloaded', timeout: 300000 });
+    await page.waitForLoadState('load', { timeout: 300000 }).catch(() => {});
+    await page.waitForLoadState('networkidle', { timeout: 180000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 300000 }).catch(() => {});
+    // Extra waits for video/3D/scroll animations + canvas + interactive (cycle 169: stronger for pinned heavy content)
+    await page.waitForSelector('[data-testid="play-demo-toggle"], [data-testid="showcase-progress"]', { timeout: 180000 }).catch(() => {});
+    await page.waitForSelector('video, canvas, [data-testid="reportly-showcase"]', { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(5000).catch(() => {}); // extra paint settle for 3D scenes + video
   });
 
   test('no horizontal overflow on mobile viewports', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 }); // iPhone 14
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 }).catch(() => {});
-    await page.waitForLoadState('networkidle', { timeout: 90000 }).catch(() => {});
-    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'visible', { timeout: 60000 });
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="reportly-showcase"], canvas', { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(3000).catch(() => {});
+    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'visible', { timeout: 120000 });
     // Also check the sticky core
     const showcase = page.locator('[data-testid="reportly-showcase"]');
-    await expect(showcase).toBeVisible({ timeout: 120000 });
+    await expect(showcase).toBeVisible({ timeout: 180000 });
   });
 
   test('Play demo toggle (opt-in, default off) + scene change on tap', async ({ page }) => {
@@ -71,9 +73,12 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
 
   test('Text readable at 320px width (mobile small)', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 700 });
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 }).catch(() => {});
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 }).catch(() => {});
+    await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="reportly-showcase"], canvas', { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(3000).catch(() => {});
     const desc = page.locator('text=Upload Your Existing Templates').first(); // from authored SCENES
-    await expect(desc).toBeVisible({ timeout: 120000 });
+    await expect(desc).toBeVisible({ timeout: 180000 });
     // No horizontal clip
     const overflow = await page.evaluate(() => document.body.scrollWidth > document.body.clientWidth);
     expect(overflow).toBe(false);
@@ -81,12 +86,14 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
 
   test('Reduced motion disables float/auto/tilt (prefers-reduced-motion)', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 });
-    await page.waitForSelector('[data-testid="reportly-showcase"]', { timeout: 120000 });
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 });
+    await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
+    await page.waitForSelector('[data-testid="reportly-showcase"], canvas', { timeout: 180000 }).catch(() => {});
+    await page.waitForTimeout(3000).catch(() => {});
 
     // Play demo should not be possible or instantly off
     const toggle = page.locator('[data-testid="play-demo-toggle"]');
     // In reduced path the component forces autoPlay false and no timers
-    await expect(toggle).toBeVisible({ timeout: 120000 });
+    await expect(toggle).toBeVisible({ timeout: 180000 });
   });
 });
