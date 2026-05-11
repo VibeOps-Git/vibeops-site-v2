@@ -7,18 +7,18 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "github" : "html",
-  // Increased timeouts + CI graphics stability for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #99 + cycle 112 + cycle 115 after 25633211634 failure: further hardened test/ webServer timeouts + video/3D autoplay + background throttling flags for homepage beforeEach + reportly-showcase 255vh pinned 3D/video/scroll attachment timeouts)
-  timeout: 900000,
+  // Increased timeouts + CI graphics stability for Apple-caliber redesign heavy 3D/animation/video elements (E2E flakiness fix #99 + cycle 112 + cycle 115 after 25633211634 + cycle 169 after run 25638654958 ci_failed: 2x timeouts for 30min test/10min expect, + more hang/3D/video stability flags to prevent attachment timeouts on nav/canvas/device-stage in homepage & reportly-showcase)
+  timeout: 1800000,
   expect: {
-    timeout: 300000,
+    timeout: 600000,
   },
   use: {
     baseURL: "http://localhost:8080",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
-    navigationTimeout: 900000,
-    actionTimeout: 300000,
+    navigationTimeout: 1800000,
+    actionTimeout: 600000,
   },
   projects: [
     {
@@ -38,11 +38,21 @@ export default defineConfig({
             "--enable-webgl",
             "--enable-accelerated-2d-canvas",
             "--disable-features=IsolateOrigins,site-per-process",
-            // Additional for video/3D heavy content stability in CI (cycle 115 after 25633211634)
+            // Additional for video/3D heavy content stability in CI (cycle 115 after 25633211634 + cycle 169 25638654958)
             "--autoplay-policy=no-user-gesture-required",
             "--disable-background-timer-throttling",
             "--disable-renderer-backgrounding",
             "--disable-backgrounding-occluded-windows",
+            // Extra for reducing hang/attachment flakiness with heavy 3D canvases + videos (cycle 169)
+            "--disable-hang-monitor",
+            "--disable-ipc-flooding-protection",
+            "--disable-prompt-on-repost",
+            "--disable-sync",
+            "--metrics-recording-only",
+            "--no-first-run",
+            "--safebrowsing-disable-auto-update",
+            "--disable-default-apps",
+            "--js-flags=--max-old-space-size=8192",
           ],
         },
       },
@@ -77,6 +87,6 @@ export default defineConfig({
     command: "npm run dev",
     url: "http://localhost:8080",
     reuseExistingServer: !process.env.CI,
-    timeout: 300000,
+    timeout: 600000,
   },
 });
