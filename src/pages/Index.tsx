@@ -6,13 +6,22 @@ import {
   useTransform,
   useInView,
   useReducedMotion,
+  useMotionValue,
+  useSpring,
 } from 'framer-motion';
 import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useRef, useEffect, useState, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
 import { ScrambleText } from '@/components/ScrambleText';
 import { HomepageDeviceStage } from '@/components/homepage/DeviceScene';
-import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
+import { VibeButton, VibeLinkButton } from '@/components/ui/VibeButton';
+import {
+  APPLE_EASE,
+  APPLE_REVEAL_SPRING,
+  APPLE_HOVER_SPRING,
+  getTransition,
+  SCRAMBLE_DURATION,
+} from '@/lib/motion';
 
 const HERO_VIDEO_SRC = '/vids/demo-vid.mp4';
 const PLATFORM_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
@@ -33,14 +42,14 @@ const TICKER_ITEMS = [
 // =============================================================================
 
 function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
-  const reducedMotion = useReducedMotion();
+  const reduced = useReducedMotion() ?? false;
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: reducedMotion ? 0 : HOMEPAGE_MOTION.revealDistance, filter: reducedMotion ? 'blur(0px)' : HOMEPAGE_MOTION.revealBlur }}
+      initial={{ opacity: 0, y: reduced ? 0 : 18, filter: reduced ? 'blur(0px)' : 'blur(3px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={HOMEPAGE_MOTION.viewport}
-      transition={{ duration: HOMEPAGE_MOTION.revealDuration, delay, ease: HOMEPAGE_EASE }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={getTransition(reduced, { ...APPLE_REVEAL_SPRING, delay })}
     >
       {children}
     </motion.div>
@@ -49,8 +58,8 @@ function Reveal({ children, delay = 0, className }: { children: ReactNode; delay
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.065, delayChildren: 0.03 } } };
 const item = {
-  hidden: { opacity: 0, y: HOMEPAGE_MOTION.revealDistance, filter: HOMEPAGE_MOTION.revealBlur },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: HOMEPAGE_MOTION.revealDuration, ease: HOMEPAGE_EASE } },
+  hidden: { opacity: 0, y: 18, filter: 'blur(3px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.58, ease: APPLE_EASE } },
 };
 
 function useCountUp(target: number, duration = 1.8) {
@@ -60,7 +69,7 @@ function useCountUp(target: number, duration = 1.8) {
   useEffect(() => {
     if (!inView) return;
     import('framer-motion').then(({ animate }) => {
-      const controls = animate(0, target, { duration, ease: HOMEPAGE_EASE, onUpdate: (v) => setVal(Math.round(v)) });
+      const controls = animate(0, target, { duration, ease: APPLE_EASE, onUpdate: (v) => setVal(Math.round(v)) });
       return () => controls.stop();
     });
   }, [inView, target, duration]);
@@ -74,31 +83,21 @@ function Rule({ className }: { className?: string }) {
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.9, ease: HOMEPAGE_EASE }}
+      transition={{ duration: 0.9, ease: APPLE_EASE }}
     />
   );
 }
 
 function Label({ children }: { children: ReactNode }) {
-  return <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/70 font-semibold">{children}</p>;
+  return <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-accent/70 font-semibold">{children}</p>;
 }
 
 function Btn({ href, children, primary = false }: { href: string; children: ReactNode; primary?: boolean }) {
-  return (
-    <motion.a
-      href={href}
-      className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-[13.5px] font-semibold whitespace-nowrap transition-colors duration-300 ${
-        primary
-          ? 'bg-gradient-to-r from-emerald-300 to-emerald-400 text-black hover:from-emerald-200 hover:to-emerald-300'
-          : 'border border-white/14 bg-white/[0.03] text-white/78 hover:border-white/28 hover:bg-white/[0.06] hover:text-white'
-      }`}
-      whileHover={{ scale: 1.025 }}
-      whileTap={{ scale: 0.97 }}
-      transition={HOMEPAGE_MOTION.hoverSpring}
-    >
-      {children}
-    </motion.a>
-  );
+  // Delegate to Vibe* for unified APPLE_HOVER_SPRING + 44px + emerald tokens (PR03 unification)
+  if (primary) {
+    return <VibeLinkButton href={href} variant="primary" size="md" className="text-[13.5px]">{children}</VibeLinkButton>;
+  }
+  return <VibeLinkButton href={href} variant="outline" size="md" className="text-[13.5px]">{children}</VibeLinkButton>;
 }
 
 function SectionBridge({ from, to, height = 80 }: { from: string; to: string; height?: number }) {
@@ -207,11 +206,11 @@ function HeroStatItem({ value, suffix, label }: { value: number; suffix: string;
 
 function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const reducedMotion = useReducedMotion();
+  const reduced = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const deviceY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 18 : 48]);
+  const deviceY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 18 : 48]);
   const deviceOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 10 : 26]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 10 : 26]);
   const cueOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
 
   return (
@@ -234,13 +233,13 @@ function HeroSection() {
             href="https://reportly.ca"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mb-7 w-fit px-4 py-2 rounded-full border border-emerald-400/20 bg-white/[0.03] shadow-[0_12px_30px_rgba(0,0,0,0.24)] backdrop-blur-md hover:border-emerald-400/40 hover:bg-white/[0.05] transition-colors duration-300"
+            className="inline-flex items-center gap-2 mb-7 w-fit px-4 py-2 rounded-full border border-emerald-accent/20 bg-white/[0.03] shadow-[0_12px_30px_rgba(0,0,0,0.24)] backdrop-blur-md hover:border-emerald-accent/40 hover:bg-white/[0.05] transition-colors duration-300"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-45" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-accent opacity-45" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-accent" />
             </span>
-            <span className="text-[10px] font-semibold text-emerald-300 uppercase tracking-[0.28em]">Reportly</span>
+            <span className="text-[10px] font-semibold text-emerald-accent uppercase tracking-[0.28em]">Reportly</span>
             <span className="text-[10px] text-white/28">Early Access</span>
           </motion.a>
 
@@ -250,7 +249,7 @@ function HeroSection() {
             style={{ fontSize: 'clamp(2.2rem, 3.6vw, 4.2rem)' }}
           >
             <span className="block text-white">Less formatting.</span>
-            <span className="block text-emerald-300">More engineering.</span>
+            <span className="block text-emerald-accent">More engineering.</span>
           </motion.h1>
 
           <motion.p variants={item} className="mb-6 max-w-[26rem] text-[0.92rem] leading-[1.65] text-white/52 lg:text-[0.98rem]">
@@ -260,11 +259,12 @@ function HeroSection() {
           <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-3">
             <motion.a
               href="/reportly"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[13.5px] font-bold whitespace-nowrap hover:from-emerald-200 hover:to-emerald-300 transition-colors duration-200"
+              data-testid="explore-reportly"  // primary e2e target for beforeEach waits + mobile/responsive (see homepage.spec)
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-accent to-emerald-accent text-black text-[13.5px] font-bold whitespace-nowrap hover:from-emerald-accent/90 hover:to-emerald-accent transition-colors duration-200"
               style={{ boxShadow: '0 18px 46px rgba(52, 211, 153, 0.18)' }}
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={{ scale: 0.97 }}
-              transition={HOMEPAGE_MOTION.hoverSpring}
+              transition={APPLE_HOVER_SPRING}
             >
               Explore Reportly <ArrowRight className="w-3.5 h-3.5" />
             </motion.a>
@@ -281,7 +281,7 @@ function HeroSection() {
           className="relative z-10 flex w-full items-center justify-center pb-4 pt-8 md:w-[66%] md:pb-0 md:pt-10 xl:w-[70%]"
           style={{ y: deviceY, opacity: deviceOpacity }}
         >
-          <motion.div className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={HOMEPAGE_MOTION.heroFade}>
+          <motion.div className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, ease: APPLE_EASE }}>
             <HomepageDeviceStage videoSrc={HERO_VIDEO_SRC} />
           </motion.div>
         </motion.div>
@@ -295,10 +295,10 @@ function HeroSection() {
       >
         <div className="flex flex-col items-center">
           <div className="relative h-14 w-px overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-400/22 to-transparent" />
-            {!reducedMotion && (
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-accent/22 to-transparent" />
+            {!reduced && (
               <motion.div
-                className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.65)]"
+                className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-accent shadow-[0_0_10px_rgba(52,211,153,0.65)]"
                 animate={{ y: [0, 48], opacity: [0, 0.85, 0] }}
                 transition={{ duration: 1.9, repeat: Infinity, repeatDelay: 0.7, ease: 'easeInOut' }}
                 style={{ top: 0 }}
@@ -352,18 +352,18 @@ function ModelSection() {
         <div className="grid md:grid-cols-2 gap-4">
           {/* Reportly SaaS card */}
           <motion.div
-            className="group flex flex-col p-7 rounded-2xl border border-emerald-500/18 bg-gradient-to-br from-emerald-950/22 to-transparent"
+            className="group flex flex-col p-7 rounded-2xl border border-emerald-accent/18 bg-gradient-to-br from-[#0a0f1a]/22 to-transparent"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
+            transition={{ duration: 0.55, ease: APPLE_EASE }}
             whileHover={{ borderColor: 'rgba(52,211,153,0.28)', y: -3 }}
           >
-            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/28 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em] mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" /> Flagship Product
+            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0a0f1a]/60 border border-emerald-accent/30 text-[9px] font-semibold text-emerald-accent uppercase tracking-[0.22em] mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-accent inline-block" /> Flagship Product
             </span>
             <h3 className="text-xl font-bold text-white mb-1">Reportly SaaS</h3>
-            <p className="text-[11px] text-emerald-400/58 font-medium tracking-wide mb-5">
+            <p className="text-[11px] text-emerald-accent/58 font-medium tracking-wide mb-5">
               AI report automation for civil and construction teams
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
@@ -374,13 +374,13 @@ function ModelSection() {
                 'Built for civil and construction reports',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
-                  <Check className="w-3.5 h-3.5 text-emerald-500/65 flex-shrink-0 mt-0.5" /> {f}
+                  <Check className="w-3.5 h-3.5 text-emerald-accent/65 flex-shrink-0 mt-0.5" /> {f}
                 </li>
               ))}
             </ul>
             <motion.a
               href="/reportly"
-              className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-emerald-accent hover:text-emerald-accent transition-colors"
               whileHover={{ x: 2 }}
               transition={{ duration: 0.15 }}
             >
@@ -394,14 +394,14 @@ function ModelSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, delay: 0.08, ease: HOMEPAGE_EASE }}
+            transition={{ duration: 0.55, delay: 0.08, ease: APPLE_EASE }}
             whileHover={{ borderColor: 'rgba(103,232,249,0.16)', y: -3 }}
           >
-            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/30 border border-cyan-500/20 text-[9px] font-semibold text-cyan-400/80 uppercase tracking-[0.22em] mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/70 inline-block" /> Implementation Partner
+            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0a0f1a]/30 border border-emerald-accent/20 text-[9px] font-semibold text-emerald-accent/80 uppercase tracking-[0.22em] mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-accent/70 inline-block" /> Implementation Partner
             </span>
             <h3 className="text-xl font-bold text-white mb-1">Custom Rollouts</h3>
-            <p className="text-[11px] text-cyan-300/45 font-medium tracking-wide mb-5">
+            <p className="text-[11px] text-emerald-accent/45 font-medium tracking-wide mb-5">
               We make Reportly fit your firm's exact workflow
             </p>
             <ul className="space-y-2.5 mb-8 flex-1">
@@ -452,11 +452,11 @@ function PlatformSection() {
       />
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
-          <p className="text-center text-[10px] uppercase tracking-[0.38em] text-emerald-300/80 mb-5 font-semibold">
+          <p className="text-center text-[10px] uppercase tracking-[0.38em] text-emerald-accent/80 mb-5 font-semibold">
             See It In Action
           </p>
           <h2 className="text-center text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.025em] text-white leading-[1.1] mb-5 max-w-3xl mx-auto">
-            Your templates in. <span className="text-emerald-300">Polished reports out.</span>
+            Your templates in. <span className="text-emerald-accent">Polished reports out.</span>
           </h2>
           <p className="text-center text-[0.95rem] text-white/48 max-w-xl mx-auto mb-12 leading-[1.8]">
             QA-ready, brand-consistent civil engineering reports in minutes. Without changing a single thing about how your team works.
@@ -468,10 +468,10 @@ function PlatformSection() {
 
         <motion.div
           className="relative rounded-[1.75rem] overflow-hidden border border-white/10 bg-[#0b1624] shadow-[0_28px_80px_rgba(0,0,0,0.42)]"
-          initial={{ opacity: 0, y: HOMEPAGE_MOTION.revealDistance, scale: 0.985 }}
+          initial={{ opacity: 0, y: 18, scale: 0.985 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={HOMEPAGE_MOTION.viewport}
-          transition={HOMEPAGE_MOTION.cardReveal}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.72, ease: APPLE_EASE }}
           role="img"
           aria-label="Reportly engineering report automation platform demo"
         >
@@ -479,7 +479,7 @@ function PlatformSection() {
             <div className="w-3 h-3 rounded-full bg-[#FF5F57]" aria-hidden="true" />
             <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" aria-hidden="true" />
             <div className="w-3 h-3 rounded-full bg-[#28C840]" aria-hidden="true" />
-            <a href="https://reportly.ca" target="_blank" rel="noopener noreferrer" className="ml-3 flex-1 text-[10px] text-white/32 hover:text-emerald-300 tracking-[0.18em] uppercase truncate transition-colors">
+            <a href="https://reportly.ca" target="_blank" rel="noopener noreferrer" className="ml-3 flex-1 text-[10px] text-white/32 hover:text-emerald-accent tracking-[0.18em] uppercase truncate transition-colors">
               reportly.ca - AI Engineering Report Automation Software
             </a>
           </div>
@@ -562,8 +562,8 @@ function ReportlySection() {
             >
               {featureItems.map((fi) => (
                 <motion.li key={fi} variants={item} className="flex items-center gap-3 text-sm text-white/70">
-                  <span className="flex-shrink-0 w-4 h-4 rounded-full border border-emerald-600/50 flex items-center justify-center bg-emerald-950/60">
-                    <Check className="w-2.5 h-2.5 text-emerald-400" />
+                  <span className="flex-shrink-0 w-4 h-4 rounded-full border border-emerald-accent/40 flex items-center justify-center bg-[#0a0f1a]/60">
+                    <Check className="w-2.5 h-2.5 text-emerald-accent" />
                   </span>
                   {fi}
                 </motion.li>
@@ -583,7 +583,7 @@ function ReportlySection() {
               className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60"
               style={{ y: imgY }}
               whileHover={{ scale: 1.012, borderColor: 'rgba(52,211,153,0.2)' }}
-              transition={HOMEPAGE_MOTION.gentleSpring}
+              transition={{ type: 'spring' as const, stiffness: 180, damping: 24, mass: 1 }}
             >
               <img src="/app-preview.png" alt="Reportly engineering report automation software - automated civil engineering reports in minutes" className="w-full object-cover" loading="lazy" />
             </motion.div>
@@ -595,7 +595,7 @@ function ReportlySection() {
           initial={{ opacity: 0, clipPath: 'inset(8% 0% 8% 0% round 16px)' }}
           whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 16px)' }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.95, ease: HOMEPAGE_EASE }}
+          transition={{ duration: 0.95, ease: APPLE_EASE }}
         >
           <img src="/reportly-bridge.png" alt="Engineering report automation workflow - from raw data to polished civil engineering documentation" className="w-full object-cover" loading="lazy" />
         </motion.div>
@@ -605,7 +605,7 @@ function ReportlySection() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.12, ease: HOMEPAGE_EASE }}
+          transition={{ duration: 0.5, delay: 0.12, ease: APPLE_EASE }}
         >
           {stats.map((s, i) => (
             <div key={s.label} className={i < 2 ? 'border-r border-white/8' : ''}>
@@ -707,11 +707,11 @@ function AdoptionLadder() {
       {/* Step 01 — full-width featured */}
       <motion.a
         href={primary.href}
-        className="group relative flex flex-col md:flex-row gap-8 p-7 md:p-8 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/25 to-transparent cursor-pointer"
+        className="group relative flex flex-col md:flex-row gap-8 p-7 md:p-8 rounded-2xl border border-emerald-accent/20 bg-gradient-to-br from-[#0a0f1a]/25 to-transparent cursor-pointer"
         initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
+        transition={{ duration: 0.55, ease: APPLE_EASE }}
         whileHover={{ borderColor: 'rgba(52,211,153,0.32)', y: -2 }}
       >
         {/* Subtle hover glow */}
@@ -719,20 +719,20 @@ function AdoptionLadder() {
 
         <div className="flex-1 relative">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] font-black text-emerald-500/55 uppercase tracking-[0.22em]">{primary.step}</span>
-            <span className="px-2 py-0.5 rounded-full border border-emerald-500/28 bg-emerald-950/50 text-[9px] text-emerald-400 font-semibold uppercase tracking-[0.18em]">Flagship Product</span>
+            <span className="text-[10px] font-black text-emerald-accent/55 uppercase tracking-[0.22em]">{primary.step}</span>
+            <span className="px-2 py-0.5 rounded-full border border-emerald-accent/28 bg-[#0a0f1a]/50 text-[9px] text-emerald-accent font-semibold uppercase tracking-[0.18em]">Flagship Product</span>
           </div>
           <h3 className="text-xl font-bold text-white mb-1">{primary.title}</h3>
-          <p className="text-[11px] font-medium text-emerald-400/58 tracking-wide mb-4">{primary.subtitle}</p>
+          <p className="text-[11px] font-medium text-emerald-accent/58 tracking-wide mb-4">{primary.subtitle}</p>
           <p className="text-[13px] text-white/50 leading-relaxed mb-5 max-w-md">{primary.description}</p>
           <ul className="space-y-2 mb-6">
             {primary.features!.map((f, i) => (
               <li key={i} className="flex items-center gap-2 text-[12.5px] text-white/55">
-                <Check className="w-3.5 h-3.5 text-emerald-500/65 flex-shrink-0" /> {f}
+                <Check className="w-3.5 h-3.5 text-emerald-accent/65 flex-shrink-0" /> {f}
               </li>
             ))}
           </ul>
-          <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-emerald-400 group-hover:text-emerald-300 transition-colors">
+          <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-emerald-accent group-hover:text-emerald-accent transition-colors">
             {primary.cta} <ArrowRight className="w-3 h-3" />
           </div>
         </div>
@@ -758,7 +758,7 @@ function AdoptionLadder() {
             variants={item}
             className="group flex flex-col p-6 rounded-xl border border-white/7 bg-white/[0.018] cursor-pointer"
             whileHover={{ borderColor: 'rgba(255,255,255,0.12)', y: -3 }}
-            transition={HOMEPAGE_MOTION.gentleSpring}
+            transition={{ type: 'spring' as const, stiffness: 180, damping: 24, mass: 1 }}
           >
             <div className="flex items-center gap-2 mb-3">
               <span className="text-[9px] font-black text-white/22 uppercase tracking-[0.22em]">{s.step}</span>
@@ -796,7 +796,7 @@ function FeaturesSection() {
           initial={{ opacity: 0, clipPath: 'inset(6% 0% 6% 0% round 16px)' }}
           whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 16px)' }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.9, ease: HOMEPAGE_EASE }}
+          transition={{ duration: 0.9, ease: APPLE_EASE }}
         >
           <img
             src="/reportly-features.png"
@@ -859,11 +859,11 @@ function ProcessSection() {
               key={step.step}
               variants={{
                 hidden: { opacity: 0, y: 24, filter: 'blur(5px)' },
-                show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: HOMEPAGE_MOTION.revealDuration, ease: HOMEPAGE_EASE } },
+                show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.58, ease: APPLE_EASE } },
               }}
               className="group relative border border-white/8 rounded-2xl p-8 flex flex-col overflow-hidden cursor-default"
               whileHover={{ borderColor: 'rgba(52,211,153,0.2)', y: -3 }}
-              transition={HOMEPAGE_MOTION.gentleSpring}
+              transition={{ type: 'spring' as const, stiffness: 180, damping: 24, mass: 1 }}
             >
               <motion.div
                 className="absolute -top-16 -right-16 w-40 h-40 rounded-full pointer-events-none"
@@ -873,7 +873,7 @@ function ProcessSection() {
                 transition={{ duration: 0.35 }}
               />
               <span className="block text-[3.5rem] font-black text-white/10 leading-none mb-5 tracking-tight select-none">{step.step}</span>
-              <div className="w-5 h-px bg-white/12 mb-5 group-hover:bg-emerald-500/60 transition-colors duration-500" />
+              <div className="w-5 h-px bg-white/12 mb-5 group-hover:bg-emerald-accent/60 transition-colors duration-500" />
               <h3 className="text-[13px] font-semibold text-white/90 mb-2 tracking-tight">{step.title}</h3>
               <p className="text-[13px] text-white/40 leading-[1.75]">{step.description}</p>
             </motion.div>
@@ -918,7 +918,7 @@ function TeamSection() {
           <motion.div
             className="relative rounded-2xl overflow-hidden border border-white/8"
             whileHover={{ borderColor: 'rgba(255,255,255,0.14)' }}
-            transition={{ duration: 0.3, ease: HOMEPAGE_EASE }}
+            transition={{ duration: 0.3, ease: APPLE_EASE }}
           >
             <img src="/team/full-team-pic-optimized.jpg" alt="VibeOps Technologies founding team - engineering automation specialists based in Vancouver, BC" className="w-full object-cover object-center" style={{ maxHeight: 420 }} loading="lazy" />
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
@@ -943,12 +943,12 @@ function TeamSection() {
             <motion.a
               key={member.name}
               href={`/team?member=${encodeURIComponent(member.name)}`}
-              variants={{ hidden: { opacity: 0, y: 14, filter: 'blur(5px)' }, show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.48, ease: HOMEPAGE_EASE } } }}
+              variants={{ hidden: { opacity: 0, y: 14, filter: 'blur(5px)' }, show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.48, ease: APPLE_EASE } } }}
               className="flex flex-col items-center gap-2.5 group"
               whileHover={{ y: -3 }}
-              transition={HOMEPAGE_MOTION.hoverSpring}
+              transition={APPLE_HOVER_SPRING}
             >
-              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-white/12 group-hover:border-emerald-500/40 transition-colors duration-300">
+              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-white/12 group-hover:border-emerald-accent/40 transition-colors duration-300">
                 <img src={member.image} alt={`${member.name} - ${member.role} at VibeOps Technologies`} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
               <div className="text-center">
@@ -1021,7 +1021,7 @@ function CTASection() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.8, ease: HOMEPAGE_EASE }}
+          transition={{ duration: 0.8, ease: APPLE_EASE }}
         >
           <iframe
             src={PITCH_VIDEO_SRC}

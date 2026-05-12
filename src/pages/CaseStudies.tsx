@@ -364,21 +364,21 @@ export default function CaseStudies() {
                       </p>
                       <div className="flex gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-[#00ffcc] text-[#00ffcc]" />
+                          <Star key={i} className="w-3.5 h-3.5 fill-emerald-accent text-emerald-accent" />
                         ))}
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="inline-block px-3 py-1.5 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20">
-                      <p className="text-xs text-[#00ffcc] font-medium">
+                    <div className="inline-block px-3 py-1.5 rounded-full bg-emerald-accent/10 border border-emerald-accent/20">
+                      <p className="text-xs text-emerald-accent font-medium">
                         {review.context}
                       </p>
                     </div>
 
                     <p className="text-gray-300 leading-relaxed italic">
-                      "{review.quote}"
+                      <span className="text-7xl leading-none text-emerald-accent/20 align-top select-none">“</span>{review.quote}
                     </p>
                   </div>
                 </VibeCard>

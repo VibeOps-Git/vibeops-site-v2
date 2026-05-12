@@ -74,8 +74,8 @@ export function EmailSignup({ onSubmit }: EmailSignupProps) {
   if (status === "success") {
     return (
       <div className="w-full max-w-md mx-auto">
-        <div className="flex items-center justify-center gap-3 p-6 rounded-2xl bg-[#00ffcc]/10 border border-[#00ffcc]/30">
-          <CheckCircle className="w-6 h-6 text-[#00ffcc]" />
+        <div className="flex items-center justify-center gap-3 p-6 rounded-2xl bg-[#34d399]/10 border border-[#34d399]/30">
+          <CheckCircle className="w-6 h-6 text-[#34d399]" />
           <div className="text-left">
             <p className="text-white font-medium">You're on the list!</p>
             <p className="text-sm text-gray-400">We'll notify you when Reportly launches.</p>
@@ -102,7 +102,7 @@ export function EmailSignup({ onSubmit }: EmailSignupProps) {
                 placeholder="Your name"
                 className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border ${
                   status === "error" && !name.trim() ? "border-red-500/50" : "border-white/10"
-                } text-white placeholder-gray-500 focus:outline-none focus:border-[#00ffcc]/50 focus:bg-white/10 transition-all`}
+                } text-white placeholder-gray-500 focus:outline-none focus:border-[#34d399]/50 focus:bg-white/10 transition-all`}
                 disabled={status === "loading"}
               />
             </div>
@@ -118,7 +118,7 @@ export function EmailSignup({ onSubmit }: EmailSignupProps) {
                 placeholder="Your email"
                 className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border ${
                   status === "error" && name.trim() ? "border-red-500/50" : "border-white/10"
-                } text-white placeholder-gray-500 focus:outline-none focus:border-[#00ffcc]/50 focus:bg-white/10 transition-all`}
+                } text-white placeholder-gray-500 focus:outline-none focus:border-[#34d399]/50 focus:bg-white/10 transition-all`}
                 disabled={status === "loading"}
               />
             </div>
@@ -126,7 +126,7 @@ export function EmailSignup({ onSubmit }: EmailSignupProps) {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full px-6 py-3.5 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+            className="w-full px-6 py-3.5 rounded-xl bg-[#34d399] text-black font-semibold hover:bg-[#34d399]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
           >
             {status === "loading" ? (
               <>

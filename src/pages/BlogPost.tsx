@@ -6,6 +6,7 @@ import { getPostBySlug } from "@/lib/blogs";
 import { SEO } from "@/components/SEO";
 import Aurora from "../components/Aurora";
 import AnimatedContent from "../components/AnimatedContent";
+import { VibeLinkButton } from "@/components/ui/VibeButton";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -41,9 +42,9 @@ export default function BlogPost() {
             <p className="text-muted-foreground">
               The blog post you&apos;re looking for doesn&apos;t exist or was moved.
             </p>
-            <Link to="/blog" className="btn-primary inline-block">
+            <VibeLinkButton href="/blog" variant="primary" size="md">
               Back to Blog
-            </Link>
+            </VibeLinkButton>
           </div>
         </div>
       </>
@@ -63,7 +64,7 @@ export default function BlogPost() {
         {/* Aurora background */}
         <div className="pointer-events-none fixed inset-0 z-0 opacity-100">
           <Aurora
-            colorStops={["#00ffcc", "#4DD0E1", "#00ffcc"]}
+            colorStops={["#0f7c5a", "#34d399", "#0f7c5a"]}
           blend={0.45}
           amplitude={1.0}
           speed={0.6}
@@ -124,7 +125,7 @@ export default function BlogPost() {
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-8 right-8 z-40 rounded-full p-3 sm:p-4 bg-primary/20 backdrop-blur-md border border-primary/40 text-primary shadow-[0_0_20px_rgba(0,255,204,0.25)] hover:shadow-[0_0_35px_rgba(0,255,204,0.45)] hover:bg-primary/30 transition-all duration-300 flex items-center justify-center
+        className={`fixed bottom-8 right-8 z-40 rounded-full p-3 sm:p-4 bg-primary/20 backdrop-blur-md border border-primary/40 text-primary shadow-[0_0_20px_rgba(52,211,153,0.25)] hover:shadow-[0_0_35px_rgba(52,211,153,0.45)] hover:bg-primary/30 transition-all duration-300 flex items-center justify-center
         ${showBackToTop ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}`}
         aria-label="Back to top"
       >

@@ -18,8 +18,8 @@
     --popover: 222 40% 11%;
     --popover-foreground: 213 31% 96%;
 
-    /* #00ffcc ≈ 168 100% 50% */
-    --primary: 168 100% 50%;
+    /* Precision Emerald (unified primary; replaces prior cyan #00ffcc) */
+    --primary: 159 68% 52%; /* #34d399 emerald-accent */
     --primary-foreground: 222 47% 8%;
 
     --secondary: 222 47% 16%;
@@ -28,7 +28,7 @@
     --muted: 222 23% 18%;
     --muted-foreground: 215 20% 70%;
 
-    --accent: 168 100% 50%;
+    --accent: 159 68% 52%; /* emerald-accent */
     --accent-foreground: 222 47% 8%;
 
     --destructive: 0 72% 46%;
@@ -36,19 +36,38 @@
 
     --border: 222 32% 20%;
     --input: 222 32% 20%;
-    --ring: 168 100% 50%;
+    --ring: 159 68% 52%; /* emerald focus ring */
 
     --radius: 0.75rem;
+
+    /* Apple-caliber Precision Luxury tokens (PR01) */
+    --emerald-deep: #0f7c5a;
+    --emerald-accent: #34d399;
+    --gold: #b89f6e;
+
+    /* Fluid typography scale (exact clamps + tracking/leading from design doc) */
+    --fs-display: clamp(2.85rem, 5.8vw, 5.75rem);
+    --tracking-display: -0.048em;
+    --leading-display: 0.92;
+    --fs-hero: clamp(2.1rem, 4.1vw, 3.85rem);
+    --tracking-hero: -0.038em;
+    --fs-h2: clamp(1.65rem, 2.8vw, 2.95rem);
+    --tracking-h2: -0.028em;
+    --leading-h2: 1.08; /* tuned for h2 readability vs display 0.92 */
+    --fs-body: clamp(0.94rem, 1.05vw, 1.05rem);
+    --leading-body: 1.62;
+    --tracking-tight: -0.032em;
+    --tracking-body: -0.006em;
 
     /* Sidebar-ish tokens if you use shadcn layouts */
     --sidebar-background: 222 47% 5%;
     --sidebar-foreground: 213 31% 96%;
-    --sidebar-primary: 168 100% 50%;
+    --sidebar-primary: 159 68% 52%;
     --sidebar-primary-foreground: 222 47% 8%;
     --sidebar-accent: 222 32% 12%;
     --sidebar-accent-foreground: 213 31% 96%;
     --sidebar-border: 222 32% 18%;
-    --sidebar-ring: 168 100% 50%;
+    --sidebar-ring: 159 68% 52%;
   }
 
   /* Keep .dark in case something explicitly toggles it */
@@ -62,7 +81,7 @@
     --popover: 222 40% 11%;
     --popover-foreground: 213 31% 96%;
 
-    --primary: 168 100% 50%;
+    --primary: 159 68% 52%; /* emerald-accent unified */
     --primary-foreground: 222 47% 8%;
 
     --secondary: 222 47% 16%;
@@ -71,7 +90,7 @@
     --muted: 222 23% 18%;
     --muted-foreground: 215 20% 70%;
 
-    --accent: 168 100% 50%;
+    --accent: 159 68% 52%;
     --accent-foreground: 222 47% 8%;
 
     --destructive: 0 72% 46%;
@@ -79,16 +98,36 @@
 
     --border: 222 32% 20%;
     --input: 222 32% 20%;
-    --ring: 168 100% 50%;
+    --ring: 159 68% 52%;
 
+    --radius: 0.75rem;
+
+    /* Apple-caliber tokens replicated for .dark */
+    --emerald-deep: #0f7c5a;
+    --emerald-accent: #34d399;
+    --gold: #b89f6e;
+    --fs-display: clamp(2.85rem, 5.8vw, 5.75rem);
+    --tracking-display: -0.048em;
+    --leading-display: 0.92;
+    --fs-hero: clamp(2.1rem, 4.1vw, 3.85rem);
+    --tracking-hero: -0.038em;
+    --fs-h2: clamp(1.65rem, 2.8vw, 2.95rem);
+    --tracking-h2: -0.028em;
+    --leading-h2: 1.08; /* tuned for h2 readability vs display 0.92 */
+    --fs-body: clamp(0.94rem, 1.05vw, 1.05rem);
+    --leading-body: 1.62;
+    --tracking-tight: -0.032em;
+    --tracking-body: -0.006em;
+
+    /* Sidebar-ish tokens if you use shadcn layouts */
     --sidebar-background: 222 47% 5%;
     --sidebar-foreground: 213 31% 96%;
-    --sidebar-primary: 168 100% 50%;
+    --sidebar-primary: 159 68% 52%;
     --sidebar-primary-foreground: 222 47% 8%;
     --sidebar-accent: 222 32% 12%;
     --sidebar-accent-foreground: 213 31% 96%;
     --sidebar-border: 222 32% 18%;
-    --sidebar-ring: 168 100% 50%;
+    --sidebar-ring: 159 68% 52%;
   }
 }
 
@@ -97,8 +136,23 @@
     @apply border-border;
   }
 
+  html,
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* Optical features for precision typography (tnum=tabular nums, kern, liga) */
+    font-feature-settings: "tnum" 1, "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
+  }
+
+  /* Global focus-visible per design doc §5.1 (emerald accent, no outline) */
+  *:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--emerald-accent);
   }
 }
 
@@ -116,7 +170,7 @@
     content: "";
     @apply absolute left-1/2 -bottom-1 h-[2px] w-0 
            -translate-x-1/2 rounded-full 
-           bg-[hsl(var(--primary))] transition-all duration-200;
+           bg-[var(--emerald-accent)] transition-all duration-200;
   }
 
   .nav-link:hover {
@@ -130,23 +184,23 @@
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-full
            px-6 py-2 text-sm font-semibold
-           bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]
-           shadow-[0_0_24px_rgba(0,255,204,0.45)]
-           hover:shadow-[0_0_32px_rgba(0,255,204,0.8)]
+           bg-[var(--emerald-accent)] text-black
+           shadow-[0_0_24px_rgba(52,211,153,0.35)]
+           hover:shadow-[0_0_32px_rgba(52,211,153,0.55)]
            hover:translate-y-[-1px]
            transition-all duration-200;
   }
 
   .btn-secondary {
-    /* Dark glass with teal border/text, not teal-on-white */
+    /* Dark glass with emerald border/text */
     @apply inline-flex items-center justify-center rounded-full
            px-6 py-2 text-sm font-semibold
-           border border-[hsla(168,100%,50%,0.5)]
-           bg-[rgba(15,23,42,0.85)]
-           text-[hsl(var(--primary))]
+           border border-[rgba(52,211,153,0.45)]
+           bg-[rgba(10,15,26,0.88)]
+           text-[var(--emerald-accent)]
            backdrop-blur-md
-           hover:bg-[rgba(15,23,42,0.95)]
-           hover:border-[hsla(168,100%,50%,0.85)]
+           hover:bg-[rgba(10,15,26,0.96)]
+           hover:border-[rgba(52,211,153,0.75)]
            transition-all duration-200;
   }
 
@@ -161,7 +215,7 @@
 
   .section-title {
     @apply text-4xl md:text-5xl font-semibold leading-tight mb-4
-           bg-gradient-to-r from-[hsl(var(--primary))] via-emerald-300 to-cyan-300
+           bg-gradient-to-r from-[var(--emerald-deep)] via-[var(--emerald-accent)] to-[var(--emerald-accent)]
            bg-clip-text text-transparent;
   }
 
@@ -180,9 +234,9 @@
   .glass-pill {
     @apply inline-flex items-center gap-2 rounded-full
            px-4 py-2 text-xs font-semibold
-           border border-[hsla(168,100%,50%,0.75)]
-           bg-[rgba(15,23,42,0.85)]
-           text-[hsl(var(--primary))]
+           border border-[rgba(52,211,153,0.4)]
+           bg-[rgba(10,15,26,0.88)]
+           text-[var(--emerald-accent)]
            backdrop-blur-xl
            shadow-[0_0_18px_rgba(0,0,0,0.7)];
   }
@@ -304,18 +358,18 @@ html::-webkit-scrollbar-track {
 }
 
 html::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 204, 0.3);
+  background: rgba(52, 211, 153, 0.35);
   border-radius: 4px;
 }
 
 html::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 204, 0.5);
+  background: rgba(52, 211, 153, 0.55);
 }
 
 /* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 204, 0.3) rgba(0, 0, 0, 0.2);
+  scrollbar-color: rgba(52, 211, 153, 0.35) rgba(0, 0, 0, 0.2);
 }
 
 /* Infinite marquee — translate3d forces GPU compositing for jank-free scroll */

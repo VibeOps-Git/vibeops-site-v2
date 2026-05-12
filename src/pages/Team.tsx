@@ -166,7 +166,7 @@ export default function Team() {
           threshold={0.2}
         >
           <div className="container mx-auto text-center max-w-4xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-emerald-accent mb-4">
               Our Team
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
@@ -212,7 +212,7 @@ export default function Team() {
                 </div>
                 <Link
                   to="/contact"
-                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#00ffcc] px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-[#00ffcc]/90"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-emerald-accent px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-emerald-accent/90"
                 >
                   Talk to the Team
                 </Link>
@@ -229,7 +229,7 @@ export default function Team() {
                 </div>
                 <Link
                   to="/contact"
-                  className="rounded-full bg-[#00ffcc] px-5 py-2 text-sm font-semibold text-black transition-colors hover:bg-[#00ffcc]/90"
+                  className="rounded-full bg-emerald-accent px-5 py-2 text-sm font-semibold text-black transition-colors hover:bg-emerald-accent/90"
                 >
                   Talk to the Team
                 </Link>
@@ -284,7 +284,7 @@ export default function Team() {
             <div className="mb-10">
               <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Co-Founders" /></h2>
               <p className="text-gray-400 text-sm">
-                The core team behind VibeOps and Reportly.
+                The core team behind VibeOps and Reportly. <span className="text-emerald-accent/70">Built in Vancouver, Canada.</span>
               </p>
             </div>
           </AnimatedContent>
@@ -470,7 +470,7 @@ export default function Team() {
                   </p>
                   <Link
                     to="/contact"
-                    className="px-5 py-2 rounded-full bg-[#00ffcc] text-black font-semibold text-sm hover:bg-[#00ffcc]/90 transition-colors"
+                    className="px-5 py-2 rounded-full bg-emerald-accent text-black font-semibold text-sm hover:bg-emerald-accent/90 transition-colors"
                   >
                     Talk to the Team
                   </Link>
@@ -506,7 +506,7 @@ function TeamCard({
       variant="glow"
       className="group h-full p-6 flex flex-col items-center text-center"
     >
-      <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 mb-4">
+      <div className="relative h-28 w-28 md:h-32 md:w-32 rounded-full overflow-hidden border-2 border-emerald-accent/40 bg-white/5 mb-4">
         <img
           src={member.image}
           alt={member.name}
@@ -519,8 +519,8 @@ function TeamCard({
       <h3 className="text-lg font-semibold text-white">{member.name}</h3>
       <p className="text-gray-400 mt-1 text-sm font-medium">{member.role}</p>
 
-      <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-2">
-        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+      <div className="inline-block px-3 py-1 rounded-full bg-emerald-accent/10 border border-emerald-accent/20 mt-2">
+        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-emerald-accent font-medium">
           {member.focus}
         </p>
       </div>
@@ -534,7 +534,7 @@ function TeamCard({
           <button
             type="button"
             onClick={onOpen}
-            className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-emerald-accent/20 bg-gradient-to-r from-emerald-accent/15 to-emerald-deep/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-emerald-accent/50 hover:bg-emerald-accent/15 hover:text-emerald-accent hover:shadow-lg hover:shadow-emerald-accent/10"
           >
             View Profile
           </button>
@@ -542,7 +542,7 @@ function TeamCard({
 
         <Link
           to={contactHref}
-          className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
+          className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-emerald-accent/40 hover:bg-emerald-accent/10 hover:text-emerald-accent"
         >
           Get in Touch
         </Link>
@@ -553,7 +553,7 @@ function TeamCard({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`View ${member.name} on LinkedIn`}
-            className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-emerald-accent/20 bg-gradient-to-r from-emerald-accent/15 to-emerald-deep/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-emerald-accent/50 hover:bg-emerald-accent/15 hover:text-emerald-accent hover:shadow-lg hover:shadow-emerald-accent/10"
           >
             LinkedIn
           </a>
@@ -577,10 +577,10 @@ function JoinCard({
   return (
     <VibeCard
       variant="default"
-      className="h-full p-6 flex flex-col items-center justify-center text-center border-dashed hover:border-[#00ffcc]/40 transition-all"
+      className="h-full p-6 flex flex-col items-center justify-center text-center border-dashed hover:border-emerald-accent/40 transition-all"
     >
-      <div className="inline-block px-3 py-1.5 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mb-3">
-        <p className="text-[0.65rem] uppercase tracking-[0.25em] text-[#00ffcc] font-medium">
+      <div className="inline-block px-3 py-1.5 rounded-full bg-emerald-accent/10 border border-emerald-accent/20 mb-3">
+        <p className="text-[0.65rem] uppercase tracking-[0.25em] text-emerald-accent font-medium">
           We're Growing
         </p>
       </div>
@@ -588,7 +588,7 @@ function JoinCard({
       <p className="text-sm text-gray-300 mb-6 max-w-xs leading-relaxed">{subtitle}</p>
       <Link
         to={ctaHref}
-        className="px-6 py-2.5 rounded-full bg-[#00ffcc] text-black font-semibold text-sm hover:bg-[#00ffcc]/90 transition-colors shadow-lg shadow-[#00ffcc]/20"
+        className="px-6 py-2.5 rounded-full bg-emerald-accent text-black font-semibold text-sm hover:bg-emerald-accent/90 transition-colors shadow-lg shadow-emerald-accent/20"
       >
         {ctaLabel}
       </Link>
@@ -611,20 +611,20 @@ function ProfileModal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-3xl border border-[#00ffcc]/20 bg-[#0a0a12] p-6 md:p-8 shadow-2xl shadow-[#00ffcc]/10"
+        className="relative w-full max-w-2xl rounded-3xl border border-emerald-accent/20 bg-[#0a0a12] p-6 md:p-8 shadow-2xl shadow-emerald-accent/10"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-gray-300 transition-colors hover:border-[#00ffcc]/40 hover:text-[#00ffcc]"
+          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-gray-300 transition-colors hover:border-emerald-accent/40 hover:text-emerald-accent"
           aria-label="Close profile modal"
         >
           ×
         </button>
 
         <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-6">
-          <div className="relative h-28 w-28 shrink-0 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5">
+          <div className="relative h-28 w-28 shrink-0 rounded-full overflow-hidden border-2 border-emerald-accent/40 bg-white/5">
             <img
               src={member.image}
               alt={member.name}
@@ -633,14 +633,14 @@ function ProfileModal({
           </div>
 
           <div className="flex-1">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#00ffcc] mb-2">
+            <p className="text-xs uppercase tracking-[0.25em] text-emerald-accent mb-2">
               Team Profile
             </p>
             <h3 className="text-2xl font-semibold text-white">{member.name}</h3>
             <p className="text-gray-400 mt-1">{member.role}</p>
 
-            <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-4">
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+            <div className="inline-block px-3 py-1 rounded-full bg-emerald-accent/10 border border-emerald-accent/20 mt-4">
+              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-emerald-accent font-medium">
                 {member.focus}
               </p>
             </div>
@@ -652,7 +652,7 @@ function ProfileModal({
             <div className="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
               <a
                 href={`mailto:${member.email}`}
-                className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
+                className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-emerald-accent/40 hover:bg-emerald-accent/10 hover:text-emerald-accent"
               >
                 {member.email}
               </a>
@@ -662,7 +662,7 @@ function ProfileModal({
                   href={member.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center justify-center rounded-full border border-[#00ffcc]/20 bg-gradient-to-r from-[#00ffcc]/15 to-cyan-400/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/50 hover:bg-[#00ffcc]/15 hover:text-[#00ffcc] hover:shadow-lg hover:shadow-[#00ffcc]/10"
+                  className="inline-flex h-10 items-center justify-center rounded-full border border-emerald-accent/20 bg-gradient-to-r from-emerald-accent/15 to-emerald-deep/10 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-emerald-accent/50 hover:bg-emerald-accent/15 hover:text-emerald-accent hover:shadow-lg hover:shadow-emerald-accent/10"
                 >
                   View LinkedIn
                 </a>

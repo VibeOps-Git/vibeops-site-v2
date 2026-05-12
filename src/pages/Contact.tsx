@@ -18,7 +18,7 @@ type ContactChannel = {
 };
 
 const CALENDLY_URL =
-  "https://calendly.com/zander-vibeops/30min?primary_color=00ffcc&text_color=e5e7eb&background_color=0f1115&hide_gdpr_banner=1";
+  "https://calendly.com/zander-vibeops/30min?primary_color=34d399&text_color=e5e7eb&background_color=0f1115&hide_gdpr_banner=1";
 
 const contactChannels: ContactChannel[] = [
   {
@@ -186,7 +186,7 @@ export default function Contact() {
 
       {/* Animated Circuit Lines */}
       <motion.div
-        className="fixed top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/50 to-transparent pointer-events-none z-0"
+        className="fixed top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#34d399]/50 to-transparent pointer-events-none z-0"
         animate={{
           opacity: [0.4, 0.8, 0.4],
         }}
@@ -197,7 +197,7 @@ export default function Contact() {
         }}
       />
       <motion.div
-        className="fixed bottom-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/50 to-transparent pointer-events-none z-0"
+        className="fixed bottom-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#34d399]/50 to-transparent pointer-events-none z-0"
         animate={{
           opacity: [0.8, 0.4, 0.8],
         }}
@@ -218,8 +218,8 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center justify-center gap-2 mb-3">
-            <Signal className="w-5 h-5 text-[#00ffcc] animate-pulse" />
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc]">
+            <Signal className="w-5 h-5 text-[#34d399] animate-pulse" />
+            <p className="text-xs uppercase tracking-[0.3em] text-[#34d399]">
               Communication Channel
             </p>
           </div>
@@ -242,12 +242,12 @@ export default function Contact() {
             >
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-4">
-                  <Zap className="w-6 h-6 text-[#00ffcc] animate-pulse" />
-                  <p className="text-[#00ffcc] font-mono">ESTABLISHING CONNECTION</p>
+                  <Zap className="w-6 h-6 text-[#34d399] animate-pulse" />
+                  <p className="text-[#34d399] font-mono">ESTABLISHING CONNECTION</p>
                 </div>
                 <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-[#00ffcc]"
+                    className="h-full bg-[#34d399]"
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
                     transition={{ duration: 0.5 }}
@@ -272,22 +272,22 @@ export default function Contact() {
               {/* Calendar Option */}
               <motion.button
                 onClick={() => handleModeSwitch("calendar")}
-                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#00ffcc]/40 bg-gradient-to-br from-[#00ffcc]/15 via-[#00ffcc]/8 to-transparent hover:border-[#00ffcc]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
+                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#34d399]/40 bg-gradient-to-br from-[#34d399]/15 via-[#34d399]/8 to-transparent hover:border-[#34d399]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffcc]/25 rounded-full blur-3xl group-hover:bg-[#00ffcc]/35 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#00ffcc]/15 rounded-full blur-2xl group-hover:bg-[#00ffcc]/20 transition-all" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#34d399]/25 rounded-full blur-3xl group-hover:bg-[#34d399]/35 transition-all" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#34d399]/15 rounded-full blur-2xl group-hover:bg-[#34d399]/20 transition-all" />
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <Calendar className="w-12 h-12 text-[#00ffcc] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
+                <Calendar className="w-12 h-12 text-[#34d399] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
                 <h3 className="text-xl md:text-2xl font-bold text-white mb-2 relative z-10">
                   Schedule Call
                 </h3>
                 <p className="text-gray-200 text-sm mb-5 relative z-10 leading-relaxed">
                   Book a 30-minute strategy session via Calendly
                 </p>
-                <div className="flex items-center gap-2 text-[#00ffcc] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-[#34d399] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
                   <span className="font-semibold">INITIATE SESSION</span>
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
@@ -302,22 +302,22 @@ export default function Contact() {
               {/* Email Option */}
               <motion.button
                 onClick={() => handleModeSwitch("email")}
-                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#00ffcc]/40 bg-gradient-to-br from-[#00ffcc]/15 via-[#00ffcc]/8 to-transparent hover:border-[#00ffcc]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
+                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#34d399]/40 bg-gradient-to-br from-[#34d399]/15 via-[#34d399]/8 to-transparent hover:border-[#34d399]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffcc]/25 rounded-full blur-3xl group-hover:bg-[#00ffcc]/35 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#00ffcc]/15 rounded-full blur-2xl group-hover:bg-[#00ffcc]/20 transition-all" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#34d399]/25 rounded-full blur-3xl group-hover:bg-[#34d399]/35 transition-all" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#34d399]/15 rounded-full blur-2xl group-hover:bg-[#34d399]/20 transition-all" />
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <Mail className="w-12 h-12 text-[#00ffcc] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
+                <Mail className="w-12 h-12 text-[#34d399] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
                 <h3 className="text-xl md:text-2xl font-bold text-white mb-2 relative z-10">
                   Direct Email
                 </h3>
                 <p className="text-gray-200 text-sm mb-5 relative z-10 leading-relaxed">
                   Contact specific team members directly
                 </p>
-                <div className="flex items-center gap-2 text-[#00ffcc] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-[#34d399] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
                   <span className="font-semibold">OPEN CHANNEL</span>
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
@@ -343,15 +343,15 @@ export default function Contact() {
               <Button
                 onClick={() => handleModeSwitch("initial")}
                 variant="outline"
-                className="mb-6 border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10"
+                className="mb-6 border-[#34d399]/30 text-[#34d399] hover:bg-[#34d399]/10"
               >
                 ← Back to Options
               </Button>
 
-              <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6 overflow-hidden">
+              <div className="rounded-2xl border border-[#34d399]/20 bg-black/40 backdrop-blur-xl p-6 overflow-hidden">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-2 h-2 bg-[#00ffcc] rounded-full animate-pulse" />
-                  <p className="text-[#00ffcc] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
+                  <div className="w-2 h-2 bg-[#34d399] rounded-full animate-pulse" />
+                  <p className="text-[#34d399] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
                 </div>
                 <iframe
                   src={CALENDLY_URL}
@@ -376,15 +376,15 @@ export default function Contact() {
               <Button
                 onClick={() => handleModeSwitch("initial")}
                 variant="outline"
-                className="mb-6 border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10"
+                className="mb-6 border-[#34d399]/30 text-[#34d399] hover:bg-[#34d399]/10"
               >
                 ← Back to Options
               </Button>
 
-              <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6">
+              <div className="rounded-2xl border border-[#34d399]/20 bg-black/40 backdrop-blur-xl p-6">
                 <div className="flex items-center gap-2 mb-6">
-                  <User className="w-5 h-5 text-[#00ffcc]" />
-                  <p className="text-[#00ffcc] font-mono text-sm">SELECT TEAM MEMBER</p>
+                  <User className="w-5 h-5 text-[#34d399]" />
+                  <p className="text-[#34d399] font-mono text-sm">SELECT TEAM MEMBER</p>
                 </div>
 
                 <div className="space-y-4">
@@ -397,14 +397,14 @@ export default function Contact() {
                         key={channel.email}
                         className={`rounded-xl p-5 border transition-all duration-300 ${
                           isActive
-                            ? "border-[#00ffcc]/50 bg-[#00ffcc]/10"
-                            : "border-[#00ffcc]/20 bg-white/5 hover:border-[#00ffcc]/40 hover:bg-white/10"
+                            ? "border-[#34d399]/50 bg-[#34d399]/10"
+                            : "border-[#34d399]/20 bg-white/5 hover:border-[#34d399]/40 hover:bg-white/10"
                         }`}
                         whileHover={{ scale: 1.01 }}
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div>
-                            <p className="text-xs uppercase tracking-[0.2em] text-[#00ffcc] mb-1">
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#34d399] mb-1">
                               {channel.label}
                             </p>
                             <p className="font-semibold text-white">
@@ -425,7 +425,7 @@ export default function Contact() {
                           size="sm"
                           className={`text-xs ${
                             isActive
-                              ? "bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90"
+                              ? "bg-[#34d399] text-black hover:bg-[#34d399]/90"
                               : "bg-white/10 text-white border-white/20 hover:bg-white/20"
                           }`}
                           variant={isActive ? "default" : "outline"}
@@ -443,7 +443,7 @@ export default function Contact() {
                               transition={{ duration: 0.3 }}
                               className="mt-4 overflow-hidden"
                             >
-                              <div className="p-4 rounded-xl border border-[#00ffcc]/30 bg-black/40 space-y-4">
+                              <div className="p-4 rounded-xl border border-[#34d399]/30 bg-black/40 space-y-4">
                                 <div>
                                   <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
                                     TO
@@ -479,7 +479,7 @@ export default function Contact() {
                                 <div className="flex gap-3 pt-2">
                                   <Button
                                     type="button"
-                                    className="flex-1 bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90 font-mono"
+                                    className="flex-1 bg-[#34d399] text-black hover:bg-[#34d399]/90 font-mono"
                                     onClick={handleSendEmail}
                                   >
                                     SEND →

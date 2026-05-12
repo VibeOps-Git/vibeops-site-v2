@@ -1,4 +1,7 @@
-export const HOMEPAGE_EASE = [0.22, 1, 0.36, 1] as const;
+// Re-export Apple-caliber tokens for perceptual parity (PR01 unification)
+export { APPLE_EASE, APPLE_HOVER_SPRING, getTransition, REDUCED_MOTION_VARIANTS } from '@/lib/motion';
+
+export const HOMEPAGE_EASE = [0.22, 1, 0.36, 1] as const; // legacy local (close to APPLE_EASE)
 
 export const HOMEPAGE_MOTION = {
   revealDistance: 18,

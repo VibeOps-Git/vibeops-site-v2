@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, Check, X } from 'lucide-react';
+import { APPLE_HOVER_SPRING } from '@/lib/motion';
 
 interface LiquidGlassCardProps {
   title: string;
@@ -15,6 +16,7 @@ interface LiquidGlassCardProps {
   highlight?: boolean;
   href?: string;
   cta?: string;
+  depth?: 'sm' | 'md' | 'lg'; // New for PR5 premium glass depth
 }
 
 export function LiquidGlassCard({
@@ -82,7 +84,7 @@ export function LiquidGlassCard({
           {/* Main column */}
           <div className={`flex flex-col gap-4 ${highlight ? 'flex-1' : ''}`}>
             {highlight && (
-              <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/30 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em]">
+              <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/60 border border-emerald-deep/30 text-[9px] font-semibold text-emerald-accent uppercase tracking-[0.22em]">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                 Flagship Product
               </span>
@@ -90,7 +92,7 @@ export function LiquidGlassCard({
 
             <div className="flex items-start gap-3">
               {Icon && (
-                <div className={`flex-shrink-0 mt-0.5 ${highlight ? 'text-emerald-400' : 'text-white/35'}`}>
+                <div className={`flex-shrink-0 mt-0.5 ${highlight ? 'text-emerald-accent' : 'text-white/35'}`}>
                   <Icon className="w-5 h-5" />
                 </div>
               )}
@@ -98,7 +100,7 @@ export function LiquidGlassCard({
                 <h3 className="text-base font-semibold text-white leading-snug mb-1">{title}</h3>
                 <p
                   className={`text-[11px] font-medium tracking-wide ${
-                    highlight ? 'text-emerald-400/60' : 'text-white/30'
+                    highlight ? 'text-emerald-accent/60' : 'text-white/30'
                   }`}
                 >
                   {subtitle}
@@ -118,8 +120,8 @@ export function LiquidGlassCard({
               className={`flex items-center gap-1.5 text-[12px] font-medium transition-colors duration-200 mt-auto ${
                 highlight
                   ? isHovered
-                    ? 'text-emerald-300'
-                    : 'text-emerald-400'
+                    ? 'text-emerald-accent'
+                    : 'text-emerald-accent'
                   : isHovered
                   ? 'text-white/65'
                   : 'text-white/35'
@@ -138,7 +140,7 @@ export function LiquidGlassCard({
               <ul className="space-y-2">
                 {features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2 text-[12px] text-white/55">
-                    <Check className="w-3.5 h-3.5 text-emerald-500/70 flex-shrink-0 mt-0.5" />
+                    <Check className="w-3.5 h-3.5 text-emerald-accent/70 flex-shrink-0 mt-0.5" />
                     {f}
                   </li>
                 ))}
@@ -192,14 +194,14 @@ export function LiquidGlassCard({
                   </button>
 
                   {highlight && (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/30 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em] mb-5">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/60 border border-emerald-deep/30 text-[9px] font-semibold text-emerald-accent uppercase tracking-[0.22em] mb-5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                       Flagship Product
                     </span>
                   )}
 
                   {Icon && (
-                    <div className={`mb-4 ${highlight ? 'text-emerald-400' : 'text-white/45'}`}>
+                    <div className={`mb-4 ${highlight ? 'text-emerald-accent' : 'text-white/45'}`}>
                       <Icon className="w-9 h-9" />
                     </div>
                   )}
@@ -207,7 +209,7 @@ export function LiquidGlassCard({
                   <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">{title}</h2>
                   <p
                     className={`text-sm mb-5 ${
-                      highlight ? 'text-emerald-400/65' : 'text-white/35'
+                      highlight ? 'text-emerald-accent/65' : 'text-white/35'
                     }`}
                   >
                     {subtitle}
@@ -224,7 +226,7 @@ export function LiquidGlassCard({
                           <li key={i} className="flex items-start gap-2.5 text-[13px] text-white/55">
                             <Check
                               className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
-                                highlight ? 'text-emerald-500' : 'text-white/28'
+                                highlight ? 'text-emerald-deep' : 'text-white/28'
                               }`}
                             />
                             {feature}
@@ -240,7 +242,7 @@ export function LiquidGlassCard({
                         href={href}
                         className={`inline-flex items-center gap-2 text-sm font-semibold transition-colors ${
                           highlight
-                            ? 'text-emerald-400 hover:text-emerald-300'
+                            ? 'text-emerald-accent hover:text-emerald-accent'
                             : 'text-white/55 hover:text-white/85'
                         }`}
                         onClick={(e) => e.stopPropagation()}

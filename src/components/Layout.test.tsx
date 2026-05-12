@@ -46,7 +46,7 @@ describe("Layout", () => {
 
       const linkedinLink = screen.getByRole("link", { name: /linkedin/i });
       expect(linkedinLink).toHaveClass("text-gray-400");
-      expect(linkedinLink).toHaveClass("hover:text-[#00ffcc]");
+      expect(linkedinLink).toHaveClass("hover:text-[var(--emerald-accent)]");
       expect(linkedinLink).toHaveClass("transition-colors");
     });
   });

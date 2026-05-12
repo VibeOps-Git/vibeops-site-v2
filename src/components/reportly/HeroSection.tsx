@@ -15,12 +15,12 @@ export function HeroSection() {
         animateOpacity
         threshold={0.1}
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--emerald-accent)]/30 bg-[var(--emerald-accent)]/5 mb-8">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ffcc] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ffcc]" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--emerald-accent)] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--emerald-accent)]" />
           </span>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]">Now Available</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-[var(--emerald-accent)]">Now Available</span>
         </div>
       </AnimatedContent>
 
@@ -36,8 +36,8 @@ export function HeroSection() {
         delay={0.1}
       >
         <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20">
-            <FileText className="w-10 h-10 text-[#00ffcc]" />
+          <div className="p-3 rounded-xl bg-[var(--emerald-accent)]/10 border border-[var(--emerald-accent)]/20">
+            <FileText className="w-10 h-10 text-[var(--emerald-accent)]" />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white"><ScrambleText text="Reportly" trigger="mount" /></h1>
         </div>
@@ -78,7 +78,7 @@ export function HeroSection() {
           href="https://reportly.ca/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--emerald-accent)] text-black font-semibold hover:bg-[var(--emerald-accent)]/90 transition-all group"
         >
           <span>Try Reportly</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

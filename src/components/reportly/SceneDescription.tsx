@@ -14,13 +14,13 @@ export function SceneDescription({ scene, sceneIndex, isLeft }: SceneDescription
       {/* Step badge */}
       <div className={`inline-flex items-center gap-3 mb-6 ${!isLeft ? "lg:flex-row-reverse" : ""}`}>
         <div className="relative">
-          <div className="absolute inset-0 bg-[#00ffcc]/30 rounded-xl blur-lg" />
-          <div className="relative p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/30">
-            <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#00ffcc]" />
+          <div className="absolute inset-0 bg-[#34d399]/30 rounded-xl blur-lg" />
+          <div className="relative p-3 rounded-xl bg-[#34d399]/10 border border-[#34d399]/30">
+            <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#34d399]" />
           </div>
         </div>
         <div>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+          <span className="text-xs uppercase tracking-[0.2em] text-[#34d399] font-medium">
             Step {sceneIndex + 1}
           </span>
         </div>
@@ -45,7 +45,7 @@ export function SceneDescription({ scene, sceneIndex, isLeft }: SceneDescription
               !isLeft ? "lg:flex-row-reverse" : ""
             }`}
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-[#00ffcc]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
             <span>{feature}</span>
           </div>
         ))}

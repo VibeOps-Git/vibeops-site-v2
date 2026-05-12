@@ -1,7 +1,10 @@
 // src/components/AnimatedContent.tsx
+// GSAP wrapper updated for PR01 parity: uses GSAP_EASE (power3.out ≈ APPLE_EASE [0.23,1,0.32,1]).
+// Reduced-motion support: callers can pass duration=0.01 or check useReducedMotion externally (see getTransition in lib/motion).
 import { useRef, useEffect, ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { GSAP_EASE } from '@/lib/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,7 +29,7 @@ const AnimatedContent = ({
   direction = "vertical",
   reverse = false,
   duration = 0.8,
-  ease = "power3.out",
+  ease = GSAP_EASE,
   initialOpacity = 0,
   animateOpacity = true,
   scale = 1,

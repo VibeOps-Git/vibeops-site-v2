@@ -2,7 +2,7 @@
  * 3D Design System Theme
  *
  * Centralized 3D design tokens that match VibeOps brand:
- * - Cyan accent (#00ffcc)
+ * - Cyan accent (#34d399)
  * - Dark background (#0a0a0f)
  * - Glassmorphism and metallic materials
  */
@@ -11,9 +11,9 @@ import type { Color } from 'three';
 
 export const VIBE_3D_THEME = {
   colors: {
-    primary: '#00ffcc',      // Cyan accent
+    primary: '#34d399',      // Precision Emerald accent (#34d399)
     background: '#0a0a0f',   // Very dark blue-gray
-    glow: '#00ffdd',         // Slightly lighter cyan for highlights
+    glow: '#4ade80',         // Lighter emerald for highlights (gold #b89f6e rare)
     white: '#ffffff',
     transparent: 'rgba(0, 0, 0, 0)',
   },
@@ -21,7 +21,7 @@ export const VIBE_3D_THEME = {
   // Material properties for different surface types
   materials: {
     glass: {
-      color: '#00ffcc',
+      color: '#34d399',
       transparent: true,
       opacity: 0.15,
       roughness: 0.1,
@@ -32,7 +32,7 @@ export const VIBE_3D_THEME = {
       envMapIntensity: 1.5,
     },
     glassGlow: {
-      color: '#00ffcc',
+      color: '#34d399',
       transparent: true,
       opacity: 0.25,
       roughness: 0.1,
@@ -40,7 +40,7 @@ export const VIBE_3D_THEME = {
       transmission: 0.7,
       ior: 1.45,
       thickness: 0.5,
-      emissive: '#00ffcc',
+      emissive: '#34d399',
       emissiveIntensity: 0.3,
       envMapIntensity: 1.5,
     },
@@ -48,15 +48,15 @@ export const VIBE_3D_THEME = {
       color: '#0a0a0f',
       roughness: 0.4,
       metalness: 1.0,
-      emissive: '#00ffcc',
+      emissive: '#34d399',
       emissiveIntensity: 0.2,
     },
     neonWireframe: {
-      color: '#00ffcc',
+      color: '#34d399',
       transparent: true,
       opacity: 0.6,
       wireframe: true,
-      emissive: '#00ffcc',
+      emissive: '#34d399',
       emissiveIntensity: 0.8,
     },
   },
@@ -68,7 +68,7 @@ export const VIBE_3D_THEME = {
       intensity: 0.4,
     },
     key: {
-      color: '#00ffcc',
+      color: '#34d399',
       intensity: 1.5,
       position: [10, 10, 5] as [number, number, number],
     },
