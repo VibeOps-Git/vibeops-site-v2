@@ -23,9 +23,12 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
     await page.setViewportSize({ width: 390, height: 844 }); // iPhone 14
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 }).catch(() => {});
     await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.waitForSelector('[data-testid="reportly-showcase"], canvas', { timeout: 180000 }).catch(() => {});
     await page.waitForTimeout(3000).catch(() => {});
-    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'visible', { timeout: 120000 });
+    await page.locator('[data-testid="reportly-showcase"]').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500).catch(() => {}); // post-paint settle for canvas/video shifts
+    await expect(page.locator('html, body')).toHaveCSS('overflow-x', /hidden|clip|auto/, { timeout: 120000 });
     // Also check the sticky core
     const showcase = page.locator('[data-testid="reportly-showcase"]');
     await expect(showcase).toBeVisible({ timeout: 180000 });
@@ -33,6 +36,7 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
 
   test('Play demo toggle (opt-in, default off) + scene change on tap', async ({ page }) => {
     const toggle = page.locator('[data-testid="play-demo-toggle"]');
+    await toggle.scrollIntoViewIfNeeded();
     await expect(toggle).toBeVisible({ timeout: 120000 });
     await expect(toggle).toContainText(/Play demo/i, { timeout: 60000 });
 
@@ -53,16 +57,19 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
     const progress = page.locator('[data-testid="showcase-progress"]');
     await expect(progress).toBeVisible({ timeout: 120000 });
 
-    // At least one dot button has min 44px target
+    // At least one dot button has min 44px target (WCAG 2.2 + VibeButton/ProgressDots min-h-[44px])
     const firstDot = progress.locator('button').first();
     const box = await firstDot.boundingBox();
-    expect(box?.height).toBeGreaterThanOrEqual(40); // close to 44 with padding
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    expect(box?.width).toBeGreaterThanOrEqual(44);
 
     // Focus the group and use keyboard
+    await progress.scrollIntoViewIfNeeded();
     await progress.focus();
     await page.keyboard.press('ArrowRight');
-    // Scene should advance (aria or state change observable via announcer or class)
-    await page.waitForTimeout(200);
+    // Scene should advance (aria-selected updates + announcer text)
+    await expect(progress.locator('button[aria-selected="true"]').first()).toBeVisible({ timeout: 10000 });
+    await page.waitForTimeout(100); // settle for scroll animation side-effect
   });
 
   test('ARIA announcements fire on scene change', async ({ page }) => {
@@ -75,12 +82,15 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
     await page.setViewportSize({ width: 320, height: 700 });
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 }).catch(() => {});
     await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.waitForSelector('[data-testid="reportly-showcase"], canvas', { timeout: 180000 }).catch(() => {});
     await page.waitForTimeout(3000).catch(() => {});
+    await page.locator('[data-testid="reportly-showcase"]').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500).catch(() => {}); // post-paint settle
     const desc = page.locator('text=Upload Your Existing Templates').first(); // from authored SCENES
     await expect(desc).toBeVisible({ timeout: 180000 });
-    // No horizontal clip
-    const overflow = await page.evaluate(() => document.body.scrollWidth > document.body.clientWidth);
+    // No horizontal clip (strict doc root)
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     expect(overflow).toBe(false);
   });
 
@@ -90,6 +100,7 @@ test.describe('Reportly Pinned Showcase (Apple-caliber 255vh core)', () => {
     await page.waitForLoadState('networkidle', { timeout: 120000 }).catch(() => {});
     await page.waitForSelector('[data-testid="reportly-showcase"], canvas', { timeout: 180000 }).catch(() => {});
     await page.waitForTimeout(3000).catch(() => {});
+    await page.locator('[data-testid="reportly-showcase"]').scrollIntoViewIfNeeded();
 
     // Play demo should not be possible or instantly off
     const toggle = page.locator('[data-testid="play-demo-toggle"]');

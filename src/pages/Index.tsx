@@ -259,6 +259,7 @@ function HeroSection() {
           <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-3">
             <motion.a
               href="/reportly"
+              data-testid="explore-reportly"  // primary e2e target for beforeEach waits + mobile/responsive (see homepage.spec)
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-accent to-emerald-accent text-black text-[13.5px] font-bold whitespace-nowrap hover:from-emerald-accent/90 hover:to-emerald-accent transition-colors duration-200"
               style={{ boxShadow: '0 18px 46px rgba(52, 211, 153, 0.18)' }}
               whileHover={{ scale: 1.03, y: -1 }}

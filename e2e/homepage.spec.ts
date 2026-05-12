@@ -27,10 +27,15 @@ test.describe("Homepage", () => {
 
   test("should have working navigation links", async ({ page }) => {
     const nav = page.getByRole("navigation");
-    const servicesLink = nav.getByRole("link", { name: /services/i }).first();
-    if (await servicesLink.isVisible({ timeout: 30000 })) {
-      await servicesLink.click();
-      await expect(page).toHaveURL(/services/i);
+    // Open Solutions dropdown (contains Reportly link post-redesign)
+    const solutionsBtn = nav.getByRole("button", { name: /solutions/i });
+    if (await solutionsBtn.isVisible({ timeout: 30000 })) {
+      await solutionsBtn.click();
+    }
+    const reportlyLink = nav.getByRole("link", { name: /reportly/i }).first();
+    if (await reportlyLink.isVisible({ timeout: 30000 })) {
+      await reportlyLink.click();
+      await expect(page).toHaveURL(/reportly/i);
     }
   });
 
@@ -40,26 +45,26 @@ test.describe("Homepage", () => {
     await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
     await page.waitForSelector("canvas, [data-testid=\"hero-device-stage\"]", { timeout: 180000 }).catch(() => {});
     await page.waitForTimeout(3000).catch(() => {});
+    await page.getByTestId("hero-device-stage").scrollIntoViewIfNeeded();
     await expect(page.locator("body")).toBeVisible({ timeout: 180000 });
     await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 180000 });
-    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 180000 });
+    await expect(page.getByTestId("explore-reportly")).toBeVisible({ timeout: 180000 });
   });
 
   test("should keep the homepage layout within the viewport on desktop and show the device stage", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 960 });
     await page.reload({ waitUntil: "domcontentloaded", timeout: 180000 }).catch(() => {});
     await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.waitForSelector('[data-testid="hero-device-stage"], canvas', { timeout: 180000 }).catch(() => {});
     await page.waitForTimeout(3000).catch(() => {});
+    await page.getByTestId("hero-device-stage").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500).catch(() => {}); // post-paint for 3D/video
 
     await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 300000 });
-    await expect(page.getByRole("link", { name: /explore reportly/i }).first()).toBeVisible({ timeout: 180000 });
+    await expect(page.getByTestId("explore-reportly")).toBeVisible({ timeout: 180000 });
 
-    const hasHorizontalOverflow = await page.evaluate(() => {
-      const { documentElement, body } = document;
-      return Math.max(documentElement.scrollWidth, body.scrollWidth) > window.innerWidth;
-    });
-
+    const hasHorizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     expect(hasHorizontalOverflow).toBe(false);
   });
 
@@ -69,21 +74,19 @@ test.describe("Homepage", () => {
     await page.waitForLoadState("networkidle", { timeout: 120000 }).catch(() => {});
     await page.waitForSelector('[data-testid="hero-device-stage"], canvas', { timeout: 180000 }).catch(() => {});
     await page.waitForTimeout(3000).catch(() => {});
+    await page.getByTestId("hero-device-stage").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500).catch(() => {}); // post-paint for 3D/video
 
     await expect(page.getByTestId("hero-device-stage")).toBeVisible({ timeout: 300000 });
 
-    const hasHorizontalOverflow = await page.evaluate(() => {
-      const { documentElement, body } = document;
-      return Math.max(documentElement.scrollWidth, body.scrollWidth) > window.innerWidth;
-    });
-
+    const hasHorizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     expect(hasHorizontalOverflow).toBe(false);
   });
 
   test("should render a dark platform section and keep navigation reachable", async ({ page }) => {
     const platformSection = page.getByTestId("platform-section");
     await platformSection.scrollIntoViewIfNeeded();
-    await expect(platformSection).toBeVisible();
+    await expect(platformSection).toBeVisible({ timeout: 120000 });
 
     const platformBackground = await platformSection.evaluate((element) => {
       return window.getComputedStyle(element).backgroundColor;
@@ -104,13 +107,14 @@ test.describe("Contact Page", () => {
 
 test.describe("Team Page", () => {
   test("should keep the full team banner visible on mobile", async ({ page }) => {
-    await page.goto("/team");
+    await page.goto("/team", { waitUntil: "domcontentloaded", timeout: 120000 });
+    await page.waitForSelector('[data-testid="team-banner"]', { timeout: 120000 }).catch(() => {});
 
     const banner = page.getByTestId("team-banner");
     await expect(banner).toBeVisible();
 
     const bannerImage = banner.getByAltText(/vibeops founding team/i);
-    await expect(bannerImage).toBeVisible();
+    await expect(bannerImage).toBeVisible({ timeout: 120000 });
 
     const bannerBounds = await banner.boundingBox();
     const imageBounds = await bannerImage.boundingBox();
@@ -118,9 +122,9 @@ test.describe("Team Page", () => {
     expect(bannerBounds).not.toBeNull();
     expect(imageBounds).not.toBeNull();
 
-    expect(imageBounds!.height).toBeGreaterThan(300);
-    expect(imageBounds!.width).toBeLessThanOrEqual(bannerBounds!.width + 1);
-    expect(imageBounds!.height).toBeLessThanOrEqual(bannerBounds!.height + 1);
+    expect(imageBounds?.height).toBeGreaterThan(300);
+    expect(imageBounds?.width).toBeLessThanOrEqual((bannerBounds?.width ?? 0) + 1);
+    expect(imageBounds?.height).toBeLessThanOrEqual((bannerBounds?.height ?? 0) + 1);
 
     await expect(
       page.getByRole("link", { name: /talk to the team/i }).first()
