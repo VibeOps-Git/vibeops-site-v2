@@ -16,6 +16,10 @@ type TeamMember = {
   email: string;
   bio: string;
   linkedin?: string;
+  headline?: string;
+  owns?: string[];
+  experience?: string[];
+  previouslyAt?: string[];
 };
 
 const coFounders: TeamMember[] = [
@@ -26,7 +30,14 @@ const coFounders: TeamMember[] = [
     image: "/team/zander-optimized.jpg",
     email: "zander@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/zander-dent/",
-    bio: `Civil engineering student turned software founder, focused on killing manual reporting in consulting firms. Zander leads product vision and works directly with engineers and partners to make sure Reportly fits real project workflows, not theoretical ones.`,
+    bio: `Civil SWE leading vision.`,
+    owns: ["Product", "Investor relations", "Customer discovery", "Design"],
+    experience: [
+      "Sales (5+ yrs)",
+      "Municipal Engineering",
+      "Software Engineering (@ Civil Firm)",
+      "1st Place, UBC Civil Engineering Capstone 2026",
+    ],
   },
   {
     name: "Félix Stewart",
@@ -35,7 +46,29 @@ const coFounders: TeamMember[] = [
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/felix-stewart-67007219a/",
-    bio: `Felix works with principals and firm leaders to map the business upside of automation, time saved, risk reduced, and new services unlocked. He helps translate “we waste time on reports” into concrete ROI and partnership structures.`,
+    bio: `Civil engineer running the GTM motion end-to-end.`,
+    owns: ["Customer accounts", "Pilots", "Implementation", "Sales operations"],
+    experience: [
+      "Geotechnical Engineering",
+      "Advanced Structural Engineering",
+      "Geosciences",
+      "1st Place, UBC Civil Engineering Capstone 2026",
+    ],
+  },
+  {
+    name: "Qazi Omair Ahmed",
+    role: "Co-Founder & CTO",
+    focus: "Systems Design & Product Delivery",
+    image: "/team/omair-optimized.jpg",
+    email: "omair@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/qazi-omair-ahmed/",
+    bio: `Built the whole stack. EB-1A approved at 20.`,
+    owns: ["Architecture", "Parsing", "AI", "Deployment"],
+    experience: [
+      "Founded Fazper at 16 - scaled to $350K annual revenue",
+      "3 peer-reviewed AI/ML papers · 310+ citations · 2 Clarivate Hot Papers",
+      "Built production AI/data systems across xAI, Scale AI, and UBC CS",
+    ],
   },
   {
     name: "Gabriel Comla",
@@ -45,16 +78,6 @@ const coFounders: TeamMember[] = [
     email: "gabriel@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/gabrielcomla/",
     bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms, less formatting, fewer errors, and more time spent on real engineering.`,
-  },
-
-  {
-    name: "Qazi Omair Ahmed",
-    role: "Co-Founder & CTO",
-    focus: "Systems Design & Product Delivery",
-    image: "/team/omair-optimized.jpg",
-    email: "omair@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/qazi-omair-ahmed/",
-    bio: `Omair designs and implements the technical architecture behind what VibeOps builds. He takes the team's and clients' vision and turns it into industry-leading solutions from scoping to system design to delivery. With Reportly, he replaces prebuilt reporting workflows that firms rely on with faster and more reliable client-specific automation.`,
   },
   {
     name: "Hrudai Rajesh",
@@ -72,7 +95,7 @@ const coFounders: TeamMember[] = [
     image: "/team/eric-optimized.jpg",
     email: "eric@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/eric-balanecki/",
-    bio: `Eric helped build the technical architecture behind Reportly’s automation engine, from template parsing to document generation. He focused on reliability, versioning, and making sure the system behaved like real infrastructure, not a toy app.`,
+    bio: `Eric built the template parsing and document generation stack for Reportly and kept it stable across template changes, file versions, and production runs.`,
   },
 ];
 
@@ -310,8 +333,6 @@ export default function Team() {
         </div>
       </section>
 
-      <SectionDivider className="mx-auto max-w-5xl" />
-
       {/* Contributors */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -345,7 +366,7 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={member} />
+                <TeamCard member={member} contactEmail="team@vibeops.ca" />
               </AnimatedContent>
             ))}
             <AnimatedContent
@@ -404,7 +425,11 @@ export default function Team() {
                 threshold={0.3}
                 delay={idx * 0.08}
               >
-                <TeamCard member={advisor} onOpen={() => setSelectedMember(advisor)} />
+                <TeamCard
+                  member={advisor}
+                  onPhotoOpen={() => setSelectedMember(advisor)}
+                  contactEmail="team@vibeops.ca"
+                />
               </AnimatedContent>
             ))}
             <AnimatedContent
@@ -496,26 +521,47 @@ export default function Team() {
 function TeamCard({
   member,
   onOpen,
+  onPhotoOpen,
+  contactEmail,
 }: {
   member: TeamMember;
   onOpen?: () => void;
+  onPhotoOpen?: () => void;
+  contactEmail?: string;
 }) {
-  const contactHref = `/contact?mode=email&contact=${encodeURIComponent(member.email)}`;
+  const contactHref = `/contact?mode=email&contact=${encodeURIComponent(contactEmail ?? member.email)}`;
 
   return (
     <VibeCard
       variant="glow"
       className="group h-full p-6 flex flex-col items-center text-center"
     >
-      <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 mb-4">
-        <img
-          src={member.image}
-          alt={member.name}
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
-        />
-      </div>
+      {onPhotoOpen ? (
+        <button
+          type="button"
+          onClick={onPhotoOpen}
+          className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 mb-4 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00ffcc]/60 focus:ring-offset-2 focus:ring-offset-[#0a0a12]"
+          aria-label={`Open ${member.name} profile`}
+        >
+          <img
+            src={member.image}
+            alt={member.name}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+          />
+        </button>
+      ) : (
+        <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 mb-4">
+          <img
+            src={member.image}
+            alt={member.name}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+          />
+        </div>
+      )}
 
       <h3 className="text-lg font-semibold text-white">{member.name}</h3>
       <p className="text-gray-400 mt-1 text-sm font-medium">{member.role}</p>
@@ -529,6 +575,38 @@ function TeamCard({
       <p className="text-sm text-gray-300 mt-4 flex-1 leading-relaxed">
         {member.bio}
       </p>
+
+      {(member.owns || member.experience || member.previouslyAt) && (
+        <div className="mt-5 w-full text-left space-y-5">
+          {member.owns && (
+            <div>
+              <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gray-400 font-semibold mb-2">Owns</p>
+              <p className="text-sm text-gray-200 leading-relaxed">{member.owns.join(" · ")}</p>
+            </div>
+          )}
+
+          {member.experience && (
+            <div>
+              <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gray-400 font-semibold mb-2">Experience</p>
+              <ul className="space-y-1.5 text-sm text-gray-200">
+                {member.experience.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#00ffcc] flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {member.previouslyAt && (
+            <div>
+              <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gray-400 font-semibold mb-2">Previously At</p>
+              <p className="text-sm text-gray-200 leading-relaxed">{member.previouslyAt.join(" · ")}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="mt-6 flex w-full flex-wrap items-center justify-center gap-3">
         {onOpen && (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
@@ -39,10 +39,10 @@ A bit of context:
 - Timelines / urgency:
 
 Thanks,
-[Your Name]
-[Role]
-[Company]
-[Phone]`,
+      [Your Name]
+      [Role]
+      [Company]
+      [Phone]`,
   },
   {
     label: "Sales & Partnerships",
@@ -115,6 +115,28 @@ Thanks,
 [Role]
 [Company]`,
   },
+  {
+    label: "Contact the Team",
+    person: "VibeOps Team",
+    email: "team@vibeops.ca",
+    blurb:
+      "General questions, routing, and anything that does not fit one specific contact.",
+    subject: "VibeOps | Team Inquiry",
+    body: `Hi VibeOps Team,
+
+I’m reaching out with a general question and wanted to contact the right person on your side.
+
+Context:
+- Firm / team:
+- What we’re looking for:
+- Timeline:
+
+Thanks,
+[Your Name]
+[Role]
+[Company]
+[Phone]`,
+  },
 ];
 
 type ContactMode = "initial" | "calendar" | "email";
@@ -136,6 +158,19 @@ export default function Contact() {
   const [draftBody, setDraftBody] = useState(initialChannel?.body ?? "");
   const [connecting, setConnecting] = useState(false);
 
+  useEffect(() => {
+    if (mode !== "email" || !selectedChannel) return;
+
+    const targetId = `contact-channel-${selectedChannel.email}`;
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    const raf = window.requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    return () => window.cancelAnimationFrame(raf);
+  }, [mode, selectedChannel]);
 
   const handleModeSwitch = (newMode: ContactMode) => {
     setConnecting(true);
@@ -395,6 +430,7 @@ export default function Contact() {
                     return (
                       <motion.div
                         key={channel.email}
+                        id={`contact-channel-${channel.email}`}
                         className={`rounded-xl p-5 border transition-all duration-300 ${
                           isActive
                             ? "border-[#00ffcc]/50 bg-[#00ffcc]/10"
