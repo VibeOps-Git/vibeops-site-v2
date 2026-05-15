@@ -30,7 +30,7 @@ const coFounders: TeamMember[] = [
   },
   {
     name: "Félix Stewart",
-    role: "Co-Founder: Sales & Operations",
+    role: "COO",
     focus: "Strategy & Partnerships",
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",

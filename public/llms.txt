@@ -55,7 +55,7 @@ Working prototype in weeks, not months.
 
 ### Co-Founders
 - Zander Dent - CEO & Co-Founder. Civil engineering workflows and product vision. zander@vibeops.ca
-- Felix Stewart - Sales & Operations. Strategy, partnerships, business development. felix@vibeops.ca
+- Felix Stewart - COO. Strategy, partnerships, business development. felix@vibeops.ca
 - Gabriel Comla - CMO & Co-Founder. Storytelling for engineers, marketing. gabriel@vibeops.ca
 - Eric Balanecki - CTO & Co-Founder. Technical architecture, automation engine. eric@vibeops.ca
 - Qazi Omair Ahmed - Head of Engineering & Co-Founder. Systems design, product delivery. omair@vibeops.ca

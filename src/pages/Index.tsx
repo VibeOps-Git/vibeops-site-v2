@@ -953,7 +953,7 @@ function ProcessSection() {
 
 const teamMembers = [
   { name: 'Zander Dent', role: 'CEO', image: '/team/zander-optimized.jpg' },
-  { name: 'Félix Stewart', role: 'Sales & Ops', image: '/team/felix-optimized.jpg' },
+  { name: 'Félix Stewart', role: 'COO', image: '/team/felix-optimized.jpg' },
   { name: 'Gabriel Comla', role: 'CMO', image: '/team/gabriel-optimized.jpg' },
   { name: 'Qazi Omair Ahmed', role: 'CTO', image: '/team/omair-optimized.jpg' },
 ];
