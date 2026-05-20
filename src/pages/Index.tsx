@@ -688,7 +688,7 @@ function HeroSection() {
                     animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
                     {/* Phone is portrait — constrain width on mobile so it looks iPhone SE sized */}
-                    <div className="w-[52%] lg:w-auto h-full flex items-center">
+                    <div className="w-[52%] lg:contents">
                       <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
                     </div>
                   </motion.div>
