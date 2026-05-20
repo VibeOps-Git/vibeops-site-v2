@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { BookOpen, Scale, Globe, Layers } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 interface CounterProps {
   end: number;
@@ -115,7 +114,7 @@ export function MetricsSection() {
               The Scale
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="Canada's Building Code Landscape" />
+              Canada's Building Code Landscape
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               The regulatory landscape is massive and fragmented.

@@ -1,6 +1,5 @@
 import { MapPin, Layers, MessageSquare, FileText, ExternalLink } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 /*
  * Fake product UI showing real MapleCodes results for "800 Robson St, Vancouver, BC".
@@ -68,7 +67,7 @@ export function ShowcaseSection() {
               Product Demo
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="See What You Get" />
+              See What You Get
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Here's what a real MapleCodes lookup returns for{" "}
@@ -89,7 +88,7 @@ export function ShowcaseSection() {
             <div className="flex-1 flex items-center justify-center">
               <div className="flex items-center gap-2 px-4 py-1 rounded-lg bg-white/5 text-xs text-gray-400 font-mono">
                 <MapPin className="w-3 h-3 text-amber-400" />
-                maplecodes.ca
+                MapleCodes
               </div>
             </div>
           </div>

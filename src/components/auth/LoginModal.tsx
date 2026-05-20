@@ -59,7 +59,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
                 {isRegister ? 'Create your account' : 'Sign in to VibeOps'}
               </h2>
               <p className="mt-1 text-sm text-white/50">
-                {isRegister ? 'Get access to all VibeOps products.' : 'Access MapleCodes, Reportly, and more.'}
+                {isRegister ? 'Get access to all VibeOps products.' : 'Access Reportly and more.'}
               </p>
             </div>
             <button

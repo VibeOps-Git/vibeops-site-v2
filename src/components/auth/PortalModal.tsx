@@ -6,7 +6,6 @@ interface Props {
   onClose: () => void
 }
 
-const MAPLECODES_BASE = import.meta.env.VITE_MAPLECODES_URL || 'http://localhost:5173'
 const REPORTLY_URL = import.meta.env.VITE_REPORTLY_URL || 'https://reportly.ca'
 
 function buildTokenRelayUrl(base: string): string {
@@ -21,14 +20,13 @@ function buildTokenRelayUrl(base: string): string {
 export default function PortalModal({ isOpen, onClose }: Props) {
   if (!isOpen) return null
 
-  const maplecodesUrl = buildTokenRelayUrl(MAPLECODES_BASE)
   const reportlyUrl = buildTokenRelayUrl(REPORTLY_URL)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
-        className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#0c0e14] shadow-2xl shadow-black/60"
+        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#0c0e14] shadow-2xl shadow-black/60"
         onClick={e => e.stopPropagation()}
       >
         <div className="h-[3px] bg-gradient-to-r from-[#00ffcc] to-emerald-400" />
@@ -50,45 +48,23 @@ export default function PortalModal({ isOpen, onClose }: Props) {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {/* MapleCodes */}
-            <a
-              href={maplecodesUrl}
-              className="group flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:border-[#d92f37]/30 hover:bg-white/[0.06]"
-            >
-              <div>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#d92f37]/10 text-xl">
-                  🗺
-                </div>
-                <h3 className="font-bold text-white">MapleCodes</h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/40">
-                  Canadian building code intelligence. Enter an address, get the full jurisdiction stack instantly.
-                </p>
+          <a
+            href={reportlyUrl}
+            className="group flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:border-[#00ffcc]/30 hover:bg-white/[0.06]"
+          >
+            <div>
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-xl">
+                📄
               </div>
-              <div className="mt-5 flex items-center gap-1.5 text-sm font-semibold text-[#d92f37]/70 group-hover:text-[#d92f37] transition-colors">
-                Open <ArrowRight size={14} />
-              </div>
-            </a>
-
-            {/* Reportly */}
-            <a
-              href={reportlyUrl}
-              className="group flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:border-[#00ffcc]/30 hover:bg-white/[0.06]"
-            >
-              <div>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-xl">
-                  📄
-                </div>
-                <h3 className="font-bold text-white">Reportly</h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/40">
-                  AI report automation for civil and construction teams. Templates in, polished reports out.
-                </p>
-              </div>
-              <div className="mt-5 flex items-center gap-1.5 text-sm font-semibold text-[#00ffcc]/70 group-hover:text-[#00ffcc] transition-colors">
-                Open <ArrowRight size={14} />
-              </div>
-            </a>
-          </div>
+              <h3 className="font-bold text-white">Reportly</h3>
+              <p className="mt-2 text-xs leading-relaxed text-white/40">
+                AI report automation for civil and construction teams. Templates in, polished reports out.
+              </p>
+            </div>
+            <div className="mt-5 flex items-center gap-1.5 text-sm font-semibold text-[#00ffcc]/70 group-hover:text-[#00ffcc] transition-colors">
+              Open <ArrowRight size={14} />
+            </div>
+          </a>
         </div>
       </div>
     </div>

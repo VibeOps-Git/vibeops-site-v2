@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0",
+  "date": null,
+  "status": "coming-soon",
+  "signed": false,
+  "platforms": {
+    "darwin-aarch64": {
+      "label": "macOS (Apple Silicon)",
+      "filename": null,
+      "path": null,
+      "checksum": null,
+      "available": false,
+      "note": "Signed build in progress."
+    },
+    "darwin-x86_64": {
+      "label": "macOS (Intel)",
+      "filename": null,
+      "path": null,
+      "checksum": null,
+      "available": false,
+      "note": "Coming soon."
+    },
+    "windows-x86_64": {
+      "label": "Windows",
+      "filename": null,
+      "path": null,
+      "checksum": null,
+      "available": false,
+      "note": "Coming soon."
+    }
+  }
+}

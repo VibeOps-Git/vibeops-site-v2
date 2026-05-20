@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock, DollarSign, TrendingUp, Users } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 interface CounterProps {
   end: number;
@@ -37,7 +36,7 @@ function AnimatedCounter({ end, duration = 2000, prefix = "", suffix = "", decim
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0 }
     );
 
     if (ref.current) {
@@ -122,14 +121,14 @@ export function MetricsSection() {
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.05}
         >
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
               The Impact
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="The Cost of Manual Reporting" />
+              The Cost of Manual Reporting
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               We met with 100+ firms and engineers across Vancouver.
@@ -149,7 +148,7 @@ export function MetricsSection() {
               ease="power3.out"
               initialOpacity={0}
               animateOpacity
-              threshold={0.2}
+              threshold={0.05}
               delay={index * 0.1}
             >
               <div className="relative group">
@@ -193,8 +192,8 @@ export function MetricsSection() {
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
-          delay={0.5}
+          threshold={0.05}
+          delay={0.4}
         >
           <p className="text-center text-gray-400 mt-12 text-lg">
             Engineers estimate <span className="text-white font-semibold">30-40%</span> of project time

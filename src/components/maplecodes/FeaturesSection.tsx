@@ -1,6 +1,5 @@
 import { Check, MapPin, Zap, Globe, Brain, ShieldCheck, Link2 } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 const features = [
   {
@@ -62,9 +61,9 @@ export function FeaturesSection() {
               Features
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="Built for" />{" "}
+              Built for{" "}
               <span className="text-[#d92f37]">
-                <ScrambleText text="Canadian Construction" />
+                Canadian Construction
               </span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
@@ -86,7 +85,7 @@ export function FeaturesSection() {
               initialOpacity={0}
               animateOpacity
               threshold={0.2}
-              delay={index * 0.1}
+              delay={Math.min(index * 0.08, 0.4)}
             >
               <div className="group relative p-6 rounded-2xl bg-[rgba(10,10,20,0.6)] border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-[#d92f37]/20 hover:bg-[rgba(10,10,20,0.8)] h-full">
                 <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-[#d92f37]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

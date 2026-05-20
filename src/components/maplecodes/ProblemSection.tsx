@@ -1,6 +1,5 @@
 import { Search, Clock, ShieldAlert, FileWarning } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 const problems = [
   {
@@ -164,9 +163,9 @@ export function ProblemSection() {
                   The Problem
                 </span>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                  <ScrambleText text="Code Research is" />{" "}
+                  Code Research is{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
-                    <ScrambleText text="a Maze" />
+                    a Maze
                   </span>
                 </h2>
                 <p className="text-gray-400 mb-8">
@@ -222,7 +221,7 @@ export function ProblemSection() {
               initialOpacity={0}
               animateOpacity
               threshold={0.2}
-              delay={0.6}
+              delay={0.4}
             >
               <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-red-500/10 via-orange-500/5 to-transparent border border-red-500/20">
                 <p className="text-sm text-gray-300">

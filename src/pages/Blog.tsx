@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { getAllPosts } from "@/lib/blogs";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
-import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 
@@ -24,28 +23,28 @@ export default function Blog() {
   return (
     <>
       <SEO
-        title="Blog - Lab Notes"
-        description="Practical examples, implementation notes, and experiments from VibeOps prototypes, estimators, and automation tests."
+        title="Lab Notes - Engineering Automation & AEC Workflow"
+        description="Practical notes, implementation guides, and experiments in engineering report automation, building code compliance, and AEC workflow software."
         canonical="https://www.vibeops.ca/blog"
       />
       <div className="pt-24">
         {/* Hero */}
       <section className="py-20 px-4">
         <AnimatedContent
-          distance={80}
+          distance={50}
           direction="vertical"
           duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.15}
         >
           <div className="container mx-auto text-center max-w-3xl">
             <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
               Lab Notes
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              <ScrambleText text="Blog" trigger="mount" />
+              Lab Notes
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Practical examples, implementation notes, and experiments from our

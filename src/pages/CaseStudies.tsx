@@ -3,7 +3,6 @@ import { Star, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
-import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 import { VibeLinkButton } from "@/components/ui/VibeButton";
@@ -54,7 +53,7 @@ const reviews: Review[] = [
 
 const portfolioProjects = [
   {
-    title: "Castaway Crew – Desktop",
+    title: "Castaway Crew - Desktop",
     caption:
       "Bold, conversion-focused landing page for a boat cleaning business in Minnesota.",
     description: "Complete brand refresh with a focus on conversion optimization. Features include pricing calculator, service area maps, and streamlined booking flow. Built with React and optimized for performance.",
@@ -68,7 +67,7 @@ const portfolioProjects = [
     ],
   },
   {
-    title: "Castaway Crew – Mobile",
+    title: "Castaway Crew - Mobile",
     caption:
       "Mobile-first experience that keeps booking effortless on small screens.",
     description: "Optimized mobile experience with touch-friendly interfaces and streamlined navigation. Features quick-book functionality and location-based service detection.",
@@ -135,7 +134,7 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
         threshold={0.3}
       >
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-white mb-3"><ScrambleText text="Portfolio Projects" /></h2>
+          <h2 className="text-3xl font-semibold text-white mb-3">Portfolio Projects</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Web apps and sites showing the level of polish we bring to internal tools and dashboards.
           </p>
@@ -283,28 +282,28 @@ export default function CaseStudies() {
   return (
     <>
       <SEO
-        title="Case Studies"
-        description="Client outcomes and portfolio projects. See how teams use VibeOps to automate workflows and build custom engineering software."
+        title="Client Work & Case Studies"
+        description="Engineering automation, construction reporting tools, and workflow software built by VibeOps for real clients. See our portfolio and client outcomes."
         canonical="https://www.vibeops.ca/case-studies"
       />
       <div className="pt-24">
         {/* Hero */}
         <section className="py-20 px-4">
         <AnimatedContent
-          distance={80}
+          distance={50}
           direction="vertical"
           duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.15}
         >
           <div className="container mx-auto text-center max-w-3xl">
             <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
               Case Studies
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              <ScrambleText text="Client Outcomes" trigger="mount" />
+              Client Outcomes
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               A snapshot of how teams use VibeOps to do business faster.
@@ -328,7 +327,7 @@ export default function CaseStudies() {
             threshold={0.3}
           >
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-semibold text-white mb-3"><ScrambleText text="What Our Clients Say" /></h2>
+              <h2 className="text-3xl font-semibold text-white mb-3">What Our Clients Say</h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
                 Real feedback from teams we've helped with automation and software.
               </p>
@@ -411,7 +410,7 @@ export default function CaseStudies() {
           >
             <VibeCard variant="gradient" hover={false} className="text-center p-10 md:p-14">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                <ScrambleText text="Ready to Become a Case Study?" />
+                Ready to Become a Case Study?
               </h2>
               <p className="text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
                 Scope a pilot with clear before/after and measurable time savings. We'll help you automate the workflow that's slowing your team down the most.

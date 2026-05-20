@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { MapPin, ChevronDown, ArrowRight, Search } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 const TYPED_ADDRESSES = [
   "800 Robson St, Vancouver, BC",
-  "100 Queen St W, Toronto, ON",
-  "400 Laurier Ave W, Ottawa, ON",
-  "1200 Commissioner St, Vancouver, BC",
+  "20 Bay St, Toronto, ON",
+  "10101 Jasper Ave, Edmonton, AB",
+  "1000 De La Gauchetière O, Montréal, QC",
+  "1700 Alta Vista Dr, Ottawa, ON",
+  "999 Canada Pl, Vancouver, BC",
 ];
 
 function TypewriterSearch() {
@@ -94,9 +95,12 @@ export function HeroSection() {
             <MapPin className="w-10 h-10 text-[#d92f37]" />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white">
-            <ScrambleText text="MapleCodes" trigger="mount" />
+            MapleCodes
           </h1>
         </div>
+        <p className="text-[11px] uppercase tracking-[0.28em] text-[#d92f37]/60 font-semibold text-center mt-2">
+          Canadian Building Code Intelligence for AE Teams
+        </p>
       </AnimatedContent>
 
       {/* Headline */}
@@ -145,12 +149,10 @@ export function HeroSection() {
         delay={0.5}
       >
         <a
-          href="https://maplecodes.ca/"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/contact"
           className="mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-400/90 transition-all group"
         >
-          <span>Try MapleCodes Free</span>
+          <span>Join the Early Access List</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </a>
       </AnimatedContent>
@@ -165,7 +167,7 @@ export function HeroSection() {
           initialOpacity={0}
           animateOpacity
           threshold={0.1}
-          delay={0.7}
+          delay={0.4}
         >
           <div className="flex flex-col items-center gap-2">
             <span className="text-xs text-gray-500">Scroll to explore</span>

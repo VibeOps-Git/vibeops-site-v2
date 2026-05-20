@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* -------------------------------------------------------------------------- */
-/* Core design tokens – dark by default with neon teal accent                 */
+/* Core design tokens - dark by default with neon teal accent                 */
 /* -------------------------------------------------------------------------- */
 
 @layer base {
@@ -324,3 +324,211 @@ html {
   to   { transform: translate3d(-25%, 0, 0); }
 }
 
+/* Testimonials carousel - 4 copies, translate -25% (one copy width, exact — same pattern as marquee-scroll) */
+@keyframes testimonial-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-25%, 0, 0); }
+}
+
+/* Reduced-motion: disable carousel animation */
+@media (prefers-reduced-motion: reduce) {
+  [style*="testimonial-scroll"],
+  [style*="marquee-scroll"] {
+    animation: none !important;
+  }
+}
+
+
+/* ============================================================================
+   AMBIENT ATMOSPHERE
+   Philosophy: effects should be *felt*, not consciously noticed. Every
+   animation here operates at the edge of perception - subliminal motion that
+   makes the page feel alive without competing with actual content.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. FILM GRAIN OVERLAY
+   WHY: Flat dark screens feel cold and synthetic. A micro-texture overlay
+   borrowed from cinema/photography makes digital surfaces feel tactile and
+   premium. Designers call this "organic warmth." At 2.5% opacity it's
+   invisible on inspection but its absence makes everything feel cheaper.
+   HOW: SVG feTurbulence generates fractal noise. We animate translate on an
+   oversized element to simulate the flickering of analog film grain at ~8fps.
+   GPU compositing is avoided intentionally - the jitter is the feature.
+   ---------------------------------------------------------------------------- */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  animation: grain 0.14s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0,    0)   }
+  14%  { transform: translate(-2%,  -3%) }
+  28%  { transform: translate(3%,   1%)  }
+  42%  { transform: translate(-1%,  2%)  }
+  57%  { transform: translate(2%,  -2%)  }
+  71%  { transform: translate(-3%,  1%)  }
+  85%  { transform: translate(1%,   3%)  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; }
+}
+
+
+/* ----------------------------------------------------------------------------
+   2. AMBIENT ORB DRIFT
+   WHY: Static ambient blobs look like decoration. Giving them slow, looping
+   paths creates the impression of something breathing - an atmosphere rather
+   than a gradient. Asymmetric durations (31s vs 47s) prevent the two orbs
+   from ever syncing, which would create a noticeable visual beat.
+   The translate + scale combo traces a soft oval path that reads as organic.
+   HOW: Three independent keyframe paths with staggered durations.
+   Applied via utility classes so any element can join the system.
+   ---------------------------------------------------------------------------- */
+@keyframes drift-1 {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  25%  { transform: translate(3%,   2%)   scale(1.05); }
+  50%  { transform: translate(-2%,  4%)   scale(0.97); }
+  75%  { transform: translate(4%,  -1%)   scale(1.03); }
+  100% { transform: translate(0,    0)    scale(1);    }
+}
+@keyframes drift-2 {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  33%  { transform: translate(-4%,  3%)   scale(1.07); }
+  66%  { transform: translate(2%,  -3%)   scale(0.95); }
+  100% { transform: translate(0,    0)    scale(1);    }
+}
+@keyframes drift-3 {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  20%  { transform: translate(5%,  -2%)   scale(1.04); }
+  55%  { transform: translate(-3%,  5%)   scale(1.08); }
+  80%  { transform: translate(2%,   1%)   scale(0.98); }
+  100% { transform: translate(0,    0)    scale(1);    }
+}
+
+.ambient-drift-1 { animation: drift-1 31s ease-in-out infinite; }
+.ambient-drift-2 { animation: drift-2 47s ease-in-out infinite; }
+.ambient-drift-3 { animation: drift-3 39s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-drift-1, .ambient-drift-2, .ambient-drift-3 { animation: none; }
+}
+
+
+/* ----------------------------------------------------------------------------
+   3. CARD SHIMMER SWEEP
+   WHY: Light catching a surface is one of the strongest visual cues for
+   physical presence. A thin highlight that sweeps across cards mimics the
+   reflection you'd see on polished metal, glass, or a printed page.
+   The staggered delays (via :nth-child) ensure cards don't all flash at once,
+   which would look artificial. Instead they sweep at different moments,
+   like ambient light slowly panning across a room.
+   HOW: Pseudo-element with a diagonal gradient, animated translate from
+   -100% to 300% (wider than the card so it fully enters and exits).
+   Requires overflow:hidden on the host element.
+   ---------------------------------------------------------------------------- */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%);  }
+}
+
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 65%
+  );
+  /* Start parked off the left edge — only animates on hover */
+  transform: translateX(-100%);
+  pointer-events: none;
+  z-index: 1;
+  /* No ambient animation — hover-only so it never bleeds to adjacent cards */
+}
+
+/* Trigger a single sweep when the card is hovered.
+   `forwards` parks the gradient off the right edge when done,
+   so it resets cleanly on the next hover entry. */
+.shimmer-card:hover::after {
+  animation: shimmer-sweep 0.75s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-card:hover::after { animation: none; }
+}
+
+
+/* ----------------------------------------------------------------------------
+   4. PRIMARY CTA GLOW PULSE
+   WHY: The primary call-to-action competes with everything else on screen.
+   A slow glow pulse that breathes in/out at 3.5s intervals creates
+   subliminal urgency - like a beacon or a heartbeat. Users describe this
+   as the button "wanting to be clicked" without knowing why.
+   The intensity delta is kept intentionally small (shadow spreads by ~10px)
+   so it reads as warmth rather than a blinking alert.
+   HOW: Animates box-shadow between two states using ease-in-out for the
+   smooth sinusoidal breathing effect.
+   ---------------------------------------------------------------------------- */
+@keyframes glow-breathe {
+  0%, 100% {
+    box-shadow: 0 16px 40px rgba(52,211,153,0.20), 0 0 0 0 rgba(52,211,153,0);
+  }
+  50% {
+    box-shadow: 0 16px 50px rgba(52,211,153,0.32), 0 0 28px 4px rgba(52,211,153,0.10);
+  }
+}
+
+.glow-pulse {
+  animation: glow-breathe 3.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-pulse { animation: none; }
+}
+
+
+/* ----------------------------------------------------------------------------
+   5. ANIMATED GRADIENT TEXT
+   WHY: Static gradient text looks good but static. Slowly panning the gradient
+   gives key headings the quality of light moving across a surface - like how
+   a holographic foil shifts as you tilt it. At 7s duration it's imperceptible
+   individually but cumulatively makes the page feel "alive."
+   HOW: background-size: 200% allows us to pan the gradient with
+   background-position animation. Must be paired with bg-clip-text.
+   ---------------------------------------------------------------------------- */
+@keyframes gradient-pan {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+.text-gradient-animate {
+  background-size: 200% 200% !important;
+  animation: gradient-pan 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-animate {
+    animation: none;
+    background-position: 0% 50%;
+  }
+}

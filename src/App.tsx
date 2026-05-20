@@ -14,7 +14,6 @@ import Team from "./pages/Team";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Reportly from "./pages/Reportly";
-import MapleCodes from "./pages/MapleCodes";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
@@ -48,7 +47,6 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/reportly" element={<Reportly />} />
-              <Route path="/maplecodes" element={<MapleCodes />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="*" element={<NotFound />} />

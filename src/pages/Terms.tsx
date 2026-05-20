@@ -49,7 +49,7 @@ export default function Terms() {
                   <h2 className="text-2xl font-semibold text-white mb-4">1. Definitions</h2>
                   <div className="space-y-3">
                     <p>
-                      <strong>"AI Features"</strong> means any artificial intelligence–assisted drafting, analysis, or automation features made available as part of the Services.
+                      <strong>"AI Features"</strong> means any artificial intelligence-assisted drafting, analysis, or automation features made available as part of the Services.
                     </p>
                     <p>
                       <strong>"Customer"</strong> means the individual or legal entity that enters into this Agreement.

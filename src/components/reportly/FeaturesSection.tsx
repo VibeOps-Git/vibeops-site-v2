@@ -1,6 +1,5 @@
 import { Check, Cog, Brain, FileText, Calculator, Wand2, HardHat } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 const features = [
   {
@@ -70,8 +69,8 @@ export function FeaturesSection() {
               Why Reportly
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="The Only Solution Built for" />{" "}
-              <span className="text-[#00ffcc]"><ScrambleText text="Civil Engineering" /></span>
+              The Only Solution Built for{" "}
+              <span className="text-[#00ffcc]">Civil Engineering</span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Not a generic document tool. Reportly is purpose-built for the way civil and construction engineers actually produce reports.
@@ -91,7 +90,7 @@ export function FeaturesSection() {
               initialOpacity={0}
               animateOpacity
               threshold={0.2}
-              delay={index * 0.1}
+              delay={Math.min(index * 0.08, 0.4)}
             >
               <div className="group relative p-6 rounded-2xl bg-[rgba(10,10,20,0.6)] border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-[#00ffcc]/20 hover:bg-[rgba(10,10,20,0.8)] h-full">
                 {/* Top edge glow */}

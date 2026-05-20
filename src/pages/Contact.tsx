@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
-import { ScrambleText } from "@/components/ScrambleText";
 import { SEO } from "@/components/SEO";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -200,8 +200,8 @@ export default function Contact() {
   return (
     <>
       <SEO
-        title="Contact"
-        description="Get in touch with VibeOps. Book a strategy session or contact our team directly for engineering automation, custom software, and Reportly."
+        title="Book a Demo or Workflow Audit"
+        description="Book a free 30-minute workflow audit with VibeOps. Show us the reporting or compliance workflow slowing your AE team down. We'll show you what software built around it looks like."
         canonical="https://www.vibeops.ca/contact"
       />
       <div className="pt-24 pb-16 px-4 relative overflow-hidden">
@@ -255,14 +255,14 @@ export default function Contact() {
           <div className="flex items-center justify-center gap-2 mb-3">
             <Signal className="w-5 h-5 text-[#00ffcc] animate-pulse" />
             <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc]">
-              Communication Channel
+              Get in Touch
             </p>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            <ScrambleText text="Establish Connection" trigger="mount" />
+            Book a Demo or Workflow Audit
           </h1>
           <p className="text-gray-400 text-base max-w-2xl mx-auto">
-            Select your preferred communication protocol
+            Show us the reporting or compliance workflow slowing your team down. We'll show you what software built around it looks like.
           </p>
         </motion.div>
 
@@ -384,18 +384,31 @@ export default function Contact() {
               </Button>
 
               <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6 overflow-hidden">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-2 h-2 bg-[#00ffcc] rounded-full animate-pulse" />
-                  <p className="text-[#00ffcc] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-[#00ffcc] rounded-full animate-pulse" />
+                    <p className="text-[#00ffcc] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
+                  </div>
+                  <a
+                    href={CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-white/40 hover:text-white/70 underline transition-colors"
+                  >
+                    Open in new tab →
+                  </a>
                 </div>
-                <iframe
-                  src={CALENDLY_URL}
-                  width="100%"
-                  height="700"
-                  frameBorder="0"
-                  title="Schedule a call with VibeOps"
-                  className="rounded-xl"
-                />
+                <div className="relative">
+                  <iframe
+                    src={CALENDLY_URL}
+                    width="100%"
+                    height="700"
+                    frameBorder="0"
+                    title="Schedule a call with VibeOps"
+                    className="rounded-xl block"
+                    style={{ minHeight: 700 }}
+                  />
+                </div>
               </div>
             </motion.div>
           )}

@@ -57,8 +57,11 @@ export function SceneDescription({ scene, sceneIndex, isLeft }: SceneDescription
 function getStepFeatures(index: number): string[] {
   const features = [
     ["Word & Excel support", "Preserves your formatting", "Auto-detects tables"],
-    ["Smart data mapping", "Consistent styling", "Real-time preview"],
-    ["Export to PDF", "Share via link", "Version history"],
+    ["GPS-tagged photos", "Measurement ingestion", "Auto-mapped to sections"],
+    ["Federal · Provincial · Municipal", "85+ codes indexed", "Referenced standards included"],
+    ["Under 3-minute draft", "Code citations embedded", "Engineers stay in control"],
+    ["Code accuracy checks", "Formatting consistency", "Firm-standard verification"],
+    ["Branded DOCX or PDF", "Version history", "Delivery-ready output"],
   ];
   return features[index] || [];
 }

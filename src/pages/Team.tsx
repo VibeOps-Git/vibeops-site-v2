@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
-import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
 import { VibeCard } from "../components/ui/VibeCard";
 
@@ -25,7 +24,7 @@ type TeamMember = {
 const coFounders: TeamMember[] = [
   {
     name: "Zander Dent",
-    role: "Co-Founder & CEO",
+    role: "CEO",
     focus: "Civil Engineering Workflows",
     image: "/team/zander-optimized.jpg",
     email: "zander@vibeops.ca",
@@ -57,7 +56,7 @@ const coFounders: TeamMember[] = [
   },
   {
     name: "Qazi Omair Ahmed",
-    role: "Co-Founder & CTO",
+    role: "CTO",
     focus: "Systems Design & Product Delivery",
     image: "/team/omair-optimized.jpg",
     email: "omair@vibeops.ca",
@@ -72,7 +71,7 @@ const coFounders: TeamMember[] = [
   },
   {
     name: "Gabriel Comla",
-    role: "Co-Founder & CMO",
+    role: "CMO",
     focus: "Storytelling for Engineers",
     image: "/team/gabriel-optimized.jpg",
     email: "gabriel@vibeops.ca",
@@ -81,7 +80,7 @@ const coFounders: TeamMember[] = [
   },
   {
     name: "Hrudai Rajesh",
-    role: "Co-Founder",
+    role: "Implementation & Delivery",
     focus: "Implementation & Delivery",
     image: "/team/hrudai-optimized.jpg",
     email: "hrudai@vibeops.ca",
@@ -173,28 +172,28 @@ export default function Team() {
   return (
     <>
       <SEO
-        title="Team"
-        description="Meet the team building VibeOps. We build custom software for engineering and construction teams: reports, dashboards, field data tools, and internal applications."
+        title="Meet the Team"
+        description="Meet the civil engineers and software builders behind Reportly and VibeOps. Built from 175+ discovery calls with AE firms across Canada."
         canonical="https://www.vibeops.ca/team"
       />
       <div className="pt-24">
         {/* Hero */}
         <section className="py-16 px-4">
         <AnimatedContent
-          distance={80}
+          distance={50}
           direction="vertical"
           duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.15}
         >
           <div className="container mx-auto text-center max-w-4xl">
             <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
               Our Team
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              <ScrambleText text="Meet the Team Building Your Tools" trigger="mount" />
+              Meet the Team Building Your Tools
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               We build custom software for engineering and construction teams: reports,
@@ -306,7 +305,6 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Co-Founders" /></h2>
               <p className="text-gray-400 text-sm">
                 The core team behind VibeOps and Reportly.
               </p>
@@ -346,7 +344,7 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Contributors" /></h2>
+              <h2 className="text-2xl font-semibold text-white mb-2">Contributors</h2>
               <p className="text-gray-400 text-sm">
                 People who helped build, shape, and support VibeOps along the way.
               </p>
@@ -405,7 +403,7 @@ export default function Team() {
             threshold={0.3}
           >
             <div className="mb-10">
-              <h2 className="text-2xl font-semibold text-white mb-2"><ScrambleText text="Advisory Board" /></h2>
+              <h2 className="text-2xl font-semibold text-white mb-2">Advisory Board</h2>
               <p className="text-gray-400 text-sm">
                 Educators and engineers who help us align with real-world civil workflows.
               </p>
@@ -470,7 +468,7 @@ export default function Team() {
             <VibeCard variant="gradient" className="p-8 md:p-10">
               <div className="grid gap-8 md:grid-cols-[1.5fr,1fr] items-center">
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-3"><ScrambleText text="Our Approach" /></h2>
+                  <h2 className="text-2xl font-semibold text-white mb-3">Our Approach</h2>
                   <p className="text-gray-400 mb-6">
                     We build custom software for engineering teams: reports, dashboards,
                     workflow tools, and internal applications. One focused solution at a time.

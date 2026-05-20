@@ -15,7 +15,10 @@ interface Particle {
   phase: number;
 }
 
-export default function SpaceField() {
+// embedded=true: renders as absolute (fills parent) instead of fixed (fills viewport).
+// Use inside sections — the global fixed canvas is invisible there because
+// <main z-10> creates a stacking context above the fixed SpaceField at z-0.
+export default function SpaceField({ embedded = false }: { embedded?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const particlesRef = useRef<Particle[]>([]);
@@ -31,8 +34,13 @@ export default function SpaceField() {
     let time = 0;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (embedded && canvas.parentElement) {
+        canvas.width  = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+      } else {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
       initParticles();
     };
 
@@ -150,7 +158,7 @@ export default function SpaceField() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className={`${embedded ? 'absolute' : 'fixed'} inset-0 pointer-events-none`}
       style={{ zIndex: 0 }}
     />
   );

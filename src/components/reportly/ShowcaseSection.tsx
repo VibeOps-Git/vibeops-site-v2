@@ -106,12 +106,32 @@ export function ShowcaseSection() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll, { passive: true });
-    handleScroll();
+
+    // Double-deferred initial calculation so offsetHeight is correct
+    // after SPA navigation (avoids scrollableDistance=0 on first mount)
+    let t: ReturnType<typeof setTimeout>;
+    const t0 = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        handleScroll();
+        // Backup: re-run after paint settles (images/fonts may shift layout)
+        t = setTimeout(handleScroll, 200);
+      });
+    });
+
+    // ResizeObserver: recompute when section height changes (fonts load, etc.)
+    let ro: ResizeObserver | null = null;
+    if (sectionRef.current && typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => handleScroll());
+      ro.observe(sectionRef.current);
+    }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(t0);
+      clearTimeout(t);
+      ro?.disconnect();
     };
   }, [handleScroll]);
 
@@ -481,7 +501,7 @@ export function ShowcaseSection() {
                       <div
                         className="relative h-2 rounded-full overflow-hidden transition-all duration-300 ease-out"
                         style={{
-                          width: isExpanded ? "4.5rem" : "0.5rem", // 72px expanded, 8px as dot
+                          width: isExpanded ? "min(4.5rem, calc((100vw - 140px) / 6))" : "0.5rem",
                           backgroundColor: isUpcoming
                             ? "rgba(255, 255, 255, 0.2)"
                             : "rgba(0, 255, 204, 0.2)",

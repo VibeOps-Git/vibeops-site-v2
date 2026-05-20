@@ -1,6 +1,5 @@
 import { FileText, ChevronDown, ArrowRight } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 export function HeroSection() {
   return (
@@ -39,8 +38,11 @@ export function HeroSection() {
           <div className="p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20">
             <FileText className="w-10 h-10 text-[#00ffcc]" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white"><ScrambleText text="Reportly" trigger="mount" /></h1>
+          <h1 className="text-5xl md:text-7xl font-bold text-white">Reportly</h1>
         </div>
+        <p className="text-[11px] uppercase tracking-[0.28em] text-[#00ffcc]/60 font-semibold text-center mt-2">
+          Engineering Report Automation for AE Firms
+        </p>
       </AnimatedContent>
 
       {/* Headline */}
@@ -94,7 +96,7 @@ export function HeroSection() {
           initialOpacity={0}
           animateOpacity
           threshold={0.1}
-          delay={0.5}
+          delay={0.4}
         >
           <div className="flex flex-col items-center gap-2">
             <span className="text-xs text-gray-500">Scroll to explore</span>

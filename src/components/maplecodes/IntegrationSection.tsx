@@ -1,7 +1,6 @@
 import { MapPin, ArrowRight, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 const flow = [
   {
@@ -48,9 +47,9 @@ export function IntegrationSection() {
               The VibeOps Suite
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="From Code Lookup to" />{" "}
+              From Code Lookup to{" "}
               <span className="text-[#d92f37]">
-                <ScrambleText text="Finished Report" />
+                Finished Report
               </span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">

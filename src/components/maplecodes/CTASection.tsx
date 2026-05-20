@@ -1,7 +1,6 @@
 import { Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 export function CTASection() {
   return (
@@ -33,9 +32,9 @@ export function CTASection() {
               </div>
 
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                <ScrambleText text="Ready to Know Your" />{" "}
+                Ready to Know Your{" "}
                 <span className="text-[#d92f37]">
-                  <ScrambleText text="Code Context" />
+                  Code Context
                 </span>
                 ?
               </h2>
@@ -47,12 +46,10 @@ export function CTASection() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                  href="https://maplecodes.ca/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/contact"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#d92f37] text-white font-semibold hover:bg-[#b91f29] transition-all group shadow-[0_12px_32px_rgba(217,47,55,0.3)]"
                 >
-                  <span>Try MapleCodes</span>
+                  <span>Join the Early Access List</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </a>
                 <Link
