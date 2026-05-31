@@ -80,7 +80,7 @@ export function SectionWithHeader({
           >
             <div className="text-center mb-12">
               {tag && (
-                <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+                <p className="bp-label text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
                   {tag}
                 </p>
               )}

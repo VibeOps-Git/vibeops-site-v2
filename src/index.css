@@ -100,6 +100,14 @@
   body {
     @apply bg-background text-foreground antialiased;
   }
+
+  /* Engineering/industrial display face for headings — shifts the whole feel
+     from generic tech toward technical/construction without touching colors.
+     Saira is a near-normal-width grotesque, so it swaps in with minimal reflow. */
+  h1, h2, h3, .font-display {
+    font-family: "Saira", "Inter", system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv01";
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -318,22 +326,18 @@ html {
   scrollbar-color: rgba(0, 255, 204, 0.3) rgba(0, 0, 0, 0.2);
 }
 
-/* Infinite marquee - translate3d forces GPU compositing for jank-free scroll */
-@keyframes marquee-scroll {
+/* Seamless marquee — translates by exactly one measured group width (in px,
+   supplied via the --mq-shift custom property by the <Marquee> component) so
+   the loop is pixel-perfect at any viewport width and never jumps on reset.
+   translate3d forces GPU compositing for jank-free scroll. */
+@keyframes marquee-shift {
   from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-25%, 0, 0); }
+  to   { transform: translate3d(var(--mq-shift, -50%), 0, 0); }
 }
 
-/* Testimonials carousel - 4 copies, translate -25% (one copy width, exact — same pattern as marquee-scroll) */
-@keyframes testimonial-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-25%, 0, 0); }
-}
-
-/* Reduced-motion: disable carousel animation */
+/* Reduced-motion: park the marquee (no auto-scroll) */
 @media (prefers-reduced-motion: reduce) {
-  [style*="testimonial-scroll"],
-  [style*="marquee-scroll"] {
+  [style*="marquee-shift"] {
     animation: none !important;
   }
 }
@@ -531,4 +535,82 @@ body::after {
     animation: none;
     background-position: 0% 50%;
   }
+}
+
+
+/* ============================================================================
+   BLUEPRINT / DRAFTING SYSTEM
+   A restrained engineering-drawing layer in brand teal (#00ffcc / 0,255,204)
+   on the existing dark base — NO new colors. Everything is decorative and
+   pointer-events:none, so zero interactions change. The aim is a clean
+   "engineering paper" feel (even graph grid, drafting labels, a real title
+   block) rather than scattered overlay furniture.
+   ============================================================================ */
+
+:root {
+  --bp-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  --bp-line:        rgba(0, 255, 204, 0.028);  /* fine graph line */
+  --bp-line-strong: rgba(0, 255, 204, 0.055);  /* major grid line */
+  --bp-ink-soft:    rgba(0, 255, 204, 0.32);   /* dim annotations */
+}
+
+/* ---- Global graph-paper grid ----------------------------------------------
+   An even fine 32px grid + major 160px grid fixed over the viewport, gently
+   faded at the very top so it never fights the nav. Subtle, consistent —
+   "felt, not seen". */
+.bp-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 2;               /* sits on the dark base, behind page content (z-10+) */
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--bp-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-line) 1px, transparent 1px),
+    linear-gradient(var(--bp-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-line-strong) 1px, transparent 1px);
+  background-size: 32px 32px, 32px 32px, 160px 160px, 160px 160px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 90px);
+          mask-image: linear-gradient(180deg, transparent 0, #000 90px);
+}
+
+/* ---- Section label tick ---------------------------------------------------
+   Turns the small uppercase eyebrow labels into drawing-style callouts. */
+.bp-label::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  margin-right: 9px;
+  vertical-align: middle;
+  background: currentColor;
+  opacity: 0.65;
+}
+
+/* ---- Title block (drafting sheet metadata, used in the footer) ------------ */
+.bp-titleblock {
+  font-family: var(--bp-mono);
+  border: 1px solid rgba(0, 255, 204, 0.16);
+  background:
+    linear-gradient(rgba(0, 255, 204, 0.02), rgba(0, 255, 204, 0.02));
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bp-tb-cell {
+  padding: 10px 14px;
+  border-right: 1px solid rgba(0, 255, 204, 0.12);
+  border-bottom: 1px solid rgba(0, 255, 204, 0.12);
+}
+.bp-tb-cell:last-child { border-right: none; }
+.bp-tb-key {
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bp-ink-soft);
+}
+.bp-tb-val {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(0, 255, 204, 0.78);
+  margin-top: 3px;
+  white-space: nowrap;
 }

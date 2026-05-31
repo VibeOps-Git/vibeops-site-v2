@@ -155,6 +155,15 @@ const advisoryBoard: TeamMember[] = [
     email: "noboru@civil.ubc.ca",
     bio: `Associate Professor of Teaching in Hydrotechnical Engineering at UBC with decades of experience across research, consulting, and teaching CIVL design projects. Nobo guides VibeOps on real project workflows, technical rigor, and how automation can fit cleanly into existing QA processes.`,
   },
+  {
+    name: "Hassan Pardawalla",
+    role: "Advisor · Operations & Scaling",
+    focus: "Culture, frameworks & operational scaling",
+    image: "/team/hassan.jpeg",
+    email: "team@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/hassanpardawalla/",
+    bio: `Operations executive and fractional COO who helps SMBs and Series A/B startups scale with clarity. With an Executive MBA and 20+ years building the systems, culture, and risk frameworks that let companies grow without bleeding out, Hassan advises VibeOps on operational strategy, go-to-market, and the frameworks needed to scale sustainably.`,
+  },
 ];
 
 export default function Team() {
@@ -189,7 +198,7 @@ export default function Team() {
           threshold={0.15}
         >
           <div className="container mx-auto text-center max-w-4xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+            <p className="bp-label text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
               Our Team
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">

@@ -347,6 +347,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="pointer-events-none fixed inset-0 z-[1] bg-gradient-to-b from-[#0a0a0f]/30 via-transparent to-[#0a0a0f]/60" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_top,_transparent_0%,_rgba(10,10,15,0.4)_70%)]" />
 
+      {/* Blueprint drafting grid — subtle global engineering-paper texture */}
+      <div className="bp-grid" aria-hidden="true" />
+
       {/* Navigation */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -633,7 +636,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="border-t border-white/5 mt-12 pt-8 flex flex-col items-center gap-4 text-sm text-gray-500 sm:flex-row sm:justify-between">
+          {/* Drafting title block — sheet metadata, engineering-deliverable styling */}
+          <div className="bp-titleblock mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+            <div className="bp-tb-cell col-span-2 sm:col-span-1 lg:col-span-2">
+              <div className="bp-tb-key">Project</div>
+              <div className="bp-tb-val">VibeOps.ca — Marketing Site</div>
+            </div>
+            <div className="bp-tb-cell">
+              <div className="bp-tb-key">Drawing No.</div>
+              <div className="bp-tb-val">VOPS-001</div>
+            </div>
+            <div className="bp-tb-cell">
+              <div className="bp-tb-key">Rev</div>
+              <div className="bp-tb-val">C</div>
+            </div>
+            <div className="bp-tb-cell">
+              <div className="bp-tb-key">Date</div>
+              <div className="bp-tb-val">{new Date().getFullYear()}</div>
+            </div>
+            <div className="bp-tb-cell">
+              <div className="bp-tb-key">Drawn By</div>
+              <div className="bp-tb-val">VibeOps Eng.</div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/5 mt-8 pt-8 flex flex-col items-center gap-4 text-sm text-gray-500 sm:flex-row sm:justify-between">
             <p className="shrink-0">© {new Date().getFullYear()} VibeOps Technologies Inc.</p>
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
               <Link to="/blog" className="hover:text-[#00ffcc] transition-colors">Blog</Link>

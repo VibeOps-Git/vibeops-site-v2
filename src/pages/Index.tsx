@@ -14,7 +14,7 @@ import {
   FileText, MapPin, Wrench, BarChart3, Check, ArrowRight,
   ArrowUpRight, Download, Camera, ClipboardList, Star,
 } from 'lucide-react';
-import { useRef, useEffect, useState, useCallback, ReactNode } from 'react';
+import { useRef, useEffect, useLayoutEffect, useState, useCallback, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
 import SpaceField from '@/components/SpaceField';
 import { HomepageDeviceStage } from '@/components/homepage/DeviceScene';
@@ -53,7 +53,7 @@ const fadeUp = {
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/70 font-black mb-3">
+    <p className="bp-label text-[10px] uppercase tracking-[0.35em] text-emerald-500/70 font-black mb-3">
       {children}
     </p>
   );
@@ -137,7 +137,11 @@ function TickerItem({ t }: { t: typeof TICKER_ITEMS[number] }) {
     <span className="inline-flex items-center gap-4 px-8">
       {t.type === 'logo'
         ? <a href={t.url} target="_blank" rel="noopener noreferrer" aria-label={t.alt}>
-            <img src={t.src} alt={t.alt} className="h-8 w-auto max-w-[110px] object-contain opacity-55 hover:opacity-85 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
+            {/* eager + decoding=sync: all 4 marquee copies must resolve to the
+                same width at the same time, or the -25% loop point drifts and
+                the ticker visibly jumps on reset. Lazy-loading the off-screen
+                copies was the cause of that jump. */}
+            <img src={t.src} alt={t.alt} className="h-8 w-auto max-w-[110px] object-contain opacity-55 hover:opacity-85 transition-opacity duration-300 grayscale brightness-150" loading="eager" decoding="sync" />
           </a>
         : <a href={t.url} target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-[0.22em] text-white/45 hover:text-white/75 transition-colors duration-200 font-semibold whitespace-nowrap">{t.label}</a>
       }
@@ -146,32 +150,89 @@ function TickerItem({ t }: { t: typeof TICKER_ITEMS[number] }) {
   );
 }
 
-function InfiniteMarquee({ speed = 32 }: { speed?: number }) {
-  const set = (
-    <span className="inline-flex items-center shrink-0">
-      {TICKER_ITEMS.map((t, i) => <TickerItem key={i} t={t} />)}
-    </span>
-  );
+// ─── Seamless marquee ─────────────────────────────────────────────────────────
+// Measures ONE content group + the container, then renders enough identical
+// groups to always overflow the viewport and translates by exactly one group
+// width (in px, via the --mq-shift custom property). Because the shift equals an
+// integer number of repeating units, the loop is pixel-perfect at ANY width and
+// never jumps on reset. It re-measures on resize AND once web-fonts settle
+// (ResizeObserver on the group) — late-loading assets changing the group width
+// was exactly what made the old fixed-percentage marquees jump.
+function Marquee({
+  children,
+  pxPerSec = 38,
+  className = '',
+}: {
+  children: ReactNode;
+  pxPerSec?: number;
+  className?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const [groupW, setGroupW] = useState(0);
+  const [groups, setGroups] = useState(2);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const c = containerRef.current;
+      const g = groupRef.current;
+      if (!c || !g) return;
+      const gw = g.getBoundingClientRect().width;
+      const cw = c.getBoundingClientRect().width;
+      if (gw < 1) return;
+      setGroupW(gw);
+      // After a one-group shift, the remaining (groups - 1) groups must still
+      // cover the viewport. Render ceil(viewport / group) + 2 for headroom.
+      setGroups(Math.max(2, Math.ceil(cw / gw) + 2));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (containerRef.current) ro.observe(containerRef.current);
+    if (groupRef.current) ro.observe(groupRef.current);
+    const fonts = (document as unknown as { fonts?: { ready?: Promise<unknown> } }).fonts;
+    fonts?.ready?.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [children]);
+
+  const dur = groupW > 0 ? groupW / pxPerSec : 0;
+
   return (
-    // isolation:isolate + transform:translateZ(0) creates a new GPU compositing
-    // layer that's painted independently of the fixed overlay's bottom changes.
-    // This stops mobile viewport-resize repaints (address bar show/hide) from
-    // jittering the marquee animation.
+    // isolation:isolate + translateZ(0) gives the marquee its own GPU layer so
+    // unrelated fixed-overlay/viewport repaints don't jitter the animation.
     <div
-      className="overflow-hidden w-full select-none"
+      ref={containerRef}
+      className={`overflow-hidden w-full select-none ${className}`}
       style={{ isolation: 'isolate', transform: 'translateZ(0)' }}
     >
       <div
-        className="inline-flex whitespace-nowrap"
+        className="flex w-max flex-nowrap"
         style={{
-          animation: `marquee-scroll ${speed}s linear infinite`,
+          animation: dur ? `marquee-shift ${dur}s linear infinite` : undefined,
+          ['--mq-shift' as string]: groupW ? `-${groupW}px` : '-50%',
           willChange: 'transform',
           backfaceVisibility: 'hidden',
         }}
       >
-        {set}{set}{set}{set}
+        {Array.from({ length: groups }).map((_, i) => (
+          <div
+            key={i}
+            ref={i === 0 ? groupRef : undefined}
+            aria-hidden={i > 0}
+            className="flex flex-nowrap shrink-0"
+          >
+            {children}
+          </div>
+        ))}
       </div>
     </div>
+  );
+}
+
+function InfiniteMarquee({ speed: _speed }: { speed?: number }) {
+  return (
+    <Marquee pxPerSec={38}>
+      {TICKER_ITEMS.map((t, i) => <TickerItem key={i} t={t} />)}
+    </Marquee>
   );
 }
 
@@ -618,18 +679,6 @@ function HeroSection() {
 
                 {/* LEFT - text + CTAs */}
                 <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
-                  <motion.div variants={fadeUp} className="flex items-center gap-2">
-                    <a href="https://reportly.ca" target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-400/20 bg-white/[0.03] backdrop-blur-md hover:border-emerald-400/35 transition-colors duration-300">
-                      <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-50" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                      </span>
-                      <span className="text-[10px] font-semibold text-emerald-300 uppercase tracking-[0.28em]">Reportly</span>
-                      <span className="text-[10px] text-white/30">Early Access</span>
-                    </a>
-                  </motion.div>
-
                   <motion.h1 variants={fadeUp} className="font-black text-white leading-[1.03] tracking-[-0.04em]"
                     style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
                     Building-code intelligence and reporting software{' '}
@@ -1496,21 +1545,14 @@ const TESTIMONIALS = [
 ];
 
 function TestimonialsSection() {
-  // 4 copies, keyframe translates -25% (one copy width, exact — matches marquee-scroll pattern)
-  const items = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS];
-  const animDur = typeof window !== 'undefined' && window.innerWidth < 1024 ? '13s' : '26s';
   return (
     <section className="relative z-20 bg-[#060b14] py-10 overflow-hidden border-t border-white/6">
       <p className="text-center text-[10px] uppercase tracking-[0.3em] text-white/25 font-semibold mb-6">
         Trusted by founders and engineers.
       </p>
       <div className="relative">
-        {/* Reduced-motion: static scrollable row */}
-        <div
-          className="flex items-center motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:overflow-x-auto motion-reduce:gap-4"
-          style={{ animation: `testimonial-scroll ${animDur} linear infinite`, willChange: 'transform', backfaceVisibility: 'hidden' }}
-        >
-          {items.map((t, i) => (
+        <Marquee pxPerSec={34}>
+          {TESTIMONIALS.map((t, i) => (
             <div
               key={i}
               className="flex-shrink-0 mx-3 px-5 py-4 rounded-2xl border border-white/8 bg-white/[0.03] flex items-center gap-4"
@@ -1520,7 +1562,8 @@ function TestimonialsSection() {
                 src={t.image}
                 alt={t.name}
                 className="w-14 h-14 rounded-full object-cover border-2 border-white/12 flex-shrink-0"
-                loading="lazy"
+                loading="eager"
+                decoding="sync"
               />
               <div>
                 <div className="flex gap-0.5 mb-1.5">
@@ -1533,9 +1576,9 @@ function TestimonialsSection() {
               </div>
             </div>
           ))}
-        </div>
-        <div className="absolute inset-y-0 left-0 w-24 pointer-events-none" style={{ background: 'linear-gradient(to right, #060b14, transparent)' }} />
-        <div className="absolute inset-y-0 right-0 w-24 pointer-events-none" style={{ background: 'linear-gradient(to left, #060b14, transparent)' }} />
+        </Marquee>
+        <div className="absolute inset-y-0 left-0 w-24 pointer-events-none z-[1]" style={{ background: 'linear-gradient(to right, #060b14, transparent)' }} />
+        <div className="absolute inset-y-0 right-0 w-24 pointer-events-none z-[1]" style={{ background: 'linear-gradient(to left, #060b14, transparent)' }} />
       </div>
     </section>
   );
@@ -1640,7 +1683,6 @@ function ProofSection() {
 const TEAM_MEMBERS = [
   { name: 'Zander Dent',      role: 'CEO',                    image: '/team/zander-optimized.jpg' },
   { name: 'Félix Stewart',    role: 'COO',                    image: '/team/felix-optimized.jpg'  },
-  { name: 'Gabriel Comla',    role: 'CMO',                    image: '/team/gabriel-optimized.jpg'},
   { name: 'Qazi Omair Ahmed', role: 'CTO',                    image: '/team/omair-optimized.jpg'  },
 ];
 
