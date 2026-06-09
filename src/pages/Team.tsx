@@ -40,13 +40,12 @@ const coFounders: TeamMember[] = [
   },
   {
     name: "Félix Stewart",
-    role: "COO",
-    focus: "Strategy & Partnerships",
+    role: "Co-Founder & Co-Owner",
+    focus: "Founding Team",
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/felix-stewart-67007219a/",
-    bio: `Civil engineer running the GTM motion end-to-end.`,
-    owns: ["Customer accounts", "Pilots", "Implementation", "Sales operations"],
+    bio: `Civil engineer and co-founder of VibeOps. Félix helped start the company and holds an ownership stake, but is not part of the day-to-day operating team. Active development is led by Zander and Omair.`,
     experience: [
       "Geotechnical Engineering",
       "Advanced Structural Engineering",
@@ -765,8 +764,8 @@ function TeamBannerImage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="relative w-full px-4 pt-4 md:h-[500px] md:px-0 md:pt-0">
-      <div className="relative aspect-[1280/736] w-full overflow-hidden rounded-[1.25rem] md:h-full md:rounded-none">
+    <div className="relative w-full px-4 pt-4 md:px-0 md:pt-0">
+      <div className="relative aspect-[1280/961] w-full overflow-hidden rounded-[1.25rem] md:rounded-none">
         <img
           src="/team/full-team-pic-placeholder.jpg"
           alt=""

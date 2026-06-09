@@ -29,7 +29,7 @@ const buildBuckets = [
     color: 'red',
     label: 'Code Intelligence',
     title: 'Building Code Lookup',
-    description: 'Enter a project address and get every applicable federal, provincial, and municipal code — pulled from Reportly\'s Canadian building code library and ready to cite in your reports.',
+    description: 'Enter a project address and get every applicable federal, provincial, and municipal code, pulled from Reportly\'s Canadian building code library and ready to cite in your reports.',
     features: [
       'Code lookup by project address, anywhere in Canada',
       'Federal, provincial, and municipal codes resolved together',
@@ -43,7 +43,7 @@ const buildBuckets = [
     color: 'cyan',
     label: 'Custom',
     title: 'Custom Engineering Software',
-    description: 'Purpose-built tools for your firm — dashboards, automators, and report systems that connect directly to your existing documents, templates, and project data.',
+    description: 'Purpose-built tools for your firm: dashboards, automators, and report systems that connect directly to your existing documents, templates, and project data.',
     features: [
       'Dedicated firm-specific workflows and interfaces',
       'Integration with SharePoint, Drive, Bluebeam, or internal databases',
@@ -100,7 +100,7 @@ export default function Services() {
     <>
       <SEO
         title="Custom AE Workflow Software & Consulting"
-        description="VibeOps builds reporting software and custom workflow tools for architecture and engineering firms. Report automation, building code lookup, and firm-specific software — all built around how AE teams actually work."
+        description="VibeOps builds reporting software and custom workflow tools for architecture and engineering firms. Report automation, building code lookup, and firm-specific software, all built around how AE teams actually work."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
@@ -143,7 +143,7 @@ export default function Services() {
                 Three ways we work with AE firms.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed mb-14">
-                Every engagement starts from Reportly — already built, already tested. We configure it around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
+                Every engagement starts from Reportly, already built and tested. We configure it around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
               </p>
             </Anim>
 
@@ -191,10 +191,10 @@ export default function Services() {
                     Not generic AI consulting.
                   </h2>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-lg">
-                    Most AI consultants show up with slide decks and generic automation ideas. VibeOps shows up with Reportly — software already built for engineering report automation, with Canadian building code lookup built in.
+                    Most AI consultants show up with slide decks and generic automation ideas. VibeOps shows up with Reportly, software already built for engineering report automation, with Canadian building code lookup built in.
                   </p>
                   <p className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-lg">
-                    We configure it around your firm's specific workflows. Faster to get running, lower risk, and built specifically for engineering — not adapted from generic business software.
+                    We configure it around your firm's specific workflows. Faster to get running, lower risk, and built specifically for engineering, not adapted from generic business software.
                   </p>
                 </div>
               </Anim>
@@ -247,7 +247,7 @@ export default function Services() {
                 Built for sensitive engineering work.
               </h2>
               <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed mb-14">
-                Many engineering firms can't use public AI tools for active project work — especially when documents involve government clients, confidential reports, or regulated data. VibeOps sets up private versions of Reportly so your sensitive project information never leaves your approved environment.
+                Many engineering firms can't use public AI tools for active project work, especially when documents involve government clients, confidential reports, or regulated data. VibeOps sets up private versions of Reportly so your sensitive project information never leaves your approved environment.
               </p>
             </Anim>
 
@@ -290,7 +290,7 @@ export default function Services() {
                     We configure Reportly around your firm's templates, workflows, and reporting process, set it up in the environment your security team approves, and give you ongoing access through a monthly license.
                   </p>
                   <p className="text-white/45 text-[15px] leading-relaxed max-w-lg">
-                    You're not just paying for consulting hours. You're getting Reportly — configured, set up, and maintained for your firm.
+                    You're not just paying for consulting hours. You're getting Reportly, configured, set up, and maintained for your firm.
                   </p>
                 </div>
               </Anim>

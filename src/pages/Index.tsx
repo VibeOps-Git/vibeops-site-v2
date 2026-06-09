@@ -156,7 +156,7 @@ function TickerItem({ t }: { t: typeof TICKER_ITEMS[number] }) {
 // width (in px, via the --mq-shift custom property). Because the shift equals an
 // integer number of repeating units, the loop is pixel-perfect at ANY width and
 // never jumps on reset. It re-measures on resize AND once web-fonts settle
-// (ResizeObserver on the group) — late-loading assets changing the group width
+// (ResizeObserver on the group) - late-loading assets changing the group width
 // was exactly what made the old fixed-percentage marquees jump.
 function Marquee({
   children,
@@ -544,10 +544,10 @@ function HeroSection() {
     const scrolled = Math.max(0, Math.min(1, -rect.top / maxScroll));
     setScrollProgress(scrolled);
 
-    // Phase is purely position-based — scroll up reverses, scroll down advances.
+    // Phase is purely position-based - scroll up reverses, scroll down advances.
     // Thresholds spread across full scroll range so each device gets ~30% of scroll time.
     let next: DevicePhase = 0;
-    if      (scrolled > 0.72) next = 3; // phone — holds until overlay exits
+    if      (scrolled > 0.72) next = 3; // phone - holds until overlay exits
     else if (scrolled > 0.42) next = 2; // iPad
     else if (scrolled > 0.04) next = 1; // laptop (lid opens 0.04→0.42)
     setPhase(next);
@@ -593,11 +593,11 @@ function HeroSection() {
 
   return (
     <>
-      {/* Scroll spacer — 500vh creates the scroll distance for the device reveal.
+      {/* Scroll spacer - 500vh creates the scroll distance for the device reveal.
           The fixed overlay below paints on top while this spacer is in the viewport. */}
       <div ref={spacerRef} style={{ height: '500vh' }} aria-hidden="true" />
 
-      {/* Reportly — laptop + text, fixed at z-2, vertically centered.
+      {/* Reportly - laptop + text, fixed at z-2, vertically centered.
           Reportly section (z-10) is transparent so this shows through.
           Covered by Three Ways z-20 above and MapleCodes z-30 below. */}
       <div className="pointer-events-none fixed inset-0 flex items-center" style={{ zIndex: 2 }}>
@@ -613,7 +613,7 @@ function HeroSection() {
                 <span className="text-emerald-400">QA-ready drafts.</span>
               </h2>
               <p className="text-white/50 leading-[1.75] mb-6 text-[15px]">
-                Templates, field notes, photos, tables, and code context — first draft in minutes, not days.
+                Templates, field notes, photos, tables, and code context. First draft in minutes, not days.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a href="/reportly" className="glow-pulse inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[14px] font-bold whitespace-nowrap">
@@ -651,7 +651,7 @@ function HeroSection() {
       </div>
 
 
-      {/* Fixed overlay — only mounted while spacer is in view (same as ShowcaseSection).
+      {/* Fixed overlay - only mounted while spacer is in view (same as ShowcaseSection).
           This avoids Lenis / sticky incompatibility entirely. */}
       {isInView && (
         <div
@@ -708,7 +708,7 @@ function HeroSection() {
 
                 </motion.div>
 
-                {/* Devices — full width, phone scaled down on mobile only via inner wrapper */}
+                {/* Devices - full width, phone scaled down on mobile only via inner wrapper */}
                 <div className="relative w-full" style={{ aspectRatio: '16/9.5' }}>
                   <AnimatePresence>
                     {phase === 0 && (
@@ -736,7 +736,7 @@ function HeroSection() {
                   <motion.div className="absolute inset-0 flex items-center justify-center"
                     animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
-                    {/* Phone is portrait — constrain width on mobile so it looks iPhone SE sized */}
+                    {/* Phone is portrait - constrain width on mobile so it looks iPhone SE sized */}
                     <div className="w-[52%] lg:contents">
                       <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
                     </div>
@@ -882,7 +882,7 @@ function ProblemSection() {
 // The Three Ways section lives in normal DOM flow (min-h-screen so it fills the
 // viewport). When it starts to scroll off the top, a fixed overlay activates at
 // z=25 with the FRONT LAYER (Three Ways clone) positioned at translateY=0
-// (matching the DOM section exactly — seamless handoff). The DOM section is
+// (matching the DOM section exactly - seamless handoff). The DOM section is
 // immediately hidden via direct DOM mutation. The front layer then slides upward
 // at 1.2× scroll speed, revealing the laptop + Reportly text behind it.
 // No pop-in. No black gap. No z-index tricks needed.
@@ -903,7 +903,7 @@ function ProductPillarsSection() {
               <span className="text-emerald-400">AE firms move faster.</span>
             </h2>
             <p className="text-[14px] text-white/40 max-w-xs leading-[1.7]">
-              Purpose-built software and firm-specific implementations — built around how AE firms work.
+              Purpose-built software and firm-specific implementations, built around how AE firms work.
             </p>
           </div>
         </div>
@@ -1495,7 +1495,7 @@ function CodeIntelligenceSection() {
               <span style={{ color: '#34d399' }}>grounded to the address.</span>
             </h2>
             <p className="text-white/52 leading-[1.75] mb-7" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.05rem)', maxWidth: '36rem' }}>
-              Canadian construction projects sit under overlapping federal, provincial, and municipal codes. Enter a project address and Reportly identifies every applicable code — across all 10 provinces and 3 territories — and includes the right CSA standards in every draft.
+              Canadian construction projects sit under overlapping federal, provincial, and municipal codes. Enter a project address and Reportly identifies every applicable code, across all 10 provinces and 3 territories, and includes the right CSA standards in every draft.
             </p>
             <div className="space-y-3 mb-8">
               {[
@@ -1682,7 +1682,7 @@ function ProofSection() {
 
 const TEAM_MEMBERS = [
   { name: 'Zander Dent',      role: 'CEO',                    image: '/team/zander-optimized.jpg' },
-  { name: 'Félix Stewart',    role: 'COO',                    image: '/team/felix-optimized.jpg'  },
+  { name: 'Félix Stewart',    role: 'Co-Founder & Co-Owner',  image: '/team/felix-optimized.jpg'  },
   { name: 'Qazi Omair Ahmed', role: 'CTO',                    image: '/team/omair-optimized.jpg'  },
 ];
 
@@ -1719,8 +1719,7 @@ function TeamSection() {
             <img
               src="/team/full-team-pic-optimized.jpg"
               alt="VibeOps founding team"
-              className="w-full object-cover object-center"
-              style={{ maxHeight: 400 }}
+              className="w-full h-auto block"
               loading="lazy"
             />
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />

@@ -10,20 +10,20 @@ import Lenis from "lenis";
 // ─── Cursor canvas effects ────────────────────────────────────────────────────
 // Single canvas handles three layered effects, all in brand teal (#00ffcc):
 //
-// 1. COMET TRAIL — 10-point ring buffer of past cursor positions, each drawn
+// 1. COMET TRAIL - 10-point ring buffer of past cursor positions, each drawn
 //    as a tiny teal dot at decreasing opacity. Creates a ghost-comet quality
 //    that makes the cursor feel physical without being distracting.
 //
-// 2. CLICK RIPPLE — on mousedown a single ring expands slowly from click point.
-//    Max radius 28px, starting alpha 0.08 — barely a whisper. Rewards every
+// 2. CLICK RIPPLE - on mousedown a single ring expands slowly from click point.
+//    Max radius 28px, starting alpha 0.08 - barely a whisper. Rewards every
 //    interaction with tactile feedback without visual noise.
 //
-// 3. SOFT GLOW — a radial gradient under the current cursor position, in brand
+// 3. SOFT GLOW - a radial gradient under the current cursor position, in brand
 //    teal at 0.5% opacity. Separate div so GPU can composite it independently.
 //
 // Everything runs in a single RAF loop. Zero React re-renders after mount.
 
-const TEAL = '0,255,204'; // #00ffcc — brand primary as RGB components
+const TEAL = '0,255,204'; // #00ffcc - brand primary as RGB components
 
 function AmbientCursorGlow() {
   const glowRef  = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ function AmbientCursorGlow() {
     const onMove = (e: MouseEvent) => { cur.x = e.clientX; cur.y = e.clientY; };
     window.addEventListener('mousemove', onMove, { passive: true });
 
-    // Trail ring buffer — 10 past positions
+    // Trail ring buffer - 10 past positions
     const TRAIL = 10;
     const trail: { x: number; y: number }[] = Array.from({ length: TRAIL }, () => ({ x: -200, y: -200 }));
     let trailIdx = 0;
@@ -64,7 +64,7 @@ function AmbientCursorGlow() {
 
     let raf: number;
     const tick = () => {
-      // Lerp toward real cursor — 6% per frame ≈ 200ms lag
+      // Lerp toward real cursor - 6% per frame ≈ 200ms lag
       pos.x += (cur.x - pos.x) * 0.06;
       pos.y += (cur.y - pos.y) * 0.06;
 
@@ -79,7 +79,7 @@ function AmbientCursorGlow() {
 
       ctx.clearRect(0, 0, cv.width, cv.height);
 
-      // Draw comet trail — oldest = most transparent
+      // Draw comet trail - oldest = most transparent
       for (let i = 0; i < TRAIL; i++) {
         const age   = ((trailIdx - i - 1 + TRAIL) % TRAIL); // 0=newest, TRAIL-1=oldest
         const t     = trail[(trailIdx - 1 - i + TRAIL * 2) % TRAIL];
@@ -94,7 +94,7 @@ function AmbientCursorGlow() {
       // Draw ripples
       for (let i = ripples.length - 1; i >= 0; i--) {
         const rp = ripples[i];
-        rp.r += 0.9;          // slow expand — max ~28px over 30 frames
+        rp.r += 0.9;          // slow expand - max ~28px over 30 frames
         rp.a -= 0.003;        // fade over ~27 frames ≈ 450ms
         if (rp.r > 28 || rp.a <= 0) { ripples.splice(i, 1); continue; }
         ctx.beginPath();
@@ -118,7 +118,7 @@ function AmbientCursorGlow() {
 
   return (
     <>
-      {/* Soft glow — 60px teal blob, 0.5% opacity, screen blend */}
+      {/* Soft glow - 60px teal blob, 0.5% opacity, screen blend */}
       <div
         ref={glowRef}
         aria-hidden="true"
@@ -146,7 +146,7 @@ function AmbientCursorGlow() {
 
 // ─── Scroll progress bar ──────────────────────────────────────────────────────
 // A 1.5px teal line at the very top of the viewport that fills as the user
-// scrolls. One of the highest-ROI addictive effects — users subconsciously
+// scrolls. One of the highest-ROI addictive effects - users subconsciously
 // track it and it creates a "just a bit more" scroll impulse.
 // Driven by a scroll event → rAF pattern, never causes layout recalc.
 
@@ -192,7 +192,7 @@ function ScrollProgressBar() {
 // ─── Global ambient orbs ──────────────────────────────────────────────────────
 // Two slow-drifting gradient orbs rendered as a fixed background layer on
 // every page. Uses the same drift-1/2 keyframes defined in index.css.
-// WHY FIXED: scroll position doesn't matter — they always fill the viewport,
+// WHY FIXED: scroll position doesn't matter - they always fill the viewport,
 // creating a consistent atmospheric depth on every page without needing to
 // touch individual page components.
 
@@ -331,13 +331,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white overflow-x-clip">
-      {/* Teal scroll progress bar — fills as user reads down the page */}
+      {/* Teal scroll progress bar - fills as user reads down the page */}
       <ScrollProgressBar />
 
-      {/* Slowly drifting gradient orbs — consistent atmosphere on every page */}
+      {/* Slowly drifting gradient orbs - consistent atmosphere on every page */}
       <GlobalAmbientOrbs />
 
-      {/* Cursor trail, soft glow, click ripple — all in brand teal */}
+      {/* Cursor trail, soft glow, click ripple - all in brand teal */}
       <AmbientCursorGlow />
 
       {/* Global animated background */}
@@ -347,7 +347,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="pointer-events-none fixed inset-0 z-[1] bg-gradient-to-b from-[#0a0a0f]/30 via-transparent to-[#0a0a0f]/60" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(ellipse_at_top,_transparent_0%,_rgba(10,10,15,0.4)_70%)]" />
 
-      {/* Blueprint drafting grid — subtle global engineering-paper texture */}
+      {/* Blueprint drafting grid - subtle global engineering-paper texture */}
       <div className="bp-grid" aria-hidden="true" />
 
       {/* Navigation */}
@@ -636,11 +636,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          {/* Drafting title block — sheet metadata, engineering-deliverable styling */}
+          {/* Drafting title block - sheet metadata, engineering-deliverable styling */}
           <div className="bp-titleblock mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
             <div className="bp-tb-cell col-span-2 sm:col-span-1 lg:col-span-2">
               <div className="bp-tb-key">Project</div>
-              <div className="bp-tb-val">VibeOps.ca — Marketing Site</div>
+              <div className="bp-tb-val">VibeOps.ca - Marketing Site</div>
             </div>
             <div className="bp-tb-cell">
               <div className="bp-tb-key">Drawing No.</div>

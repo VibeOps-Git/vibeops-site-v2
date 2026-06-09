@@ -76,7 +76,7 @@ export function DownloadSection() {
               <span className="text-[#00ffcc]">Desktop</span>
             </h2>
             <p className="text-gray-400 max-w-xl mx-auto">
-              The full Reportly workflow in a native macOS app — with native file
+              The full Reportly workflow in a native macOS app, with native file
               dialogs, drag-and-drop uploads, keyboard shortcuts, and one-click
               export to Word or PDF.
             </p>
@@ -84,7 +84,7 @@ export function DownloadSection() {
 
           {/* Platform cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-            {/* macOS Apple Silicon — primary */}
+            {/* macOS Apple Silicon - primary */}
             <div className="md:col-span-2 relative p-6 rounded-2xl bg-[rgba(10,10,20,0.8)] border border-[#00ffcc]/20 flex flex-col gap-4">
               <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/30 to-transparent" />
 
@@ -104,8 +104,8 @@ export function DownloadSection() {
               </div>
 
               <div className="text-sm text-gray-400 leading-relaxed">
-                Requires macOS 12 Monterey or later. Loads your Reportly account
-                — same login, same reports, native window.
+                Requires macOS 12 Monterey or later. Loads your Reportly account,
+                same login, same reports, native window.
               </div>
 
               {available && macPrimary?.path ? (

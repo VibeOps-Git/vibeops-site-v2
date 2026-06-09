@@ -316,7 +316,7 @@ function PhoneShell({ videoSrc, children }: { videoSrc?: string; children?: Reac
               : <AutoVideo src={videoSrc!} className="h-full w-full object-cover" />
             }
 
-            {/* Dynamic Island — real iPhone 15 Pro: 270px wide × 37px tall on 1179×2556.
+            {/* Dynamic Island - real iPhone 15 Pro: 270px wide × 37px tall on 1179×2556.
                 Width = 23% of screen, height ≈ 1.45% of screen height.
                 We use 1.8% for slight readability bump. */}
             <div

@@ -16,7 +16,7 @@ interface Particle {
 }
 
 // embedded=true: renders as absolute (fills parent) instead of fixed (fills viewport).
-// Use inside sections — the global fixed canvas is invisible there because
+// Use inside sections - the global fixed canvas is invisible there because
 // <main z-10> creates a stacking context above the fixed SpaceField at z-0.
 export default function SpaceField({ embedded = false }: { embedded?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

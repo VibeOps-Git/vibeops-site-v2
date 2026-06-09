@@ -101,7 +101,7 @@
     @apply bg-background text-foreground antialiased;
   }
 
-  /* Engineering/industrial display face for headings — shifts the whole feel
+  /* Engineering/industrial display face for headings - shifts the whole feel
      from generic tech toward technical/construction without touching colors.
      Saira is a near-normal-width grotesque, so it swaps in with minimal reflow. */
   h1, h2, h3, .font-display {
@@ -326,7 +326,7 @@ html {
   scrollbar-color: rgba(0, 255, 204, 0.3) rgba(0, 0, 0, 0.2);
 }
 
-/* Seamless marquee — translates by exactly one measured group width (in px,
+/* Seamless marquee - translates by exactly one measured group width (in px,
    supplied via the --mq-shift custom property by the <Marquee> component) so
    the loop is pixel-perfect at any viewport width and never jumps on reset.
    translate3d forces GPU compositing for jank-free scroll. */
@@ -462,11 +462,11 @@ body::after {
     rgba(255, 255, 255, 0.05) 50%,
     transparent 65%
   );
-  /* Start parked off the left edge — only animates on hover */
+  /* Start parked off the left edge - only animates on hover */
   transform: translateX(-100%);
   pointer-events: none;
   z-index: 1;
-  /* No ambient animation — hover-only so it never bleeds to adjacent cards */
+  /* No ambient animation - hover-only so it never bleeds to adjacent cards */
 }
 
 /* Trigger a single sweep when the card is hovered.
@@ -541,7 +541,7 @@ body::after {
 /* ============================================================================
    BLUEPRINT / DRAFTING SYSTEM
    A restrained engineering-drawing layer in brand teal (#00ffcc / 0,255,204)
-   on the existing dark base — NO new colors. Everything is decorative and
+   on the existing dark base - NO new colors. Everything is decorative and
    pointer-events:none, so zero interactions change. The aim is a clean
    "engineering paper" feel (even graph grid, drafting labels, a real title
    block) rather than scattered overlay furniture.
@@ -556,7 +556,7 @@ body::after {
 
 /* ---- Global graph-paper grid ----------------------------------------------
    An even fine 32px grid + major 160px grid fixed over the viewport, gently
-   faded at the very top so it never fights the nav. Subtle, consistent —
+   faded at the very top so it never fights the nav. Subtle, consistent -
    "felt, not seen". */
 .bp-grid {
   position: fixed;
