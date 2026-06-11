@@ -95,27 +95,6 @@ Best,
 [Phone]`,
   },
   {
-    label: "Marketing & Storytelling",
-    person: "Gabriel Comla",
-    email: "gabriel@vibeops.ca",
-    blurb:
-      "Content, storytelling, case studies, and how we talk about real engineering outcomes.",
-    subject: "VibeOps | Marketing / Storytelling",
-    body: `Hi Gabe,
-
-Reaching out about marketing / storytelling.
-
-Context:
-- What we're working on together or thinking about:
-- Audience:
-- Any links / assets:
-
-Thanks,
-[Your Name]
-[Role]
-[Company]`,
-  },
-  {
     label: "Contact the Team",
     person: "VibeOps Team",
     email: "team@vibeops.ca",

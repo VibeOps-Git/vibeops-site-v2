@@ -10,12 +10,13 @@ import { VibeCard } from "../components/ui/VibeCard";
 type TeamMember = {
   name: string;
   role: string;
-  focus: string;
+  focus?: string;
   image: string;
   email: string;
-  bio: string;
+  bio?: string;
   linkedin?: string;
   headline?: string;
+  hideContact?: boolean;
   owns?: string[];
   experience?: string[];
   previouslyAt?: string[];
@@ -70,30 +71,27 @@ const coFounders: TeamMember[] = [
   },
   {
     name: "Gabriel Comla",
-    role: "CMO",
-    focus: "Storytelling for Engineers",
+    role: "Co-Founder",
     image: "/team/gabriel-optimized.jpg",
     email: "gabriel@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/gabrielcomla/",
-    bio: `Gabe makes sure the story stays grounded in reality: engineers, projects, and outcomes. He helps communicate what VibeOps actually does for firms, less formatting, fewer errors, and more time spent on real engineering.`,
+    hideContact: true,
   },
   {
     name: "Hrudai Rajesh",
-    role: "Implementation & Delivery",
-    focus: "Implementation & Delivery",
+    role: "Co-Founder",
     image: "/team/hrudai-optimized.jpg",
     email: "hrudai@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/hrudai-rajesh/",
-    bio: `Hrudai helped coordinate delivery, timelines, and implementation during the first year so firms could adopt automation without disrupting active projects. From onboarding templates to rollout planning, he helped make early changes more controlled, traceable, and predictable.`,
+    hideContact: true,
   },
   {
     name: "Eric Balanecki",
     role: "Co-Founder",
-    focus: "Architecture & Automation Engine",
     image: "/team/eric-optimized.jpg",
     email: "eric@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/eric-balanecki/",
-    bio: `Eric built the template parsing and document generation stack for Reportly and kept it stable across template changes, file versions, and production runs.`,
+    hideContact: true,
   },
 ];
 
@@ -117,22 +115,13 @@ const contributors: TeamMember[] = [
     bio: `Edmund supports VibeOps’ media production and helps turn technical work into clear, compelling visuals and campaigns. He contributes to promotional content, demos, and brand storytelling that helps communicate what we’re building.`,
   },
   {
-    name: "Diego Boilley",
-    role: "Contributor · Sales & Marketing",
-    focus: "Business Development & Industry Outreach",
-    image: "/team/diego-optimized.png",
+    name: "Olivia Butkus",
+    role: "Contributor · Marketing Associate",
+    focus: "Social Media, Marketing & Community",
+    image: "/team/olivia-optimized.jpg",
     email: "team@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/diego-boilley-2b269728b/",
-    bio: `Diego supports VibeOps’ growth by helping connect our engineering automation tools with the firms that need them most. With a background in civil engineering and hands-on construction experience, he contributes to outreach, proposal development, and customer discovery.`,
-  },
-  {
-    name: "Ahnaf Chowdhury",
-    role: "Contributor · Marketing Content",
-    focus: "Content Creation & Campaign Support",
-    image: "/team/ahnaf.jpeg",
-    email: "team@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/ahnafchowdhury107/",
-    bio: `Ahnaf supports VibeOps’ marketing efforts by helping create and refine content that communicates complex engineering software in a clear and engaging way. He contributes to campaign development, social media content, and messaging that helps translate what we’re building into material engineers and industry partners can quickly understand.`,
+    linkedin: "https://www.linkedin.com/in/olivia-butkus-712489310/",
+    bio: `Olivia is a Marketing Associate at VibeOps, where she supports social media, marketing, and community engagement initiatives. As an Industrial Engineering student at the University of Wisconsin-Madison, she enjoys combining creativity with problem-solving to help build meaningful connections and contribute to the company’s growth.`,
   },
 ];
 
@@ -572,15 +561,21 @@ function TeamCard({
       <h3 className="text-lg font-semibold text-white">{member.name}</h3>
       <p className="text-gray-400 mt-1 text-sm font-medium">{member.role}</p>
 
-      <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-2">
-        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
-          {member.focus}
-        </p>
-      </div>
+      {member.focus && (
+        <div className="inline-block px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20 mt-2">
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+            {member.focus}
+          </p>
+        </div>
+      )}
 
-      <p className="text-sm text-gray-300 mt-4 flex-1 leading-relaxed">
-        {member.bio}
-      </p>
+      {member.bio ? (
+        <p className="text-sm text-gray-300 mt-4 flex-1 leading-relaxed">
+          {member.bio}
+        </p>
+      ) : (
+        <div className="flex-1" />
+      )}
 
       {(member.owns || member.experience || member.previouslyAt) && (
         <div className="mt-5 w-full text-left space-y-5">
@@ -625,12 +620,14 @@ function TeamCard({
           </button>
         )}
 
-        <Link
-          to={contactHref}
-          className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
-        >
-          Get in Touch
-        </Link>
+        {!member.hideContact && (
+          <Link
+            to={contactHref}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm font-semibold text-white transition-all duration-300 hover:border-[#00ffcc]/40 hover:bg-[#00ffcc]/10 hover:text-[#00ffcc]"
+          >
+            Get in Touch
+          </Link>
+        )}
 
         {member.linkedin && (
           <a
