@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useRef, useEffect, useLayoutEffect, useState, useCallback, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
-import { HomepageDeviceStage, SectionLaptop } from '@/components/homepage/DeviceScene';
+import { HomepageDeviceStage, SectionLaptop, LaptopShell, TabletShell, PhoneShell } from '@/components/homepage/DeviceScene';
 import { VibeOpsShowcaseScreen } from '@/components/homepage/VibeOpsShowcase';
 import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
 
@@ -504,10 +504,31 @@ function HeroSection() {
     return (
       <section className="px-6 pt-24 pb-2">
         {heroText}
-        {/* One clean laptop at its natural height (no aspect-box overflow, so it
-            can't bleed over the text above it). */}
-        <div className="w-full max-w-[340px] mx-auto mt-8" data-testid="hero-device-stage">
-          <SectionLaptop><VibeOpsShowcaseScreen /></SectionLaptop>
+        {/* Cycling devices at their NATURAL height (no aspect-box overflow). The
+            box is sized to the tallest (portrait phone); laptop/tablet center in
+            it. Phone is comfortably sized so its screen content stays legible. */}
+        <div className="relative w-full max-w-[320px] mx-auto mt-8 h-[400px]" data-testid="hero-device-stage">
+          <motion.div className="absolute inset-0 flex items-center justify-center"
+            animate={{ opacity: phase === 1 ? 1 : 0 }} transition={{ duration: 0.5 }}
+            style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
+            <div className="w-full max-w-[300px]">
+              <LaptopShell reducedMotion={Boolean(rm)} skipEntrance><VibeOpsShowcaseScreen /></LaptopShell>
+            </div>
+          </motion.div>
+          <motion.div className="absolute inset-0 flex items-center justify-center"
+            animate={{ opacity: phase === 2 ? 1 : 0 }} transition={{ duration: 0.5 }}
+            style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
+            <div className="w-full max-w-[290px]">
+              <TabletShell><VibeOpsShowcaseScreen /></TabletShell>
+            </div>
+          </motion.div>
+          <motion.div className="absolute inset-0 flex items-center justify-center"
+            animate={{ opacity: phase === 3 ? 1 : 0 }} transition={{ duration: 0.5 }}
+            style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
+            <div className="w-[186px]">
+              <PhoneShell><VibeOpsShowcaseScreen /></PhoneShell>
+            </div>
+          </motion.div>
         </div>
         <div className="mt-8 -mx-6">
           {tickerBar}

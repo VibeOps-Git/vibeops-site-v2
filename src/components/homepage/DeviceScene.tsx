@@ -130,7 +130,7 @@ export function LaptopShell({
 // 2. iPad - clean modern rounded frame
 // ---------------------------------------------------------------------------
 
-function TabletShell({ videoSrc, children }: { videoSrc?: string; children?: ReactNode }) {
+export function TabletShell({ videoSrc, children }: { videoSrc?: string; children?: ReactNode }) {
   return (
     <div className="w-full relative">
       {/* Modern iPad: clean rounded aluminium frame, thin uniform bezel */}
@@ -158,7 +158,7 @@ function TabletShell({ videoSrc, children }: { videoSrc?: string; children?: Rea
 // 3. iPhone in UAG PATHFINDER-STYLE RUGGED CASE - Landscape
 // ---------------------------------------------------------------------------
 
-function PhoneShell({ videoSrc, children }: { videoSrc?: string; children?: ReactNode }) {
+export function PhoneShell({ videoSrc, children }: { videoSrc?: string; children?: ReactNode }) {
   return (
     <div className="w-full relative">
       {/* Modern iPhone: clean rounded titanium frame, thin uniform bezel */}
