@@ -5,13 +5,13 @@ export const SCENES: Scene[] = [
   {
     id: "templates",
     title: "Import Templates",
-    description: "Upload your existing Word and Excel report templates. Reportly parses sections, tables, styles, and formatting rules - no redesign needed. Your firm keeps its look.",
+    description: "Upload your existing Word report template. Reportly parses sections, tables, styles, and formatting rules - no redesign needed. Your firm keeps its look.",
     icon: FileText,
   },
   {
     id: "project-data",
     title: "Add Project Data",
-    description: "Feed in field photos, GPS-tagged images, inspection measurements, site notes, and spreadsheet data. Reportly ingests everything and maps it to your template sections automatically.",
+    description: "Feed in your project data as PDF, Excel, or Word, plus field photos, GPS-tagged images, and inspection measurements. Reportly ingests everything and maps it to your template sections automatically.",
     icon: Database,
   },
   {
@@ -23,7 +23,7 @@ export const SCENES: Scene[] = [
   {
     id: "generate",
     title: "Generate & Edit with Civil AI",
-    description: "Civil-engineering-specific AI generates your first draft with embedded photos, code citations, structured sections, and an executive summary - in under 3 minutes. Engineers stay in the driver's seat.",
+    description: "Civil-engineering-specific AI generates your first draft with embedded photos, code citations, structured sections, and an executive summary. Engineers stay in the driver's seat.",
     icon: Sparkles,
   },
   {

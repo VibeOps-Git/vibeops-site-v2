@@ -34,13 +34,7 @@ const problems = [
 
 export function ProblemSection() {
   return (
-    <section className="relative py-24">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-red-950/5 to-[#0a0a0f]" />
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-red-500/10 rounded-full blur-[120px] animate-pulse" />
-      </div>
-
+    <section className="relative py-24 bg-background">
       <div className="container mx-auto max-w-6xl relative z-10 px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Code chaos visualization */}
@@ -55,18 +49,16 @@ export function ProblemSection() {
           >
             <div className="relative">
               <div className="relative aspect-[4/3] max-w-lg mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 via-orange-500/10 to-transparent rounded-3xl blur-2xl" />
-
-                <div className="relative h-full rounded-2xl bg-[rgba(10,10,20,0.8)] border border-red-500/20 backdrop-blur-sm overflow-hidden">
+                <div className="relative h-full rounded-2xl bg-card border border-border shadow-sm overflow-hidden">
                   {/* Top bar mimicking a browser */}
-                  <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
+                  <div className="flex items-center gap-2 px-4 py-3 bg-secondary border-b border-border">
                     <div className="flex gap-1.5">
                       <div className="w-3 h-3 rounded-full bg-red-500/60" />
                       <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
                       <div className="w-3 h-3 rounded-full bg-green-500/60" />
                     </div>
                     <div className="flex-1 text-center">
-                      <span className="text-xs text-gray-500 font-mono">
+                      <span className="text-xs text-muted-foreground font-mono">
                         gov.bc.ca/building-codes → 404
                       </span>
                     </div>
@@ -91,16 +83,16 @@ export function ProblemSection() {
                     <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2">
                         <div className="h-4 w-6 bg-red-500/30 rounded animate-pulse" />
-                        <div className="h-4 flex-1 bg-white/10 rounded" />
+                        <div className="h-4 flex-1 bg-muted rounded" />
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="h-4 w-6 bg-white/10 rounded" />
-                        <div className="h-4 flex-1 bg-white/5 rounded" />
+                        <div className="h-4 w-6 bg-muted rounded" />
+                        <div className="h-4 flex-1 bg-secondary rounded" />
                         <div className="h-4 w-16 bg-yellow-500/30 rounded" />
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="h-4 w-6 bg-white/10 rounded" />
-                        <div className="h-4 flex-1 bg-white/5 rounded" />
+                        <div className="h-4 w-6 bg-muted rounded" />
+                        <div className="h-4 flex-1 bg-secondary rounded" />
                       </div>
                     </div>
 
@@ -115,7 +107,7 @@ export function ProblemSection() {
                                 ? "bg-red-500/20 border border-red-500/40 text-red-400"
                                 : i === 0
                                   ? "bg-yellow-500/10 border border-yellow-500/30 text-yellow-400"
-                                  : "bg-white/5 border border-white/10 text-gray-500"
+                                  : "bg-secondary border border-border text-muted-foreground"
                             }`}
                           >
                             {label}
@@ -133,15 +125,15 @@ export function ProblemSection() {
                 </div>
 
                 {/* Floating badges */}
-                <div className="absolute -top-2 -right-2 px-2 py-1 rounded bg-red-500 text-white text-xs font-bold shadow-lg shadow-red-500/30 animate-bounce">
+                <div className="absolute -top-2 -right-2 px-2 py-1 rounded bg-red-500 text-white text-xs font-bold animate-bounce">
                   OUTDATED
                 </div>
-                <div className="absolute top-1/3 -left-3 px-2 py-1 rounded bg-yellow-500 text-black text-xs font-bold shadow-lg shadow-yellow-500/30">
+                <div className="absolute top-1/3 -left-3 px-2 py-1 rounded bg-yellow-500 text-black text-xs font-bold">
                   WHICH EDITION?
                 </div>
               </div>
 
-              <p className="text-center text-gray-500 text-sm mt-6">
+              <p className="text-center text-muted-foreground text-sm mt-6">
                 Every project starts with this headache.
               </p>
             </div>
@@ -159,18 +151,16 @@ export function ProblemSection() {
               threshold={0.2}
             >
               <div className="text-left">
-                <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-red-400 border border-red-500/30 bg-red-500/5 mb-4">
+                <span className="inline-block text-xs uppercase tracking-[0.2em] text-red-400 mb-4">
                   The Problem
                 </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                  Code Research is{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
-                    a Maze
-                  </span>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+                  Code research is{" "}
+                  <span className="text-[#d92f37]">a maze</span>
                 </h2>
-                <p className="text-gray-400 mb-8">
-                  Canada has <span className="text-white font-semibold">three layers</span> of building regulations
-                  that vary by location, project type, and construction phase.
+                <p className="text-muted-foreground mb-8">
+                  Canada has <span className="text-foreground font-semibold">three layers</span> of building rules
+                  that change by location, project type, and construction phase.
                 </p>
               </div>
             </AnimatedContent>
@@ -188,23 +178,21 @@ export function ProblemSection() {
                   threshold={0.2}
                   delay={0.1 + index * 0.1}
                 >
-                  <div className="group relative flex gap-4 p-4 rounded-xl bg-gradient-to-r from-[rgba(10,10,20,0.6)] to-[rgba(10,10,20,0.4)] border border-white/5 hover:border-red-500/30 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-orange-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
-
-                    <div className="relative flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/10 border border-red-500/20 flex items-center justify-center">
-                      <problem.icon className="w-6 h-6 text-red-400" />
+                  <div className="group relative flex gap-4 p-4 rounded-2xl bg-card border border-border shadow-sm hover:border-[#d92f37]/40 transition-colors duration-300">
+                    <div className="relative flex-shrink-0 w-12 h-12 rounded-xl bg-[#d92f37]/10 border border-[#d92f37]/20 flex items-center justify-center">
+                      <problem.icon className="w-6 h-6 text-[#d92f37]" />
                     </div>
 
                     <div className="relative flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 className="text-white font-semibold">
+                        <h3 className="text-foreground font-semibold">
                           {problem.title}
                         </h3>
-                        <span className="text-xs font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20 whitespace-nowrap">
+                        <span className="text-xs font-bold text-[#d92f37] whitespace-nowrap">
                           {problem.stat}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-400 leading-relaxed">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {problem.description}
                       </p>
                     </div>
@@ -223,11 +211,11 @@ export function ProblemSection() {
               threshold={0.2}
               delay={0.4}
             >
-              <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-red-500/10 via-orange-500/5 to-transparent border border-red-500/20">
-                <p className="text-sm text-gray-300">
-                  <span className="text-2xl font-bold text-white">4+ hours</span>
-                  <span className="text-gray-400 ml-2">
-                    spent per project just identifying applicable codes and standards
+              <div className="mt-6 p-4 rounded-2xl bg-card border border-[#d92f37]/20 shadow-sm">
+                <p className="text-sm text-muted-foreground">
+                  <span className="text-2xl font-bold text-foreground">4+ hours</span>
+                  <span className="text-muted-foreground ml-2">
+                    gone per project, just figuring out which codes and standards apply
                   </span>
                 </p>
               </div>

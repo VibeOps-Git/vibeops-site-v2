@@ -1,0 +1,10 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const c = await b.newContext({ colorScheme:"light", viewport:{width:1366,height:760}});
+const p = await c.newPage();
+await p.goto("http://localhost:8080/", { waitUntil:"load", timeout:45000 });
+await p.evaluate(async()=>{ for(let y=0;y<8000;y+=500){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,110));} });
+await p.evaluate(()=>{ const el=[...document.querySelectorAll('h2')].find(h=>h.textContent.includes('We build tools around')); if(el) el.scrollIntoView({block:'center'}); });
+await new Promise(r=>setTimeout(r,600));
+await p.screenshot({ path:"/tmp/shots/rollouts.png" });
+console.log("ok"); await b.close();

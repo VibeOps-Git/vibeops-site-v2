@@ -3,92 +3,90 @@
 @tailwind utilities;
 
 /* -------------------------------------------------------------------------- */
-/* Core design tokens - dark by default with neon teal accent                 */
+/* Design tokens — light is the default (:root), dark via .dark               */
+/* next-themes toggles the .dark class on <html>; defaults to system.         */
+/* Palette: near-monochrome neutrals + one restrained teal accent.            */
 /* -------------------------------------------------------------------------- */
 
 @layer base {
   :root {
-    /* Dark slate base */
-    --background: 222 47% 7%;
-    --foreground: 213 31% 96%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 9%;
 
-    --card: 222 40% 11%;
-    --card-foreground: 213 31% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 9%;
 
-    --popover: 222 40% 11%;
-    --popover-foreground: 213 31% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 9%;
 
-    /* #00ffcc ≈ 168 100% 50% */
-    --primary: 168 100% 50%;
-    --primary-foreground: 222 47% 8%;
+    --primary: 172 64% 36%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 213 31% 96%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 12%;
 
-    --muted: 222 23% 18%;
-    --muted-foreground: 215 20% 70%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 44%;
 
-    --accent: 168 100% 50%;
-    --accent-foreground: 222 47% 8%;
+    --accent: 172 64% 36%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 46%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 32% 20%;
-    --input: 222 32% 20%;
-    --ring: 168 100% 50%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 172 64% 36%;
 
     --radius: 0.75rem;
 
-    /* Sidebar-ish tokens if you use shadcn layouts */
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 213 31% 96%;
-    --sidebar-primary: 168 100% 50%;
-    --sidebar-primary-foreground: 222 47% 8%;
-    --sidebar-accent: 222 32% 12%;
-    --sidebar-accent-foreground: 213 31% 96%;
-    --sidebar-border: 222 32% 18%;
-    --sidebar-ring: 168 100% 50%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 240 10% 9%;
+    --sidebar-primary: 172 64% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 10% 12%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 172 64% 36%;
   }
 
-  /* Keep .dark in case something explicitly toggles it */
   .dark {
-    --background: 222 47% 7%;
-    --foreground: 213 31% 96%;
+    --background: 240 8% 5%;
+    --foreground: 0 0% 98%;
 
-    --card: 222 40% 11%;
-    --card-foreground: 213 31% 96%;
+    --card: 240 7% 8%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 40% 11%;
-    --popover-foreground: 213 31% 96%;
+    --popover: 240 7% 8%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 168 100% 50%;
-    --primary-foreground: 222 47% 8%;
+    --primary: 168 72% 50%;
+    --primary-foreground: 240 30% 6%;
 
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 213 31% 96%;
+    --secondary: 240 5% 14%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 222 23% 18%;
-    --muted-foreground: 215 20% 70%;
+    --muted: 240 5% 14%;
+    --muted-foreground: 240 5% 64%;
 
-    --accent: 168 100% 50%;
-    --accent-foreground: 222 47% 8%;
+    --accent: 168 72% 50%;
+    --accent-foreground: 240 30% 6%;
 
-    --destructive: 0 72% 46%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 46%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 222 32% 20%;
-    --input: 222 32% 20%;
-    --ring: 168 100% 50%;
+    --border: 240 5% 16%;
+    --input: 240 5% 16%;
+    --ring: 168 72% 50%;
 
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 213 31% 96%;
-    --sidebar-primary: 168 100% 50%;
-    --sidebar-primary-foreground: 222 47% 8%;
-    --sidebar-accent: 222 32% 12%;
-    --sidebar-accent-foreground: 213 31% 96%;
-    --sidebar-border: 222 32% 18%;
-    --sidebar-ring: 168 100% 50%;
+    --sidebar-background: 240 8% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 168 72% 50%;
+    --sidebar-primary-foreground: 240 30% 6%;
+    --sidebar-accent: 240 5% 14%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 5% 16%;
+    --sidebar-ring: 168 72% 50%;
   }
 }
 
@@ -99,14 +97,13 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   }
 
-  /* Engineering/industrial display face for headings - shifts the whole feel
-     from generic tech toward technical/construction without touching colors.
-     Saira is a near-normal-width grotesque, so it swaps in with minimal reflow. */
-  h1, h2, h3, .font-display {
-    font-family: "Saira", "Inter", system-ui, sans-serif;
-    font-feature-settings: "ss01", "cv01";
+  /* One brand typeface across the whole site. Headings just differ by weight. */
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -116,15 +113,15 @@
 
 @layer components {
   .nav-link {
-    @apply relative text-sm font-medium text-foreground/70 
+    @apply relative text-sm font-medium text-foreground/70
            transition-colors duration-200;
   }
 
   .nav-link::after {
     content: "";
-    @apply absolute left-1/2 -bottom-1 h-[2px] w-0 
-           -translate-x-1/2 rounded-full 
-           bg-[hsl(var(--primary))] transition-all duration-200;
+    @apply absolute left-1/2 -bottom-1 h-[2px] w-0
+           -translate-x-1/2 rounded-full
+           bg-primary transition-all duration-200;
   }
 
   .nav-link:hover {
@@ -138,39 +135,32 @@
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-full
            px-6 py-2 text-sm font-semibold
-           bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]
-           shadow-[0_0_24px_rgba(0,255,204,0.45)]
-           hover:shadow-[0_0_32px_rgba(0,255,204,0.8)]
-           hover:translate-y-[-1px]
+           bg-primary text-primary-foreground
+           hover:opacity-90
            transition-all duration-200;
   }
 
   .btn-secondary {
-    /* Dark glass with teal border/text, not teal-on-white */
     @apply inline-flex items-center justify-center rounded-full
            px-6 py-2 text-sm font-semibold
-           border border-[hsla(168,100%,50%,0.5)]
-           bg-[rgba(15,23,42,0.85)]
-           text-[hsl(var(--primary))]
-           backdrop-blur-md
-           hover:bg-[rgba(15,23,42,0.95)]
-           hover:border-[hsla(168,100%,50%,0.85)]
-           transition-all duration-200;
+           border border-border
+           bg-background text-foreground
+           hover:bg-secondary
+           transition-colors duration-200;
   }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center rounded-full
            px-5 py-2 text-sm font-medium
-           border border-border/80
-           bg-[rgba(15,23,42,0.75)]
-           hover:bg-[rgba(15,23,42,0.95)]
+           border border-border
+           bg-transparent
+           hover:bg-secondary
            transition-colors duration-200;
   }
 
   .section-title {
     @apply text-4xl md:text-5xl font-semibold leading-tight mb-4
-           bg-gradient-to-r from-[hsl(var(--primary))] via-emerald-300 to-cyan-300
-           bg-clip-text text-transparent;
+           text-foreground tracking-tight;
   }
 
   .section-subtitle {
@@ -178,21 +168,16 @@
   }
 
   .pill {
-    @apply inline-flex items-center rounded-full border border-border/80
+    @apply inline-flex items-center rounded-full border border-border
            px-3 py-1 text-[0.7rem] font-semibold tracking-[0.18em]
-           uppercase text-muted-foreground bg-[rgba(15,23,42,0.85)]
-           backdrop-blur-md;
+           uppercase text-muted-foreground bg-secondary;
   }
 
-  /* For things like the REPORTLY · VIBEOPS chip on top of the photo */
   .glass-pill {
     @apply inline-flex items-center gap-2 rounded-full
            px-4 py-2 text-xs font-semibold
-           border border-[hsla(168,100%,50%,0.75)]
-           bg-[rgba(15,23,42,0.85)]
-           text-[hsl(var(--primary))]
-           backdrop-blur-xl
-           shadow-[0_0_18px_rgba(0,0,0,0.7)];
+           border border-border
+           bg-secondary text-foreground;
   }
 }
 
@@ -205,36 +190,30 @@
   line-height: 1.7;
 }
 
-/* Headings */
-
 .blog-article h1 {
-  font-size: 1.75rem; /* ~text-2xl */
+  font-size: 1.75rem;
   font-weight: 600;
   margin-top: 0.5rem;
   margin-bottom: 1.25rem;
 }
 
 .blog-article h2 {
-  font-size: 1.5rem; /* ~text-xl */
+  font-size: 1.5rem;
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
 
 .blog-article h3 {
-  font-size: 1.25rem; /* ~text-lg */
+  font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-/* Paragraphs */
-
 .blog-article p {
   margin-bottom: 1rem;
 }
-
-/* Lists */
 
 .blog-article ul,
 .blog-article ol {
@@ -255,8 +234,6 @@
   margin-bottom: 0.25rem;
 }
 
-/* Links */
-
 .blog-article a {
   color: hsl(var(--primary));
   text-decoration: underline;
@@ -264,15 +241,13 @@
 }
 
 .blog-article a:hover {
-  color: hsla(var(--primary), 0.8);
+  opacity: 0.8;
 }
 
-/* Blockquotes */
-
 .blog-article blockquote {
-  border-left: 4px solid hsla(var(--primary), 0.6);
+  border-left: 3px solid hsl(var(--border));
   padding-left: 1rem;
-  font-style: italic;
+  color: hsl(var(--muted-foreground));
   margin: 1rem 0;
 }
 
@@ -282,335 +257,81 @@
   background: transparent !important;
 }
 
-/* Kill horizontal scroll everywhere */
-/* Kill horizontal scroll everywhere & force dark base background */
+/* Token-driven base background (no white flash, works in both themes) */
 html,
 body,
 #root {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-
-  /* This is the important part: a solid dark base that never flashes white */
-  background-color: #020617; /* tailwind slate-950-ish */
+  background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
 
 /* -------------------------------------------------------------------------- */
-/* Custom scrollbar styling                                                    */
+/* Scrollbar — neutral, theme-aware                                            */
 /* -------------------------------------------------------------------------- */
 
-/* Webkit browsers (Chrome, Safari, Edge) */
 html::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 html::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  background: transparent;
 }
 
 html::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 204, 0.3);
+  background: hsl(var(--border));
   border-radius: 4px;
 }
 
 html::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 204, 0.5);
+  background: hsl(var(--muted-foreground));
 }
 
-/* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 204, 0.3) rgba(0, 0, 0, 0.2);
+  scrollbar-color: hsl(var(--border)) transparent;
 }
 
-/* Seamless marquee - translates by exactly one measured group width (in px,
-   supplied via the --mq-shift custom property by the <Marquee> component) so
-   the loop is pixel-perfect at any viewport width and never jumps on reset.
-   translate3d forces GPU compositing for jank-free scroll. */
+/* -------------------------------------------------------------------------- */
+/* Seamless marquee (functional — used by <Marquee>)                          */
+/* -------------------------------------------------------------------------- */
+
 @keyframes marquee-shift {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(var(--mq-shift, -50%), 0, 0); }
 }
 
-/* Reduced-motion: park the marquee (no auto-scroll) */
 @media (prefers-reduced-motion: reduce) {
   [style*="marquee-shift"] {
     animation: none !important;
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Theme toggle — circular reveal via the View Transitions API                */
+/* The new theme wipes in as an expanding circle from the toggle button.      */
+/* -------------------------------------------------------------------------- */
 
-/* ============================================================================
-   AMBIENT ATMOSPHERE
-   Philosophy: effects should be *felt*, not consciously noticed. Every
-   animation here operates at the edge of perception - subliminal motion that
-   makes the page feel alive without competing with actual content.
-   ============================================================================ */
-
-/* ----------------------------------------------------------------------------
-   1. FILM GRAIN OVERLAY
-   WHY: Flat dark screens feel cold and synthetic. A micro-texture overlay
-   borrowed from cinema/photography makes digital surfaces feel tactile and
-   premium. Designers call this "organic warmth." At 2.5% opacity it's
-   invisible on inspection but its absence makes everything feel cheaper.
-   HOW: SVG feTurbulence generates fractal noise. We animate translate on an
-   oversized element to simulate the flickering of analog film grain at ~8fps.
-   GPU compositing is avoided intentionally - the jitter is the feature.
-   ---------------------------------------------------------------------------- */
-body::after {
-  content: '';
-  position: fixed;
-  inset: -10%;
-  width: 120%;
-  height: 120%;
-  z-index: 9998;
-  pointer-events: none;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 180px 180px;
-  animation: grain 0.14s steps(1) infinite;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
-@keyframes grain {
-  0%   { transform: translate(0,    0)   }
-  14%  { transform: translate(-2%,  -3%) }
-  28%  { transform: translate(3%,   1%)  }
-  42%  { transform: translate(-1%,  2%)  }
-  57%  { transform: translate(2%,  -2%)  }
-  71%  { transform: translate(-3%,  1%)  }
-  85%  { transform: translate(1%,   3%)  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::after { animation: none; }
-}
-
-
-/* ----------------------------------------------------------------------------
-   2. AMBIENT ORB DRIFT
-   WHY: Static ambient blobs look like decoration. Giving them slow, looping
-   paths creates the impression of something breathing - an atmosphere rather
-   than a gradient. Asymmetric durations (31s vs 47s) prevent the two orbs
-   from ever syncing, which would create a noticeable visual beat.
-   The translate + scale combo traces a soft oval path that reads as organic.
-   HOW: Three independent keyframe paths with staggered durations.
-   Applied via utility classes so any element can join the system.
-   ---------------------------------------------------------------------------- */
-@keyframes drift-1 {
-  0%   { transform: translate(0,    0)    scale(1);    }
-  25%  { transform: translate(3%,   2%)   scale(1.05); }
-  50%  { transform: translate(-2%,  4%)   scale(0.97); }
-  75%  { transform: translate(4%,  -1%)   scale(1.03); }
-  100% { transform: translate(0,    0)    scale(1);    }
-}
-@keyframes drift-2 {
-  0%   { transform: translate(0,    0)    scale(1);    }
-  33%  { transform: translate(-4%,  3%)   scale(1.07); }
-  66%  { transform: translate(2%,  -3%)   scale(0.95); }
-  100% { transform: translate(0,    0)    scale(1);    }
-}
-@keyframes drift-3 {
-  0%   { transform: translate(0,    0)    scale(1);    }
-  20%  { transform: translate(5%,  -2%)   scale(1.04); }
-  55%  { transform: translate(-3%,  5%)   scale(1.08); }
-  80%  { transform: translate(2%,   1%)   scale(0.98); }
-  100% { transform: translate(0,    0)    scale(1);    }
-}
-
-.ambient-drift-1 { animation: drift-1 31s ease-in-out infinite; }
-.ambient-drift-2 { animation: drift-2 47s ease-in-out infinite; }
-.ambient-drift-3 { animation: drift-3 39s ease-in-out infinite; }
-
-@media (prefers-reduced-motion: reduce) {
-  .ambient-drift-1, .ambient-drift-2, .ambient-drift-3 { animation: none; }
-}
-
-
-/* ----------------------------------------------------------------------------
-   3. CARD SHIMMER SWEEP
-   WHY: Light catching a surface is one of the strongest visual cues for
-   physical presence. A thin highlight that sweeps across cards mimics the
-   reflection you'd see on polished metal, glass, or a printed page.
-   The staggered delays (via :nth-child) ensure cards don't all flash at once,
-   which would look artificial. Instead they sweep at different moments,
-   like ambient light slowly panning across a room.
-   HOW: Pseudo-element with a diagonal gradient, animated translate from
-   -100% to 300% (wider than the card so it fully enters and exits).
-   Requires overflow:hidden on the host element.
-   ---------------------------------------------------------------------------- */
-@keyframes shimmer-sweep {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(300%);  }
-}
-
-.shimmer-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.05) 50%,
-    transparent 65%
-  );
-  /* Start parked off the left edge - only animates on hover */
-  transform: translateX(-100%);
-  pointer-events: none;
+::view-transition-old(root) {
   z-index: 1;
-  /* No ambient animation - hover-only so it never bleeds to adjacent cards */
 }
 
-/* Trigger a single sweep when the card is hovered.
-   `forwards` parks the gradient off the right edge when done,
-   so it resets cleanly on the next hover entry. */
-.shimmer-card:hover::after {
-  animation: shimmer-sweep 0.75s ease-out forwards;
+::view-transition-new(root) {
+  z-index: 9999;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shimmer-card:hover::after { animation: none; }
-}
-
-
-/* ----------------------------------------------------------------------------
-   4. PRIMARY CTA GLOW PULSE
-   WHY: The primary call-to-action competes with everything else on screen.
-   A slow glow pulse that breathes in/out at 3.5s intervals creates
-   subliminal urgency - like a beacon or a heartbeat. Users describe this
-   as the button "wanting to be clicked" without knowing why.
-   The intensity delta is kept intentionally small (shadow spreads by ~10px)
-   so it reads as warmth rather than a blinking alert.
-   HOW: Animates box-shadow between two states using ease-in-out for the
-   smooth sinusoidal breathing effect.
-   ---------------------------------------------------------------------------- */
-@keyframes glow-breathe {
-  0%, 100% {
-    box-shadow: 0 16px 40px rgba(52,211,153,0.20), 0 0 0 0 rgba(52,211,153,0);
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
   }
-  50% {
-    box-shadow: 0 16px 50px rgba(52,211,153,0.32), 0 0 28px 4px rgba(52,211,153,0.10);
-  }
-}
-
-.glow-pulse {
-  animation: glow-breathe 3.5s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .glow-pulse { animation: none; }
-}
-
-
-/* ----------------------------------------------------------------------------
-   5. ANIMATED GRADIENT TEXT
-   WHY: Static gradient text looks good but static. Slowly panning the gradient
-   gives key headings the quality of light moving across a surface - like how
-   a holographic foil shifts as you tilt it. At 7s duration it's imperceptible
-   individually but cumulatively makes the page feel "alive."
-   HOW: background-size: 200% allows us to pan the gradient with
-   background-position animation. Must be paired with bg-clip-text.
-   ---------------------------------------------------------------------------- */
-@keyframes gradient-pan {
-  0%   { background-position: 0%   50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0%   50%; }
-}
-
-.text-gradient-animate {
-  background-size: 200% 200% !important;
-  animation: gradient-pan 7s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .text-gradient-animate {
-    animation: none;
-    background-position: 0% 50%;
-  }
-}
-
-
-/* ============================================================================
-   BLUEPRINT / DRAFTING SYSTEM
-   A restrained engineering-drawing layer in brand teal (#00ffcc / 0,255,204)
-   on the existing dark base - NO new colors. Everything is decorative and
-   pointer-events:none, so zero interactions change. The aim is a clean
-   "engineering paper" feel (even graph grid, drafting labels, a real title
-   block) rather than scattered overlay furniture.
-   ============================================================================ */
-
-:root {
-  --bp-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
-  --bp-line:        rgba(0, 255, 204, 0.028);  /* fine graph line */
-  --bp-line-strong: rgba(0, 255, 204, 0.055);  /* major grid line */
-  --bp-ink-soft:    rgba(0, 255, 204, 0.32);   /* dim annotations */
-}
-
-/* ---- Global graph-paper grid ----------------------------------------------
-   An even fine 32px grid + major 160px grid fixed over the viewport, gently
-   faded at the very top so it never fights the nav. Subtle, consistent -
-   "felt, not seen". */
-.bp-grid {
-  position: fixed;
-  inset: 0;
-  z-index: 2;               /* sits on the dark base, behind page content (z-10+) */
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--bp-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bp-line) 1px, transparent 1px),
-    linear-gradient(var(--bp-line-strong) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bp-line-strong) 1px, transparent 1px);
-  background-size: 32px 32px, 32px 32px, 160px 160px, 160px 160px;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 90px);
-          mask-image: linear-gradient(180deg, transparent 0, #000 90px);
-}
-
-/* ---- Section label tick ---------------------------------------------------
-   Turns the small uppercase eyebrow labels into drawing-style callouts. */
-.bp-label::before {
-  content: "";
-  display: inline-block;
-  width: 16px;
-  height: 1px;
-  margin-right: 9px;
-  vertical-align: middle;
-  background: currentColor;
-  opacity: 0.65;
-}
-
-/* ---- Title block (drafting sheet metadata, used in the footer) ------------ */
-.bp-titleblock {
-  font-family: var(--bp-mono);
-  border: 1px solid rgba(0, 255, 204, 0.16);
-  background:
-    linear-gradient(rgba(0, 255, 204, 0.02), rgba(0, 255, 204, 0.02));
-  border-radius: 4px;
-  overflow: hidden;
-}
-.bp-tb-cell {
-  padding: 10px 14px;
-  border-right: 1px solid rgba(0, 255, 204, 0.12);
-  border-bottom: 1px solid rgba(0, 255, 204, 0.12);
-}
-.bp-tb-cell:last-child { border-right: none; }
-.bp-tb-key {
-  font-size: 8px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--bp-ink-soft);
-}
-.bp-tb-val {
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  color: rgba(0, 255, 204, 0.78);
-  margin-top: 3px;
-  white-space: nowrap;
 }

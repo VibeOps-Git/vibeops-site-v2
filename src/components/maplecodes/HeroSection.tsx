@@ -43,13 +43,13 @@ function TypewriterSearch() {
 
   return (
     <div className="relative w-full max-w-xl mx-auto">
-      <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-[rgba(10,10,20,0.8)] border border-white/10 backdrop-blur-sm">
-        <Search className="w-5 h-5 text-gray-500 flex-shrink-0" />
-        <span className="text-gray-300 text-left truncate flex-1">
+      <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-card border border-border shadow-sm">
+        <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+        <span className="text-foreground text-left truncate flex-1">
           {text}
-          <span className="inline-block w-0.5 h-5 bg-amber-400 ml-0.5 align-middle animate-pulse" />
+          <span className="inline-block w-0.5 h-5 bg-[#d92f37] ml-0.5 align-middle animate-pulse" />
         </span>
-        <span className="px-4 py-1.5 rounded-lg bg-amber-400 text-black text-sm font-semibold flex-shrink-0">
+        <span className="px-4 py-1.5 rounded-lg bg-[#d92f37] text-white text-sm font-semibold flex-shrink-0">
           Analyze Site
         </span>
       </div>
@@ -70,13 +70,7 @@ export function HeroSection() {
         animateOpacity
         threshold={0.1}
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#d92f37]/30 bg-[#d92f37]/5 mb-8">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d92f37] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#d92f37]" />
-          </span>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#d92f37]">Part of the VibeOps Suite</span>
-        </div>
+        <span className="inline-block text-xs uppercase tracking-[0.2em] text-[#d92f37] mb-8">Part of the VibeOps Suite</span>
       </AnimatedContent>
 
       {/* Logo & Title */}
@@ -94,12 +88,12 @@ export function HeroSection() {
           <div className="p-3 rounded-xl bg-[#d92f37]/10 border border-[#d92f37]/20">
             <MapPin className="w-10 h-10 text-[#d92f37]" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white">
+          <h1 className="text-5xl md:text-7xl font-bold text-foreground">
             MapleCodes
           </h1>
         </div>
-        <p className="text-[11px] uppercase tracking-[0.28em] text-[#d92f37]/60 font-semibold text-center mt-2">
-          Canadian Building Code Intelligence for AE Teams
+        <p className="text-[11px] uppercase tracking-[0.28em] text-[#d92f37] font-semibold text-center mt-2">
+          Canadian building code lookup for AE teams
         </p>
       </AnimatedContent>
 
@@ -114,12 +108,12 @@ export function HeroSection() {
         threshold={0.1}
         delay={0.2}
       >
-        <p className="text-xl md:text-2xl text-gray-300 mb-2 max-w-2xl text-center">
-          Enter an address. Get every governing code.
+        <p className="text-xl md:text-2xl text-foreground mb-2 max-w-2xl text-center">
+          Type an address. Get every code that governs it.
         </p>
-        <p className="text-base text-gray-500 max-w-lg text-center mb-10">
-          Jurisdiction stack, applicable building codes, municipal bylaws,
-          referenced standards, and an AI governing brief in seconds.
+        <p className="text-base text-muted-foreground max-w-lg text-center mb-10">
+          The jurisdiction stack, the building codes that apply, municipal bylaws,
+          referenced standards, and a plain-language brief. In seconds, not hours.
         </p>
       </AnimatedContent>
 
@@ -150,9 +144,9 @@ export function HeroSection() {
       >
         <a
           href="/contact"
-          className="mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-400/90 transition-all group"
+          className="mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#d92f37] text-white font-semibold hover:bg-[#b91f29] transition-colors group"
         >
-          <span>Join the Early Access List</span>
+          <span>Get Early Access</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </a>
       </AnimatedContent>
@@ -170,8 +164,8 @@ export function HeroSection() {
           delay={0.4}
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-gray-500">Scroll to explore</span>
-            <ChevronDown className="w-5 h-5 text-gray-500 animate-bounce" />
+            <span className="text-xs text-muted-foreground">Scroll to explore</span>
+            <ChevronDown className="w-5 h-5 text-muted-foreground animate-bounce" />
           </div>
         </AnimatedContent>
       </div>

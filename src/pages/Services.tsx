@@ -12,43 +12,40 @@ import { VibeLinkButton } from '@/components/ui/VibeButton';
 const buildBuckets = [
   {
     icon: FileText,
-    color: 'emerald',
     label: 'Reportly',
     title: 'Private Reportly Deployments',
-    description: 'Custom report automation built around your firm\'s Word, Excel, and PDF templates, writing rules, QA workflows, and approval chains.',
+    description: 'Report automation built around your firm\'s Word, Excel, and PDF templates, your writing rules, your QA workflows, and your approval chains.',
     features: [
-      'Firm-specific writing and formatting rules',
-      'Word, Excel, and PDF-based engineering templates',
-      'QA checklists and multi-stage approval workflows',
+      'Your firm\'s writing and formatting rules',
+      'Word, Excel, and PDF engineering templates',
+      'QA checklists and multi-stage approvals',
       'Internal document generation and report assembly',
-      'Photos, field data, tables, and measurements embedded automatically',
+      'Photos, field data, tables, and measurements placed for you',
     ],
   },
   {
     icon: MapPin,
-    color: 'red',
     label: 'Code Intelligence',
     title: 'Building Code Lookup',
-    description: 'Enter a project address and get every applicable federal, provincial, and municipal code, pulled from Reportly\'s Canadian building code library and ready to cite in your reports.',
+    description: 'Type a project address and get every federal, provincial, and municipal code that applies, pulled from our Canadian building code library and ready to cite.',
     features: [
       'Code lookup by project address, anywhere in Canada',
       'Federal, provincial, and municipal codes resolved together',
-      'Code references linked directly into your report drafts',
-      'CSA, ASTM, and ISO standards included automatically',
-      '85+ codes, 375+ standards, 55+ bylaws covered',
+      'Code references dropped straight into your report drafts',
+      'CSA, ASTM, and ISO standards included',
+      'Codes, standards, and bylaws covered',
     ],
   },
   {
     icon: Wrench,
-    color: 'cyan',
     label: 'Custom',
     title: 'Custom Engineering Software',
-    description: 'Purpose-built tools for your firm: dashboards, automators, and report systems that connect directly to your existing documents, templates, and project data.',
+    description: 'Tools built for your firm: dashboards, automators, and report systems that connect to the documents, templates, and project data you already have.',
     features: [
-      'Dedicated firm-specific workflows and interfaces',
-      'Integration with SharePoint, Drive, Bluebeam, or internal databases',
-      'Compliance trackers, asset dashboards, and engineering calculators',
-      'Secure project-data handling with controlled access',
+      'Firm-specific workflows and interfaces',
+      'Connects to SharePoint, Drive, Bluebeam, or internal databases',
+      'Compliance trackers, asset dashboards, and calculators',
+      'Project data handled privately, with access you control',
       'CRM, project management, and document system connectors',
     ],
   },
@@ -56,12 +53,12 @@ const buildBuckets = [
 
 const useCases = [
   'Private AI report editor for internal engineering reports',
-  'Automated civil and construction report generation from Word/Excel templates',
+  'Automated civil and construction report generation from your Word template',
   'Building code search and citation assistant for project teams',
-  'Firm-specific report writing assistant trained on approved language and templates',
-  'Private software installation for firms with confidential project data or government clients',
+  'Report writing assistant trained on your approved language and templates',
+  'Private install for firms with confidential project data or government clients',
   'Report QA assistant for formatting, structure, completeness, and consistency',
-  'Internal building-code workflow connected to project location and report generation',
+  'Internal building-code workflow tied to project location and report generation',
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,12 +82,6 @@ function Anim({ children, delay = 0 }: { children: React.ReactNode; delay?: numb
   );
 }
 
-const colorMap: Record<string, { border: string; bg: string; text: string; dot: string }> = {
-  emerald: { border: 'border-emerald-500/20', bg: 'from-emerald-950/25', text: 'text-emerald-400', dot: 'bg-emerald-400' },
-  red:     { border: 'border-[#34d399]/20', bg: 'from-[#34d399]/10', text: 'text-[#34d399]', dot: 'bg-[#34d399]' },
-  cyan:    { border: 'border-cyan-500/20', bg: 'from-cyan-950/25', text: 'text-cyan-400', dot: 'bg-cyan-400' },
-};
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
@@ -100,7 +91,7 @@ export default function Services() {
     <>
       <SEO
         title="Custom AE Workflow Software & Consulting"
-        description="VibeOps builds reporting software and custom workflow tools for architecture and engineering firms. Report automation, building code lookup, and firm-specific software, all built around how AE teams actually work."
+        description="VibeOps builds reporting and workflow software for AE firms: report automation, building code lookup, and firm-specific tools built around how your team works."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
@@ -109,14 +100,14 @@ export default function Services() {
         <section className="py-20 px-4">
           <Anim>
             <div className="container mx-auto text-center max-w-3xl">
-              <p className="text-[10px] uppercase tracking-[0.32em] text-emerald-400/75 mb-4 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.32em] text-primary mb-4 font-semibold">
                 VibeOps Consulting
               </p>
-              <h1 className="text-4xl md:text-[2.8rem] font-bold text-white mb-6 tracking-tight leading-[1.1]">
-                Private Engineering AI Systems, Built Around Your Firm's Workflow
+              <h1 className="text-4xl md:text-[2.8rem] font-bold text-foreground mb-6 tracking-tight leading-[1.1]">
+                Private engineering AI, built around how your firm already works
               </h1>
-              <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                We help engineering and infrastructure teams deploy custom versions of the technology behind Reportly - tailored to their templates, code requirements, security needs, and internal reporting process.
+              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                We take the software behind Reportly and set up a private version for your firm. It runs on your templates, your code requirements, your security rules, and your reporting process.
               </p>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <VibeLinkButton href="/contact" variant="primary" size="lg">
@@ -136,42 +127,39 @@ export default function Services() {
         <section className="py-20 px-4">
           <div className="container mx-auto max-w-5xl">
             <Anim>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
                 What We Build
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 tracking-tight leading-tight">
                 Three ways we work with AE firms.
               </h2>
-              <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed mb-14">
-                Every engagement starts from Reportly, already built and tested. We configure it around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
+              <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-14">
+                Every engagement starts from Reportly, which is already built and tested. We set it up around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
               </p>
             </Anim>
 
             <div className="grid md:grid-cols-3 gap-5">
-              {buildBuckets.map((bucket, i) => {
-                const c = colorMap[bucket.color];
-                return (
-                  <Anim key={bucket.title} delay={i * 0.08}>
-                    <div className={`flex flex-col p-7 rounded-2xl border ${c.border} bg-gradient-to-br ${c.bg} to-transparent h-full`}>
-                      <span className={`self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/20 border ${c.border} text-[9px] font-semibold ${c.text} uppercase tracking-[0.22em] mb-5`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${c.dot} inline-block`} /> {bucket.label}
-                      </span>
-                      <div className="flex items-center gap-2.5 mb-1">
-                        <bucket.icon className={`w-5 h-5 ${c.text}`} />
-                        <h3 className="text-lg font-bold text-white">{bucket.title}</h3>
-                      </div>
-                      <p className="text-[13px] text-white/45 leading-relaxed mt-3 mb-6">{bucket.description}</p>
-                      <ul className="space-y-2.5 flex-1">
-                        {bucket.features.map((f) => (
-                          <li key={f} className="flex items-start gap-2.5 text-[12.5px] text-white/55">
-                            <Check className={`w-3.5 h-3.5 ${c.text} opacity-65 flex-shrink-0 mt-0.5`} /> {f}
-                          </li>
-                        ))}
-                      </ul>
+              {buildBuckets.map((bucket, i) => (
+                <Anim key={bucket.title} delay={i * 0.08}>
+                  <div className="flex flex-col p-7 rounded-2xl border border-border bg-card shadow-sm h-full">
+                    <span className="self-start text-[9px] font-semibold text-primary uppercase tracking-[0.22em] mb-5">
+                      {bucket.label}
+                    </span>
+                    <div className="flex items-center gap-2.5 mb-1">
+                      <bucket.icon className="w-5 h-5 text-primary" />
+                      <h3 className="text-lg font-bold text-foreground">{bucket.title}</h3>
                     </div>
-                  </Anim>
-                );
-              })}
+                    <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-6">{bucket.description}</p>
+                    <ul className="space-y-2.5 flex-1">
+                      {bucket.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2.5 text-[12.5px] text-muted-foreground">
+                          <Check className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" /> {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Anim>
+              ))}
             </div>
           </div>
         </section>
@@ -184,44 +172,44 @@ export default function Services() {
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               <Anim>
                 <div className="flex-1">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
-                    You're starting from something that works
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                    You start from something that works
                   </p>
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight leading-tight">
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
                     Not generic AI consulting.
                   </h2>
-                  <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-lg">
-                    Most AI consultants show up with slide decks and generic automation ideas. VibeOps shows up with Reportly, software already built for engineering report automation, with Canadian building code lookup built in.
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-4 max-w-lg">
+                    Most AI consultants show up with a slide deck and some automation ideas. We show up with Reportly, software that already does engineering report automation, with Canadian building code lookup built in.
                   </p>
-                  <p className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-lg">
-                    We configure it around your firm's specific workflows. Faster to get running, lower risk, and built specifically for engineering, not adapted from generic business software.
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-8 max-w-lg">
+                    Then we set it up around your firm's workflows. It's faster to get running, lower risk, and built for engineering work specifically, not borrowed from generic business software.
                   </p>
                 </div>
               </Anim>
 
               <Anim delay={0.1}>
                 <div className="lg:w-[420px] flex-shrink-0 w-full">
-                  <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-7">
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-white/35 font-semibold mb-6">What you get vs. a blank-page build</p>
+                  <div className="rounded-2xl border border-border bg-card shadow-sm p-7">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-semibold mb-6">What you start with vs. a blank page</p>
                     <div className="space-y-5">
                       {[
-                        { label: 'Engineering-specific document editing and report assembly', done: true },
+                        { label: 'Engineering document editing and report assembly', done: true },
                         { label: 'Civil engineering writing, formatting, and QA logic', done: true },
                         { label: 'Building code search, retrieval, and jurisdiction detection', done: true },
                         { label: 'Code-aware AI generation with RAG and vector search', done: true },
                         { label: 'Template mapping and approval workflow engine', done: true },
-                        { label: 'Your firm-specific customizations', done: false },
+                        { label: 'Your firm-specific setup', done: false },
                       ].map((item) => (
                         <div key={item.label} className="flex items-start gap-3">
                           {item.done ? (
-                            <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                            <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                           ) : (
-                            <ArrowRight className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                            <ArrowRight className="w-4 h-4 text-foreground flex-shrink-0 mt-0.5" />
                           )}
                           <div>
-                            <p className="text-[13px] text-white/70">{item.label}</p>
-                            <p className="text-[11px] text-white/30 mt-0.5">
-                              {item.done ? 'Already built into VibeOps IP' : 'Added during your consulting engagement'}
+                            <p className="text-[13px] text-foreground">{item.label}</p>
+                            <p className="text-[11px] text-muted-foreground mt-0.5">
+                              {item.done ? 'Already built' : 'Added during your engagement'}
                             </p>
                           </div>
                         </div>
@@ -240,31 +228,31 @@ export default function Services() {
         <section className="py-20 px-4">
           <div className="container mx-auto max-w-5xl">
             <Anim>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
                 Private Deployment
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
                 Built for sensitive engineering work.
               </h2>
-              <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed mb-14">
-                Many engineering firms can't use public AI tools for active project work, especially when documents involve government clients, confidential reports, or regulated data. VibeOps sets up private versions of Reportly so your sensitive project information never leaves your approved environment.
+              <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-14">
+                Plenty of firms can't put active project work through public AI tools, especially when the documents involve government clients, confidential reports, or regulated data. We set up private versions of Reportly so your project information never leaves the environment you approve.
               </p>
             </Anim>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
                 { icon: Server, title: 'Private Installation', description: 'Run Reportly on your own servers or a dedicated private environment. Your data doesn\'t touch shared systems.' },
-                { icon: Shield, title: 'PIPEDA-Aware Workflows', description: 'Designed to support privacy-conscious workflows and help firms meet internal and client data-handling requirements.' },
-                { icon: Lock, title: 'Controlled Data Handling', description: 'Sensitive project data stays within your approved environment. No exposure to uncontrolled public AI tools.' },
-                { icon: Lightbulb, title: 'Government & Infrastructure Ready', description: 'Suitable for firms working on municipal, provincial, federal, and confidential infrastructure projects.' },
+                { icon: Shield, title: 'PIPEDA-Aware Workflows', description: 'Built to support privacy-conscious workflows and help you meet internal and client data-handling rules.' },
+                { icon: Lock, title: 'Controlled Data Handling', description: 'Sensitive project data stays inside the environment you approve. Nothing leaks out to public AI tools.' },
+                { icon: Lightbulb, title: 'Government & Infrastructure Ready', description: 'Fits firms working on municipal, provincial, federal, and confidential infrastructure projects.' },
               ].map((item, i) => (
                 <Anim key={item.title} delay={i * 0.06}>
-                  <div className="p-6 rounded-xl border border-white/6 bg-white/[0.02] h-full">
-                    <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center mb-4">
-                      <item.icon className="w-4.5 h-4.5 text-emerald-400/70" />
+                  <div className="p-6 rounded-2xl border border-border bg-card shadow-sm h-full">
+                    <div className="w-9 h-9 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
+                      <item.icon className="w-4 h-4 text-primary" />
                     </div>
-                    <h3 className="text-[14px] font-semibold text-white mb-2">{item.title}</h3>
-                    <p className="text-[12.5px] text-white/40 leading-relaxed">{item.description}</p>
+                    <h3 className="text-[14px] font-semibold text-foreground mb-2">{item.title}</h3>
+                    <p className="text-[12.5px] text-muted-foreground leading-relaxed">{item.description}</p>
                   </div>
                 </Anim>
               ))}
@@ -280,17 +268,17 @@ export default function Services() {
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               <Anim>
                 <div className="flex-1">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
-                    Commercial Model
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                    How Pricing Works
                   </p>
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight leading-tight">
-                    Implementation + monthly license.
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
+                    Setup fee, then a monthly license.
                   </h2>
-                  <p className="text-white/45 text-[15px] leading-relaxed mb-4 max-w-lg">
-                    We configure Reportly around your firm's templates, workflows, and reporting process, set it up in the environment your security team approves, and give you ongoing access through a monthly license.
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-4 max-w-lg">
+                    We set Reportly up around your templates, workflows, and reporting process, put it in the environment your security team signs off on, and keep you running through a monthly license.
                   </p>
-                  <p className="text-white/45 text-[15px] leading-relaxed max-w-lg">
-                    You're not just paying for consulting hours. You're getting Reportly, configured, set up, and maintained for your firm.
+                  <p className="text-muted-foreground text-[15px] leading-relaxed max-w-lg">
+                    You're not just buying consulting hours. You're getting Reportly, set up and maintained for your firm.
                   </p>
                 </div>
               </Anim>
@@ -298,17 +286,17 @@ export default function Services() {
               <Anim delay={0.1}>
                 <div className="lg:w-[400px] flex-shrink-0 w-full space-y-4">
                   {[
-                    { icon: CreditCard, step: '01', title: 'Upfront Setup Fee', description: 'We scope, configure, and set up Reportly around your firm\'s templates, workflows, and security requirements.' },
-                    { icon: Repeat, step: '02', title: 'Monthly Software License', description: 'Ongoing access to Reportly. Includes updates, hosting where needed, and standard support.' },
-                    { icon: Wrench, step: '03', title: 'Optional Ongoing Development', description: 'Additional custom development, new integrations, expanded report types, or additional building code workflows scoped as needed.' },
+                    { icon: CreditCard, step: '01', title: 'Upfront Setup Fee', description: 'We scope it, configure it, and set up Reportly around your templates, workflows, and security requirements.' },
+                    { icon: Repeat, step: '02', title: 'Monthly Software License', description: 'Ongoing access to Reportly. Includes updates, hosting where you need it, and standard support.' },
+                    { icon: Wrench, step: '03', title: 'Optional Ongoing Development', description: 'Extra custom work, new integrations, more report types, or additional code workflows, scoped when you need them.' },
                   ].map((item) => (
-                    <div key={item.step} className="flex gap-4 p-5 rounded-xl border border-white/6 bg-white/[0.02]">
+                    <div key={item.step} className="flex gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm">
                       <div className="flex-shrink-0">
-                        <span className="text-[10px] font-black text-emerald-500/50 uppercase tracking-[0.22em]">{item.step}</span>
+                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.22em]">{item.step}</span>
                       </div>
                       <div>
-                        <h3 className="text-[14px] font-semibold text-white mb-1">{item.title}</h3>
-                        <p className="text-[12.5px] text-white/40 leading-relaxed">{item.description}</p>
+                        <h3 className="text-[14px] font-semibold text-foreground mb-1">{item.title}</h3>
+                        <p className="text-[12.5px] text-muted-foreground leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                   ))}
@@ -324,23 +312,23 @@ export default function Services() {
         <section className="py-20 px-4">
           <div className="container mx-auto max-w-5xl">
             <Anim>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
                 Example Use Cases
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
                 What firms are building with us.
               </h2>
-              <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed mb-12">
-                Every engagement is different, but the work typically falls into these categories.
+              <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-12">
+                Every engagement is a bit different, but the work usually lands in one of these.
               </p>
             </Anim>
 
             <div className="grid md:grid-cols-2 gap-3">
               {useCases.map((uc, i) => (
                 <Anim key={uc} delay={i * 0.04}>
-                  <div className="flex items-start gap-3 p-5 rounded-xl border border-white/6 bg-white/[0.02] hover:border-emerald-500/15 transition-colors">
-                    <Check className="w-4 h-4 text-emerald-400/60 flex-shrink-0 mt-0.5" />
-                    <p className="text-[13.5px] text-white/60">{uc}</p>
+                  <div className="flex items-start gap-3 p-5 rounded-2xl border border-border bg-card shadow-sm hover:border-primary transition-colors">
+                    <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-[13.5px] text-foreground">{uc}</p>
                   </div>
                 </Anim>
               ))}
@@ -355,14 +343,14 @@ export default function Services() {
           <div className="container mx-auto max-w-3xl">
             <Anim>
               <VibeCard variant="gradient" hover={false} className="text-center p-8 md:p-12">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
                   Get started
                 </p>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 tracking-tight">
                   Tell us what your firm needs.
                 </h2>
-                <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  Book a 30-minute call. We'll look at the report that eats the most of your team's time, the compliance checks you need tightened, and whether Reportly is the right fit for your firm.
+                <p className="text-muted-foreground mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
+                  Book a 30-minute call. We'll look at the report that eats the most of your team's time, the compliance checks you want tightened up, and whether Reportly is a fit for your firm.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">

@@ -78,7 +78,7 @@ export function LaptopShell({
             {/* Screen - children OR video */}
             <div className="relative overflow-hidden rounded-sm bg-black" style={{ aspectRatio: "16/10", border: "2px solid #111" }}>
               {children
-                ? <div className="absolute inset-0 overflow-hidden">{children}</div>
+                ? <div className="dark absolute inset-0 overflow-hidden bg-[#0b0c10] text-white">{children}</div>
                 : videoSrc
                   ? <AutoVideo src={videoSrc} className="h-full w-full object-cover" />
                   : null
@@ -127,115 +127,25 @@ export function LaptopShell({
 }
 
 // ---------------------------------------------------------------------------
-// UAG-style rugged case helper - recessed screw bolt
-// ---------------------------------------------------------------------------
-
-function ScrewBolt({ style }: { style: React.CSSProperties }) {
-  return (
-    <div
-      className="absolute pointer-events-none z-10"
-      style={{
-        width: 7, height: 7,
-        borderRadius: "50%",
-        background: "radial-gradient(circle at 40% 30%, #3e4148, #1e2025)",
-        border: "0.5px solid rgba(255,255,255,0.13)",
-        boxShadow: "inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.04)",
-        ...style,
-      }}
-    />
-  );
-}
-
-// Horizontal grip rib strip - used on long edges of the case
-function GripStrip({ style }: { style: React.CSSProperties }) {
-  return (
-    <div className="absolute pointer-events-none flex gap-[3px] items-center" style={style}>
-      {Array.from({ length: 9 }).map((_, i) => (
-        <div key={i} style={{ width: 3, height: 5, borderRadius: 1, background: "rgba(255,255,255,0.11)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }} />
-      ))}
-    </div>
-  );
-}
-
-// Octagonal clip-path with consistent pixel chamfers at all 8 corners.
-// ch = chamfer size in px - creates flat-cut corners like UAG/Pelican cases.
-function uagClip(ch: number) {
-  return `polygon(${ch}px 0px, calc(100% - ${ch}px) 0px, 100% ${ch}px, 100% calc(100% - ${ch}px), calc(100% - ${ch}px) 100%, ${ch}px 100%, 0px calc(100% - ${ch}px), 0px ${ch}px)`;
-}
-
-// ---------------------------------------------------------------------------
-// 2. iPad in UAG PATHFINDER-STYLE RUGGED CASE - Landscape
-// Octagonal silhouette, thick black bumper, raised inner frame, screw bolts,
-// grip rails on long edges, angular back panel texture.
+// 2. iPad - clean modern rounded frame
 // ---------------------------------------------------------------------------
 
 function TabletShell({ videoSrc, children }: { videoSrc?: string; children?: ReactNode }) {
-  const CH = 18; // corner chamfer px
   return (
     <div className="w-full relative">
-      {/* OUTER CASE BODY - octagonal clip-path = flat-cut corners */}
+      {/* Modern iPad: clean rounded aluminium frame, thin uniform bezel */}
       <div
-        className="relative"
-        style={{
-          clipPath: uagClip(CH),
-          background: "linear-gradient(160deg, #252729, #18191c 55%, #1e2022)",
-          boxShadow: "0 40px 90px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.05)",
-          padding: "13px 15px",
-        }}
+        className="relative rounded-[30px] border border-white/12 p-[12px] shadow-[0_30px_90px_rgba(0,0,0,0.42)]"
+        style={{ background: "linear-gradient(180deg,#7f8792 0%,#49525d 40%,#1a2027 100%)" }}
       >
-        {/* Outer raised bumper ring - 1px lighter inset border gives depth */}
-        <div
-          className="absolute"
-          style={{
-            clipPath: uagClip(CH - 4),
-            inset: "3px",
-            border: "1px solid rgba(255,255,255,0.07)",
-            borderRadius: 0,
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Corner screw bolts - inside octagonal clip bounds */}
-        <ScrewBolt style={{ top: 7,  left: 10 }} />
-        <ScrewBolt style={{ top: 7,  right: 10 }} />
-        <ScrewBolt style={{ bottom: 7, left: 10 }} />
-        <ScrewBolt style={{ bottom: 7, right: 10 }} />
-
-        {/* Grip strips on long edges (top + bottom of landscape case) */}
-        <GripStrip style={{ top: 4, left: "50%", transform: "translateX(-50%)" }} />
-        <GripStrip style={{ bottom: 4, left: "50%", transform: "translateX(-50%)" }} />
-
-        {/* Angular bevel lines near corners - UAG geometric panel detail */}
-        {/* Top-left bevel */}
-        <div className="absolute top-[18px] left-[18px] w-[22px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(-45deg)", transformOrigin: "left center" }} />
-        {/* Top-right bevel */}
-        <div className="absolute top-[18px] right-[18px] w-[22px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(45deg)", transformOrigin: "right center" }} />
-        {/* Bottom-left bevel */}
-        <div className="absolute bottom-[18px] left-[18px] w-[22px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(45deg)", transformOrigin: "left center" }} />
-        {/* Bottom-right bevel */}
-        <div className="absolute bottom-[18px] right-[18px] w-[22px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(-45deg)", transformOrigin: "right center" }} />
-
-        {/* INNER SCREEN FRAME - raised inset panel */}
-        <div
-          className="relative overflow-hidden"
-          style={{
-            background: "#0d0e10",
-            border: "1.5px solid #2a2c30",
-            borderRadius: 2,
-            boxShadow: "inset 0 2px 6px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.03)",
-          }}
-        >
-          {/* iPad Pro 11" landscape is 2388×1668 → 43:30 ≈ 4/3 */}
-          <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "4/3", display: "block" }}>
-            {children
-              ? <div className="absolute inset-0 overflow-hidden">{children}</div>
-              : <AutoVideo src={videoSrc!} className="h-full w-full object-contain" />
-            }
-          </div>
+        <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-black">
+          {children
+            ? <div className="dark absolute inset-0 overflow-hidden bg-[#0b0c10] text-white">{children}</div>
+            : <AutoVideo src={videoSrc!} className="h-full w-full object-contain" />
+          }
+          {/* Front camera dot - centered on the long (top) edge */}
+          <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-black/70 ring-1 ring-white/15 z-20" />
         </div>
-
-        {/* Front camera dot - right short edge */}
-        <div className="absolute right-[5px] top-1/2 -translate-y-1/2 w-[5px] h-[5px] rounded-full bg-[#0a0b0d] ring-1 ring-[#2a2c30]" />
       </div>
 
       {/* Ground shadow */}
@@ -249,101 +159,42 @@ function TabletShell({ videoSrc, children }: { videoSrc?: string; children?: Rea
 // ---------------------------------------------------------------------------
 
 function PhoneShell({ videoSrc, children }: { videoSrc?: string; children?: ReactNode }) {
-  const CH = 16;
   return (
     <div className="w-full relative">
-      {/* OUTER CASE BODY - portrait orientation */}
+      {/* Modern iPhone: clean rounded titanium frame, thin uniform bezel */}
       <div
-        className="relative"
-        style={{
-          clipPath: uagClip(CH),
-          background: "linear-gradient(170deg, #252729, #18191c 55%, #1e2022)",
-          boxShadow: "0 30px 80px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.05)",
-          padding: "13px 11px",  // taller padding on top/bottom for portrait
-        }}
+        className="relative rounded-[34px] border border-white/12 p-[7px] shadow-[0_22px_70px_rgba(0,0,0,0.4)]"
+        style={{ background: "linear-gradient(180deg,#818994 0%,#49515d 36%,#161b22 100%)" }}
       >
-        {/* Raised bumper ring */}
-        <div
-          className="absolute"
-          style={{
-            clipPath: uagClip(CH - 4),
-            inset: "3px",
-            border: "1px solid rgba(255,255,255,0.07)",
-            pointerEvents: "none",
-          }}
-        />
+        {/* iPhone 15 Pro portrait: 1179×2556 -> 9/19.5 */}
+        <div className="relative aspect-[9/19.5] overflow-hidden rounded-[28px] bg-black">
+          {children
+            ? (
+              /* Safe area pushes content below the Dynamic Island */
+              <div className="dark absolute inset-0 overflow-hidden bg-[#0b0c10] text-white" style={{ paddingTop: "5%" }}>
+                {children}
+              </div>
+            )
+            : <AutoVideo src={videoSrc!} className="h-full w-full object-cover" />
+          }
 
-        {/* Corner screw bolts */}
-        <ScrewBolt style={{ top: 6,  left: 9 }} />
-        <ScrewBolt style={{ top: 6,  right: 9 }} />
-        <ScrewBolt style={{ bottom: 6, left: 9 }} />
-        <ScrewBolt style={{ bottom: 6, right: 9 }} />
-
-        {/* Grip strips on long edges (left + right in portrait) */}
-        <GripStrip style={{ left: 3, top: "50%", transform: "translateY(-50%) rotate(90deg)" }} />
-        <GripStrip style={{ right: 3, top: "50%", transform: "translateY(-50%) rotate(90deg)" }} />
-
-        {/* Angular bevel details */}
-        <div className="absolute top-[15px] left-[15px] w-[18px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(-45deg)", transformOrigin: "left center" }} />
-        <div className="absolute top-[15px] right-[15px] w-[18px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(45deg)", transformOrigin: "right center" }} />
-        <div className="absolute bottom-[15px] left-[15px] w-[18px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(45deg)", transformOrigin: "left center" }} />
-        <div className="absolute bottom-[15px] right-[15px] w-[18px] h-[1px]" style={{ background: "rgba(255,255,255,0.06)", transform: "rotate(-45deg)", transformOrigin: "right center" }} />
-
-        {/* INNER SCREEN FRAME */}
-        <div
-          className="relative overflow-hidden"
-          style={{
-            background: "#0d0e10",
-            border: "1.5px solid #2a2c30",
-            borderRadius: 2,
-            boxShadow: "inset 0 2px 5px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.03)",
-          }}
-        >
-          {/* iPhone 15 Pro portrait: 1179×2556 → 9/19.5
-              Dynamic Island real dims: ~270px wide × ~37px tall on 1179px screen
-              = ~23% of screen width, ~1.45% of screen height.
-              In our proportional layout: 23% wide, height ≈ 23% * (9/19.5) = ~10.6% of width.
-              We use 4% of screen HEIGHT as a safe approximation for the pill height. */}
-          <div className="relative overflow-hidden bg-black" style={{ aspectRatio: "9/19.5", display: "block" }}>
-            {children
-              ? (
-                /* Safe area: pushes content below Dynamic Island.
-                   DI top=1.4% + height=1.8% = bottom at ~3.2%. Add ~1% gap = 4.5% total. */
-                <div className="absolute inset-0 overflow-hidden" style={{ paddingTop: "5%" }}>
-                  {children}
-                </div>
-              )
-              : <AutoVideo src={videoSrc!} className="h-full w-full object-cover" />
-            }
-
-            {/* Dynamic Island - real iPhone 15 Pro: 270px wide × 37px tall on 1179×2556.
-                Width = 23% of screen, height ≈ 1.45% of screen height.
-                We use 1.8% for slight readability bump. */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 z-20 bg-black"
-              style={{
-                top: "1.4%",
-                width: "23%",
-                height: "1.8%",
-                minHeight: 5,
-                borderRadius: 999,
-                boxShadow: "0 0 0 1px rgba(255,255,255,0.08)",
-              }}
-            >
-              {/* Front camera dot inside the island */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-                style={{ width: "22%", height: "65%", background: "#0a0a12", boxShadow: "0 0 0 1px rgba(255,255,255,0.10)" }} />
-            </div>
-
-            {/* Home indicator */}
-            <div className="absolute bottom-[1.2%] left-1/2 -translate-x-1/2 z-20 rounded-full bg-white/22"
-              style={{ width: "28%", height: "0.45%", minHeight: 2 }} />
+          {/* Dynamic Island */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 z-20 bg-black"
+            style={{ top: "1.6%", width: "30%", height: "2%", minHeight: 9, borderRadius: 999, boxShadow: "0 0 0 1px rgba(255,255,255,0.08)" }}
+          >
+            <div className="absolute top-1/2 right-[12%] -translate-y-1/2 rounded-full"
+              style={{ width: "14%", height: "55%", background: "#0a0a12", boxShadow: "0 0 0 1px rgba(255,255,255,0.10)" }} />
           </div>
+
+          {/* Home indicator */}
+          <div className="absolute bottom-[1.2%] left-1/2 -translate-x-1/2 z-20 rounded-full bg-white/30"
+            style={{ width: "30%", height: "0.5%", minHeight: 3 }} />
         </div>
       </div>
 
       {/* Ground shadow */}
-      <div className="mx-auto h-1.5 w-[80%] rounded-b-full" style={{ background: "rgba(0,0,0,0.35)", filter: "blur(5px)" }} />
+      <div className="mx-auto h-1.5 w-[78%] rounded-b-full" style={{ background: "rgba(0,0,0,0.35)", filter: "blur(5px)" }} />
     </div>
   );
 }
@@ -358,7 +209,7 @@ type DeviceType = (typeof DEVICES)[number];
 const DEVICE_MAX_W: Record<DeviceType, string> = {
   laptop: "max-w-[1000px]",
   tablet: "max-w-[720px]",  // iPad landscape: meaningfully smaller than laptop
-  phone:  "max-w-[280px]",  // iPhone portrait: compact, phone-sized
+  phone:  "max-w-[188px]",  // iPhone portrait: compact, phone-sized
 };
 
 const AUTO_ROTATE_MS = 8000;
@@ -485,7 +336,7 @@ export function HomepageDeviceStage({
               key={d}
               type="button"
               onClick={() => handleManual(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIdx ? "bg-emerald-400 scale-125" : "bg-white/15 hover:bg-white/30"}`}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIdx ? "bg-primary scale-125" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"}`}
               aria-label={`Show ${d}`}
             />
           ))}

@@ -48,9 +48,7 @@ const BRIEF_TEXT = `**Jurisdiction Stack:** This site at 800 Robson St, Vancouve
 
 export function ShowcaseSection() {
   return (
-    <section className="relative py-24 px-4 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-amber-500/3 to-[#0a0a0f]" />
-
+    <section className="relative py-24 px-4 overflow-hidden bg-background">
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section header */}
         <AnimatedContent
@@ -63,31 +61,31 @@ export function ShowcaseSection() {
           threshold={0.2}
         >
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-amber-400 border border-amber-400/30 bg-amber-400/5 mb-4">
+            <span className="inline-block text-xs uppercase tracking-[0.2em] text-[#d92f37] mb-4">
               Product Demo
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              See What You Get
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              See what you get
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Here's what a real MapleCodes lookup returns for{" "}
-              <span className="text-white">800 Robson St, Vancouver, BC</span>.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Here's what a real lookup returns for{" "}
+              <span className="text-foreground">800 Robson St, Vancouver, BC</span>.
             </p>
           </div>
         </AnimatedContent>
 
         {/* === PRODUCT MOCKUP === */}
-        <div className="relative rounded-2xl border border-white/10 bg-[rgba(6,6,12,0.9)] backdrop-blur-sm overflow-hidden shadow-2xl shadow-black/40">
+        <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
           {/* Top bar */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/10">
+          <div className="flex items-center gap-2 px-4 py-3 bg-secondary border-b border-border">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-red-500/60" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
               <div className="w-3 h-3 rounded-full bg-green-500/60" />
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <div className="flex items-center gap-2 px-4 py-1 rounded-lg bg-white/5 text-xs text-gray-400 font-mono">
-                <MapPin className="w-3 h-3 text-amber-400" />
+              <div className="flex items-center gap-2 px-4 py-1 rounded-lg bg-muted text-xs text-muted-foreground font-mono">
+                <MapPin className="w-3 h-3 text-[#d92f37]" />
                 MapleCodes
               </div>
             </div>
@@ -104,30 +102,30 @@ export function ShowcaseSection() {
             threshold={0.2}
             delay={0.1}
           >
-            <div className="px-6 md:px-8 pt-6 pb-4 border-b border-white/5">
+            <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
                 <div>
-                  <p className="text-xs text-amber-400 uppercase tracking-widest mb-1">Lookup Result</p>
-                  <h3 className="text-xl md:text-2xl font-bold text-white">
+                  <p className="text-xs text-[#d92f37] uppercase tracking-widest mb-1">Lookup Result</p>
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground">
                     800 Robson St, Vancouver, BC
                   </h3>
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Matched to City of Vancouver. 49.28383, -123.12123
                   </p>
                 </div>
                 {/* Summary badges */}
                 <div className="flex items-center gap-4 text-center">
-                  <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10">
-                    <div className="text-2xl font-bold text-white">3</div>
-                    <div className="text-[10px] text-gray-500 uppercase tracking-wider">Jurisdictions</div>
+                  <div className="px-4 py-2 rounded-xl bg-secondary border border-border">
+                    <div className="text-2xl font-bold text-foreground">3</div>
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Jurisdictions</div>
                   </div>
-                  <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10">
-                    <div className="text-2xl font-bold text-white">5</div>
-                    <div className="text-[10px] text-gray-500 uppercase tracking-wider">Codes</div>
+                  <div className="px-4 py-2 rounded-xl bg-secondary border border-border">
+                    <div className="text-2xl font-bold text-foreground">5</div>
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Codes</div>
                   </div>
-                  <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10">
-                    <div className="text-2xl font-bold text-white">3</div>
-                    <div className="text-[10px] text-gray-500 uppercase tracking-wider">Bylaws</div>
+                  <div className="px-4 py-2 rounded-xl bg-secondary border border-border">
+                    <div className="text-2xl font-bold text-foreground">3</div>
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Bylaws</div>
                   </div>
                 </div>
               </div>
@@ -163,39 +161,33 @@ export function ShowcaseSection() {
             threshold={0.2}
             delay={0.2}
           >
-            <div className="grid md:grid-cols-5 gap-0 border-b border-white/5">
+            <div className="grid md:grid-cols-5 gap-0 border-b border-border">
               {/* Fake map */}
-              <div className="md:col-span-2 relative bg-[#0c1022] min-h-[240px] border-b md:border-b-0 md:border-r border-white/5">
-                {/* Map tiles illusion */}
-                <div className="absolute inset-0 opacity-30">
-                  <div className="absolute inset-0" style={{
-                    backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                                     linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)`,
-                    backgroundSize: "40px 40px",
-                  }} />
-                  {/* Roads */}
-                  <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-600/50" />
-                  <div className="absolute top-0 bottom-0 left-1/3 w-px bg-gray-600/50" />
-                  <div className="absolute top-0 bottom-0 left-2/3 w-px bg-gray-600/50" />
-                  <div className="absolute top-1/3 left-0 right-0 h-px bg-gray-600/30" />
-                  <div className="absolute top-2/3 left-0 right-0 h-px bg-gray-600/30" />
+              <div className="md:col-span-2 relative bg-muted min-h-[240px] border-b md:border-b-0 md:border-r border-border">
+                {/* Roads */}
+                <div className="absolute inset-0 opacity-40">
+                  <div className="absolute top-1/2 left-0 right-0 h-px bg-muted-foreground/40" />
+                  <div className="absolute top-0 bottom-0 left-1/3 w-px bg-muted-foreground/40" />
+                  <div className="absolute top-0 bottom-0 left-2/3 w-px bg-muted-foreground/40" />
+                  <div className="absolute top-1/3 left-0 right-0 h-px bg-muted-foreground/20" />
+                  <div className="absolute top-2/3 left-0 right-0 h-px bg-muted-foreground/20" />
                 </div>
                 {/* Pin */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full z-10">
                   <div className="relative">
-                    <div className="w-6 h-6 rounded-full bg-amber-400 border-2 border-white shadow-lg shadow-amber-400/40" />
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-amber-400" />
+                    <div className="w-6 h-6 rounded-full bg-[#d92f37] border-2 border-background" />
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-[#d92f37]" />
                   </div>
                 </div>
                 {/* Jurisdiction zone overlays */}
-                <div className="absolute top-[15%] left-[10%] right-[10%] bottom-[20%] rounded-lg border border-purple-500/20 bg-purple-500/5" />
-                <div className="absolute top-[25%] left-[20%] right-[20%] bottom-[30%] rounded-lg border border-emerald-500/20 bg-emerald-500/5" />
+                <div className="absolute top-[15%] left-[10%] right-[10%] bottom-[20%] rounded-lg border border-purple-500/30 bg-purple-500/5" />
+                <div className="absolute top-[25%] left-[20%] right-[20%] bottom-[30%] rounded-lg border border-emerald-500/30 bg-emerald-500/5" />
                 {/* Caption */}
                 <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
-                  <span className="text-[10px] text-gray-500 font-mono bg-[#0c1022]/80 px-2 py-0.5 rounded">
+                  <span className="text-[10px] text-muted-foreground font-mono bg-background/80 px-2 py-0.5 rounded">
                     49.28383, -123.12123
                   </span>
-                  <span className="text-[10px] text-gray-500 bg-[#0c1022]/80 px-2 py-0.5 rounded">
+                  <span className="text-[10px] text-muted-foreground bg-background/80 px-2 py-0.5 rounded">
                     OpenStreetMap
                   </span>
                 </div>
@@ -203,17 +195,17 @@ export function ShowcaseSection() {
 
               {/* Codes table */}
               <div className="md:col-span-3 overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
+                <div className="px-4 py-3 border-b border-border flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-amber-400" />
-                    <span className="text-sm font-medium text-white">Applicable Building Codes</span>
+                    <Layers className="w-4 h-4 text-[#d92f37]" />
+                    <span className="text-sm font-medium text-foreground">Applicable Building Codes</span>
                   </div>
-                  <span className="text-xs text-gray-500">{CODE_ROWS.length} results</span>
+                  <span className="text-xs text-muted-foreground">{CODE_ROWS.length} results</span>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="border-b border-white/5 text-[11px] text-gray-500 uppercase tracking-wider">
+                      <tr className="border-b border-border text-[11px] text-muted-foreground uppercase tracking-wider">
                         <th className="px-4 py-2 font-medium">Code Name</th>
                         <th className="px-4 py-2 font-medium hidden sm:table-cell">Edition</th>
                         <th className="px-4 py-2 font-medium">Level</th>
@@ -224,15 +216,15 @@ export function ShowcaseSection() {
                       {CODE_ROWS.map((row) => {
                         const lc = LEVEL_COLORS[row.level];
                         return (
-                          <tr key={row.name} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                            <td className="px-4 py-2.5 text-sm text-gray-200">{row.name}</td>
-                            <td className="px-4 py-2.5 text-sm text-gray-400 font-mono hidden sm:table-cell">{row.edition}</td>
+                          <tr key={row.name} className="border-b border-border hover:bg-secondary transition-colors">
+                            <td className="px-4 py-2.5 text-sm text-foreground">{row.name}</td>
+                            <td className="px-4 py-2.5 text-sm text-muted-foreground font-mono hidden sm:table-cell">{row.edition}</td>
                             <td className="px-4 py-2.5">
                               <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${lc.bg} ${lc.text}`}>
                                 {row.level}
                               </span>
                             </td>
-                            <td className="px-4 py-2.5 text-sm text-emerald-400 hidden md:table-cell">{row.status}</td>
+                            <td className="px-4 py-2.5 text-sm text-emerald-500 hidden md:table-cell">{row.status}</td>
                           </tr>
                         );
                       })}
@@ -254,23 +246,23 @@ export function ShowcaseSection() {
             threshold={0.2}
             delay={0.3}
           >
-            <div className="grid md:grid-cols-2 gap-0 border-b border-white/5">
+            <div className="grid md:grid-cols-2 gap-0 border-b border-border">
               {/* Bylaws */}
-              <div className="border-b md:border-b-0 md:border-r border-white/5">
-                <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2">
+              <div className="border-b md:border-b-0 md:border-r border-border">
+                <div className="px-4 py-3 border-b border-border flex items-center gap-2">
                   <FileText className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm font-medium text-white">Municipal Bylaws</span>
-                  <span className="text-xs text-gray-500 ml-auto">{BYLAW_ROWS.length}</span>
+                  <span className="text-sm font-medium text-foreground">Municipal Bylaws</span>
+                  <span className="text-xs text-muted-foreground ml-auto">{BYLAW_ROWS.length}</span>
                 </div>
                 <div className="p-4 space-y-2">
                   {BYLAW_ROWS.map((b) => (
                     <div
                       key={b.number}
-                      className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5"
+                      className="flex items-center justify-between p-3 rounded-lg bg-secondary border border-border"
                     >
                       <div>
-                        <p className="text-sm text-gray-200">{b.name}</p>
-                        <p className="text-xs text-gray-500 font-mono">No. {b.number}</p>
+                        <p className="text-sm text-foreground">{b.name}</p>
+                        <p className="text-xs text-muted-foreground font-mono">No. {b.number}</p>
                       </div>
                       <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-purple-500/10 text-purple-400">
                         {b.subject}
@@ -282,24 +274,24 @@ export function ShowcaseSection() {
 
               {/* Standards */}
               <div>
-                <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-amber-400" />
-                  <span className="text-sm font-medium text-white">Referenced Standards</span>
-                  <span className="text-xs text-gray-500 ml-auto">{STANDARD_ROWS.length}</span>
+                <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-[#d92f37]" />
+                  <span className="text-sm font-medium text-foreground">Referenced Standards</span>
+                  <span className="text-xs text-muted-foreground ml-auto">{STANDARD_ROWS.length}</span>
                 </div>
                 <div className="p-4 space-y-2">
                   {STANDARD_ROWS.map((s) => (
                     <div
                       key={s.doc}
-                      className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5"
+                      className="flex items-center justify-between p-3 rounded-lg bg-secondary border border-border"
                     >
                       <div className="min-w-0">
-                        <p className="text-sm text-gray-200 truncate">{s.title}</p>
-                        <p className="text-xs text-gray-500 font-mono">
+                        <p className="text-sm text-foreground truncate">{s.title}</p>
+                        <p className="text-xs text-muted-foreground font-mono">
                           {s.agency} {s.doc}
                         </p>
                       </div>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-amber-400/10 text-amber-400 flex-shrink-0 ml-3">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#d92f37]/10 text-[#d92f37] flex-shrink-0 ml-3">
                         {s.agency}
                       </span>
                     </div>
@@ -320,23 +312,23 @@ export function ShowcaseSection() {
             threshold={0.2}
             delay={0.4}
           >
-            <div className="border-b border-white/5">
-              <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-amber-400" />
-                <span className="text-sm font-medium text-white">AI Governing Brief</span>
-                <span className="text-xs text-gray-500 ml-2">Auto-generated</span>
+            <div className="border-b border-border">
+              <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-[#d92f37]" />
+                <span className="text-sm font-medium text-foreground">AI Governing Brief</span>
+                <span className="text-xs text-muted-foreground ml-2">Auto-generated</span>
               </div>
               <div className="px-6 md:px-8 py-6">
-                <div className="prose prose-sm prose-invert max-w-none text-gray-300 leading-relaxed text-sm">
+                <div className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-sm">
                   {BRIEF_TEXT.split("\n\n").map((para, i) => (
                     <p key={i} className="mb-3 last:mb-0">
                       {para.split(/(\*\*[^*]+\*\*)/).map((part, j) =>
                         part.startsWith("**") && part.endsWith("**") ? (
-                          <strong key={j} className="text-white font-semibold">
+                          <strong key={j} className="text-foreground font-semibold">
                             {part.slice(2, -2)}
                           </strong>
                         ) : part.startsWith("- ") ? (
-                          <span key={j} className="block pl-4 text-gray-400">
+                          <span key={j} className="block pl-4 text-muted-foreground">
                             {part}
                           </span>
                         ) : (
@@ -363,10 +355,10 @@ export function ShowcaseSection() {
           >
             <div className="grid md:grid-cols-2 gap-0">
               {/* Chat mockup */}
-              <div className="border-b md:border-b-0 md:border-r border-white/5">
-                <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-amber-400" />
-                  <span className="text-sm font-medium text-white">Chat with the Codes</span>
+              <div className="border-b md:border-b-0 md:border-r border-border">
+                <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-[#d92f37]" />
+                  <span className="text-sm font-medium text-foreground">Chat with the Codes</span>
                 </div>
                 <div className="p-4 space-y-3">
                   {/* User message */}
@@ -375,18 +367,18 @@ export function ShowcaseSection() {
                       U
                     </div>
                     <div className="flex-1 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
-                      <p className="text-sm text-gray-200">
+                      <p className="text-sm text-foreground">
                         What are the setback requirements for this lot?
                       </p>
                     </div>
                   </div>
                   {/* AI message */}
                   <div className="flex gap-3">
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-400/20 flex items-center justify-center text-[10px] text-amber-400 font-bold">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#d92f37]/20 flex items-center justify-center text-[10px] text-[#d92f37] font-bold">
                       AI
                     </div>
-                    <div className="flex-1 p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                      <p className="text-sm text-gray-300">
+                    <div className="flex-1 p-3 rounded-lg bg-secondary border border-border">
+                      <p className="text-sm text-muted-foreground">
                         For 800 Robson St in the C-5 zone, the Vancouver Zoning By-law requires a
                         0 ft front setback, 0 ft side setback, and a height limit based on view cone
                         analysis. Refer to Section 5.9 of the Zoning and Development By-law No. 3575...
@@ -394,11 +386,11 @@ export function ShowcaseSection() {
                     </div>
                   </div>
                   {/* Input */}
-                  <div className="flex items-center gap-2 p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                    <span className="text-sm text-gray-500 flex-1">
+                  <div className="flex items-center gap-2 p-3 rounded-lg bg-secondary border border-border">
+                    <span className="text-sm text-muted-foreground flex-1">
                       Ask follow-up questions about this site...
                     </span>
-                    <span className="px-3 py-1 rounded bg-amber-400/10 text-amber-400 text-xs font-medium">
+                    <span className="px-3 py-1 rounded bg-[#d92f37]/10 text-[#d92f37] text-xs font-medium">
                       Ask
                     </span>
                   </div>
@@ -407,21 +399,21 @@ export function ShowcaseSection() {
 
               {/* Reportly handoff CTA */}
               <div className="flex flex-col items-center justify-center p-8 text-center">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400/20 to-[#00ffcc]/20 border border-amber-400/20 flex items-center justify-center mb-4">
-                  <ExternalLink className="w-7 h-7 text-amber-400" />
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+                  <ExternalLink className="w-7 h-7 text-primary" />
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">
-                  Create Report with These Codes
+                <h4 className="text-lg font-semibold text-foreground mb-2">
+                  Create a report from these codes
                 </h4>
-                <p className="text-sm text-gray-400 mb-5 max-w-xs">
-                  One click sends the verified jurisdiction stack and code references
-                  directly into Reportly. No re-entering data.
+                <p className="text-sm text-muted-foreground mb-5 max-w-xs">
+                  One click drops the verified jurisdiction stack and code references straight
+                  into Reportly. Nothing to re-type.
                 </p>
-                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400/20 to-[#00ffcc]/20 border border-amber-400/30 text-amber-400 text-sm font-semibold">
+                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm font-semibold">
                   <FileText className="w-4 h-4" />
                   Prepare Report Context
                 </div>
-                <p className="text-[11px] text-gray-600 mt-3">
+                <p className="text-[11px] text-muted-foreground mt-3">
                   Part of the VibeOps suite: MapleCodes + Reportly
                 </p>
               </div>

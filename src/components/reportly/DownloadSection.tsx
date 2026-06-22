@@ -28,11 +28,11 @@ const PLATFORM_ICONS: Record<string, typeof Monitor> = {
 function statusLabel(status: string): { text: string; className: string } {
   switch (status) {
     case "beta":
-      return { text: "Beta", className: "bg-[#00ffcc]/10 text-[#00ffcc] border border-[#00ffcc]/30" };
+      return { text: "Beta", className: "text-primary" };
     case "beta-unsigned":
-      return { text: "Beta · Internal", className: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30" };
+      return { text: "Beta · Internal", className: "text-yellow-500" };
     default:
-      return { text: "Coming Soon", className: "bg-white/5 text-gray-400 border border-white/10" };
+      return { text: "Coming Soon", className: "text-muted-foreground" };
   }
 }
 
@@ -51,10 +51,7 @@ export function DownloadSection() {
   const available = macPrimary?.available ?? false;
 
   return (
-    <section className="relative py-20 px-4 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#0a0a0f] to-[#0a0a0f]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/20 to-transparent" />
-
+    <section className="relative py-20 px-4 border-t border-border">
       <div className="container mx-auto max-w-5xl relative z-10">
         <AnimatedContent
           distance={40}
@@ -67,16 +64,16 @@ export function DownloadSection() {
         >
           {/* Section header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] font-semibold mb-4 border border-white/10 bg-white/5 text-gray-400">
+            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-semibold mb-4 text-muted-foreground">
               <Download className="w-3.5 h-3.5" />
               Desktop App
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Reportly for{" "}
-              <span className="text-[#00ffcc]">Desktop</span>
+              <span className="text-primary">desktop</span>
             </h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
-              The full Reportly workflow in a native macOS app, with native file
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              The full Reportly workflow in a native macOS app: native file
               dialogs, drag-and-drop uploads, keyboard shortcuts, and one-click
               export to Word or PDF.
             </p>
@@ -85,34 +82,32 @@ export function DownloadSection() {
           {/* Platform cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
             {/* macOS Apple Silicon - primary */}
-            <div className="md:col-span-2 relative p-6 rounded-2xl bg-[rgba(10,10,20,0.8)] border border-[#00ffcc]/20 flex flex-col gap-4">
-              <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/30 to-transparent" />
-
+            <div className="md:col-span-2 relative p-6 rounded-2xl bg-card border border-border shadow-sm flex flex-col gap-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20">
-                    <Monitor className="w-5 h-5 text-[#00ffcc]" />
+                  <div className="p-2.5 rounded-xl bg-secondary border border-border">
+                    <Monitor className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-white font-semibold">macOS</p>
-                    <p className="text-xs text-gray-500">Apple Silicon · Intel</p>
+                    <p className="text-foreground font-semibold">macOS</p>
+                    <p className="text-xs text-muted-foreground">Apple Silicon · Intel</p>
                   </div>
                 </div>
-                <span className={`text-[10px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded-full ${status.className}`}>
+                <span className={`text-[10px] uppercase tracking-wider font-semibold ${status.className}`}>
                   {status.text}
                 </span>
               </div>
 
-              <div className="text-sm text-gray-400 leading-relaxed">
-                Requires macOS 12 Monterey or later. Loads your Reportly account,
-                same login, same reports, native window.
+              <div className="text-sm text-muted-foreground leading-relaxed">
+                Needs macOS 12 Monterey or later. Same login, same reports, in a
+                native window.
               </div>
 
               {available && macPrimary?.path ? (
                 <a
                   href={macPrimary.path}
                   download
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   Download for macOS
@@ -123,14 +118,14 @@ export function DownloadSection() {
                   )}
                 </a>
               ) : (
-                <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-gray-500 text-sm cursor-not-allowed select-none">
+                <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary border border-border text-muted-foreground text-sm cursor-not-allowed select-none">
                   <Clock className="w-4 h-4" />
                   <span>Signed build coming soon</span>
                 </div>
               )}
 
               {macPrimary?.note && (
-                <p className="text-[11px] text-gray-600 leading-relaxed">
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
                   {macPrimary.note}
                 </p>
               )}
@@ -145,19 +140,19 @@ export function DownloadSection() {
               ].map(({ icon: Icon, label, sub, href }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-3 p-4 rounded-xl bg-[rgba(10,10,20,0.6)] border border-white/8"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border shadow-sm"
                 >
-                  <div className="p-2 rounded-lg bg-white/5 border border-white/10">
-                    <Icon className="w-4 h-4 text-gray-500" />
+                  <div className="p-2 rounded-lg bg-secondary border border-border">
+                    <Icon className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-300 font-medium">{label}</p>
+                    <p className="text-sm text-foreground font-medium">{label}</p>
                     {href ? (
-                      <a href={href} target="_blank" rel="noopener noreferrer" className="text-xs text-[#00ffcc] hover:underline">
+                      <a href={href} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
                         {sub}
                       </a>
                     ) : (
-                      <p className="text-xs text-gray-600">{sub}</p>
+                      <p className="text-xs text-muted-foreground">{sub}</p>
                     )}
                   </div>
                 </div>
@@ -179,9 +174,9 @@ export function DownloadSection() {
             ].map((f) => (
               <div
                 key={f}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/3 border border-white/8 text-xs text-gray-400"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary border border-border text-xs text-muted-foreground"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00ffcc]/60 flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                 {f}
               </div>
             ))}

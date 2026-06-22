@@ -22,6 +22,14 @@ export default function DustField() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Resolve the theme primary color so dust tints with the brand instead
+    // of a hardcoded neon teal. Falls back to a restrained tone.
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue('--primary')
+      .trim();
+    const primaryHsl = raw ? `hsl(${raw}` : 'hsl(168 40% 45%';
+    const particleColor = (alpha: number) => `${primaryHsl} / ${alpha})`;
+
     let animationId: number;
     let particles: Particle[] = [];
 
@@ -65,7 +73,7 @@ export default function DustField() {
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 204, ${p.opacity})`;
+        ctx.fillStyle = particleColor(p.opacity);
         ctx.fill();
       }
 

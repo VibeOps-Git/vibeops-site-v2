@@ -27,7 +27,7 @@ export default function MapleCodes() {
     <>
       <SEO
         title="Canadian Building Code Intelligence for AE Teams - MapleCodes"
-        description="MapleCodes resolves the full federal, provincial, and municipal building code stack for any Canadian project address. Built for architects, engineers, and construction administrators."
+        description="MapleCodes resolves the full federal, provincial, and municipal building code stack for any Canadian project address. Built for architects and engineers."
         canonical="https://www.vibeops.ca/maplecodes"
       />
       <div className="relative">

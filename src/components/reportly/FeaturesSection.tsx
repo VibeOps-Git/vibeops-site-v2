@@ -5,7 +5,7 @@ const features = [
   {
     icon: FileText,
     title: "Your Templates, Automated",
-    description: "Upload your existing Word and Excel templates. Reportly maps your fields and produces reports in your exact format.",
+    description: "Upload your existing Word template and drop in your project data (PDF, Excel, or Word). Reportly maps your fields and produces reports in your exact format.",
     highlight: true,
   },
   {
@@ -40,19 +40,9 @@ const features = [
   },
 ];
 
-const competitors = [
-  { name: "Domo", checks: [false, true, false, true, false, false] },
-  { name: "Jaspersoft", checks: [false, false, false, false, false, false] },
-  { name: "Autodesk CC", checks: [true, false, false, true, false, true] },
-  { name: "Power BI", checks: [false, true, false, true, true, false] },
-];
-
 export function FeaturesSection() {
   return (
     <section className="relative py-24 px-4">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#0a0a0f] to-[#0a0a0f]" />
-
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section header */}
         <AnimatedContent
@@ -65,15 +55,15 @@ export function FeaturesSection() {
           threshold={0.2}
         >
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
+            <span className="inline-block text-xs uppercase tracking-[0.2em] text-primary mb-4">
               Why Reportly
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              The Only Solution Built for{" "}
-              <span className="text-[#00ffcc]">Civil Engineering</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              Built for{" "}
+              <span className="text-primary">civil engineering</span>, not generic docs
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Not a generic document tool. Reportly is purpose-built for the way civil and construction engineers actually produce reports.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Reportly is shaped around the way civil and construction engineers actually write reports.
             </p>
           </div>
         </AnimatedContent>
@@ -92,27 +82,24 @@ export function FeaturesSection() {
               threshold={0.2}
               delay={Math.min(index * 0.08, 0.4)}
             >
-              <div className="group relative p-6 rounded-2xl bg-[rgba(10,10,20,0.6)] border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-[#00ffcc]/20 hover:bg-[rgba(10,10,20,0.8)] h-full">
-                {/* Top edge glow */}
-                <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
+              <div className="group relative p-6 rounded-2xl bg-card border border-border shadow-sm transition-colors duration-300 hover:border-primary/40 h-full">
                 {/* Icon */}
-                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20 mb-4">
-                  <feature.icon className="w-6 h-6 text-[#00ffcc]" />
+                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-secondary border border-border mb-4">
+                  <feature.icon className="w-6 h-6 text-primary" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg font-semibold text-white mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {feature.description}
                 </p>
 
                 {/* Check badge */}
                 <div className="absolute top-4 right-4">
-                  <div className="w-6 h-6 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/30 flex items-center justify-center">
-                    <Check className="w-3.5 h-3.5 text-[#00ffcc]" />
+                  <div className="w-6 h-6 rounded-full bg-secondary border border-border flex items-center justify-center">
+                    <Check className="w-3.5 h-3.5 text-primary" />
                   </div>
                 </div>
               </div>
@@ -132,18 +119,18 @@ export function FeaturesSection() {
           delay={0.4}
         >
           <div className="text-center">
-            <div className="inline-flex flex-wrap items-center justify-center gap-4 p-4 rounded-2xl bg-[rgba(10,10,20,0.4)] border border-white/5">
-              <span className="text-sm text-gray-500">Compared to:</span>
+            <div className="inline-flex flex-wrap items-center justify-center gap-4 p-4 rounded-2xl bg-card border border-border shadow-sm">
+              <span className="text-sm text-muted-foreground">Compared to:</span>
               {["Domo", "Jaspersoft", "Autodesk CC", "Power BI"].map((name) => (
                 <span
                   key={name}
-                  className="text-sm text-gray-400 px-3 py-1 rounded-full bg-white/5"
+                  className="text-sm text-muted-foreground"
                 >
                   {name}
                 </span>
               ))}
-              <span className="text-sm text-[#00ffcc]">
-                Only Reportly checks all boxes ✓
+              <span className="text-sm text-primary font-medium">
+                Only Reportly does all of it.
               </span>
             </div>
           </div>

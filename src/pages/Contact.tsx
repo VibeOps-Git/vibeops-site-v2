@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Mail, User, Zap, Signal } from "lucide-react";
+import { Calendar, Mail, User } from "lucide-react";
 import { SEO } from "@/components/SEO";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 type ContactChannel = {
   label: string;
   person: string;
+  role?: string;
+  about?: string;
   email: string;
   blurb: string;
   subject: string;
@@ -22,11 +24,14 @@ const CALENDLY_URL =
 
 const contactChannels: ContactChannel[] = [
   {
-    label: "Executive & Product Strategy",
+    label: "Product & Strategy",
     person: "Zander Dent",
+    role: "CEO & Co-Founder",
+    about:
+      "Civil engineer turned founder. Runs product, customer discovery, and most of our investor conversations.",
     email: "zander@vibeops.ca",
     blurb:
-      "Big-picture questions, partnerships, and how Reportly or custom tools could fit your firm.",
+      "Big-picture questions, partnerships, and whether Reportly or a custom build fits your firm.",
     subject: "VibeOps / Reportly | Strategy & Product Fit",
     body: `Hi Zander,
 
@@ -47,9 +52,12 @@ Thanks,
   {
     label: "Sales & Partnerships",
     person: "Felix Stewart",
+    role: "Director of Sales and Partnerships",
+    about:
+      "Civil engineer and co-owner. Handles sales, partnerships, pricing, and pilots.",
     email: "felix@vibeops.ca",
     blurb:
-      "Pricing, pilots, procurement, and mapping automation to business outcomes and ROI.",
+      "Pricing, pilots, procurement, and tying automation back to real business outcomes.",
     subject: "VibeOps | Sales / Partnership Inquiry",
     body: `Hi Felix,
 
@@ -72,9 +80,12 @@ Best,
   {
     label: "Architecture & Development",
     person: "Qazi Omair Ahmed",
+    role: "CTO & Co-Founder",
+    about:
+      "Builds the stack the product runs on. Started his first company at 16 and has shipped production AI at xAI, Scale AI, and UBC.",
     email: "omair@vibeops.ca",
     blurb:
-      "Technical architecture, integrations, data flows, and how the automation engine works under the hood.",
+      "Technical architecture, integrations, data flows, and how the engine works under the hood.",
     subject: "VibeOps | Technical / Integration Discussion",
     body: `Hi Omair,
 
@@ -99,15 +110,15 @@ Best,
     person: "VibeOps Team",
     email: "team@vibeops.ca",
     blurb:
-      "General questions, routing, and anything that does not fit one specific contact.",
+      "General questions, or anything that doesn't map neatly to one person.",
     subject: "VibeOps | Team Inquiry",
     body: `Hi VibeOps Team,
 
-I’m reaching out with a general question and wanted to contact the right person on your side.
+I'm reaching out with a general question and wanted to find the right person on your side.
 
 Context:
 - Firm / team:
-- What we’re looking for:
+- What we're looking for:
 - Timeline:
 
 Thanks,
@@ -180,49 +191,10 @@ export default function Contact() {
     <>
       <SEO
         title="Book a Demo or Workflow Audit"
-        description="Book a free 30-minute workflow audit with VibeOps. Show us the reporting or compliance workflow slowing your AE team down. We'll show you what software built around it looks like."
+        description="Book a free 30-minute workflow audit with VibeOps. Show us the reporting or code compliance work slowing your AE team down and we'll show what to build."
         canonical="https://www.vibeops.ca/contact"
       />
       <div className="pt-24 pb-16 px-4 relative overflow-hidden">
-        {/* Tech Grid Background */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0, 255, 204, 0.2) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 204, 0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: "60px 60px",
-          }}
-        />
-      </div>
-
-      {/* Animated Circuit Lines */}
-      <motion.div
-        className="fixed top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/50 to-transparent pointer-events-none z-0"
-        animate={{
-          opacity: [0.4, 0.8, 0.4],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="fixed bottom-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/50 to-transparent pointer-events-none z-0"
-        animate={{
-          opacity: [0.8, 0.4, 0.8],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1.5,
-        }}
-      />
-
       <div className="container mx-auto max-w-6xl relative z-10 w-full">
         {/* Header */}
         <motion.div
@@ -231,17 +203,15 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Signal className="w-5 h-5 text-[#00ffcc] animate-pulse" />
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc]">
-              Get in Touch
-            </p>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            Book a Demo or Workflow Audit
+          <p className="text-xs uppercase tracking-[0.3em] text-primary mb-3">
+            Get in touch
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-3">
+            Book a demo or workflow audit
           </h1>
-          <p className="text-gray-400 text-base max-w-2xl mx-auto">
-            Show us the reporting or compliance workflow slowing your team down. We'll show you what software built around it looks like.
+          <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+            Show us the reporting or compliance workflow that's slowing your team down.
+            We'll show you what software built around it looks like.
           </p>
         </motion.div>
 
@@ -249,19 +219,16 @@ export default function Contact() {
         <AnimatePresence>
           {connecting && (
             <motion.div
-              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center"
+              className="fixed inset-0 z-50 bg-background/90 backdrop-blur-sm flex items-center justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Zap className="w-6 h-6 text-[#00ffcc] animate-pulse" />
-                  <p className="text-[#00ffcc] font-mono">ESTABLISHING CONNECTION</p>
-                </div>
-                <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+                <p className="text-primary font-medium mb-4">Connecting you...</p>
+                <div className="w-64 h-1 bg-secondary rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-[#00ffcc]"
+                    className="h-full bg-primary"
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
                     transition={{ duration: 0.5 }}
@@ -286,23 +253,19 @@ export default function Contact() {
               {/* Calendar Option */}
               <motion.button
                 onClick={() => handleModeSwitch("calendar")}
-                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#00ffcc]/40 bg-gradient-to-br from-[#00ffcc]/15 via-[#00ffcc]/8 to-transparent hover:border-[#00ffcc]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
-                whileHover={{ scale: 1.02, y: -4 }}
+                className="group p-6 md:p-8 rounded-2xl border border-border bg-card shadow-sm hover:border-primary/40 transition-colors text-left"
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffcc]/25 rounded-full blur-3xl group-hover:bg-[#00ffcc]/35 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#00ffcc]/15 rounded-full blur-2xl group-hover:bg-[#00ffcc]/20 transition-all" />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <Calendar className="w-12 h-12 text-[#00ffcc] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-2 relative z-10">
-                  Schedule Call
+                <Calendar className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
+                  Book a call
                 </h3>
-                <p className="text-gray-200 text-sm mb-5 relative z-10 leading-relaxed">
-                  Book a 30-minute strategy session via Calendly
+                <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
+                  Grab 30 minutes with us on Calendly.
                 </p>
-                <div className="flex items-center gap-2 text-[#00ffcc] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
-                  <span className="font-semibold">INITIATE SESSION</span>
+                <div className="flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
+                  <span>Pick a time</span>
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -316,23 +279,19 @@ export default function Contact() {
               {/* Email Option */}
               <motion.button
                 onClick={() => handleModeSwitch("email")}
-                className="group relative p-6 md:p-8 rounded-xl border-2 border-[#00ffcc]/40 bg-gradient-to-br from-[#00ffcc]/15 via-[#00ffcc]/8 to-transparent hover:border-[#00ffcc]/70 hover:shadow-[0_0_30px_rgba(0,255,204,0.3)] transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
-                whileHover={{ scale: 1.02, y: -4 }}
+                className="group p-6 md:p-8 rounded-2xl border border-border bg-card shadow-sm hover:border-primary/40 transition-colors text-left"
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffcc]/25 rounded-full blur-3xl group-hover:bg-[#00ffcc]/35 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#00ffcc]/15 rounded-full blur-2xl group-hover:bg-[#00ffcc]/20 transition-all" />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <Mail className="w-12 h-12 text-[#00ffcc] mb-4 relative z-10 group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]" />
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-2 relative z-10">
-                  Direct Email
+                <Mail className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
+                  Send us a message
                 </h3>
-                <p className="text-gray-200 text-sm mb-5 relative z-10 leading-relaxed">
-                  Contact specific team members directly
+                <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
+                  Email a specific person on the team directly.
                 </p>
-                <div className="flex items-center gap-2 text-[#00ffcc] text-xs font-mono relative z-10 group-hover:gap-3 transition-all">
-                  <span className="font-semibold">OPEN CHANNEL</span>
+                <div className="flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
+                  <span>Write a message</span>
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -357,22 +316,22 @@ export default function Contact() {
               <Button
                 onClick={() => handleModeSwitch("initial")}
                 variant="outline"
-                className="mb-6 border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10"
+                className="mb-6 border-border text-foreground hover:bg-secondary"
               >
-                ← Back to Options
+                ← Back to options
               </Button>
 
-              <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6 overflow-hidden">
+              <div className="rounded-2xl border border-border bg-card shadow-sm p-6 overflow-hidden">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#00ffcc] rounded-full animate-pulse" />
-                    <p className="text-[#00ffcc] font-mono text-sm">LIVE SCHEDULING INTERFACE</p>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                    <p className="text-foreground text-sm font-medium">Pick a time that works</p>
                   </div>
                   <a
                     href={CALENDLY_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-white/40 hover:text-white/70 underline transition-colors"
+                    className="text-xs text-muted-foreground hover:text-foreground underline transition-colors"
                   >
                     Open in new tab →
                   </a>
@@ -403,15 +362,15 @@ export default function Contact() {
               <Button
                 onClick={() => handleModeSwitch("initial")}
                 variant="outline"
-                className="mb-6 border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10"
+                className="mb-6 border-border text-foreground hover:bg-secondary"
               >
-                ← Back to Options
+                ← Back to options
               </Button>
 
-              <div className="rounded-2xl border border-[#00ffcc]/20 bg-black/40 backdrop-blur-xl p-6">
+              <div className="rounded-2xl border border-border bg-card shadow-sm p-6">
                 <div className="flex items-center gap-2 mb-6">
-                  <User className="w-5 h-5 text-[#00ffcc]" />
-                  <p className="text-[#00ffcc] font-mono text-sm">SELECT TEAM MEMBER</p>
+                  <User className="w-5 h-5 text-primary" />
+                  <p className="text-foreground text-sm font-medium">Pick who to write to</p>
                 </div>
 
                 <div className="space-y-4">
@@ -423,28 +382,39 @@ export default function Contact() {
                       <motion.div
                         key={channel.email}
                         id={`contact-channel-${channel.email}`}
-                        className={`rounded-xl p-5 border transition-all duration-300 ${
+                        className={`rounded-xl p-5 border transition-colors duration-300 ${
                           isActive
-                            ? "border-[#00ffcc]/50 bg-[#00ffcc]/10"
-                            : "border-[#00ffcc]/20 bg-white/5 hover:border-[#00ffcc]/40 hover:bg-white/10"
+                            ? "border-primary/50 bg-primary/10"
+                            : "border-border bg-secondary hover:border-primary/40"
                         }`}
                         whileHover={{ scale: 1.01 }}
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div>
-                            <p className="text-xs uppercase tracking-[0.2em] text-[#00ffcc] mb-1">
+                            <p className="text-xs uppercase tracking-[0.2em] text-primary mb-1">
                               {channel.label}
                             </p>
-                            <p className="font-semibold text-white">
+                            <p className="font-semibold text-foreground">
                               {channel.person}
                             </p>
-                            <p className="text-xs text-gray-500 font-mono">
+                            {channel.role && (
+                              <p className="text-xs text-muted-foreground">
+                                {channel.role}
+                              </p>
+                            )}
+                            <p className="text-xs text-muted-foreground">
                               {channel.email}
                             </p>
                           </div>
                         </div>
 
-                        <p className="text-sm text-gray-400 mb-4">
+                        {channel.about && (
+                          <p className="text-sm text-foreground/80 mb-3">
+                            {channel.about}
+                          </p>
+                        )}
+
+                        <p className="text-sm text-muted-foreground mb-4">
                           {channel.blurb}
                         </p>
 
@@ -453,13 +423,13 @@ export default function Contact() {
                           size="sm"
                           className={`text-xs ${
                             isActive
-                              ? "bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90"
-                              : "bg-white/10 text-white border-white/20 hover:bg-white/20"
+                              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                              : "bg-secondary text-foreground border-border hover:bg-secondary/80"
                           }`}
                           variant={isActive ? "default" : "outline"}
                           onClick={() => handleOpenComposer(channel)}
                         >
-                          {isActive ? `Composing to ${firstName}` : `Contact ${firstName}`}
+                          {isActive ? `Writing to ${firstName}` : `Contact ${firstName}`}
                         </Button>
 
                         <AnimatePresence>
@@ -471,51 +441,51 @@ export default function Contact() {
                               transition={{ duration: 0.3 }}
                               className="mt-4 overflow-hidden"
                             >
-                              <div className="p-4 rounded-xl border border-[#00ffcc]/30 bg-black/40 space-y-4">
+                              <div className="p-4 rounded-xl border border-border bg-card space-y-4">
                                 <div>
-                                  <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
-                                    TO
+                                  <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-2">
+                                    To
                                   </p>
-                                  <p className="text-white font-mono text-sm">
+                                  <p className="text-foreground text-sm">
                                     {selectedChannel.email}
                                   </p>
                                 </div>
 
                                 <div>
-                                  <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
-                                    SUBJECT
+                                  <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-2">
+                                    Subject
                                   </p>
                                   <Input
                                     value={draftSubject}
                                     onChange={(e) => setDraftSubject(e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white font-mono"
+                                    className="bg-secondary border-border text-foreground"
                                   />
                                 </div>
 
                                 <div>
-                                  <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
-                                    MESSAGE
+                                  <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-2">
+                                    Message
                                   </p>
                                   <Textarea
                                     value={draftBody}
                                     onChange={(e) => setDraftBody(e.target.value)}
                                     rows={8}
-                                    className="bg-white/5 border-white/20 text-white font-mono text-sm"
+                                    className="bg-secondary border-border text-foreground text-sm"
                                   />
                                 </div>
 
                                 <div className="flex gap-3 pt-2">
                                   <Button
                                     type="button"
-                                    className="flex-1 bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90 font-mono"
+                                    className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
                                     onClick={handleSendEmail}
                                   >
-                                    SEND →
+                                    Send message →
                                   </Button>
                                   <Button
                                     type="button"
                                     variant="outline"
-                                    className="border-white/20 text-white hover:bg-white/10"
+                                    className="border-border text-foreground hover:bg-secondary"
                                     onClick={() => setSelectedChannel(null)}
                                   >
                                     Clear
@@ -530,8 +500,8 @@ export default function Contact() {
                   })}
                 </div>
 
-                <p className="text-xs text-gray-500 text-center mt-6 font-mono">
-                  Not sure who to contact? Zander or Felix are good defaults.
+                <p className="text-xs text-muted-foreground text-center mt-6">
+                  Not sure who to write to? Zander or Felix are safe bets.
                 </p>
               </div>
             </motion.div>

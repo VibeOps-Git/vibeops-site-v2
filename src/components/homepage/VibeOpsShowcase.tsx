@@ -474,7 +474,7 @@ export function VibeOpsShowcaseScreen() {
   const scene = rm ? 'reportly' : SCENES[sceneIdx];
 
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: '#070d1a' }}>
+    <div className="dark w-full h-full flex flex-col overflow-hidden text-white" style={{ background: '#070d1a' }}>
       <ChromeBar scene={scene} />
 
       <div className="flex-1 overflow-hidden relative min-h-0">

@@ -313,7 +313,7 @@ export function ShowcaseSection() {
       {/* Fixed content */}
       {isInView && (
         <div
-          className="fixed inset-0 z-20 flex items-center bg-[#0a0a0f] overflow-hidden"
+          className="fixed inset-0 z-20 flex items-center bg-background overflow-hidden"
           style={{
             opacity: containerOpacity,
             pointerEvents: isInView && enterProgress > 0.5 ? "auto" : "none",
@@ -321,28 +321,7 @@ export function ShowcaseSection() {
           onMouseEnter={() => setIsAutoScrollPaused(true)}
           onMouseLeave={() => setIsAutoScrollPaused(false)}
         >
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00ffcc]/5 to-transparent pointer-events-none" />
-
-          {/* Background orbs */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div
-              className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00ffcc]/10 rounded-full blur-3xl"
-              style={{
-                transform: `translate(${scrollProgress * 50}px, ${scrollProgress * 30}px)`,
-                opacity: (0.2 + enterProgress * 0.2 + introProgress * 0.4),
-              }}
-            />
-            <div
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#00ffcc]/5 rounded-full blur-3xl"
-              style={{
-                transform: `translate(${-scrollProgress * 40}px, ${-scrollProgress * 20}px)`,
-                opacity: (0.1 + enterProgress * 0.2 + introProgress * 0.4),
-              }}
-            />
-          </div>
-
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-16 pb-4 my-auto relative z-10">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-28 pb-4 my-auto relative z-10">
             {/* Main content - centered layout */}
             <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-12 lg:gap-16">
               {/* Description - left side */}
@@ -362,38 +341,38 @@ export function ShowcaseSection() {
               >
                 {isShowingLaunch ? (
                   <div className="lg:text-left text-center">
-                    <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
+                    <span className="inline-block text-xs uppercase tracking-[0.2em] text-primary mb-4">
                       The Solution
                     </span>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                      Meet <span className="text-[#00ffcc]">Reportly</span>
+                    <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                      Meet <span className="text-primary">Reportly</span>
                     </h3>
-                    <p className="text-gray-400 mb-6">
-                      Automated, audit-ready reports from your existing templates.
+                    <p className="text-muted-foreground mb-6">
+                      Audit-ready reports built from the templates you already use.
                     </p>
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
-                          <span className="text-[#00ffcc] text-sm">✓</span>
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-secondary border border-border flex items-center justify-center mt-0.5">
+                          <span className="text-primary text-sm">✓</span>
                         </div>
-                        <p className="text-gray-300">
-                          <span className="text-white font-medium">Upload once</span>. Your existing Word and Excel templates work instantly
+                        <p className="text-muted-foreground">
+                          <span className="text-foreground font-medium">Upload once</span>. Your Word template works right away.
                         </p>
                       </div>
                       <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
-                          <span className="text-[#00ffcc] text-sm">✓</span>
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-secondary border border-border flex items-center justify-center mt-0.5">
+                          <span className="text-primary text-sm">✓</span>
                         </div>
-                        <p className="text-gray-300">
-                          <span className="text-white font-medium">AI-powered</span>. Understands engineering context and terminology
+                        <p className="text-muted-foreground">
+                          <span className="text-foreground font-medium">Knows the work</span>. It reads engineering context and terminology, not just words.
                         </p>
                       </div>
                       <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00ffcc]/20 flex items-center justify-center mt-0.5">
-                          <span className="text-[#00ffcc] text-sm">✓</span>
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-secondary border border-border flex items-center justify-center mt-0.5">
+                          <span className="text-primary text-sm">✓</span>
                         </div>
-                        <p className="text-gray-300">
-                          <span className="text-white font-medium">Audit-ready</span>. Compliant reports every time, no manual checks
+                        <p className="text-muted-foreground">
+                          <span className="text-foreground font-medium">Audit-ready</span>. Code-checked drafts, so you review instead of re-check.
                         </p>
                       </div>
                     </div>
@@ -444,13 +423,13 @@ export function ShowcaseSection() {
                 opacity: finalContentOpacity,
               }}
             >
-              <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-1">
-                {isShowingLaunch ? "Introducing Reportly" : "See How It Works"}
+              <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-foreground mb-1">
+                {isShowingLaunch ? "Introducing Reportly" : "How it works"}
               </h2>
-              <p className="text-gray-400 text-sm">
+              <p className="text-muted-foreground text-sm">
                 {isShowingLaunch
-                  ? "Your automated report generation platform"
-                  : "Three simple steps to transform your reporting workflow"
+                  ? "Report drafting on autopilot, for civil engineers"
+                  : "From template to delivered report, step by step"
                 }
               </p>
             </div>
@@ -466,10 +445,10 @@ export function ShowcaseSection() {
               <button
                 onClick={goToPrev}
                 disabled={isFirst}
-                className={`p-2 sm:p-3 md:p-4 rounded-full border transition-all duration-300 ${
+                className={`p-2 sm:p-3 md:p-4 rounded-full border transition-colors duration-300 ${
                   isFirst
-                    ? "border-white/10 text-white/20 cursor-not-allowed"
-                    : "border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 hover:border-[#00ffcc]/50"
+                    ? "border-border text-muted-foreground/40 cursor-not-allowed"
+                    : "border-border text-primary hover:bg-secondary hover:border-primary/50"
                 }`}
                 aria-label="Previous step"
               >
@@ -499,17 +478,16 @@ export function ShowcaseSection() {
                     >
                       {/* Container that morphs from dot to bar */}
                       <div
-                        className="relative h-2 rounded-full overflow-hidden transition-all duration-300 ease-out"
+                        className={`relative h-2 rounded-full overflow-hidden transition-all duration-300 ease-out ${
+                          isUpcoming ? "bg-border" : "bg-primary/20"
+                        }`}
                         style={{
                           width: isExpanded ? "min(4.5rem, calc((100vw - 140px) / 6))" : "0.5rem",
-                          backgroundColor: isUpcoming
-                            ? "rgba(255, 255, 255, 0.2)"
-                            : "rgba(0, 255, 204, 0.2)",
                         }}
                       >
                         {/* Fill bar */}
                         <div
-                          className="absolute inset-y-0 left-0 bg-[#00ffcc] rounded-full"
+                          className="absolute inset-y-0 left-0 bg-primary rounded-full"
                           style={{
                             width: `${stepFill * 100}%`,
                             transition: "width 0.05s linear",
@@ -519,10 +497,11 @@ export function ShowcaseSection() {
 
                       {/* Step number - only show when expanded */}
                       <span
-                        className="absolute -top-5 text-[10px] font-medium transition-all duration-300"
+                        className={`absolute -top-5 text-[10px] font-medium transition-all duration-300 ${
+                          isActive ? "text-primary" : isCompleted ? "text-primary/60" : "text-muted-foreground"
+                        }`}
                         style={{
                           opacity: isExpanded ? 1 : 0,
-                          color: isActive ? "#00ffcc" : isCompleted ? "rgba(0, 255, 204, 0.6)" : "rgba(255, 255, 255, 0.4)",
                         }}
                       >
                         {i + 1}
@@ -535,10 +514,10 @@ export function ShowcaseSection() {
               <button
                 onClick={goToNext}
                 disabled={isLast}
-                className={`p-2 sm:p-3 md:p-4 rounded-full border transition-all duration-300 ${
+                className={`p-2 sm:p-3 md:p-4 rounded-full border transition-colors duration-300 ${
                   isLast
-                    ? "border-white/10 text-white/20 cursor-not-allowed"
-                    : "border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 hover:border-[#00ffcc]/50"
+                    ? "border-border text-muted-foreground/40 cursor-not-allowed"
+                    : "border-border text-primary hover:bg-secondary hover:border-primary/50"
                 }`}
                 aria-label="Next step"
               >
@@ -551,7 +530,7 @@ export function ShowcaseSection() {
               className="hidden sm:block text-center mt-2 sm:mt-4"
               style={{ opacity: finalContentOpacity }}
             >
-              <span className="text-xs text-gray-400 transition-all duration-300">
+              <span className="text-xs text-muted-foreground transition-all duration-300">
                 Step {currentSceneIndex + 1}: {SCENES[currentSceneIndex]?.title}
               </span>
             </div>
@@ -562,11 +541,11 @@ export function ShowcaseSection() {
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                 style={{ opacity: Math.max(0, 1 - (enterProgress + introProgress) * 0.8) }}
               >
-                <span className="text-xs text-gray-500">
-                  {isAutoScrolling ? "Auto-playing..." : "Scroll to explore or wait"}
+                <span className="text-xs text-muted-foreground">
+                  {isAutoScrolling ? "Auto-playing..." : "Scroll, or just watch"}
                 </span>
-                <div className="w-5 h-8 rounded-full border-2 border-gray-500/50 flex justify-center pt-1.5">
-                  <div className="w-1 h-2 bg-gray-500/50 rounded-full animate-scroll-indicator" />
+                <div className="w-5 h-8 rounded-full border-2 border-border flex justify-center pt-1.5">
+                  <div className="w-1 h-2 bg-muted-foreground rounded-full animate-scroll-indicator" />
                 </div>
               </div>
             )}

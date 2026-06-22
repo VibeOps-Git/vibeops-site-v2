@@ -30,6 +30,17 @@ export default function SpaceField({ embedded = false }: { embedded?: boolean })
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Resolve the theme primary color so particles tint with the brand
+    // instead of a hardcoded neon teal. Falls back to a restrained tone.
+    const readPrimary = () => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue('--primary')
+        .trim();
+      return raw ? `hsl(${raw}` : 'hsl(168 40% 45%';
+    };
+    const primaryHsl = readPrimary();
+    const particleColor = (alpha: number) => `${primaryHsl} / ${alpha})`;
+
     let animationId: number;
     let time = 0;
 
@@ -126,14 +137,14 @@ export default function SpaceField({ embedded = false }: { embedded?: boolean })
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 204, ${drawOpacity})`;
+        ctx.fillStyle = particleColor(drawOpacity);
         ctx.fill();
 
         // Add subtle glow for larger/brighter particles
         if (p.size > 1.2 && drawOpacity > 0.25) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(0, 255, 204, ${drawOpacity * 0.15})`;
+          ctx.fillStyle = particleColor(drawOpacity * 0.15);
           ctx.fill();
         }
       }

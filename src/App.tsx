@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
@@ -28,6 +29,7 @@ function PageTracker() {
 }
 
 const App = () => (
+  <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -57,6 +59,7 @@ const App = () => (
       </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>
+  </ThemeProvider>
 );
 
 export default App;

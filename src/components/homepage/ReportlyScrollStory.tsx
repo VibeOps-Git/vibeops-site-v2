@@ -20,56 +20,56 @@ const STEPS = [
     id: 'problem' as StepId,
     num: '00', label: 'The Problem',
     eyebrow: 'The Reality',
-    heading: '3-5 months per engineer, gone to manual work.',
-    body: 'Word templates. Excel sheets. Field photos. Site notes. Code PDFs. All assembled by hand, on every project. 175+ AE firms told us the same thing.',
+    heading: '3 to 5 months an engineer, lost to busywork.',
+    body: 'Word templates. Excel sheets. Field photos. Site notes. Code PDFs. Stitched together by hand on every single project. We heard the same story from 200+ AE firms.',
     accent: '#ef4444',
   },
   {
     id: 'templates' as StepId,
     num: '01', label: 'Templates',
     eyebrow: 'Step 1 - Templates',
-    heading: 'Your firm\'s templates, loaded once.',
-    body: 'Upload your existing Word and Excel report templates. Reportly learns your firm\'s structure, headings, and formatting - no redesign, no migration.',
+    heading: 'Your templates, loaded once.',
+    body: 'Drop in the Word template you already use. Reportly picks up your structure, headings, and formatting. No redesign, no migration, nothing to relearn.',
     accent: '#34d399',
   },
   {
     id: 'data' as StepId,
     num: '02', label: 'Project Data',
     eyebrow: 'Step 2 - Project Data',
-    heading: 'Field data, photos, notes - all pulled in.',
-    body: 'Connect inspection data, field photographs with GPS tags, site observations, measurements, and Excel tables. Reportly maps them to your template structure automatically.',
+    heading: 'Field data, photos, notes. All pulled in.',
+    body: 'Connect your inspection data, GPS-tagged photos, site notes, measurements, and Excel tables. Reportly sorts it into the right spots in your template for you.',
     accent: '#34d399',
   },
   {
     id: 'codes' as StepId,
     num: '03', label: 'Building Codes',
     eyebrow: 'Step 3 - Building Codes',
-    heading: 'Every applicable code, grounded to the address.',
-    body: 'Reportly resolves the full regulatory stack per project address - federal, provincial, and municipal. Code references are grounded and cited automatically in the draft.',
+    heading: 'Every code that applies, tied to the address.',
+    body: 'Give it the project address and Reportly figures out the full code stack: federal, provincial, municipal. The right references get cited in the draft, automatically.',
     accent: '#34d399',
   },
   {
     id: 'generate' as StepId,
     num: '04', label: 'Generate & Edit',
     eyebrow: 'Step 4 - Generate & Edit',
-    heading: 'First draft in 3 minutes. Civil-specific AI.',
-    body: 'Embedded photos, code citations, executive summary, consistent formatting - generated in minutes by AI trained on civil engineering language, structure, and terminology.',
+    heading: 'First draft in minutes.',
+    body: 'Photos placed, codes cited, executive summary written, formatting consistent. Done in minutes by AI that actually speaks civil engineering, not generic chatbot fluff.',
     accent: '#34d399',
   },
   {
     id: 'qc' as StepId,
     num: '05', label: 'Quality Control',
     eyebrow: 'Step 5 - Quality Control',
-    heading: 'QA built into the workflow, not bolted on after.',
-    body: "Formatting standards, code citation checks, and QA checklists applied to your firm's requirements. Flag issues, add comments, and run sign-off approvals - all in one place.",
+    heading: 'QA is part of the work, not a scramble at the end.',
+    body: "Formatting rules, citation checks, and your firm's QA checklist run as you go. Flag issues, leave comments, get sign-off. All in one place instead of a dozen email threads.",
     accent: '#60a5fa',
   },
   {
     id: 'export' as StepId,
     num: '06', label: 'Export',
     eyebrow: 'Step 6 - Export',
-    heading: 'Client-ready output. Your format, your branding.',
-    body: '70% faster. 100% your templates. DOCX or PDF - code-compliant, professionally formatted, and ready for client delivery the way your firm has always done it.',
+    heading: 'Client-ready output. Your format, your name on it.',
+    body: '70% faster, 100% your templates. Export to DOCX or PDF, code-compliant and properly formatted, ready to send the way your firm has always sent it.',
     accent: '#34d399',
     cta: { label: 'Try Reportly', href: '/reportly' },
   },
@@ -546,7 +546,7 @@ function ShipVisual() {
           <Download className="w-4 h-4 text-emerald-400 flex-shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-bold text-white truncate">Structural_Bridge_Report_Final.docx</p>
-            <p className="text-[8.5px] text-emerald-400 mt-0.5 font-medium">QA-ready · Code-compliant · 3 min</p>
+            <p className="text-[8.5px] text-emerald-400 mt-0.5 font-medium">QA-ready · Code-compliant</p>
           </div>
         </div>
       </div>
@@ -560,13 +560,13 @@ function ShipVisual() {
 
 // embedded=true → renders flat (no card wrapper) for use inside WorkflowLaptopFrame
 // ─────────────────────────────────────────────────────────────────────────────
-// Templates visual - firm's Word/Excel templates loaded
+// Templates visual - firm's Word templates loaded (templates are Word only)
 // ─────────────────────────────────────────────────────────────────────────────
 function TemplatesVisual() {
   const templates = [
     { name: 'Structural_Assessment_Template.docx', type: 'Word', color: '#2b5ce6', sections: ['Executive Summary', 'Inspection Findings', 'Code References', 'Recommendations'] },
     { name: 'Bridge_Inspection_v4.docx', type: 'Word', color: '#2b5ce6', sections: ['Site Overview', 'Structural Condition', 'Load Analysis'] },
-    { name: 'QA_Checklist_Standard.xlsx', type: 'Excel', color: '#16a34a', sections: ['Pre-submission QA', 'Code Verification', 'Sign-off'] },
+    { name: 'Geotechnical_Report_Template.docx', type: 'Word', color: '#2b5ce6', sections: ['Site Conditions', 'Lab Results', 'Recommendations'] },
   ];
   return (
     <div className="space-y-2.5">
@@ -712,27 +712,14 @@ function WorkflowVisual({ activeStep, embedded = false }: { activeStep: StepId; 
   );
 
   if (embedded) {
-    return <div className="relative flex flex-col w-full">{inner}</div>;
+    return <div className="dark relative flex flex-col w-full bg-[#070d1a] text-white">{inner}</div>;
   }
 
   return (
     <div className="relative w-full max-w-[420px]">
       <div
-        aria-hidden="true"
-        className="absolute -inset-10 pointer-events-none"
-        style={{
-          background: activeStep === 'problem'
-            ? 'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(239,68,68,0.04) 0%, transparent 70%)'
-            : 'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(52,211,153,0.06) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        className="relative rounded-2xl overflow-hidden flex flex-col"
-        style={{
-          background: '#0a1220',
-          border: '1px solid rgba(255,255,255,0.16)',
-          boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.07)',
-        }}
+        className="dark relative rounded-2xl overflow-hidden flex flex-col border border-border shadow-sm text-white"
+        style={{ background: '#0a1220' }}
       >
         {inner}
       </div>
@@ -754,22 +741,22 @@ function WorkflowStepCard({
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <div ref={ref} className="py-14 border-b border-white/6 last:border-0">
+    <div ref={ref} className="py-14 border-b border-border last:border-0">
       <p
         className="text-[9px] font-black uppercase tracking-[0.35em] mb-3 leading-none transition-colors duration-500"
-        style={{ color: isActive ? step.accent : 'rgba(255,255,255,0.22)' }}
+        style={{ color: isActive ? step.accent : undefined }}
       >
-        {step.eyebrow}
+        <span className={isActive ? '' : 'text-muted-foreground'}>{step.eyebrow}</span>
       </p>
       <h3
-        className="font-black text-white leading-[1.05] tracking-[-0.035em] mb-4 transition-opacity duration-500"
+        className="font-black text-foreground leading-[1.05] tracking-[-0.035em] mb-4 transition-opacity duration-500"
         style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2.3rem)', opacity: isActive ? 1 : 0.38 }}
       >
         {step.heading}
       </h3>
       <p
-        className="text-[14px] leading-[1.75] max-w-sm transition-opacity duration-500"
-        style={{ color: 'rgba(255,255,255,0.52)', opacity: isActive ? 1 : 0.5 }}
+        className="text-[14px] leading-[1.75] max-w-sm text-muted-foreground transition-opacity duration-500"
+        style={{ opacity: isActive ? 1 : 0.5 }}
       >
         {step.body}
       </p>
@@ -779,8 +766,7 @@ function WorkflowStepCard({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.38, ease: EASE }}
-          className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[13px] font-bold"
-          style={{ boxShadow: '0 12px 32px rgba(52,211,153,0.25)' }}
+          className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-bold shadow-sm hover:opacity-90 transition-opacity"
         >
           {step.cta.label} <ArrowRight className="w-3.5 h-3.5" />
         </motion.a>
@@ -903,22 +889,22 @@ export function WorkflowSection() {
   return (
     <>
       {/* ── Desktop ── */}
-      <section ref={sectionRef} className="hidden md:block border-t border-white/6 bg-[#060b14]">
+      <section ref={sectionRef} className="hidden md:block border-t border-border bg-background">
         <div className="max-w-6xl mx-auto px-6 lg:px-10">
 
           {/* Section header */}
-          <div className="pt-20 pb-12 border-b border-white/6">
-            <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.35em] mb-3">Before &amp; After</p>
+          <div className="pt-20 pb-12 border-b border-border">
+            <p className="text-[9px] font-black text-primary uppercase tracking-[0.35em] mb-3">Before &amp; After</p>
             <div className="flex items-end justify-between gap-8 flex-wrap">
               <h2
-                className="font-bold text-white tracking-[-0.025em] leading-[1.06]"
+                className="font-bold text-foreground tracking-[-0.025em] leading-[1.06]"
                 style={{ fontSize: 'clamp(1.9rem, 3vw, 2.9rem)' }}
               >
-                From manual chaos<br />
-                <span className="text-emerald-400">to clean report in minutes.</span>
+                A messy pile of files in.<br />
+                <span className="text-primary">A clean report out, in minutes.</span>
               </h2>
-              <p className="text-[14px] text-white/40 max-w-xs leading-[1.7]">
-                The only workflow built for AE reporting - from scattered legacy inputs to code-compliant, client-ready reports.
+              <p className="text-[14px] text-muted-foreground max-w-xs leading-[1.7]">
+                One workflow built just for AE reporting. Scattered field inputs go in, a code-compliant report your client can read comes out.
               </p>
             </div>
           </div>
@@ -963,8 +949,8 @@ export function WorkflowSection() {
 function StaticVisual() {
   return (
     <div
-      className="rounded-2xl overflow-hidden border border-white/10 p-5"
-      style={{ background: '#080f1c', boxShadow: '0 32px 64px rgba(0,0,0,0.5)' }}
+      className="dark rounded-2xl overflow-hidden border border-border p-5 shadow-sm text-white"
+      style={{ background: '#080f1c' }}
     >
       <div className="mb-3 pb-3 border-b border-white/8">
         <p className="text-[7.5px] uppercase tracking-[0.25em] text-emerald-500/70 font-bold mb-0.5">Reportly</p>
@@ -982,7 +968,7 @@ function StaticVisual() {
         <Download className="w-4 h-4 text-emerald-400 flex-shrink-0" />
         <div>
           <p className="text-[11px] font-bold text-white">Structural_Bridge_Report_Final.docx</p>
-          <p className="text-[8.5px] text-emerald-400 mt-0.5">QA-ready · Code-compliant · 3 min</p>
+          <p className="text-[8.5px] text-emerald-400 mt-0.5">QA-ready · Code-compliant</p>
         </div>
       </div>
     </div>
@@ -995,15 +981,15 @@ function StaticVisual() {
 
 export function ReportlyMobileStory() {
   return (
-    <section className="bg-[#060b14] py-16 md:hidden border-t border-white/6">
+    <section className="bg-background py-16 md:hidden border-t border-border">
       <div className="px-6">
-        <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.3em] mb-4">Before &amp; After</p>
+        <p className="text-[9px] font-black text-primary uppercase tracking-[0.3em] mb-4">Before &amp; After</p>
         <h2
-          className="font-black text-white leading-[1.06] tracking-[-0.04em] mb-10"
+          className="font-black text-foreground leading-[1.06] tracking-[-0.04em] mb-10"
           style={{ fontSize: 'clamp(1.6rem, 6vw, 2.4rem)' }}
         >
-          Manual chaos in.<br />
-          <span className="text-emerald-400">Clean report out.</span>
+          A pile of files in.<br />
+          <span className="text-primary">A clean report out.</span>
         </h2>
         <div className="flex flex-col gap-3">
           {STEPS.map((step, i) => {
@@ -1011,12 +997,12 @@ export function ReportlyMobileStory() {
             return (
               <motion.div
                 key={step.id}
-                className="p-5 rounded-2xl border border-white/8 bg-white/[0.025]"
+                className="p-5 rounded-2xl border border-border bg-card"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-30px' }}
                 transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                style={step.id === 'problem' ? { borderColor: 'rgba(239,68,68,0.15)', background: 'rgba(239,68,68,0.03)' } : {}}
+                style={step.id === 'problem' ? { borderColor: 'rgba(239,68,68,0.25)' } : {}}
               >
                 <div className="flex items-center gap-2.5 mb-3">
                   <div
@@ -1029,8 +1015,8 @@ export function ReportlyMobileStory() {
                     {step.eyebrow}
                   </p>
                 </div>
-                <h3 className="text-[15px] font-bold text-white mb-2 leading-tight">{step.heading}</h3>
-                <p className="text-[13px] text-white/45 leading-relaxed">{step.body}</p>
+                <h3 className="text-[15px] font-bold text-foreground mb-2 leading-tight">{step.heading}</h3>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">{step.body}</p>
               </motion.div>
             );
           })}
@@ -1038,7 +1024,7 @@ export function ReportlyMobileStory() {
         <div className="mt-8">
           <a
             href="/reportly"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black font-bold text-[14px]"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-bold text-[14px] shadow-sm hover:opacity-90 transition-opacity"
           >
             Try Reportly <ArrowRight className="w-4 h-4" />
           </a>

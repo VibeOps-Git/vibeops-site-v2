@@ -35,25 +35,17 @@ export function LiquidGlassCard({
 
   const bg = highlight
     ? isHovered
-      ? 'linear-gradient(135deg, rgba(52,211,153,0.1) 0%, rgba(52,211,153,0.04) 100%)'
-      : 'linear-gradient(135deg, rgba(52,211,153,0.07) 0%, rgba(52,211,153,0.02) 100%)'
-    : isHovered
-    ? 'rgba(255,255,255,0.044)'
-    : 'rgba(255,255,255,0.02)';
+      ? 'hsl(var(--primary) / 0.1)'
+      : 'hsl(var(--primary) / 0.06)'
+    : 'hsl(var(--card))';
 
   const borderColor = highlight
     ? isHovered
-      ? 'rgba(52,211,153,0.3)'
-      : 'rgba(52,211,153,0.16)'
-    : isHovered
-    ? 'rgba(255,255,255,0.12)'
-    : 'rgba(255,255,255,0.07)';
+      ? 'hsl(var(--primary) / 0.3)'
+      : 'hsl(var(--primary) / 0.16)'
+    : 'hsl(var(--border))';
 
-  const shadow = isHovered
-    ? highlight
-      ? '0 12px 40px rgba(52,211,153,0.07)'
-      : '0 8px 28px rgba(0,0,0,0.18)'
-    : 'none';
+  const shadow = isHovered ? '0 4px 16px hsl(var(--foreground) / 0.08)' : 'none';
 
   return (
     <>
@@ -82,23 +74,23 @@ export function LiquidGlassCard({
           {/* Main column */}
           <div className={`flex flex-col gap-4 ${highlight ? 'flex-1' : ''}`}>
             {highlight && (
-              <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/30 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em]">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+              <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-semibold text-primary uppercase tracking-[0.22em]">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
                 Flagship Product
               </span>
             )}
 
             <div className="flex items-start gap-3">
               {Icon && (
-                <div className={`flex-shrink-0 mt-0.5 ${highlight ? 'text-emerald-400' : 'text-white/35'}`}>
+                <div className={`flex-shrink-0 mt-0.5 ${highlight ? 'text-primary' : 'text-muted-foreground'}`}>
                   <Icon className="w-5 h-5" />
                 </div>
               )}
               <div>
-                <h3 className="text-base font-semibold text-white leading-snug mb-1">{title}</h3>
+                <h3 className="text-base font-semibold text-foreground leading-snug mb-1">{title}</h3>
                 <p
                   className={`text-[11px] font-medium tracking-wide ${
-                    highlight ? 'text-emerald-400/60' : 'text-white/30'
+                    highlight ? 'text-primary/70' : 'text-muted-foreground'
                   }`}
                 >
                   {subtitle}
@@ -106,7 +98,7 @@ export function LiquidGlassCard({
               </div>
             </div>
 
-            <p className="text-[13px] text-white/45 leading-relaxed">
+            <p className="text-[13px] text-muted-foreground leading-relaxed">
               {highlight
                 ? description
                 : description.length > 120
@@ -118,11 +110,11 @@ export function LiquidGlassCard({
               className={`flex items-center gap-1.5 text-[12px] font-medium transition-colors duration-200 mt-auto ${
                 highlight
                   ? isHovered
-                    ? 'text-emerald-300'
-                    : 'text-emerald-400'
+                    ? 'text-primary'
+                    : 'text-primary'
                   : isHovered
-                  ? 'text-white/65'
-                  : 'text-white/35'
+                  ? 'text-foreground/80'
+                  : 'text-muted-foreground'
               }`}
             >
               {cta} <ArrowRight className="w-3 h-3" />
@@ -132,13 +124,13 @@ export function LiquidGlassCard({
           {/* Feature list - shown inline for featured card on desktop */}
           {highlight && features.length > 0 && (
             <div className="md:w-56 flex-shrink-0 flex flex-col justify-center">
-              <p className="text-[9px] uppercase tracking-[0.25em] text-white/25 font-medium mb-3">
+              <p className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium mb-3">
                 What's included
               </p>
               <ul className="space-y-2">
                 {features.map((f, i) => (
-                  <li key={i} className="flex items-start gap-2 text-[12px] text-white/55">
-                    <Check className="w-3.5 h-3.5 text-emerald-500/70 flex-shrink-0 mt-0.5" />
+                  <li key={i} className="flex items-start gap-2 text-[12px] text-muted-foreground">
+                    <Check className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
                     {f}
                   </li>
                 ))}
@@ -153,7 +145,7 @@ export function LiquidGlassCard({
         {isZoomed && (
           <>
             <motion.div
-              className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-background/75 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -175,56 +167,54 @@ export function LiquidGlassCard({
                 <div
                   className="absolute inset-0 rounded-2xl border"
                   style={{
-                    background: 'rgba(7,12,22,0.97)',
-                    borderColor: highlight ? 'rgba(52,211,153,0.22)' : 'rgba(255,255,255,0.09)',
-                    boxShadow: highlight
-                      ? '0 40px 90px rgba(52,211,153,0.06)'
-                      : '0 40px 90px rgba(0,0,0,0.5)',
+                    background: 'hsl(var(--card))',
+                    borderColor: highlight ? 'hsl(var(--primary) / 0.22)' : 'hsl(var(--border))',
+                    boxShadow: '0 24px 60px hsl(var(--foreground) / 0.12)',
                   }}
                 />
                 <div className="relative p-8 md:p-10">
                   <button
                     onClick={onClose}
-                    className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full border border-white/10 text-white/40 hover:text-white/75 hover:border-white/18 transition-all"
+                    className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-border transition-all"
                     aria-label="Close"
                   >
                     <X className="w-4 h-4" />
                   </button>
 
                   {highlight && (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/30 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em] mb-5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-semibold text-primary uppercase tracking-[0.22em] mb-5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
                       Flagship Product
                     </span>
                   )}
 
                   {Icon && (
-                    <div className={`mb-4 ${highlight ? 'text-emerald-400' : 'text-white/45'}`}>
+                    <div className={`mb-4 ${highlight ? 'text-primary' : 'text-muted-foreground'}`}>
                       <Icon className="w-9 h-9" />
                     </div>
                   )}
 
-                  <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">{title}</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2 text-foreground">{title}</h2>
                   <p
                     className={`text-sm mb-5 ${
-                      highlight ? 'text-emerald-400/65' : 'text-white/35'
+                      highlight ? 'text-primary/70' : 'text-muted-foreground'
                     }`}
                   >
                     {subtitle}
                   </p>
-                  <p className="text-white/55 text-sm leading-relaxed mb-7">{description}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-7">{description}</p>
 
                   {features.length > 0 && (
                     <div>
-                      <p className="text-[9px] uppercase tracking-[0.25em] text-white/25 font-medium mb-4">
+                      <p className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium mb-4">
                         What's included
                       </p>
                       <ul className="space-y-2.5">
                         {features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2.5 text-[13px] text-white/55">
+                          <li key={i} className="flex items-start gap-2.5 text-[13px] text-muted-foreground">
                             <Check
                               className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
-                                highlight ? 'text-emerald-500' : 'text-white/28'
+                                highlight ? 'text-primary' : 'text-muted-foreground'
                               }`}
                             />
                             {feature}
@@ -235,13 +225,13 @@ export function LiquidGlassCard({
                   )}
 
                   {href && (
-                    <div className="mt-8 pt-5 border-t border-white/7">
+                    <div className="mt-8 pt-5 border-t border-border">
                       <a
                         href={href}
                         className={`inline-flex items-center gap-2 text-sm font-semibold transition-colors ${
                           highlight
-                            ? 'text-emerald-400 hover:text-emerald-300'
-                            : 'text-white/55 hover:text-white/85'
+                            ? 'text-primary hover:text-primary'
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                         onClick={(e) => e.stopPropagation()}
                       >

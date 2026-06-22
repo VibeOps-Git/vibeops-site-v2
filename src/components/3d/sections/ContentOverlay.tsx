@@ -36,9 +36,9 @@ export function ContentOverlay({
   return (
     <div
       className={`
-        relative bg-[#0a0a0f]/95 backdrop-blur-md rounded-3xl border-2 border-[#00ffcc]/30 p-8
+        relative bg-card/95 backdrop-blur-md rounded-3xl border border-border p-8
         transition-all duration-300
-        shadow-[0_0_40px_rgba(0,255,204,0.15)]
+        shadow-sm
         ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
       `}
       style={{
@@ -46,24 +46,20 @@ export function ContentOverlay({
       }}
     >
       {/* Diagonal corner accent */}
-      <div className="absolute bottom-0 right-0 w-20 h-20 border-l-2 border-t-2 border-[#00ffcc]/20"
+      <div className="absolute bottom-0 right-0 w-20 h-20 border-l-2 border-t-2 border-primary/20"
            style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
 
       {/* Top corner accents */}
-      <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-[#00ffcc]/40" />
-      <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-[#00ffcc]/40" />
-
-      {/* Pulsing glow effect */}
-      <div className="absolute inset-0 rounded-3xl bg-[#00ffcc]/5 animate-pulse"
-           style={{ animationDuration: '3s' }} />
+      <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-primary/40" />
+      <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-primary/40" />
 
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 rounded-lg bg-[#00ffcc]/10 hover:bg-[#00ffcc]/20 transition-colors z-10 border border-[#00ffcc]/20"
+        className="absolute top-4 right-4 p-2 rounded-lg bg-secondary hover:bg-muted transition-colors z-10 border border-border"
         aria-label="Close"
       >
-        <X className="w-5 h-5 text-[#00ffcc]" />
+        <X className="w-5 h-5 text-foreground" />
       </button>
 
       {/* Content */}
@@ -71,7 +67,7 @@ export function ContentOverlay({
         {/* Subtitle */}
         <p
           className={`
-            text-xs uppercase tracking-[0.2em] text-[#00ffcc]/70
+            text-xs uppercase tracking-[0.2em] text-primary/70
             transition-all duration-300 delay-100
             ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
           `}
@@ -82,7 +78,7 @@ export function ContentOverlay({
         {/* Title */}
         <h3
           className={`
-            text-3xl font-bold text-white
+            text-3xl font-bold text-foreground
             transition-all duration-300 delay-150
             ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
           `}
@@ -93,7 +89,7 @@ export function ContentOverlay({
         {/* Description */}
         <p
           className={`
-            text-gray-400 leading-relaxed
+            text-muted-foreground leading-relaxed
             transition-all duration-300 delay-200
             ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
           `}
@@ -107,14 +103,14 @@ export function ContentOverlay({
             <div
               key={feature}
               className={`
-                flex items-center gap-3 text-gray-300
+                flex items-center gap-3 text-foreground
                 transition-all duration-300
                 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
               `}
               style={{ transitionDelay: `${250 + index * 80}ms` }}
             >
-              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#00ffcc]/10 flex items-center justify-center">
-                <Check className="w-3 h-3 text-[#00ffcc]" />
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                <Check className="w-3 h-3 text-primary" />
               </div>
               <span className="text-sm">{feature}</span>
             </div>
@@ -124,7 +120,7 @@ export function ContentOverlay({
         {/* Hint */}
         <p
           className={`
-            pt-4 text-xs text-gray-500 text-center
+            pt-4 text-xs text-muted-foreground text-center
             transition-all duration-300 delay-500
             ${visible ? 'opacity-100' : 'opacity-0'}
           `}

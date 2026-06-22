@@ -120,7 +120,8 @@ type AuroraProps = {
 
 export default function Aurora(props: AuroraProps) {
   const {
-    colorStops = ['#00ffcc', '#3A29FF', '#00ffcc'],
+    // Restrained brand-tinted stops instead of saturated neon teal.
+    colorStops = ['#1f7a6b', '#2a3a6b', '#1f7a6b'],
     amplitude = 1.0,
     blend = 0.5,
   } = props;

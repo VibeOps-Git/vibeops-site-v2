@@ -15,16 +15,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <!-- Appearance -->
-    <meta name="theme-color" content="#050912" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="msapplication-TileColor" content="#050912" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
 
-    <!-- Fonts: Saira = engineering/technical display for headings; JetBrains Mono = drafting labels -->
+    <!-- No-flash theme: apply saved/system theme class before first paint. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark =
+            stored === "dark" ||
+            ((!stored || stored === "system") &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Brand typeface: Plus Jakarta Sans (geometric sans matching the VibeOps wordmark) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Fallback title — react-helmet-async overrides this per page -->
+    <!-- Fallback title - react-helmet-async overrides this per page -->
     <title>VibeOps | Engineering Report Automation & Building Code Intelligence</title>
 
     <!-- Fallback description -->
@@ -63,7 +77,7 @@
     <meta property="og:image" content="https://www.vibeops.ca/app-preview.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="VibeOps — engineering report automation and building code intelligence platform" />
+    <meta property="og:image:alt" content="VibeOps - engineering report automation and building code intelligence platform" />
 
     <!-- Twitter Card fallbacks -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -89,7 +103,7 @@
       "url": "https://www.vibeops.ca",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.vibeops.ca/logo-wht-hrzntl.png",
+        "url": "https://www.vibeops.ca/Logo-blk-hrzntl.jpeg",
         "width": 200,
         "height": 60
       },
@@ -110,7 +124,8 @@
         "areaServed": "CA"
       },
       "sameAs": [
-        "https://reportly.ca"
+        "https://reportly.ca",
+        "https://www.linkedin.com/company/vibeops"
       ]
     }
     </script>

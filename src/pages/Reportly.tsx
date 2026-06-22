@@ -5,7 +5,6 @@ import {
   ShowcaseSection,
   FeaturesSection,
   WhyVibeOpsSection,
-  DownloadSection,
   CTASection,
 } from "../components/reportly";
 import { SEO } from "@/components/SEO";
@@ -28,7 +27,7 @@ export default function Reportly() {
     <>
       <SEO
         title="Engineering Report Automation for AE Firms - Reportly"
-        description="Reportly automates engineering and inspection report drafts for AE firms. Upload templates, add field data and photos, ground building codes, and generate QA-ready DOCX/PDF reports in minutes."
+        description="Reportly drafts engineering and inspection reports for AE firms. Add templates, field data, photos, and codes to generate QA-ready DOCX/PDF reports in minutes."
         canonical="https://www.vibeops.ca/reportly"
       />
       <div className="relative">
@@ -50,10 +49,7 @@ export default function Reportly() {
         {/* Section 6: Why VibeOps */}
         <WhyVibeOpsSection />
 
-        {/* Section 7: Desktop App Download */}
-        <DownloadSection />
-
-        {/* Section 8: Final CTA */}
+        {/* Section 7: Final CTA */}
         <CTASection />
 
         {/* Section 8: Footer provided by Layout */}

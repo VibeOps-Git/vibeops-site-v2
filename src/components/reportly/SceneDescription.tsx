@@ -14,54 +14,26 @@ export function SceneDescription({ scene, sceneIndex, isLeft }: SceneDescription
       {/* Step badge */}
       <div className={`inline-flex items-center gap-3 mb-6 ${!isLeft ? "lg:flex-row-reverse" : ""}`}>
         <div className="relative">
-          <div className="absolute inset-0 bg-[#00ffcc]/30 rounded-xl blur-lg" />
-          <div className="relative p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/30">
-            <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#00ffcc]" />
+          <div className="relative p-3 rounded-xl bg-secondary border border-border">
+            <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
           </div>
         </div>
         <div>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc] font-medium">
+          <span className="text-xs uppercase tracking-[0.2em] text-primary font-medium">
             Step {sceneIndex + 1}
           </span>
         </div>
       </div>
 
       {/* Title */}
-      <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+      <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
         {scene.title}
       </h3>
 
       {/* Description */}
-      <p className="text-base md:text-lg lg:text-xl text-gray-400 leading-relaxed max-w-md mx-auto lg:mx-0">
+      <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-md mx-auto lg:mx-0">
         {scene.description}
       </p>
-
-      {/* Feature highlights based on step */}
-      <div className={`mt-8 space-y-3 inline-block lg:block ${!isLeft ? "lg:ml-auto" : ""}`}>
-        {getStepFeatures(sceneIndex).map((feature, i) => (
-          <div
-            key={i}
-            className={`flex items-center gap-3 text-sm text-gray-500 ${
-              !isLeft ? "lg:flex-row-reverse" : ""
-            }`}
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-[#00ffcc]" />
-            <span>{feature}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
-}
-
-function getStepFeatures(index: number): string[] {
-  const features = [
-    ["Word & Excel support", "Preserves your formatting", "Auto-detects tables"],
-    ["GPS-tagged photos", "Measurement ingestion", "Auto-mapped to sections"],
-    ["Federal · Provincial · Municipal", "85+ codes indexed", "Referenced standards included"],
-    ["Under 3-minute draft", "Code citations embedded", "Engineers stay in control"],
-    ["Code accuracy checks", "Formatting consistency", "Firm-standard verification"],
-    ["Branded DOCX or PDF", "Version history", "Delivery-ready output"],
-  ];
-  return features[index] || [];
 }

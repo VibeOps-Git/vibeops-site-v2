@@ -6,7 +6,11 @@ export default function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Reset scroll position synchronously before anything mounts
+    // Reset scroll position synchronously before anything mounts.
+    // Lenis (smooth scroll) keeps its own scroll position and ignores
+    // window.scrollTo, so reset it directly when present.
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, o?: object) => void } }).__lenis;
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
     // Do NOT call ScrollTrigger.killAll() - it destroys triggers on the

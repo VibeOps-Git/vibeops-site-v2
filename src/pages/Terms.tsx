@@ -25,17 +25,17 @@ export default function Terms() {
         >
           <div className="container mx-auto max-w-4xl">
             <div className="mb-12">
-              <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
                 Legal
               </p>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                 VibeOps Subscription Agreement / Terms and Conditions
               </h1>
-              <p className="text-gray-400">Last Updated: 01/05/26</p>
+              <p className="text-muted-foreground">Last Updated: 01/05/26</p>
             </div>
 
-            <div className="prose prose-invert prose-gray max-w-none">
-              <div className="space-y-8 text-gray-300">
+            <div className="prose max-w-none">
+              <div className="space-y-8 text-muted-foreground">
                 <div>
                   <p className="mb-4">
                     These Terms and Conditions ("Agreement") govern access to and use of the Services (as defined below) provided by <strong>VibeOps Technologies Inc.</strong>, a corporation incorporated under the laws of British Columbia, Canada ("VibeOps", "we", "us", or "our").
@@ -46,7 +46,7 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">1. Definitions</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">1. Definitions</h2>
                   <div className="space-y-3">
                     <p>
                       <strong>"AI Features"</strong> means any artificial intelligence-assisted drafting, analysis, or automation features made available as part of the Services.
@@ -70,19 +70,19 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">2. Services; Tool-Only Nature</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">2. Services; Tool-Only Nature</h2>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">2.1 Provision of Services</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">2.1 Provision of Services</h3>
                   <p>
                     Subject to this Agreement and payment of applicable fees, VibeOps grants Customer a limited, non-exclusive, non-transferable, non-sublicensable right to access and use the Services during the Subscription Term.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">2.2 Tool Provider Only</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">2.2 Tool Provider Only</h3>
                   <p className="mb-4">
                     The Services are <strong>tools for drafting, structuring, and automating reports and workflows</strong>. They do <strong>not</strong> provide engineering, legal, or professional advice and do <strong>not</strong> replace professional judgment.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">2.3 No Professional Reliance</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">2.3 No Professional Reliance</h3>
                   <p className="mb-4">Customer acknowledges and agrees that:</p>
                   <ul className="list-disc pl-6 space-y-2">
                     <li>The Services are <strong>not a substitute for professional review</strong></li>
@@ -92,7 +92,7 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">3. Customer Responsibilities</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">3. Customer Responsibilities</h2>
                   <p className="mb-4">Customer is responsible for:</p>
                   <ul className="list-disc pl-6 space-y-2">
                     <li>All activity conducted under its account</li>
@@ -112,111 +112,111 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">4. AI Features</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">4. AI Features</h2>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">4.1 Use of Third-Party AI</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">4.1 Use of Third-Party AI</h3>
                   <p className="mb-4">
                     The Services may incorporate third-party AI models (including Azure-hosted AI services). AI outputs may be inaccurate, incomplete, or misleading.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">4.2 Verification Required</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">4.2 Verification Required</h3>
                   <p className="mb-4">
                     Customer is solely responsible for reviewing, verifying, and validating all outputs generated using AI Features before use or reliance.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">4.3 No Training on Customer Content</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">4.3 No Training on Customer Content</h3>
                   <p>
-                    Customer Data submitted to AI Features is not used to train general-purpose AI models. Inputs are processed for feature delivery and handled in accordance with our <a href="/privacy" className="text-[#00ffcc] hover:text-[#00ffcc]/80 transition-colors">Privacy Policy</a>.
+                    Customer Data submitted to AI Features is not used to train general-purpose AI models. Inputs are processed for feature delivery and handled in accordance with our <a href="/privacy" className="text-primary hover:text-primary/80 transition-colors">Privacy Policy</a>.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">5. Proprietary Rights</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">5. Proprietary Rights</h2>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">5.1 VibeOps IP</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">5.1 VibeOps IP</h3>
                   <p className="mb-4">
                     VibeOps retains all right, title, and interest in and to the Services, including all software, templates, workflows, improvements, and intellectual property.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">5.2 Customer Data Ownership</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">5.2 Customer Data Ownership</h3>
                   <p className="mb-4">
                     Customer retains ownership of Customer Data and all reports and outputs generated from such data.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">5.3 Anonymized Use</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">5.3 Anonymized Use</h3>
                   <p>
                     Customer grants VibeOps a perpetual, royalty-free right to use aggregated, anonymized, and non-identifiable information derived from Customer's use of the Services to improve and operate the Services.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">6. Fees and Payment</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">6. Fees and Payment</h2>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">6.1 Fees</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">6.1 Fees</h3>
                   <p className="mb-4">
                     Customer shall pay all fees specified in the applicable Order Form.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">6.2 Auto-Renewal</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">6.2 Auto-Renewal</h3>
                   <p className="mb-4">
                     Subscriptions automatically renew unless cancelled prior to the end of the current Subscription Term.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">6.3 Free Trials</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">6.3 Free Trials</h3>
                   <p className="mb-4">
                     Free trials require a valid payment method and automatically convert to a paid subscription unless cancelled before the trial ends. VibeOps disclaims liability arising from use during a free trial.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">6.4 Taxes</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">6.4 Taxes</h3>
                   <p className="mb-4">
                     Fees are exclusive of taxes. Customer is responsible for all applicable taxes, excluding taxes on VibeOps' income.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">6.5 Late Payments</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">6.5 Late Payments</h3>
                   <p>
                     Overdue amounts may accrue interest at 1.5% per month (or the maximum rate permitted by law).
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">7. Confidentiality</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">7. Confidentiality</h2>
                   <p>
                     Each party agrees to protect the other party's confidential information and use it solely for purposes of this Agreement. Confidentiality obligations survive termination for five (5) years, and indefinitely for trade secrets.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">8. Privacy</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">8. Privacy</h2>
                   <p>
-                    Customer acknowledges that VibeOps processes personal information in accordance with its <a href="/privacy" className="text-[#00ffcc] hover:text-[#00ffcc]/80 transition-colors">Privacy Policy</a>, available on the VibeOps website. A Data Processing Agreement may be provided upon request for enterprise customers.
+                    Customer acknowledges that VibeOps processes personal information in accordance with its <a href="/privacy" className="text-primary hover:text-primary/80 transition-colors">Privacy Policy</a>, available on the VibeOps website. A Data Processing Agreement may be provided upon request for enterprise customers.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">9. Term and Termination</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">9. Term and Termination</h2>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">9.1 Term</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">9.1 Term</h3>
                   <p className="mb-4">
                     This Agreement continues for the Subscription Term unless terminated earlier.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">9.2 Termination for Cause</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">9.2 Termination for Cause</h3>
                   <p className="mb-4">
                     Either party may terminate immediately for material breach not cured within ten (10) days, or immediately for misuse, non-payment, or unlawful activity.
                   </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3 mt-6">9.3 Effect of Termination</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">9.3 Effect of Termination</h3>
                   <p>
                     Upon termination, access to the Services ceases. Customer may export Customer Data for thirty (30) days following termination, after which data may be deleted unless legally required to retain it.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">10. Warranties and Disclaimers</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">10. Warranties and Disclaimers</h2>
                   <p className="mb-4">
                     VibeOps warrants that the Services will materially conform to generally accepted industry standards.
                   </p>
-                  <p className="mb-4 font-semibold text-white">
+                  <p className="mb-4 font-semibold text-foreground">
                     EXCEPT AS EXPRESSLY PROVIDED, THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE".
                   </p>
                   <p>
@@ -225,7 +225,7 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">11. Indemnification</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">11. Indemnification</h2>
                   <p className="mb-4">Customer shall indemnify and hold harmless VibeOps from any claims arising from:</p>
                   <ul className="list-disc pl-6 space-y-2">
                     <li>Customer Data</li>
@@ -236,8 +236,8 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">12. Limitation of Liability</h2>
-                  <p className="mb-4 font-semibold text-white">TO THE MAXIMUM EXTENT PERMITTED BY LAW:</p>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">12. Limitation of Liability</h2>
+                  <p className="mb-4 font-semibold text-foreground">TO THE MAXIMUM EXTENT PERMITTED BY LAW:</p>
                   <ul className="list-disc pl-6 space-y-2">
                     <li>VIBEOPS SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, CONSEQUENTIAL, OR LOST PROFITS DAMAGES</li>
                     <li>VIBEOPS' TOTAL LIABILITY SHALL NOT EXCEED THE FEES PAID BY CUSTOMER IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM</li>
@@ -245,7 +245,7 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">13. Assignment</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">13. Assignment</h2>
                   <p className="mb-4">
                     Customer may not assign this Agreement without consent.
                   </p>
@@ -255,42 +255,42 @@ export default function Terms() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">14. Publicity</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">14. Publicity</h2>
                   <p>
                     VibeOps may use Customer's name or logo <strong>only with Customer's prior written permission</strong>.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">15. Modifications</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">15. Modifications</h2>
                   <p>
                     VibeOps may update this Agreement from time to time. Material changes will be notified via email or in-product notice. Continued use constitutes acceptance.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">16. Governing Law and Venue</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">16. Governing Law and Venue</h2>
                   <p>
                     This Agreement is governed by the laws of <strong>British Columbia, Canada</strong>, without regard to conflict of laws principles. Courts located in <strong>Vancouver, BC</strong> have exclusive jurisdiction.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">17. Language</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">17. Language</h2>
                   <p>
                     This Agreement is drafted in English, which shall govern its interpretation.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">18. Survival</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">18. Survival</h2>
                   <p>
                     Sections relating to IP, confidentiality, indemnification, limitations of liability, and governing law survive termination.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">19. Entire Agreement</h2>
+                  <h2 className="text-2xl font-semibold text-foreground mb-4">19. Entire Agreement</h2>
                   <p>
                     This Agreement, together with any Order Form, constitutes the entire agreement between the parties and supersedes all prior agreements.
                   </p>

@@ -4,7 +4,7 @@ import AnimatedContent from "../AnimatedContent";
 export function HeroSection() {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
-      {/* Coming Soon Badge */}
+      {/* Status badge */}
       <AnimatedContent
         distance={80}
         direction="vertical"
@@ -14,13 +14,7 @@ export function HeroSection() {
         animateOpacity
         threshold={0.1}
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-8">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ffcc] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ffcc]" />
-          </span>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]">Now Available</span>
-        </div>
+        <span className="inline-block text-xs uppercase tracking-[0.2em] text-primary mb-8">Now Available</span>
       </AnimatedContent>
 
       {/* Logo & Title */}
@@ -35,13 +29,13 @@ export function HeroSection() {
         delay={0.1}
       >
         <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="p-3 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20">
-            <FileText className="w-10 h-10 text-[#00ffcc]" />
+          <div className="p-3 rounded-xl bg-secondary border border-border">
+            <FileText className="w-10 h-10 text-primary" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white">Reportly</h1>
+          <h1 className="text-5xl md:text-7xl font-bold text-foreground">Reportly</h1>
         </div>
-        <p className="text-[11px] uppercase tracking-[0.28em] text-[#00ffcc]/60 font-semibold text-center mt-2">
-          Engineering Report Automation for AE Firms
+        <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground font-semibold text-center mt-2">
+          Engineering report automation for AE firms
         </p>
       </AnimatedContent>
 
@@ -56,11 +50,11 @@ export function HeroSection() {
         threshold={0.1}
         delay={0.2}
       >
-        <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-2xl text-center">
-          Your inspection data and field notes deserve better than copy-paste.
+        <p className="text-xl md:text-2xl text-foreground mb-4 max-w-2xl text-center">
+          Your inspection data deserves better than copy and paste.
         </p>
-        <p className="text-lg text-gray-500 max-w-xl text-center mb-10">
-          Upload your existing Word templates. Feed in photos, measurements, and project data. Get formatted, reference-accurate reports with proper executive summaries in minutes.
+        <p className="text-lg text-muted-foreground max-w-xl text-center mb-10">
+          Upload your Word templates. Drop in photos, measurements, and project data. Get formatted, reference-accurate reports with a real executive summary in minutes.
         </p>
       </AnimatedContent>
 
@@ -79,9 +73,9 @@ export function HeroSection() {
           href="https://reportly.ca/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors group"
         >
-          <span>Try Reportly</span>
+          <span>See Reportly</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </a>
       </AnimatedContent>
@@ -99,8 +93,8 @@ export function HeroSection() {
           delay={0.4}
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-gray-500">Scroll to explore</span>
-            <ChevronDown className="w-5 h-5 text-gray-500 animate-bounce" />
+            <span className="text-xs text-muted-foreground">Scroll to see how it works</span>
+            <ChevronDown className="w-5 h-5 text-muted-foreground animate-bounce" />
           </div>
         </AnimatedContent>
       </div>

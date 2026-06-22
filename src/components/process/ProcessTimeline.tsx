@@ -35,11 +35,11 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
   return (
     <div className="relative">
       {/* Connecting line background */}
-      <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#00ffcc]/20 to-transparent" />
+      <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-border" />
 
       {/* Animated progress line */}
       <motion.div
-        className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-[#00ffcc]/60 via-[#00ffcc] to-[#00ffcc]/60"
+        className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-primary"
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true, amount: 0.5 }}
@@ -70,7 +70,7 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
             >
               {/* Animated connecting dot on line */}
               <motion.div
-                className="hidden md:block absolute top-[84px] left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#00ffcc] shadow-lg shadow-[#00ffcc]/50"
+                className="hidden md:block absolute top-[84px] left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary"
                 initial={{ scale: 0, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
@@ -79,26 +79,8 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                   delay: index * 0.2 + 0.3,
                   ease: 'backOut',
                 }}
-                animate={{
-                  boxShadow: isHovered
-                    ? '0 0 20px rgba(0, 255, 204, 0.8)'
-                    : '0 0 10px rgba(0, 255, 204, 0.5)',
-                }}
-              >
-                {/* Pulsing ring */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border-2 border-[#00ffcc]"
-                  animate={{
-                    scale: isHovered ? [1, 1.5, 1] : 1,
-                    opacity: isHovered ? [1, 0, 1] : 0.5,
-                  }}
-                  transition={{
-                    duration: isHovered ? 1 : 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-              </motion.div>
+              />
+
 
               {/* Card */}
               <motion.div
@@ -109,16 +91,9 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                 transition={{ duration: 0.3, ease: 'easeOut' }}
               >
                 <VibeCard
-                  className="p-6 text-center h-full transition-all duration-300"
-                  style={{
-                    background: isHovered
-                      ? 'linear-gradient(135deg, rgba(0, 255, 204, 0.08) 0%, rgba(0, 255, 204, 0.02) 100%)'
-                      : undefined,
-                    borderColor: isHovered ? 'rgba(0, 255, 204, 0.3)' : undefined,
-                    boxShadow: isHovered
-                      ? '0 8px 32px 0 rgba(0, 255, 204, 0.15)'
-                      : undefined,
-                  }}
+                  className={`p-6 text-center h-full transition-colors duration-300 ${
+                    isHovered ? 'border-primary/40' : ''
+                  }`}
                 >
                   {/* Icon with animation */}
                   <motion.div
@@ -132,18 +107,11 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                       ease: 'backOut',
                     }}
                   >
-                    {/* Icon background with glow */}
+                    {/* Icon background */}
                     <div
-                      className="w-16 h-16 rounded-2xl bg-[#00ffcc]/5 border border-[#00ffcc]/20 flex items-center justify-center transition-all duration-300"
-                      style={{
-                        background: isHovered
-                          ? 'linear-gradient(135deg, rgba(0, 255, 204, 0.15) 0%, rgba(0, 255, 204, 0.05) 100%)'
-                          : undefined,
-                        borderColor: isHovered ? 'rgba(0, 255, 204, 0.4)' : undefined,
-                        boxShadow: isHovered
-                          ? '0 0 24px rgba(0, 255, 204, 0.3)'
-                          : undefined,
-                      }}
+                      className={`w-16 h-16 rounded-2xl bg-secondary border flex items-center justify-center transition-colors duration-300 ${
+                        isHovered ? 'border-primary/40' : 'border-border'
+                      }`}
                     >
                       {Icon && (
                         <motion.div
@@ -156,14 +124,16 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                             ease: 'easeInOut',
                           }}
                         >
-                          <Icon className="w-7 h-7 text-[#00ffcc]" />
+                          <Icon className="w-7 h-7 text-primary" />
                         </motion.div>
                       )}
                     </div>
 
                     {/* Step number badge */}
                     <motion.div
-                      className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/30 flex items-center justify-center"
+                      className={`absolute -top-2 -right-2 w-8 h-8 rounded-full bg-secondary border flex items-center justify-center transition-colors duration-300 ${
+                        isHovered ? 'border-primary/50' : 'border-border'
+                      }`}
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       viewport={{ once: true }}
@@ -172,14 +142,8 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                         delay: index * 0.2 + 0.4,
                         ease: 'backOut',
                       }}
-                      style={{
-                        background: isHovered
-                          ? 'rgba(0, 255, 204, 0.2)'
-                          : undefined,
-                        borderColor: isHovered ? 'rgba(0, 255, 204, 0.5)' : undefined,
-                      }}
                     >
-                      <span className="text-[#00ffcc] font-bold text-xs">
+                      <span className="text-primary font-bold text-xs">
                         {step.step}
                       </span>
                     </motion.div>
@@ -187,10 +151,9 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
 
                   {/* Title */}
                   <motion.h3
-                    className="text-xl font-semibold mb-2 transition-colors duration-300"
-                    style={{
-                      color: isHovered ? '#00ffcc' : '#ffffff',
-                    }}
+                    className={`text-xl font-semibold mb-2 transition-colors duration-300 ${
+                      isHovered ? 'text-primary' : 'text-foreground'
+                    }`}
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -204,7 +167,7 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
 
                   {/* Description */}
                   <motion.p
-                    className="text-sm text-gray-400 leading-relaxed"
+                    className="text-sm text-muted-foreground leading-relaxed"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -219,15 +182,15 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                   {/* Hover indicator */}
                   {isHovered && (
                     <motion.div
-                      className="mt-4 pt-4 border-t border-[#00ffcc]/20 flex items-center justify-center gap-2 text-[#00ffcc]/70 text-xs"
+                      className="mt-4 pt-4 border-t border-border flex items-center justify-center gap-2 text-primary text-xs"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <span className="inline-block w-1 h-1 bg-[#00ffcc] rounded-full animate-pulse" />
+                      <span className="inline-block w-1 h-1 bg-primary rounded-full" />
                       Phase {step.step}
-                      <span className="inline-block w-1 h-1 bg-[#00ffcc] rounded-full animate-pulse" />
+                      <span className="inline-block w-1 h-1 bg-primary rounded-full" />
                     </motion.div>
                   )}
                 </VibeCard>
@@ -246,7 +209,7 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                   }}
                 >
                   <svg
-                    className="w-6 h-6 text-[#00ffcc]/40"
+                    className="w-6 h-6 text-primary/40"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
