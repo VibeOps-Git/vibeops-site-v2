@@ -48,3 +48,6 @@ coverage/
 playwright-report/
 playwright/.cache/
 test-results/
+
+# Ad-hoc dev screenshot / measurement / verification scripts (not part of the build)
+scripts/*.mjs
