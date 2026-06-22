@@ -1,0 +1,10 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const c=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,colorScheme:"light"});
+const p=await c.newPage();
+await p.goto("http://localhost:8080/",{waitUntil:"load",timeout:45000});
+await new Promise(r=>setTimeout(r,2500));
+await p.evaluate(()=>window.scrollTo(0,250));
+await new Promise(r=>setTimeout(r,400));
+await p.screenshot({path:"/tmp/mobile/hero-overlap.png"});
+console.log("ok"); await b.close();

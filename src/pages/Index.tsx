@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useRef, useEffect, useLayoutEffect, useState, useCallback, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
-import { HomepageDeviceStage } from '@/components/homepage/DeviceScene';
+import { HomepageDeviceStage, SectionLaptop } from '@/components/homepage/DeviceScene';
 import { VibeOpsShowcaseScreen } from '@/components/homepage/VibeOpsShowcase';
 import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
 
@@ -385,7 +385,10 @@ function HeroSection() {
     // a ref (no React re-render) so the fixed hero + its bottom ticker stay
     // pixel-synced with the scrolling section during fast/smooth scroll.
     if (overlayRef.current) {
-      overlayRef.current.style.bottom = `${Math.max(0, vpH - Math.max(0, rect.bottom))}px`;
+      // 1px overlap so the ticker always slightly overlaps ProblemSection (both
+      // bg-background) - no hairline seam at the dock point.
+      const b = Math.max(0, vpH - Math.max(0, rect.bottom));
+      overlayRef.current.style.bottom = `${b > 0 ? b - 1 : 0}px`;
     }
 
     rafRef.current = null;
@@ -442,38 +445,29 @@ function HeroSection() {
       ro.observe(spacerRef.current);
     }
 
+    // Sync the overlay exit to Lenis's smooth-scroll tick (runs in the same frame
+    // Lenis sets scrollTop) so the fixed hero's bottom ticker stays locked to the
+    // natively-scrolling ProblemSection beneath it - no separation on fast scroll.
+    type Lenis = { on: (e: string, cb: () => void) => void; off: (e: string, cb: () => void) => void };
+    let lenis: Lenis | null = null;
+    const attachLenis = () => {
+      const l = (window as unknown as { __lenis?: Lenis }).__lenis;
+      if (l && !lenis) { lenis = l; l.on('scroll', updateScroll); }
+    };
+    attachLenis();
+    const lenisTimer = setTimeout(attachLenis, 400); // Lenis inits async in Layout
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       cancelAnimationFrame(t0);
       clearTimeout(t);
+      clearTimeout(lenisTimer);
+      lenis?.off('scroll', updateScroll);
       ro?.disconnect();
     };
-  }, [rm, handleScroll, isDesktop]);
-
-  // Auto-cycling device stages, shared by the desktop overlay + mobile flow hero.
-  const deviceStages = (
-    <>
-      <motion.div className="absolute inset-0 flex items-center justify-center"
-        animate={{ opacity: phase === 1 ? 1 : 0, scale: phase === 1 ? 1 : phase > 1 ? 0.94 : 0.86, x: phase === 1 ? 0 : phase > 1 ? '-10%' : 0, y: phase === 1 ? 0 : phase < 1 ? 18 : 0 }}
-        transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
-        <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="laptop" hideDots lidProgress={lidProgress} />
-      </motion.div>
-      <motion.div className="absolute inset-0 flex items-center justify-center"
-        animate={{ opacity: phase === 2 ? 1 : 0, scale: phase === 2 ? 1 : phase > 2 ? 0.94 : 0.92, x: phase === 2 ? 0 : phase > 2 ? '-10%' : '18%' }}
-        transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
-        <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="tablet" hideDots />
-      </motion.div>
-      <motion.div className="absolute inset-0 flex items-center justify-center"
-        animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
-        transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
-        <div className="w-[150px] lg:contents">
-          <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
-        </div>
-      </motion.div>
-    </>
-  );
+  }, [rm, handleScroll, isDesktop, updateScroll]);
 
   const heroText = (
     <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
@@ -510,8 +504,10 @@ function HeroSection() {
     return (
       <section className="px-6 pt-24 pb-2">
         {heroText}
-        <div className="relative w-full max-w-[300px] mx-auto h-[330px] mt-8">
-          {deviceStages}
+        {/* One clean laptop at its natural height (no aspect-box overflow, so it
+            can't bleed over the text above it). */}
+        <div className="w-full max-w-[340px] mx-auto mt-8" data-testid="hero-device-stage">
+          <SectionLaptop><VibeOpsShowcaseScreen /></SectionLaptop>
         </div>
         <div className="mt-8 -mx-6">
           {tickerBar}
@@ -840,7 +836,7 @@ function ReportlyRevealSection() {
       <section className="relative z-20 bg-background border-t border-border py-16 px-6 lg:hidden">
         <div className="flex flex-col items-center gap-8 max-w-md mx-auto">
           <div className="w-full max-w-[320px]">
-            <HomepageDeviceStage videoSrc="/vids/demo-vid.mp4" lockedDevice="laptop" hideDots />
+            <SectionLaptop><VibeOpsShowcaseScreen /></SectionLaptop>
           </div>
           <div className="text-center">
             <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
