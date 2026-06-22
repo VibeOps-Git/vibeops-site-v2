@@ -504,10 +504,10 @@ function HeroSection() {
     return (
       <section className="px-6 pt-24 pb-2">
         {heroText}
-        {/* Cycling devices at their NATURAL height (no aspect-box overflow). The
-            box is sized to the tallest (portrait phone); laptop/tablet center in
-            it. Phone is comfortably sized so its screen content stays legible. */}
-        <div className="relative w-full max-w-[320px] mx-auto mt-8 h-[400px]" data-testid="hero-device-stage">
+        {/* Cycling devices at their NATURAL height (no aspect-box overflow), all
+            sized to roughly the SAME height so they look proportionate to each
+            other (a phone reads smaller than the laptop/iPad, like real life). */}
+        <div className="relative w-full max-w-[320px] mx-auto mt-8 h-[270px]" data-testid="hero-device-stage">
           <motion.div className="absolute inset-0 flex items-center justify-center"
             animate={{ opacity: phase === 1 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
@@ -518,14 +518,14 @@ function HeroSection() {
           <motion.div className="absolute inset-0 flex items-center justify-center"
             animate={{ opacity: phase === 2 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
-            <div className="w-full max-w-[290px]">
+            <div className="w-full max-w-[300px]">
               <TabletShell><VibeOpsShowcaseScreen /></TabletShell>
             </div>
           </motion.div>
           <motion.div className="absolute inset-0 flex items-center justify-center"
             animate={{ opacity: phase === 3 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
-            <div className="w-[186px]">
+            <div className="w-[124px]">
               <PhoneShell><VibeOpsShowcaseScreen /></PhoneShell>
             </div>
           </motion.div>
