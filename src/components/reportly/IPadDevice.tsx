@@ -26,7 +26,7 @@ export function IPadDevice({ sceneIndex, rotateZ, isRight, launchProgress }: IPa
         <div className="absolute top-1.5 sm:top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-black/50 ring-1 ring-white/10 z-10" />
 
         {/* Screen */}
-        <div className="relative bg-[#0a0a0f] rounded-[1.4rem] sm:rounded-[1.55rem] overflow-hidden w-[180px] h-[270px] sm:w-[220px] sm:h-[330px] md:w-[260px] md:h-[390px] lg:w-[320px] lg:h-[480px] xl:w-[420px] xl:h-[630px]">
+        <div className="relative bg-[#0a0a0f] rounded-[1.4rem] sm:rounded-[1.55rem] overflow-hidden w-[186px] h-[306px] sm:w-[220px] sm:h-[330px] md:w-[260px] md:h-[390px] lg:w-[320px] lg:h-[480px] xl:w-[420px] xl:h-[630px]">
           <div className="relative w-full h-full">
             <IPadScreen sceneIndex={sceneIndex} launchProgress={launchProgress} />
           </div>

@@ -340,10 +340,15 @@ export default function Index() {
       <ProductPillarsSection />
       <ReportlyRevealSection />
       <CodeIntelligenceSection />
-      <TestimonialsSection />
-      <ProofSection />
-      <TeamSection />
-      <FinalCTASection />
+      {/* Continuous opaque backing: prevents the fixed hero background from
+          bleeding through sub-pixel seams between these stacked sections during
+          fast smooth-scroll (the testimonials "separation"/jump). */}
+      <div className="relative z-20 bg-background">
+        <TestimonialsSection />
+        <ProofSection />
+        <TeamSection />
+        <FinalCTASection />
+      </div>
     </>
   );
 }
@@ -510,7 +515,7 @@ function HeroSection() {
           {/* Main content (pt clears the fixed nav) */}
           <div className="flex-1 flex items-start lg:items-center min-h-0 overflow-hidden">
             <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-14 pt-24 pb-4 lg:pt-28 lg:pb-20">
-              <div className="grid lg:grid-cols-[1fr_1.1fr] gap-[100px] lg:gap-10 items-center">
+              <div className="grid lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-10 items-center">
 
                 {/* LEFT - text + CTAs */}
                 <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
@@ -539,7 +544,7 @@ function HeroSection() {
                 </motion.div>
 
                 {/* Devices - full width, phone scaled down on mobile only via inner wrapper */}
-                <div className="relative w-full" style={{ aspectRatio: '16/9.5' }}>
+                <div className="relative w-full max-w-[300px] mx-auto lg:max-w-none" style={{ aspectRatio: '16/9.5' }}>
                   <AnimatePresence>
                     {phase === 0 && (
                       <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"

@@ -321,7 +321,7 @@ export function ShowcaseSection() {
           onMouseEnter={() => setIsAutoScrollPaused(true)}
           onMouseLeave={() => setIsAutoScrollPaused(false)}
         >
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-28 pb-4 my-auto relative z-10">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-16 pb-4 lg:pt-28 my-auto relative z-10">
             {/* Main content - centered layout */}
             <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-12 lg:gap-16">
               {/* Description - left side */}
