@@ -45,8 +45,8 @@ describe("Layout", () => {
       render(<Layout>Test Content</Layout>);
 
       const linkedinLink = screen.getByRole("link", { name: /linkedin/i });
-      expect(linkedinLink).toHaveClass("text-gray-400");
-      expect(linkedinLink).toHaveClass("hover:text-[#00ffcc]");
+      expect(linkedinLink).toHaveClass("text-muted-foreground");
+      expect(linkedinLink).toHaveClass("hover:text-primary");
       expect(linkedinLink).toHaveClass("transition-colors");
     });
   });
@@ -58,10 +58,12 @@ describe("Layout", () => {
       const footer = screen.getByRole("contentinfo");
       const withinFooter = within(footer);
 
-      expect(withinFooter.getByRole("link", { name: /blog/i })).toBeInTheDocument();
-      expect(withinFooter.getByRole("link", { name: /contact/i })).toBeInTheDocument();
-      expect(withinFooter.getByRole("link", { name: /privacy/i })).toBeInTheDocument();
-      expect(withinFooter.getByRole("link", { name: /terms/i })).toBeInTheDocument();
+      // Footer surfaces these links (some appear in both a nav column and the
+      // legal row), so assert at least one of each rather than a unique match.
+      expect(withinFooter.getAllByRole("link", { name: /blog/i }).length).toBeGreaterThan(0);
+      expect(withinFooter.getAllByRole("link", { name: /contact/i }).length).toBeGreaterThan(0);
+      expect(withinFooter.getAllByRole("link", { name: /privacy/i }).length).toBeGreaterThan(0);
+      expect(withinFooter.getAllByRole("link", { name: /terms/i }).length).toBeGreaterThan(0);
     });
 
     it("renders copyright notice", () => {
