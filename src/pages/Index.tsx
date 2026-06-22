@@ -365,9 +365,8 @@ function HeroSection() {
   const rafRef    = useRef<number | null>(null);
 
   const [isInView, setIsInView] = useState(true); // start true so fixed overlay shows immediately
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [overlayBottom, setOverlayBottom] = useState(0);
   const [phase, setPhase] = useState<DevicePhase>(0);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   // Laptop is shown open; devices auto-cycle on a timer (no scroll gating).
   const lidProgress = 1;
@@ -375,24 +374,19 @@ function HeroSection() {
   const updateScroll = useCallback(() => {
     const el = spacerRef.current;
     if (!el) return;
-    const rect   = el.getBoundingClientRect();
-    const elH    = el.offsetHeight;
-    const vpH    = window.innerHeight;
+    const rect = el.getBoundingClientRect();
+    const vpH  = window.innerHeight;
 
     const inView = rect.top < vpH && rect.bottom > 0;
-    setIsInView(inView);
+    setIsInView(inView); // only re-renders at the in/out boundary
 
-    // Seamless exit: shrink overlay from the bottom as spacer exits the viewport.
-    // When rect.bottom drops below vpH, ProblemSection slides up into view beneath.
-    setOverlayBottom(Math.max(0, vpH - Math.max(0, rect.bottom)));
-
-    if (!inView) { rafRef.current = null; return; }
-
-    const maxScroll = elH - vpH;
-    if (maxScroll <= 0) { rafRef.current = null; return; }
-
-    const scrolled = Math.max(0, Math.min(1, -rect.top / maxScroll));
-    setScrollProgress(scrolled);
+    // Seamless exit: shrink the overlay from the bottom as the spacer exits the
+    // viewport, revealing ProblemSection beneath. Driven directly on the DOM via
+    // a ref (no React re-render) so the fixed hero + its bottom ticker stay
+    // pixel-synced with the scrolling section during fast/smooth scroll.
+    if (overlayRef.current) {
+      overlayRef.current.style.bottom = `${Math.max(0, vpH - Math.max(0, rect.bottom))}px`;
+    }
 
     rafRef.current = null;
   }, []);
@@ -414,8 +408,22 @@ function HeroSection() {
     return () => clearInterval(id);
   }, [rm]);
 
+  // Desktop (>=1024px) uses the pinned fixed-overlay scroll choreography.
+  // Mobile renders a simple normal-flow hero (text -> device -> logos) so
+  // nothing is clipped and the logo bar can't separate on scroll.
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
+  );
   useEffect(() => {
-    if (rm) return;
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const onChange = () => setIsDesktop(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  useEffect(() => {
+    if (rm || !isDesktop) return;
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
@@ -442,8 +450,77 @@ function HeroSection() {
       clearTimeout(t);
       ro?.disconnect();
     };
-  }, [rm, handleScroll]);
+  }, [rm, handleScroll, isDesktop]);
 
+  // Auto-cycling device stages, shared by the desktop overlay + mobile flow hero.
+  const deviceStages = (
+    <>
+      <motion.div className="absolute inset-0 flex items-center justify-center"
+        animate={{ opacity: phase === 1 ? 1 : 0, scale: phase === 1 ? 1 : phase > 1 ? 0.94 : 0.86, x: phase === 1 ? 0 : phase > 1 ? '-10%' : 0, y: phase === 1 ? 0 : phase < 1 ? 18 : 0 }}
+        transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
+        <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="laptop" hideDots lidProgress={lidProgress} />
+      </motion.div>
+      <motion.div className="absolute inset-0 flex items-center justify-center"
+        animate={{ opacity: phase === 2 ? 1 : 0, scale: phase === 2 ? 1 : phase > 2 ? 0.94 : 0.92, x: phase === 2 ? 0 : phase > 2 ? '-10%' : '18%' }}
+        transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
+        <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="tablet" hideDots />
+      </motion.div>
+      <motion.div className="absolute inset-0 flex items-center justify-center"
+        animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
+        transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
+        <div className="w-[150px] lg:contents">
+          <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
+        </div>
+      </motion.div>
+    </>
+  );
+
+  const heroText = (
+    <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
+      <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
+        style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
+        Building code smarts and reporting software{' '}
+        <span className="text-primary">for AE firms.</span>
+      </motion.h1>
+      <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
+        style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
+        We help architecture and engineering teams cut down the manual work in reporting, code compliance, and field workflows. The tools fit the way your firm already works, not the other way around.
+      </motion.p>
+      <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-1">
+        <PrimaryBtn href="/services">See what we build <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+        <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
+      </motion.div>
+      <motion.p variants={fadeUp} className="text-[11px] text-muted-foreground tracking-wide">
+        <a href="/reportly" className="hover:text-primary transition-colors">Reportly</a>
+        {' · '}
+        <a href="/services" className="hover:text-primary transition-colors">Custom Rollouts</a>
+      </motion.p>
+    </motion.div>
+  );
+
+  const tickerBar = (
+    <div className="relative z-10 bg-background border-t border-border flex-shrink-0 py-4 overflow-hidden">
+      <InfiniteMarquee speed={28} />
+    </div>
+  );
+
+  // Mobile: simple, fully-dynamic normal-flow hero. No fixed overlay or scroll
+  // spacer, so nothing is clipped and the logo bar sits in flow (can't separate).
+  if (!isDesktop) {
+    return (
+      <section className="px-6 pt-24 pb-2">
+        {heroText}
+        <div className="relative w-full max-w-[300px] mx-auto h-[330px] mt-8">
+          {deviceStages}
+        </div>
+        <div className="mt-8 -mx-6">
+          {tickerBar}
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop: pinned fixed-overlay scroll choreography.
   return (
     <>
       {/* Scroll spacer - keeps the fixed hero overlay pinned for a short, normal
@@ -509,12 +586,13 @@ function HeroSection() {
           This avoids Lenis / sticky incompatibility entirely. */}
       {isInView && (
         <div
+          ref={overlayRef}
           className="fixed z-30 w-full bg-background overflow-hidden flex flex-col"
-          style={{ top: 0, left: 0, right: 0, bottom: `${overlayBottom}px` }}
+          style={{ top: 0, left: 0, right: 0, bottom: 0 }}
         >
           {/* Main content (pt clears the fixed nav) */}
           <div className="flex-1 flex items-start lg:items-center min-h-0 overflow-hidden">
-            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-14 pt-24 pb-4 lg:pt-28 lg:pb-20">
+            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-14 pt-16 pb-4 lg:pt-28 lg:pb-20">
               <div className="grid lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-10 items-center">
 
                 {/* LEFT - text + CTAs */}
@@ -543,8 +621,10 @@ function HeroSection() {
 
                 </motion.div>
 
-                {/* Devices - full width, phone scaled down on mobile only via inner wrapper */}
-                <div className="relative w-full max-w-[300px] mx-auto lg:max-w-none" style={{ aspectRatio: '16/9.5' }}>
+                {/* Devices - on mobile the box is height-bounded to the viewport so
+                    every device (incl. the tall portrait phone) fits short screens
+                    like the iPhone SE; desktop keeps the fixed 16/9.5 aspect box. */}
+                <div className="relative w-full max-w-[240px] mx-auto h-[26vh] max-h-[220px] lg:max-w-none lg:h-auto lg:max-h-none lg:aspect-[16/9.5]">
                   <AnimatePresence>
                     {phase === 0 && (
                       <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
@@ -572,7 +652,7 @@ function HeroSection() {
                     animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
                     {/* Phone is portrait - constrain width on mobile so it looks iPhone SE sized */}
-                    <div className="w-[52%] lg:contents">
+                    <div className="w-[12vh] max-w-[120px] lg:contents">
                       <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
                     </div>
                   </motion.div>
@@ -752,8 +832,38 @@ function ProductPillarsSection() {
 
 function ReportlyRevealSection() {
   return (
-    <section className="relative z-[10] border-t border-border"
-      style={{ minHeight: '85vh', background: 'transparent' }} />
+    <>
+      {/* Desktop: transparent gap that reveals the fixed z-2 "Scattered inputs" scene */}
+      <section className="relative z-[10] border-t border-border hidden lg:block"
+        style={{ minHeight: '85vh', background: 'transparent' }} />
+      {/* Mobile: render that same scene inline, in normal flow */}
+      <section className="relative z-20 bg-background border-t border-border py-16 px-6 lg:hidden">
+        <div className="flex flex-col items-center gap-8 max-w-md mx-auto">
+          <div className="w-full max-w-[320px]">
+            <HomepageDeviceStage videoSrc="/vids/demo-vid.mp4" lockedDevice="laptop" hideDots />
+          </div>
+          <div className="text-center">
+            <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
+            <h2 className="font-bold text-foreground tracking-[-0.03em] leading-[1.1] mb-4"
+              style={{ fontSize: 'clamp(1.6rem, 6vw, 2.1rem)' }}>
+              Scattered inputs in,{' '}
+              <span className="text-primary">a report draft out.</span>
+            </h2>
+            <p className="text-muted-foreground leading-[1.7] mb-6 text-[15px]">
+              Templates, field notes, photos, tables, and the right code references. You get a first draft in minutes, not days.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <a href="/reportly" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-[14px] font-bold shadow-sm">
+                See Reportly <ArrowRight className="w-4 h-4" />
+              </a>
+              <a href="/contact" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-border bg-secondary text-muted-foreground text-[13.5px] font-semibold">
+                Book a call
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
