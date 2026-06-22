@@ -526,7 +526,16 @@ function HeroSection() {
             animate={{ opacity: phase === 3 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
             <div className="w-[124px]">
-              <PhoneShell><VibeOpsShowcaseScreen /></PhoneShell>
+              <PhoneShell>
+                {/* Scale the screen content down so it reads as a proportional
+                    phone miniature (smaller text), not the laptop-sized content
+                    crammed into a narrow screen. */}
+                <div className="w-full h-full overflow-hidden">
+                  <div className="origin-top-left" style={{ width: '200%', height: '200%', transform: 'scale(0.5)' }}>
+                    <VibeOpsShowcaseScreen />
+                  </div>
+                </div>
+              </PhoneShell>
             </div>
           </motion.div>
         </div>
