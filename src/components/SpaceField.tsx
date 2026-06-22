@@ -15,7 +15,10 @@ interface Particle {
   phase: number;
 }
 
-export default function SpaceField() {
+// embedded=true: renders as absolute (fills parent) instead of fixed (fills viewport).
+// Use inside sections - the global fixed canvas is invisible there because
+// <main z-10> creates a stacking context above the fixed SpaceField at z-0.
+export default function SpaceField({ embedded = false }: { embedded?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const particlesRef = useRef<Particle[]>([]);
@@ -27,12 +30,28 @@ export default function SpaceField() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Resolve the theme primary color so particles tint with the brand
+    // instead of a hardcoded neon teal. Falls back to a restrained tone.
+    const readPrimary = () => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue('--primary')
+        .trim();
+      return raw ? `hsl(${raw}` : 'hsl(168 40% 45%';
+    };
+    const primaryHsl = readPrimary();
+    const particleColor = (alpha: number) => `${primaryHsl} / ${alpha})`;
+
     let animationId: number;
     let time = 0;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (embedded && canvas.parentElement) {
+        canvas.width  = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+      } else {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
       initParticles();
     };
 
@@ -118,14 +137,14 @@ export default function SpaceField() {
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 204, ${drawOpacity})`;
+        ctx.fillStyle = particleColor(drawOpacity);
         ctx.fill();
 
         // Add subtle glow for larger/brighter particles
         if (p.size > 1.2 && drawOpacity > 0.25) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(0, 255, 204, ${drawOpacity * 0.15})`;
+          ctx.fillStyle = particleColor(drawOpacity * 0.15);
           ctx.fill();
         }
       }
@@ -150,7 +169,7 @@ export default function SpaceField() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className={`${embedded ? 'absolute' : 'fixed'} inset-0 pointer-events-none`}
       style={{ zIndex: 0 }}
     />
   );

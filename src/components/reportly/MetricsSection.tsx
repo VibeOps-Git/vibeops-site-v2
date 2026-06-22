@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock, DollarSign, TrendingUp, Users } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 interface CounterProps {
   end: number;
@@ -37,7 +36,7 @@ function AnimatedCounter({ end, duration = 2000, prefix = "", suffix = "", decim
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0 }
     );
 
     if (ref.current) {
@@ -88,31 +87,18 @@ const metrics = [
   },
   {
     icon: Users,
-    value: 100,
+    value: 200,
     prefix: "",
     suffix: "+",
-    label: "Firms Interviewed",
-    context: "Across Vancouver and beyond",
+    label: "Firms We Talked To",
+    context: "Across Canada",
     range: "Validated demand",
   },
 ];
 
 export function MetricsSection() {
   return (
-    <section className="relative py-24 px-4 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#00ffcc]/5 to-[#0a0a0f]" />
-
-      {/* Subtle grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `linear-gradient(to right, white 1px, transparent 1px),
-                           linear-gradient(to bottom, white 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <section className="relative py-24 px-4">
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section header */}
         <AnimatedContent
@@ -122,18 +108,17 @@ export function MetricsSection() {
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.05}
         >
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] text-[#00ffcc] border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-4">
-              The Impact
+            <span className="inline-block text-xs uppercase tracking-[0.2em] text-primary mb-4">
+              The Numbers
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <ScrambleText text="The Cost of Manual Reporting" />
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              What manual reporting actually costs
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              We met with 100+ firms and engineers across Vancouver.
-              The numbers speak for themselves.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              We sat down with 100+ firms and engineers across Vancouver. Here is what they told us.
             </p>
           </div>
         </AnimatedContent>
@@ -149,19 +134,19 @@ export function MetricsSection() {
               ease="power3.out"
               initialOpacity={0}
               animateOpacity
-              threshold={0.2}
+              threshold={0.05}
               delay={index * 0.1}
             >
-              <div className="relative group">
+              <div className="relative group h-full">
                 {/* Card */}
-                <div className="relative p-6 lg:p-8 rounded-2xl bg-[rgba(10,10,20,0.6)] border border-white/5 backdrop-blur-sm transition-all duration-300 group-hover:border-[#00ffcc]/20 group-hover:bg-[rgba(10,10,20,0.8)]">
+                <div className="relative h-full p-6 lg:p-8 rounded-2xl bg-card border border-border shadow-sm transition-colors duration-300 group-hover:border-primary/40">
                   {/* Icon */}
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#00ffcc]/10 border border-[#00ffcc]/20 mb-4">
-                    <metric.icon className="w-6 h-6 text-[#00ffcc]" />
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-secondary border border-border mb-4">
+                    <metric.icon className="w-6 h-6 text-primary" />
                   </div>
 
                   {/* Counter */}
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 tabular-nums">
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2 tabular-nums">
                     <AnimatedCounter
                       end={metric.value}
                       prefix={metric.prefix}
@@ -171,12 +156,12 @@ export function MetricsSection() {
                   </div>
 
                   {/* Label */}
-                  <h3 className="text-lg font-semibold text-white mb-1">
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
                     {metric.label}
                   </h3>
 
                   {/* Context */}
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     {metric.context}
                   </p>
                 </div>
@@ -193,12 +178,12 @@ export function MetricsSection() {
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
-          delay={0.5}
+          threshold={0.05}
+          delay={0.4}
         >
-          <p className="text-center text-gray-400 mt-12 text-lg">
-            Engineers estimate <span className="text-white font-semibold">30-40%</span> of project time
-            is lost to documentation alone.
+          <p className="text-center text-muted-foreground mt-12 text-lg">
+            Engineers told us <span className="text-foreground font-semibold">30-40%</span> of project time
+            disappears into documentation alone.
           </p>
         </AnimatedContent>
       </div>

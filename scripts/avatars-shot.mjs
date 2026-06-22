@@ -1,0 +1,11 @@
+import { chromium } from "playwright";
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ colorScheme:"light", viewport:{width:1200,height:560}, deviceScaleFactor:2});
+const page = await ctx.newPage();
+await page.goto("http://localhost:8080/team", { waitUntil:"load", timeout:45000 });
+await page.evaluate(async()=>{ for(let y=0;y<2600;y+=600){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,150));} });
+await page.evaluate(()=>{ const h=[...document.querySelectorAll('h3')].find(x=>x.textContent.includes('Zander')); const card=h.closest('.grid'); const top=card.getBoundingClientRect().top+window.scrollY; window.scrollTo(0, top-110); });
+await new Promise(r=>setTimeout(r,500));
+await page.screenshot({ path:"/tmp/shots/avatars.png" });
+console.log("ok");
+await browser.close();

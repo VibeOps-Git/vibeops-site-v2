@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { getAllPosts } from "@/lib/blogs";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
-import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
-import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
 
 export default function Blog() {
   const posts = getAllPosts();
@@ -24,30 +22,30 @@ export default function Blog() {
   return (
     <>
       <SEO
-        title="Blog - Lab Notes"
-        description="Practical examples, implementation notes, and experiments from VibeOps prototypes, estimators, and automation tests."
+        title="Lab Notes - Engineering Automation & AEC Workflow"
+        description="Practical notes, implementation guides, and experiments in engineering report automation, building code compliance, and AEC workflow software."
         canonical="https://www.vibeops.ca/blog"
       />
       <div className="pt-24">
         {/* Hero */}
       <section className="py-20 px-4">
         <AnimatedContent
-          distance={80}
+          distance={50}
           direction="vertical"
           duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.15}
         >
           <div className="container mx-auto text-center max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
               Lab Notes
             </p>
-            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              <ScrambleText text="Blog" trigger="mount" />
+            <h1 className="text-4xl md:text-5xl font-semibold text-foreground mb-6">
+              Notes from the lab
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Practical examples, implementation notes, and experiments from our
               prototypes, estimators, and automation tests.
             </p>
@@ -73,40 +71,40 @@ export default function Blog() {
                   threshold={0.3}
                 >
                   <Link to={`/blog/${featured.slug}`} className="block group">
-                    <VibeCard variant="gradient" className="p-8 md:p-10">
+                    <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm transition-colors hover:border-primary/40">
                       <div className="flex flex-col md:flex-row md:items-center gap-8">
                         <div className="flex-1 space-y-4">
                           <div className="flex flex-wrap items-center gap-3 text-xs">
-                            <span className="inline-flex items-center gap-1 rounded-full border border-[#00ffcc]/40 bg-[#00ffcc]/10 px-3 py-1 uppercase tracking-[0.2em] text-[#00ffcc]">
+                            <span className="uppercase tracking-[0.2em] text-primary">
                               Featured
                             </span>
                           </div>
-                          <h2 className="text-2xl sm:text-3xl font-semibold text-white group-hover:text-[#00ffcc] transition-colors">
+                          <h2 className="text-2xl sm:text-3xl font-semibold text-foreground group-hover:text-primary transition-colors">
                             {featured.title}
                           </h2>
                           {featured.excerpt && (
-                            <p className="text-gray-400 max-w-xl">
+                            <p className="text-muted-foreground max-w-xl">
                               {featured.excerpt}
                             </p>
                           )}
-                          <p className="text-xs text-gray-500">
-                            Click for the full breakdown.
+                          <p className="text-sm text-primary font-medium">
+                            Read the full breakdown
                           </p>
                         </div>
                         <div className="w-full md:w-[240px] shrink-0">
-                          <div className="relative h-32 rounded-xl border border-white/10 bg-gradient-to-br from-[#00ffcc]/10 via-transparent to-transparent overflow-hidden">
+                          <div className="relative h-32 rounded-xl border border-border bg-secondary overflow-hidden">
                             <div className="absolute inset-4 flex flex-col justify-center">
-                              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-500 mb-1">
+                              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground mb-1">
                                 From the Lab
                               </p>
-                              <p className="text-xs text-gray-400">
+                              <p className="text-xs text-muted-foreground">
                                 Real implementation notes.
                               </p>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </VibeCard>
+                    </div>
                   </Link>
                 </AnimatedContent>
               </section>
@@ -127,10 +125,10 @@ export default function Blog() {
                   threshold={0.3}
                 >
                   <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-sm uppercase tracking-[0.2em] text-gray-500">
+                    <h2 className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
                       All Posts
                     </h2>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       {rest.length + 1} posts
                     </p>
                   </div>
@@ -153,16 +151,14 @@ export default function Blog() {
                         to={`/blog/${post.slug}`}
                         className="block h-full group"
                       >
-                        <VibeCard variant="default" className="h-full">
-                          <VibeCardHeader>
-                            <VibeCardTitle className="text-base group-hover:text-[#00ffcc] transition-colors line-clamp-2">
-                              {post.title}
-                            </VibeCardTitle>
-                            <VibeCardDescription className="mt-2 text-sm line-clamp-3">
-                              {post.excerpt || "Read more..."}
-                            </VibeCardDescription>
-                          </VibeCardHeader>
-                        </VibeCard>
+                        <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/40">
+                          <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                            {post.title}
+                          </h3>
+                          <p className="mt-2 text-sm text-muted-foreground line-clamp-3">
+                            {post.excerpt || "Read more..."}
+                          </p>
+                        </div>
                       </Link>
                     </AnimatedContent>
                   ))}
@@ -182,20 +178,16 @@ export default function Blog() {
               threshold={0.3}
             >
               <div className="max-w-xl mx-auto">
-                <VibeCard variant="glass">
-                  <VibeCardHeader>
-                    <VibeCardTitle>Coming Soon</VibeCardTitle>
-                    <VibeCardDescription>
-                      We're preparing valuable content for you.
-                    </VibeCardDescription>
-                  </VibeCardHeader>
-                  <VibeCardContent>
-                    <p className="text-gray-400">
-                      Our blog is being prepared with insightful articles about
-                      automation, estimators, and the tools we're building.
-                    </p>
-                  </VibeCardContent>
-                </VibeCard>
+                <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+                  <h3 className="text-lg font-semibold text-foreground">Coming soon</h3>
+                  <p className="mt-2 text-muted-foreground">
+                    We're preparing valuable content for you.
+                  </p>
+                  <p className="mt-4 text-muted-foreground">
+                    Our blog is being prepared with insightful articles about
+                    automation, estimators, and the tools we're building.
+                  </p>
+                </div>
               </div>
             </AnimatedContent>
           </section>

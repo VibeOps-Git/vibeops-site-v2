@@ -9,9 +9,9 @@ interface SEOProps {
   noindex?: boolean;
 }
 
-const SITE_NAME = 'VibeOps Technologies';
+const SITE_NAME = 'VibeOps';
 const SITE_URL = 'https://www.vibeops.ca';
-const DEFAULT_OG_IMAGE = '/Logo-blk-hrzntl.jpeg';
+const DEFAULT_OG_IMAGE = '/app-preview.png';
 
 function generateArticleSchema(props: {
   title: string;
@@ -54,7 +54,8 @@ export function SEO({
   ogType = 'website',
   noindex = false,
 }: SEOProps) {
-  const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
+  // VibeOps always leads the tab title
+  const fullTitle = title === SITE_NAME ? title : `VibeOps | ${title}`;
   const imageUrl = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
 
   return (

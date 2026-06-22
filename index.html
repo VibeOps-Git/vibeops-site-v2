@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-CA">
   <head>
     <!-- Google Tag Manager -->
     <script>
@@ -14,15 +14,161 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <!-- Title + Description -->
-    <title>VibeOps Technologies</title>
-    <meta name="description" content="Generate engineering reports instantly with Reportly by VibeOps." />
+    <!-- Appearance -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- No-flash theme: apply saved/system theme class before first paint. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark =
+            stored === "dark" ||
+            ((!stored || stored === "system") &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Brand typeface: Plus Jakarta Sans (geometric sans matching the VibeOps wordmark) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Fallback title - react-helmet-async overrides this per page -->
+    <title>VibeOps | Engineering Report Automation & Building Code Intelligence</title>
+
+    <!-- Fallback description -->
+    <meta name="description" content="VibeOps builds reporting automation, building code intelligence, and custom workflow software for architecture and engineering firms across Canada." />
+
+    <!-- Identity -->
     <meta name="author" content="VibeOps Technologies Inc." />
+    <meta name="application-name" content="VibeOps" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-    <!-- Favicon -->
+    <!-- Geographic targeting (Vancouver, BC, Canada) -->
+    <meta name="geo.region" content="CA-BC" />
+    <meta name="geo.placename" content="Vancouver, British Columbia, Canada" />
+    <meta name="geo.position" content="49.2827;-123.1207" />
+    <link rel="alternate" hreflang="en-ca" href="https://www.vibeops.ca/" />
+    <link rel="alternate" hreflang="en" href="https://www.vibeops.ca/" />
+
+    <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/Logo.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/small-logo.png" />
 
-    <!-- OG/Twitter tags handled dynamically by react-helmet-async -->
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Canonical fallback -->
+    <link rel="canonical" href="https://www.vibeops.ca/" />
+
+    <!-- Open Graph fallbacks (react-helmet-async overrides per-page) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VibeOps" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:title" content="VibeOps | Engineering Report Automation & Building Code Intelligence" />
+    <meta property="og:description" content="VibeOps builds reporting automation, building code intelligence, and custom workflow software for architecture and engineering firms across Canada." />
+    <meta property="og:url" content="https://www.vibeops.ca/" />
+    <meta property="og:image" content="https://www.vibeops.ca/app-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="VibeOps - engineering report automation and building code intelligence platform" />
+
+    <!-- Twitter Card fallbacks -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@VibeOps" />
+    <meta name="twitter:title" content="VibeOps | Engineering Report Automation & Building Code Intelligence" />
+    <meta name="twitter:description" content="VibeOps builds reporting automation, building code intelligence, and custom workflow software for architecture and engineering firms." />
+    <meta name="twitter:image" content="https://www.vibeops.ca/app-preview.png" />
+
+    <!-- Performance: preconnect to critical third-party origins -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://calendly.com" />
+    <link rel="dns-prefetch" href="https://www.youtube.com" />
+    <link rel="dns-prefetch" href="https://i.ytimg.com" />
+    <link rel="dns-prefetch" href="https://reportly.ca" />
+
+    <!-- Organization structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "VibeOps Technologies Inc.",
+      "url": "https://www.vibeops.ca",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.vibeops.ca/Logo-blk-hrzntl.jpeg",
+        "width": 200,
+        "height": 60
+      },
+      "description": "VibeOps builds engineering report automation, building code intelligence, and custom workflow software for architecture and engineering firms.",
+      "foundingDate": "2024",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Vancouver, British Columbia, Canada"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Canada"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "team@vibeops.ca",
+        "contactType": "customer support",
+        "areaServed": "CA"
+      },
+      "sameAs": [
+        "https://reportly.ca",
+        "https://www.linkedin.com/company/vibeops"
+      ]
+    }
+    </script>
+
+    <!-- Reportly SoftwareApplication structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Reportly",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Engineering Report Automation",
+      "operatingSystem": "Web",
+      "description": "Reportly automates engineering and inspection report drafts for AE firms. Upload templates, field data, photos, and building codes to generate QA-ready DOCX or PDF reports in under 3 minutes.",
+      "url": "https://www.vibeops.ca/reportly",
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "url": "https://reportly.ca"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "VibeOps Technologies Inc.",
+        "url": "https://www.vibeops.ca"
+      },
+      "keywords": "engineering report automation, construction reporting software, inspection report software, AE reporting, building code compliance, DOCX PDF report generation"
+    }
+    </script>
+
+    <!-- WebSite structured data for sitelinks searchbox eligibility -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "VibeOps",
+      "url": "https://www.vibeops.ca",
+      "description": "Engineering report automation, building code intelligence, and custom AE workflow software.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "VibeOps Technologies Inc."
+      }
+    }
+    </script>
   </head>
 
   <body>

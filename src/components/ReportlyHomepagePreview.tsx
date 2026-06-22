@@ -2,17 +2,17 @@ import { FileText, CheckCircle } from "lucide-react";
 
 export function ReportlyHomepagePreview() {
   return (
-    <div className="w-full h-full bg-gradient-to-br from-[#0f1115] to-[#0a0a0f] rounded-xl overflow-hidden border border-[#00ffcc]/20">
+    <div className="dark w-full h-full bg-card text-foreground rounded-xl overflow-hidden border border-border">
       {/* App Header */}
-      <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10">
+      <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#00ffcc]/20 flex items-center justify-center">
-            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00ffcc]" />
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary/15 flex items-center justify-center">
+            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
           </div>
-          <span className="text-xs sm:text-sm font-medium text-white">Report Ready</span>
+          <span className="text-xs sm:text-sm font-medium text-foreground">Report Ready</span>
         </div>
-        <div className="px-2 py-0.5 rounded-full bg-[#00ffcc]/20 border border-[#00ffcc]/30">
-          <span className="text-[10px] sm:text-xs text-[#00ffcc]">Complete</span>
+        <div className="px-2 py-0.5 rounded-full bg-primary/15 border border-primary/30">
+          <span className="text-[10px] sm:text-xs text-primary">Complete</span>
         </div>
       </div>
 
@@ -22,8 +22,8 @@ export function ReportlyHomepagePreview() {
           {/* Document header */}
           <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-2.5 sm:p-3">
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded bg-[#00ffcc] flex items-center justify-center">
-                <span className="text-[8px] sm:text-[10px] font-bold text-black">AC</span>
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded bg-primary flex items-center justify-center">
+                <span className="text-[8px] sm:text-[10px] font-bold text-primary-foreground">AC</span>
               </div>
               <div>
                 <p className="text-[10px] sm:text-xs font-semibold text-white">ACME Corporation</p>
@@ -63,10 +63,10 @@ export function ReportlyHomepagePreview() {
 
         {/* Action buttons */}
         <div className="mt-3 flex gap-2">
-          <div className="flex-1 px-3 py-1.5 sm:py-2 rounded-lg bg-[#00ffcc] text-black text-[10px] sm:text-xs font-semibold text-center">
+          <div className="flex-1 px-3 py-1.5 sm:py-2 rounded-lg bg-primary text-primary-foreground text-[10px] sm:text-xs font-semibold text-center">
             Download
           </div>
-          <div className="flex-1 px-3 py-1.5 sm:py-2 rounded-lg bg-white/10 text-white text-[10px] sm:text-xs font-semibold border border-white/20 text-center">
+          <div className="flex-1 px-3 py-1.5 sm:py-2 rounded-lg bg-secondary text-foreground text-[10px] sm:text-xs font-semibold border border-border text-center">
             Share
           </div>
         </div>

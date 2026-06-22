@@ -93,21 +93,21 @@ function DeviceFrame({ children, scale, rotateX }: { children: ReactNode; scale:
       >
         {/* Glow effect */}
         <div
-          className="absolute -inset-6 bg-gradient-to-br from-[#00ffcc]/20 via-transparent to-[#00ffcc]/10 rounded-[3rem] blur-2xl transition-opacity duration-300"
+          className="absolute -inset-6 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 rounded-[3rem] blur-2xl transition-opacity duration-300"
           style={{ opacity: 0.3 + scale * 0.4 }}
         />
 
         {/* iPad frame */}
-        <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-[2.5rem] p-3 shadow-2xl border border-white/10">
+        <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-[2.5rem] p-3 shadow-2xl border border-border">
           {/* Inner bezel */}
           <div className="relative bg-gradient-to-br from-gray-700 to-gray-900 rounded-[2rem] p-1">
             {/* Camera */}
             <div className="absolute top-3 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gray-600 border border-gray-500 z-20" />
 
             {/* Screen - the content container */}
-            <div className="relative bg-[#0a0a0f] rounded-[1.75rem] overflow-hidden">
+            <div className="dark relative bg-[#0b0c10] text-white rounded-[1.75rem] overflow-hidden">
               {/* Screen reflection */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 via-transparent to-transparent pointer-events-none z-10" />
               {/* Content wrapper */}
               <div className="relative z-0">
                 {children}
@@ -136,12 +136,12 @@ function SceneIndicators({ scenes, activeIndex, progress }: { scenes: Scene[]; a
             <div className="relative">
               <div
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  isActive ? "bg-[#00ffcc] scale-125" : isPast ? "bg-[#00ffcc]/50" : "bg-white/20"
+                  isActive ? "bg-primary scale-125" : isPast ? "bg-primary/50" : "bg-muted-foreground/30"
                 }`}
               />
               {isActive && (
                 <div
-                  className="absolute inset-0 rounded-full bg-[#00ffcc] animate-ping opacity-50"
+                  className="absolute inset-0 rounded-full bg-primary animate-ping opacity-50"
                   style={{ animationDuration: "2s" }}
                 />
               )}
@@ -150,7 +150,7 @@ function SceneIndicators({ scenes, activeIndex, progress }: { scenes: Scene[]; a
             {/* Label - only show on active */}
             <span
               className={`text-xs uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
-                isActive ? "opacity-100 text-[#00ffcc]" : "opacity-0"
+                isActive ? "opacity-100 text-primary" : "opacity-0"
               }`}
             >
               {scene.label}
@@ -195,7 +195,7 @@ export function StickyDeviceShowcase({ scenes, children, className = "" }: Stick
             <div
               key={scene.id}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === sceneIndex ? "bg-[#00ffcc] scale-125" : i < sceneIndex ? "bg-[#00ffcc]/50" : "bg-white/20"
+                i === sceneIndex ? "bg-primary scale-125" : i < sceneIndex ? "bg-primary/50" : "bg-muted-foreground/30"
               }`}
             />
           ))}

@@ -47,7 +47,7 @@ export function GallerySection3D({ items, onItemFocus }: GallerySection3DProps) 
 
   return (
     <div className="relative w-full py-10 flex flex-col gap-5">
-      {/* Featured card — full width */}
+      {/* Featured card - full width */}
       {featured && (
         <LiquidGlassCard
           key={featuredIndex}
@@ -66,7 +66,7 @@ export function GallerySection3D({ items, onItemFocus }: GallerySection3DProps) 
         />
       )}
 
-      {/* Supporting cards — 3-column grid */}
+      {/* Supporting cards - 3-column grid */}
       {supporting.length > 0 && (
         <div
           className={`grid grid-cols-1 gap-5 ${

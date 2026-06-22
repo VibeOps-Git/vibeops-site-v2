@@ -5,6 +5,7 @@ export { ShowcaseSection } from "./ShowcaseSection";
 export { FeaturesSection } from "./FeaturesSection";
 export { WhyVibeOpsSection } from "./WhyVibeOpsSection";
 export { CTASection } from "./CTASection";
+export { DownloadSection } from "./DownloadSection";
 export { IPadDevice } from "./IPadDevice";
 export { IPadScreen } from "./IPadScreen";
 export { SceneDescription } from "./SceneDescription";

@@ -17,24 +17,22 @@ export function VibeCard({
   variant = 'default',
   hover = true
 }: VibeCardProps) {
-  const baseStyles = 'relative rounded-2xl overflow-hidden transition-all duration-300';
+  const baseStyles = 'relative rounded-2xl overflow-hidden border border-border bg-card shadow-sm transition-all duration-300';
 
   const variants = {
-    default: 'bg-[rgba(10,10,20,0.6)] border border-white/5 backdrop-blur-sm',
-    glow: 'bg-[rgba(10,10,20,0.7)] border border-[#00ffcc]/20 backdrop-blur-md',
-    glass: 'bg-white/5 border border-white/10 backdrop-blur-xl',
-    gradient: 'bg-gradient-to-br from-[#00ffcc]/10 via-[rgba(10,10,20,0.8)] to-transparent border border-[#00ffcc]/20',
+    default: '',
+    glow: '',
+    glass: 'bg-secondary',
+    gradient: '',
   };
 
-  // Subtle hover glow effect instead of aggressive transform
+  // Subtle, restrained hover state
   const hoverStyles = hover
-    ? 'hover:border-[#00ffcc]/30 hover:shadow-[0_0_30px_rgba(0,255,204,0.08)] hover:bg-[rgba(10,10,20,0.7)]'
+    ? 'hover:border-primary/40 hover:shadow-md'
     : '';
 
   return (
     <div className={cn(baseStyles, variants[variant], hoverStyles, className)}>
-      {/* Top edge glow line */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/30 to-transparent opacity-60" />
       {children}
     </div>
   );
@@ -77,7 +75,7 @@ interface VibeCardTitleProps {
 
 export function VibeCardTitle({ children, className, as: Tag = 'h3' }: VibeCardTitleProps) {
   return (
-    <Tag className={cn('text-lg font-semibold text-white', className)}>
+    <Tag className={cn('text-lg font-semibold text-foreground', className)}>
       {children}
     </Tag>
   );
@@ -91,7 +89,7 @@ interface VibeCardDescriptionProps {
 
 export function VibeCardDescription({ children, className }: VibeCardDescriptionProps) {
   return (
-    <p className={cn('text-sm text-gray-400 mt-1', className)}>
+    <p className={cn('text-sm text-muted-foreground mt-1', className)}>
       {children}
     </p>
   );

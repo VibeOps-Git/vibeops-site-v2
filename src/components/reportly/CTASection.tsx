@@ -1,18 +1,10 @@
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedContent from "../AnimatedContent";
-import { ScrambleText } from "../ScrambleText";
 
 export function CTASection() {
   return (
-    <section className="relative py-24 px-4 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#00ffcc]/5 to-[#0a0a0f]" />
-
-      {/* Decorative orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#00ffcc]/10 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#00ffcc]/5 rounded-full blur-3xl opacity-50" />
-
+    <section className="relative py-24 px-4">
       <div className="container mx-auto max-w-4xl relative z-10">
         <AnimatedContent
           distance={60}
@@ -24,42 +16,44 @@ export function CTASection() {
           threshold={0.2}
         >
           {/* Card container */}
-          <div className="relative p-8 md:p-12 lg:p-16 rounded-3xl bg-[rgba(10,10,20,0.8)] border border-[#00ffcc]/20 backdrop-blur-sm">
-            {/* Top edge glow */}
-            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#00ffcc]/40 to-transparent" />
-
+          <div className="relative p-8 md:p-12 lg:p-16 rounded-3xl bg-card border border-border shadow-sm">
             {/* Content */}
             <div className="text-center">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00ffcc]/30 bg-[#00ffcc]/5 mb-6">
-                <Sparkles className="w-4 h-4 text-[#00ffcc]" />
-                <span className="text-xs uppercase tracking-[0.2em] text-[#00ffcc]">
-                  Now Available
-                </span>
-              </div>
+              <span className="inline-block text-xs uppercase tracking-[0.2em] text-primary mb-6">
+                Now Available
+              </span>
 
               {/* Headline */}
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                <ScrambleText text="Ready to Stop Wasting Time on" />{" "}
-                <span className="text-[#00ffcc]"><ScrambleText text="Formatting" /></span>?
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+                Stop losing time to{" "}
+                <span className="text-primary">formatting</span>
               </h2>
 
               {/* Subheadline */}
-              <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-                Start generating automated, audit-ready reports today.
-                Less formatting, more engineering.
+              <p className="text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                Upload your template. Drop in your data. Get a formatted, reference-accurate first draft in minutes. Your team keeps working the way it already does.
               </p>
 
-              {/* CTA Button */}
-              <a
-                href="https://reportly.ca/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-all group"
-              >
-                <span>Try Reportly</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="https://reportly.ca/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors group"
+                >
+                  <span>See Reportly</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-border bg-secondary font-semibold hover:bg-secondary/70 transition-colors group text-foreground"
+                >
+                  <span>Book a Demo</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
           </div>
         </AnimatedContent>
@@ -75,11 +69,11 @@ export function CTASection() {
           threshold={0.2}
           delay={0.3}
         >
-          <p className="text-center text-gray-500 text-sm mt-8">
+          <p className="text-center text-muted-foreground text-sm mt-8">
             Questions?{" "}
             <Link
               to="/contact"
-              className="text-[#00ffcc] hover:underline"
+              className="text-primary hover:underline"
             >
               Get in touch
             </Link>

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { SEO } from "@/components/SEO";
 
@@ -16,13 +16,23 @@ const NotFound = () => {
         description="The page you're looking for doesn't exist."
         noindex={true}
       />
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold">404</h1>
-          <p className="mb-4 text-xl text-gray-600">Oops! Page not found</p>
-          <a href="/" className="text-blue-500 underline hover:text-blue-700">
-            Return to Home
-          </a>
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="max-w-md text-center">
+          <p className="mb-3 text-xs uppercase tracking-[0.3em] text-primary">
+            Error 404
+          </p>
+          <h1 className="mb-4 text-5xl font-semibold text-foreground">
+            This page wandered off.
+          </h1>
+          <p className="mb-8 text-muted-foreground">
+            The link may be broken or the page may have moved. Let's get you back on track.
+          </p>
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+          >
+            Return home
+          </Link>
         </div>
       </div>
     </>

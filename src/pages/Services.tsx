@@ -1,284 +1,369 @@
-import { FileText, Wrench, BarChart3, Layers, Check } from 'lucide-react';
+import { FileText, MapPin, Wrench, Shield, Lock, Server, Check, ArrowRight, CreditCard, Repeat, Lightbulb } from 'lucide-react';
 import { SEO } from '@/components/SEO';
 import AnimatedContent from '../components/AnimatedContent';
 import { SectionDivider } from '../components/ui/Section';
 import { VibeCard } from '../components/ui/VibeCard';
-import { GallerySection3D } from '../components/3d/sections/GallerySection3D';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 
-const reportlyFeatures = [
-  'Works with the Word and Excel templates your team already has',
-  'Pulls in photos, tables, charts, and field data automatically',
-  'Outputs QA-ready, brand-consistent PDF and Word reports',
-  'Supports firm-specific formatting and approval processes',
-  'No workflow changes required for your team',
-];
+// ─────────────────────────────────────────────────────────────────────────────
+// Data
+// ─────────────────────────────────────────────────────────────────────────────
 
-const services = [
+const buildBuckets = [
   {
     icon: FileText,
-    title: 'Report Automation',
-    subtitle: 'Reportly, our flagship product',
-    description:
-      'Automate civil engineering report formatting using your existing Word and Excel templates. Feed in field data, photos, tables, and charts and get polished, QA-ready output in minutes. Works with your current approval process from day one.',
+    label: 'Reportly',
+    title: 'Private Reportly Deployments',
+    description: 'Report automation built around your firm\'s Word, Excel, and PDF templates, your writing rules, your QA workflows, and your approval chains.',
     features: [
-      'Word and Excel template automation',
-      'Photos, charts and tables from live project data',
-      'QA-ready, brand-consistent output',
-      'PDF and Word delivery in firm-specific formats',
-      'No changes to your existing reporting workflow',
+      'Your firm\'s writing and formatting rules',
+      'Word, Excel, and PDF engineering templates',
+      'QA checklists and multi-stage approvals',
+      'Internal document generation and report assembly',
+      'Photos, field data, tables, and measurements placed for you',
     ],
-    highlight: true,
-    href: '/reportly',
-    cta: 'Explore Reportly',
+  },
+  {
+    icon: MapPin,
+    label: 'Code Intelligence',
+    title: 'Building Code Lookup',
+    description: 'Type a project address and get every federal, provincial, and municipal code that applies, pulled from our Canadian building code library and ready to cite.',
+    features: [
+      'Code lookup by project address, anywhere in Canada',
+      'Federal, provincial, and municipal codes resolved together',
+      'Code references dropped straight into your report drafts',
+      'CSA, ASTM, and ISO standards included',
+      'Codes, standards, and bylaws covered',
+    ],
   },
   {
     icon: Wrench,
-    title: 'Custom Rollouts',
-    subtitle: 'Implementation',
-    description:
-      "We adapt Reportly to your firm's exact templates, QA requirements, reporting standards, and approval workflow. Engineers adopt it without changing how they work.",
+    label: 'Custom',
+    title: 'Custom Engineering Software',
+    description: 'Tools built for your firm: dashboards, automators, and report systems that connect to the documents, templates, and project data you already have.',
     features: [
-      'Template library setup and mapping',
-      'QA checklist and approval workflow integration',
-      'Reporting format and standard compliance',
-      'Onboarding, training, and documentation',
+      'Firm-specific workflows and interfaces',
+      'Connects to SharePoint, Drive, Bluebeam, or internal databases',
+      'Compliance trackers, asset dashboards, and calculators',
+      'Project data handled privately, with access you control',
+      'CRM, project management, and document system connectors',
     ],
-    cta: 'Learn more',
-  },
-  {
-    icon: BarChart3,
-    title: 'Data Integrations',
-    subtitle: 'Workflow connections',
-    description:
-      'We connect Reportly to the tools your team already uses. Excel, SharePoint, Bluebeam, project management systems, inspection forms, and internal databases.',
-    features: [
-      'Excel, SharePoint and Bluebeam integrations',
-      'Project management and CRM data pipelines',
-      'Inspection and field data ingestion',
-      'Custom API and database connectors',
-    ],
-    cta: 'Learn more',
-  },
-  {
-    icon: Layers,
-    title: 'Add-On Tools',
-    subtitle: 'Custom development',
-    description:
-      'We build lightweight dashboards, calculators, and reporting add-ons that extend Reportly and support the broader engineering reporting workflow.',
-    features: [
-      'Instrumentation and construction dashboards',
-      'Engineering calculators and estimators',
-      'Reporting workflow add-ons',
-      'Secure internal deployment',
-    ],
-    cta: 'Learn more',
   },
 ];
+
+const useCases = [
+  'Private AI report editor for internal engineering reports',
+  'Automated civil and construction report generation from your Word template',
+  'Building code search and citation assistant for project teams',
+  'Report writing assistant trained on your approved language and templates',
+  'Private install for firms with confidential project data or government clients',
+  'Report QA assistant for formatting, structure, completeness, and consistency',
+  'Internal building-code workflow tied to project location and report generation',
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+function Anim({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  return (
+    <AnimatedContent
+      distance={50}
+      direction="vertical"
+      duration={0.7}
+      ease="power3.out"
+      initialOpacity={0}
+      animateOpacity
+      threshold={0.15}
+      delay={delay}
+    >
+      {children}
+    </AnimatedContent>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function Services() {
   return (
     <>
       <SEO
-        title="Services — Report Automation and Engineering Implementation"
-        description="VibeOps builds Reportly, an AI-powered report automation platform for civil and construction engineering teams. We implement it, integrate it with your existing tools, and build add-ons that fit your workflow."
+        title="Custom AE Workflow Software & Consulting"
+        description="VibeOps builds reporting and workflow software for AE firms: report automation, building code lookup, and firm-specific tools built around how your team works."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
-        {/* Hero */}
+
+        {/* ── Hero ── */}
         <section className="py-20 px-4">
-          <AnimatedContent
-            distance={70}
-            direction="vertical"
-            duration={0.8}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            threshold={0.2}
-          >
+          <Anim>
             <div className="container mx-auto text-center max-w-3xl">
-              <p className="text-[10px] uppercase tracking-[0.32em] text-emerald-400/75 mb-4 font-semibold">
-                Product and Services
+              <p className="text-[10px] uppercase tracking-[0.32em] text-primary mb-4 font-semibold">
+                VibeOps Consulting
               </p>
-              <h1 className="text-4xl md:text-[2.8rem] font-bold text-white mb-6 tracking-tight leading-[1.1]">
-                Engineering report automation, built for civil and construction.
+              <h1 className="text-4xl md:text-[2.8rem] font-bold text-foreground mb-6 tracking-tight leading-[1.1]">
+                Private engineering AI, built around how your firm already works
               </h1>
-              <p className="text-white/45 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                Reportly is our flagship product for automating engineering reports. We also implement
-                it for your firm, connect it to your existing tools, and build add-ons where needed.
+              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                We take the software behind Reportly and set up a private version for your firm. It runs on your templates, your code requirements, your security rules, and your reporting process.
               </p>
-            </div>
-          </AnimatedContent>
-        </section>
-
-        <SectionDivider className="mx-auto max-w-5xl" />
-
-        {/* Reportly spotlight */}
-        <section className="py-20 px-4">
-          <AnimatedContent
-            distance={60}
-            direction="vertical"
-            duration={0.75}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            threshold={0.15}
-          >
-            <div className="container mx-auto max-w-5xl">
-              <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-                {/* Text */}
-                <div className="flex-1">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
-                    Flagship SaaS Product
-                  </p>
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight leading-tight">
-                    Reportly
-                  </h2>
-                  <p className="text-white/45 text-[15px] leading-relaxed mb-7 max-w-md">
-                    AI-powered report automation for civil and construction engineering teams. Connect
-                    your existing Word templates and project data and get review-ready reports in
-                    minutes, not hours.
-                  </p>
-                  <ul className="space-y-3 mb-9">
-                    {reportlyFeatures.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-[13.5px] text-white/60">
-                        <span className="flex-shrink-0 w-4 h-4 rounded-full border border-emerald-600/40 bg-emerald-950/60 flex items-center justify-center mt-0.5">
-                          <Check className="w-2.5 h-2.5 text-emerald-400" />
-                        </span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-3">
-                    <VibeLinkButton href="https://reportly.ca" variant="primary" size="lg">
-                      Try Reportly Free
-                    </VibeLinkButton>
-                    <VibeLinkButton href="/contact" variant="outline" size="lg">
-                      Book a Demo
-                    </VibeLinkButton>
-                  </div>
-                </div>
-
-                {/* Image */}
-                <div className="lg:w-[400px] xl:w-[440px] flex-shrink-0 w-full">
-                  <div className="rounded-2xl overflow-hidden border border-white/8 shadow-2xl shadow-black/50">
-                    <img
-                      src="/app-preview.png"
-                      alt="Reportly AI report automation software for civil engineering teams"
-                      className="w-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
+              <div className="flex flex-wrap justify-center gap-4 mt-8">
+                <VibeLinkButton href="/contact" variant="primary" size="lg">
+                  Book a Consulting Call
+                </VibeLinkButton>
+                <VibeLinkButton href="/reportly" variant="outline" size="lg">
+                  See Reportly
+                </VibeLinkButton>
               </div>
             </div>
-          </AnimatedContent>
+          </Anim>
         </section>
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* Services section header */}
-        <section className="pt-20 pb-4 px-4">
+        {/* ── What We Actually Build ── */}
+        <section className="py-20 px-4">
           <div className="container mx-auto max-w-5xl">
-            <AnimatedContent
-              distance={50}
-              direction="vertical"
-              duration={0.7}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.2}
-            >
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
-                How We Work With Your Firm
+            <Anim>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                What We Build
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight leading-tight">
-                From product to full deployment.
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 tracking-tight leading-tight">
+                Three ways we work with AE firms.
               </h2>
-              <p className="text-white/40 max-w-2xl text-[15px] leading-relaxed">
-                Every firm has different templates, approval processes, and data sources. We handle
-                the full rollout from mapping your templates to connecting your existing tools and
-                building any add-ons your workflow needs.
+              <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-14">
+                Every engagement starts from Reportly, which is already built and tested. We set it up around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
               </p>
-            </AnimatedContent>
-          </div>
-        </section>
+            </Anim>
 
-        {/* Service cards */}
-        <section className="pb-10 px-4">
-          <div className="container mx-auto max-w-5xl">
-            <GallerySection3D items={services} />
+            <div className="grid md:grid-cols-3 gap-5">
+              {buildBuckets.map((bucket, i) => (
+                <Anim key={bucket.title} delay={i * 0.08}>
+                  <div className="flex flex-col p-7 rounded-2xl border border-border bg-card shadow-sm h-full">
+                    <span className="self-start text-[9px] font-semibold text-primary uppercase tracking-[0.22em] mb-5">
+                      {bucket.label}
+                    </span>
+                    <div className="flex items-center gap-2.5 mb-1">
+                      <bucket.icon className="w-5 h-5 text-primary" />
+                      <h3 className="text-lg font-bold text-foreground">{bucket.title}</h3>
+                    </div>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-6">{bucket.description}</p>
+                    <ul className="space-y-2.5 flex-1">
+                      {bucket.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2.5 text-[12.5px] text-muted-foreground">
+                          <Check className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" /> {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Anim>
+              ))}
+            </div>
           </div>
         </section>
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* CTA */}
+        {/* ── Not Generic AI Consulting ── */}
+        <section className="py-20 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+              <Anim>
+                <div className="flex-1">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                    You start from something that works
+                  </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
+                    Not generic AI consulting.
+                  </h2>
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-4 max-w-lg">
+                    Most AI consultants show up with a slide deck and some automation ideas. We show up with Reportly, software that already does engineering report automation, with Canadian building code lookup built in.
+                  </p>
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-8 max-w-lg">
+                    Then we set it up around your firm's workflows. It's faster to get running, lower risk, and built for engineering work specifically, not borrowed from generic business software.
+                  </p>
+                </div>
+              </Anim>
+
+              <Anim delay={0.1}>
+                <div className="lg:w-[420px] flex-shrink-0 w-full">
+                  <div className="rounded-2xl border border-border bg-card shadow-sm p-7">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-semibold mb-6">What you start with vs. a blank page</p>
+                    <div className="space-y-5">
+                      {[
+                        { label: 'Engineering document editing and report assembly', done: true },
+                        { label: 'Civil engineering writing, formatting, and QA logic', done: true },
+                        { label: 'Building code search, retrieval, and jurisdiction detection', done: true },
+                        { label: 'Code-aware AI generation with RAG and vector search', done: true },
+                        { label: 'Template mapping and approval workflow engine', done: true },
+                        { label: 'Your firm-specific setup', done: false },
+                      ].map((item) => (
+                        <div key={item.label} className="flex items-start gap-3">
+                          {item.done ? (
+                            <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <ArrowRight className="w-4 h-4 text-foreground flex-shrink-0 mt-0.5" />
+                          )}
+                          <div>
+                            <p className="text-[13px] text-foreground">{item.label}</p>
+                            <p className="text-[11px] text-muted-foreground mt-0.5">
+                              {item.done ? 'Already built' : 'Added during your engagement'}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Anim>
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
+        {/* ── Built for Sensitive Engineering Work ── */}
+        <section className="py-20 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <Anim>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                Private Deployment
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
+                Built for sensitive engineering work.
+              </h2>
+              <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-14">
+                Plenty of firms can't put active project work through public AI tools, especially when the documents involve government clients, confidential reports, or regulated data. We set up private versions of Reportly so your project information never leaves the environment you approve.
+              </p>
+            </Anim>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                { icon: Server, title: 'Private Installation', description: 'Run Reportly on your own servers or a dedicated private environment. Your data doesn\'t touch shared systems.' },
+                { icon: Shield, title: 'PIPEDA-Aware Workflows', description: 'Built to support privacy-conscious workflows and help you meet internal and client data-handling rules.' },
+                { icon: Lock, title: 'Controlled Data Handling', description: 'Sensitive project data stays inside the environment you approve. Nothing leaks out to public AI tools.' },
+                { icon: Lightbulb, title: 'Government & Infrastructure Ready', description: 'Fits firms working on municipal, provincial, federal, and confidential infrastructure projects.' },
+              ].map((item, i) => (
+                <Anim key={item.title} delay={i * 0.06}>
+                  <div className="p-6 rounded-2xl border border-border bg-card shadow-sm h-full">
+                    <div className="w-9 h-9 rounded-lg bg-secondary border border-border flex items-center justify-center mb-4">
+                      <item.icon className="w-4 h-4 text-primary" />
+                    </div>
+                    <h3 className="text-[14px] font-semibold text-foreground mb-2">{item.title}</h3>
+                    <p className="text-[12.5px] text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
+                </Anim>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
+        {/* ── Implementation + Monthly License ── */}
+        <section className="py-20 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+              <Anim>
+                <div className="flex-1">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                    How Pricing Works
+                  </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
+                    Setup fee, then a monthly license.
+                  </h2>
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-4 max-w-lg">
+                    We set Reportly up around your templates, workflows, and reporting process, put it in the environment your security team signs off on, and keep you running through a monthly license.
+                  </p>
+                  <p className="text-muted-foreground text-[15px] leading-relaxed max-w-lg">
+                    You're not just buying consulting hours. You're getting Reportly, set up and maintained for your firm.
+                  </p>
+                </div>
+              </Anim>
+
+              <Anim delay={0.1}>
+                <div className="lg:w-[400px] flex-shrink-0 w-full space-y-4">
+                  {[
+                    { icon: CreditCard, step: '01', title: 'Upfront Setup Fee', description: 'We scope it, configure it, and set up Reportly around your templates, workflows, and security requirements.' },
+                    { icon: Repeat, step: '02', title: 'Monthly Software License', description: 'Ongoing access to Reportly. Includes updates, hosting where you need it, and standard support.' },
+                    { icon: Wrench, step: '03', title: 'Optional Ongoing Development', description: 'Extra custom work, new integrations, more report types, or additional code workflows, scoped when you need them.' },
+                  ].map((item) => (
+                    <div key={item.step} className="flex gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm">
+                      <div className="flex-shrink-0">
+                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.22em]">{item.step}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-[14px] font-semibold text-foreground mb-1">{item.title}</h3>
+                        <p className="text-[12.5px] text-muted-foreground leading-relaxed">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Anim>
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
+        {/* ── Example Use Cases ── */}
+        <section className="py-20 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <Anim>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
+                Example Use Cases
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
+                What firms are building with us.
+              </h2>
+              <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-12">
+                Every engagement is a bit different, but the work usually lands in one of these.
+              </p>
+            </Anim>
+
+            <div className="grid md:grid-cols-2 gap-3">
+              {useCases.map((uc, i) => (
+                <Anim key={uc} delay={i * 0.04}>
+                  <div className="flex items-start gap-3 p-5 rounded-2xl border border-border bg-card shadow-sm hover:border-primary transition-colors">
+                    <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-[13.5px] text-foreground">{uc}</p>
+                  </div>
+                </Anim>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
+        {/* ── CTA ── */}
         <section className="py-20 px-4">
           <div className="container mx-auto max-w-3xl">
-            <AnimatedContent
-              distance={60}
-              direction="vertical"
-              duration={0.7}
-              ease="power3.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.3}
-            >
+            <Anim>
               <VibeCard variant="gradient" hover={false} className="text-center p-8 md:p-12">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400/70 mb-3 font-semibold">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3 font-semibold">
                   Get started
                 </p>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-                  Start with your biggest reporting bottleneck.
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 tracking-tight">
+                  Tell us what your firm needs.
                 </h2>
-                <p className="text-white/40 mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  We scope the first automation, ship a working prototype against your actual
-                  templates, and walk it through your QA process. Usually takes a few weeks.
+                <p className="text-muted-foreground mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
+                  Book a 30-minute call. We'll look at the report that eats the most of your team's time, the compliance checks you want tightened up, and whether Reportly is a fit for your firm.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">
-                    Book a Discovery Call
+                    Book a Consulting Call
                   </VibeLinkButton>
-                  <VibeLinkButton href="https://reportly.ca" variant="outline" size="lg">
-                    Try Reportly Free
+                  <VibeLinkButton href="/reportly" variant="outline" size="lg">
+                    See Reportly
                   </VibeLinkButton>
                 </div>
               </VibeCard>
-            </AnimatedContent>
+            </Anim>
           </div>
         </section>
-      </div>
-
-      {/* Hidden SEO content targeting high-intent civil engineering search queries */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          width: 1,
-          height: 1,
-          overflow: 'hidden',
-          opacity: 0,
-          pointerEvents: 'none',
-          clip: 'rect(0 0 0 0)',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <h2>Are Civil Engineers Still in High Demand?</h2>
-        <p>
-          Yes, civil engineers are still in high demand across infrastructure, construction, and environmental sectors. Firms that invest in automation tools like Reportly help their civil engineers spend less time on report formatting and more time on high-value technical work, making them more competitive when hiring and retaining top engineers.
-        </p>
-        <h2>How Much Does It Cost to Hire a Civil Engineer?</h2>
-        <p>
-          The cost to hire a civil engineer varies by region, experience, and project scope, but engineering firms can significantly reduce overhead by automating report generation and documentation workflows. Tools like Reportly cut civil engineering report time by over 80 percent, reducing the billable hours spent on formatting and letting firms deliver more value per project.
-        </p>
-        <h2>How to Choose the Right Civil Engineer for Your Project</h2>
-        <p>
-          When choosing a civil engineering firm, look for teams with strong QA processes, clear documentation workflows, and modern reporting tools. Firms using civil engineering report automation software like Reportly deliver faster turnarounds, more consistent outputs, and QA-ready reports across every project type.
-        </p>
-        <a href="/reportly">AI report automation software for civil engineers</a>
-        <a href="/services">Civil engineering consulting and report automation services</a>
-        <a href="/contact">Book a civil engineering automation demo</a>
       </div>
     </>
   );

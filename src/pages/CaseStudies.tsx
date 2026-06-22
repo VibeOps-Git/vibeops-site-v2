@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom";
 import { Star, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
 import AnimatedContent from "../components/AnimatedContent";
-import { ScrambleText } from "@/components/ScrambleText";
 import { SectionDivider } from "../components/ui/Section";
-import { VibeCard, VibeCardHeader, VibeCardContent, VibeCardTitle, VibeCardDescription } from "../components/ui/VibeCard";
+import { VibeCard } from "../components/ui/VibeCard";
 import { VibeLinkButton } from "@/components/ui/VibeButton";
 
 type Review = {
@@ -47,37 +45,37 @@ const reviews: Review[] = [
     context: "Landing page for Pro Painting LLC",
     quote:
       "They created a clean, effective landing page for my painting business that makes it easy for customers to understand what we do and reach out. The process was smooth, responsive, and dialed in to what I actually needed.",
-    image: "/clients/ryan.png",
+    image: "/clients/ryan.jpg",
   },
 ];
 
 
 const portfolioProjects = [
   {
-    title: "Castaway Crew – Desktop",
+    title: "Castaway Crew - Desktop",
     caption:
       "Bold, conversion-focused landing page for a boat cleaning business in Minnesota.",
-    description: "Complete brand refresh with a focus on conversion optimization. Features include pricing calculator, service area maps, and streamlined booking flow. Built with React and optimized for performance.",
+    description: "A full brand refresh built to turn visitors into bookings. It has a pricing calculator, service area maps, and a booking flow that doesn't make people think. Built with React and tuned for speed.",
     youtubeId: "trIZD2Lwe4s",
     link: "https://www.castawaycrewmn.com/",
     features: [
-      "Conversion-optimized design",
+      "Conversion-focused design",
       "Interactive pricing display",
       "Service area visuals",
       "Mobile-responsive layout",
     ],
   },
   {
-    title: "Castaway Crew – Mobile",
+    title: "Castaway Crew - Mobile",
     caption:
-      "Mobile-first experience that keeps booking effortless on small screens.",
-    description: "Optimized mobile experience with touch-friendly interfaces and streamlined navigation. Features quick-book functionality and location-based service detection.",
+      "Mobile-first version that makes booking easy on a phone.",
+    description: "The mobile build, with touch-friendly controls and navigation that stays out of the way. Quick-book and location-based service detection are front and center.",
     youtubeId: "eJlnI9NCQuU",
     link: "https://www.castawaycrewmn.com/",
     features: [
       "Touch-optimized interface",
       "Quick-book functionality",
-      "Streamlined navigation",
+      "Simple navigation",
       "Progressive web app features",
     ],
   },
@@ -85,7 +83,7 @@ const portfolioProjects = [
     title: "EaZy Visuals",
     caption:
       "Dynamic, high-contrast site for a visual media and content studio.",
-    description: "High-impact portfolio site for a visual media studio. Features video showcase grid, dynamic transitions, and portfolio filtering. Built to showcase creative work with maximum visual impact.",
+    description: "A portfolio site for a visual media studio that puts the work first. Video showcase grid, smooth transitions, and filtering so people can find the kind of work they came for.",
     youtubeId: "ArMIzD2MoeY",
     link: "https://www.eazy-visuals.com/",
     features: [
@@ -97,7 +95,7 @@ const portfolioProjects = [
   },
 ];
 
-// Portfolio Section Component with Liquid Glass Cards
+// Portfolio section with click-to-expand video cards
 function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
@@ -135,9 +133,9 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
         threshold={0.3}
       >
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-white mb-3"><ScrambleText text="Portfolio Projects" /></h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Web apps and sites showing the level of polish we bring to internal tools and dashboards.
+          <h2 className="text-3xl font-semibold text-foreground mb-3">Portfolio Projects</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Client sites and web apps. Same level of polish we bring to the internal tools and dashboards.
           </p>
         </div>
       </AnimatedContent>
@@ -159,10 +157,7 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
               className="h-full cursor-pointer"
               onClick={() => setExpandedIndex(idx)}
             >
-              <VibeCard
-                variant="default"
-                className="h-full overflow-hidden group hover:border-[#00ffcc]/40 transition-all"
-              >
+              <div className="h-full overflow-hidden rounded-2xl border border-border bg-card shadow-sm group hover:border-primary transition-colors">
                 <div className="relative">
                   <div className="aspect-video overflow-hidden">
                     <img
@@ -171,22 +166,21 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity pointer-events-none" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    <div className="flex items-center gap-2 rounded-full bg-[#00ffcc] px-4 py-2 shadow-lg shadow-[#00ffcc]/50">
-                      <span className="inline-block h-0 w-0 border-y-4 border-y-transparent border-l-[8px] border-l-black" />
-                      <span className="text-sm font-semibold text-black">View Details</span>
+                    <div className="flex items-center gap-2 rounded-full bg-primary px-4 py-2">
+                      <span className="inline-block h-0 w-0 border-y-4 border-y-transparent border-l-[8px] border-l-primary-foreground" />
+                      <span className="text-sm font-semibold text-primary-foreground">View Details</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-6 pointer-events-none">
-                  <h3 className="font-semibold text-white text-lg mb-2 group-hover:text-[#00ffcc] transition-colors">
+                  <h3 className="font-semibold text-foreground text-lg mb-2 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">{project.caption}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{project.caption}</p>
                 </div>
-              </VibeCard>
+              </div>
             </div>
           </AnimatedContent>
         ))}
@@ -195,18 +189,18 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
       {/* Expanded Modal */}
       {expandedIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-24 pb-8 px-4 overflow-y-auto"
+          className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-start justify-center pt-24 pb-8 px-4 overflow-y-auto"
           onClick={() => setExpandedIndex(null)}
         >
           <div
             className="relative max-w-4xl w-full"
             onClick={(e) => e.stopPropagation()}
           >
-            <VibeCard variant="glow" className="p-8">
+            <div className="rounded-2xl border border-border bg-card shadow-sm p-8">
               {/* Close button */}
               <button
                 onClick={() => setExpandedIndex(null)}
-                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-[#00ffcc]/30 text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all z-10"
+                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-border text-foreground hover:bg-secondary transition-colors z-10"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -228,21 +222,21 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
               </div>
 
               {/* Content */}
-              <h2 className="text-3xl font-bold text-white mb-3">
+              <h2 className="text-3xl font-bold text-foreground mb-3">
                 {projects[expandedIndex].title}
               </h2>
 
-              <p className="text-gray-300 leading-relaxed mb-6">
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 {projects[expandedIndex].description}
               </p>
 
               {/* Features */}
               <div className="mb-6">
-                <h3 className="text-xl font-semibold text-white mb-4">Key Features</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-4">What's in it</h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {projects[expandedIndex].features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-300">
-                      <span className="inline-block w-1.5 h-1.5 bg-[#00ffcc] rounded-full mt-2 flex-shrink-0" />
+                    <li key={i} className="flex items-start gap-3 text-muted-foreground">
+                      <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -254,26 +248,26 @@ function PortfolioSection({ projects }: { projects: PortfolioProject[] }) {
                 href={projects[expandedIndex].link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#00ffcc] text-black font-semibold hover:bg-[#00ffcc]/90 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
               >
                 <span>View Live Site</span>
                 <ExternalLink className="w-4 h-4" />
               </a>
 
               {/* ESC hint */}
-              <div className="mt-8 pt-6 border-t border-[#00ffcc]/20 flex items-center gap-2 text-[#00ffcc]/50 text-sm">
-                <kbd className="px-2 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-xs">
+              <div className="mt-8 pt-6 border-t border-border flex items-center gap-2 text-muted-foreground text-sm">
+                <kbd className="px-2 py-1 bg-secondary border border-border rounded text-xs">
                   ESC
                 </kbd>
                 <span>Press to close</span>
               </div>
-            </VibeCard>
+            </div>
           </div>
         </div>
       )}
 
-      <p className="text-sm text-center text-gray-500 mt-8">
-        We apply the same care to internal tools your team uses every day.
+      <p className="text-sm text-center text-muted-foreground mt-8">
+        Your team's internal tools get the same care these client sites did.
       </p>
     </section>
   );
@@ -283,31 +277,31 @@ export default function CaseStudies() {
   return (
     <>
       <SEO
-        title="Case Studies"
-        description="Client outcomes and portfolio projects. See how teams use VibeOps to automate workflows and build custom engineering software."
+        title="Client Work & Case Studies"
+        description="Engineering automation, construction reporting tools, and workflow software built by VibeOps for real clients. See our portfolio and client outcomes."
         canonical="https://www.vibeops.ca/case-studies"
       />
       <div className="pt-24">
         {/* Hero */}
         <section className="py-20 px-4">
         <AnimatedContent
-          distance={80}
+          distance={50}
           direction="vertical"
           duration={0.8}
           ease="power3.out"
           initialOpacity={0}
           animateOpacity
-          threshold={0.2}
+          threshold={0.15}
         >
           <div className="container mx-auto text-center max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#00ffcc] mb-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
               Case Studies
             </p>
-            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-              <ScrambleText text="Client Outcomes" trigger="mount" />
+            <h1 className="text-4xl md:text-5xl font-semibold text-foreground mb-6">
+              What we've shipped
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              A snapshot of how teams use VibeOps to do business faster.
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              A look at the work we've done and what clients had to say about it.
             </p>
           </div>
         </AnimatedContent>
@@ -328,9 +322,9 @@ export default function CaseStudies() {
             threshold={0.3}
           >
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-semibold text-white mb-3"><ScrambleText text="What Our Clients Say" /></h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
-                Real feedback from teams we've helped with automation and software.
+              <h2 className="text-3xl font-semibold text-foreground mb-3">What Clients Say</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Real feedback from teams we've built automation and software for.
               </p>
             </div>
           </AnimatedContent>
@@ -348,9 +342,9 @@ export default function CaseStudies() {
                 threshold={0.3}
                 delay={idx * 0.1}
               >
-                <VibeCard variant="glow" className="h-full p-6">
+                <div className="h-full p-6 rounded-2xl border border-border bg-card shadow-sm">
                   <div className="flex items-start gap-4 mb-6">
-                    <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-[#00ffcc]/40 bg-white/5 flex-shrink-0">
+                    <div className="h-16 w-16 rounded-full overflow-hidden border border-border bg-secondary flex-shrink-0">
                       <img
                         src={review.image}
                         alt={review.name}
@@ -358,36 +352,34 @@ export default function CaseStudies() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-1">{review.name}</h3>
-                      <p className="text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">
+                      <h3 className="text-lg font-semibold text-foreground mb-1">{review.name}</h3>
+                      <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-2">
                         {review.role}
                       </p>
                       <div className="flex gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-[#00ffcc] text-[#00ffcc]" />
+                          <Star key={i} className="w-3.5 h-3.5 fill-primary text-primary" />
                         ))}
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="inline-block px-3 py-1.5 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20">
-                      <p className="text-xs text-[#00ffcc] font-medium">
-                        {review.context}
-                      </p>
-                    </div>
+                    <p className="text-xs text-primary font-medium">
+                      {review.context}
+                    </p>
 
-                    <p className="text-gray-300 leading-relaxed italic">
+                    <p className="text-muted-foreground leading-relaxed italic">
                       "{review.quote}"
                     </p>
                   </div>
-                </VibeCard>
+                </div>
               </AnimatedContent>
             ))}
           </div>
 
-          <p className="text-sm text-center text-gray-500 mt-8">
-            Longer-form case studies coming soon as we wrap pilots and get formal approvals.
+          <p className="text-sm text-center text-muted-foreground mt-8">
+            Longer write-ups are coming as we wrap up pilots and get the okay to share details.
           </p>
         </section>
 
@@ -410,18 +402,18 @@ export default function CaseStudies() {
             threshold={0.3}
           >
             <VibeCard variant="gradient" hover={false} className="text-center p-10 md:p-14">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                <ScrambleText text="Ready to Become a Case Study?" />
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Want to be the next one?
               </h2>
-              <p className="text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
-                Scope a pilot with clear before/after and measurable time savings. We'll help you automate the workflow that's slowing your team down the most.
+              <p className="text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
+                Let's scope a pilot with a clear before and after, and real time saved. We'll start with the workflow that's slowing your team down the most.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <VibeLinkButton href="/contact" variant="primary" size="lg">
                   Book a Vibe Check
                 </VibeLinkButton>
                 <VibeLinkButton href="/services" variant="outline" size="lg">
-                  Explore Our Services
+                  See Our Services
                 </VibeLinkButton>
               </div>
             </VibeCard>

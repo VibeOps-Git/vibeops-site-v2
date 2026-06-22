@@ -14,7 +14,7 @@ interface SceneProps {
 
 function ScreenHeader({ title, status, statusColor = "cyan" }: { title: string; status: string; statusColor?: "cyan" | "yellow" | "green" }) {
   const colors = {
-    cyan: "bg-[#00ffcc]/10 text-[#00ffcc] border-[#00ffcc]/20",
+    cyan: "bg-primary/10 text-primary border-primary/20",
     yellow: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
     green: "bg-green-500/10 text-green-400 border-green-500/20",
   };
@@ -22,10 +22,10 @@ function ScreenHeader({ title, status, statusColor = "cyan" }: { title: string; 
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-2">
-        <div className="p-1.5 rounded-lg bg-[#00ffcc]/10">
-          <FileText className="w-4 h-4 text-[#00ffcc]" />
+        <div className="p-1.5 rounded-lg bg-primary/10">
+          <FileText className="w-4 h-4 text-primary" />
         </div>
-        <span className="text-sm font-semibold text-white">Reportly</span>
+        <span className="text-sm font-semibold text-foreground">Reportly</span>
       </div>
       <div className={`px-3 py-1 rounded-full border ${colors[statusColor]}`}>
         <span className="text-xs">{status}</span>
@@ -44,35 +44,35 @@ function SidebarCard({ label, title, subtitle, variant = "default", icon: Icon, 
 }) {
   const baseClasses = "p-3 rounded-xl transition-all duration-500";
   const variantClasses = {
-    default: "bg-white/5 border border-white/10",
-    highlight: "bg-[#00ffcc]/5 border border-[#00ffcc]/20",
+    default: "bg-secondary border border-border",
+    highlight: "bg-primary/5 border border-primary/20",
     loading: "bg-yellow-500/5 border border-yellow-500/20",
   };
 
   return (
     <div className={`${baseClasses} ${variantClasses[variant]}`}>
       <p className={`text-[0.6rem] uppercase tracking-wider mb-2 ${
-        variant === "highlight" ? "text-[#00ffcc]" : variant === "loading" ? "text-yellow-400" : "text-gray-500"
+        variant === "highlight" ? "text-primary" : variant === "loading" ? "text-yellow-400" : "text-muted-foreground"
       }`}>
         {label}
       </p>
       <div className="flex items-center gap-2">
         {Icon && (
           <Icon className={`w-4 h-4 ${animate ? "animate-spin" : ""} ${
-            variant === "highlight" ? "text-[#00ffcc]" : variant === "loading" ? "text-yellow-400" : "text-gray-400"
+            variant === "highlight" ? "text-primary" : variant === "loading" ? "text-yellow-400" : "text-muted-foreground"
           }`} />
         )}
-        <p className="text-xs text-white font-medium">{title}</p>
+        <p className="text-xs text-foreground font-medium">{title}</p>
       </div>
-      {subtitle && <p className="text-[0.6rem] text-gray-500 mt-1">{subtitle}</p>}
+      {subtitle && <p className="text-[0.6rem] text-muted-foreground mt-1">{subtitle}</p>}
     </div>
   );
 }
 
 function PreviewPanel({ children, title = "Report Preview" }: { children: React.ReactNode; title?: string }) {
   return (
-    <div className="col-span-2 rounded-xl bg-white/[0.02] border border-white/10 p-4 overflow-hidden">
-      <p className="text-[0.6rem] uppercase tracking-wider text-gray-500 mb-3">{title}</p>
+    <div className="col-span-2 rounded-xl bg-secondary/50 border border-border p-4 overflow-hidden">
+      <p className="text-[0.6rem] uppercase tracking-wider text-muted-foreground mb-3">{title}</p>
       {children}
     </div>
   );
@@ -89,7 +89,7 @@ function DataRow({ filled = false, delay = 0, progress = 1 }: { filled?: boolean
       {[...Array(4)].map((_, i) => (
         <div
           key={i}
-          className={`h-2 rounded ${filled ? "bg-[#00ffcc]/30" : "bg-white/10"}`}
+          className={`h-2 rounded ${filled ? "bg-primary/30" : "bg-foreground/10"}`}
           style={{
             width: filled ? "100%" : `${60 + Math.random() * 40}%`,
           }}
@@ -105,18 +105,18 @@ function DataRow({ filled = false, delay = 0, progress = 1 }: { filled?: boolean
 
 function EmptyTemplateScene({ progress }: SceneProps) {
   return (
-    <div className="aspect-[4/3] p-6 bg-gradient-to-br from-[#0f1115] to-[#0a0a0f]">
+    <div className="dark aspect-[4/3] p-6 bg-card text-foreground">
       <ScreenHeader title="Reportly" status="No Template" statusColor="yellow" />
 
       <div className="grid grid-cols-3 gap-4 h-[calc(100%-4rem)]">
         {/* Sidebar */}
         <div className="col-span-1 space-y-3">
           <div
-            className="p-4 rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center gap-2 transition-all duration-500"
+            className="p-4 rounded-xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-2 transition-all duration-500"
             style={{ opacity: 0.5 + progress * 0.5 }}
           >
-            <Upload className="w-6 h-6 text-gray-500" />
-            <p className="text-[0.6rem] text-gray-500 text-center">Drop your template here</p>
+            <Upload className="w-6 h-6 text-muted-foreground" />
+            <p className="text-[0.6rem] text-muted-foreground text-center">Drop your template here</p>
           </div>
           <SidebarCard label="Template" title="None uploaded" />
           <SidebarCard label="Data Source" title="Not connected" />
@@ -126,13 +126,13 @@ function EmptyTemplateScene({ progress }: SceneProps) {
         <PreviewPanel>
           <div className="flex flex-col items-center justify-center h-full text-center py-8">
             <div
-              className="p-4 rounded-2xl bg-white/5 mb-4 transition-all duration-500"
+              className="p-4 rounded-2xl bg-secondary mb-4 transition-all duration-500"
               style={{ opacity: 0.5 + progress * 0.5, transform: `scale(${0.9 + progress * 0.1})` }}
             >
-              <FileText className="w-8 h-8 text-gray-600" />
+              <FileText className="w-8 h-8 text-muted-foreground" />
             </div>
-            <p className="text-sm text-gray-500 mb-1">No template loaded</p>
-            <p className="text-[0.6rem] text-gray-600">Upload a Word or Excel template to begin</p>
+            <p className="text-sm text-muted-foreground mb-1">No template loaded</p>
+            <p className="text-[0.6rem] text-muted-foreground">Upload a Word template to begin</p>
           </div>
         </PreviewPanel>
       </div>
@@ -148,7 +148,7 @@ function DataLoadingScene({ progress }: SceneProps) {
   const recordsLoaded = Math.floor(progress * 147);
 
   return (
-    <div className="aspect-[4/3] p-6 bg-gradient-to-br from-[#0f1115] to-[#0a0a0f]">
+    <div className="dark aspect-[4/3] p-6 bg-card text-foreground">
       <ScreenHeader title="Reportly" status="Loading Data" statusColor="yellow" />
 
       <div className="grid grid-cols-3 gap-4 h-[calc(100%-4rem)]">
@@ -171,22 +171,22 @@ function DataLoadingScene({ progress }: SceneProps) {
           <div className="space-y-3">
             {/* Title skeleton */}
             <div className="space-y-2">
-              <div className="h-4 w-3/4 rounded bg-white/10" />
-              <div className="h-2 w-1/2 rounded bg-white/5" />
+              <div className="h-4 w-3/4 rounded bg-foreground/10" />
+              <div className="h-2 w-1/2 rounded bg-secondary" />
             </div>
 
             {/* Loading indicator in center */}
             <div className="flex flex-col items-center justify-center py-8">
               <div className="relative">
-                <div className="w-12 h-12 rounded-full border-2 border-[#00ffcc]/20 border-t-[#00ffcc] animate-spin" />
-                <Database className="absolute inset-0 m-auto w-5 h-5 text-[#00ffcc]/50" />
+                <div className="w-12 h-12 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+                <Database className="absolute inset-0 m-auto w-5 h-5 text-primary/50" />
               </div>
-              <p className="text-xs text-gray-500 mt-4">Loading {recordsLoaded} of 147 records...</p>
+              <p className="text-xs text-muted-foreground mt-4">Loading {recordsLoaded} of 147 records...</p>
 
               {/* Progress bar */}
-              <div className="w-32 h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+              <div className="w-32 h-1 bg-foreground/10 rounded-full mt-2 overflow-hidden">
                 <div
-                  className="h-full bg-[#00ffcc] rounded-full transition-all duration-300"
+                  className="h-full bg-primary rounded-full transition-all duration-300"
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
@@ -206,7 +206,7 @@ function PopulatedScene({ progress }: SceneProps) {
   const barHeights = [40, 65, 45, 80, 55, 70, 50, 75, 60];
 
   return (
-    <div className="aspect-[4/3] p-6 bg-gradient-to-br from-[#0f1115] to-[#0a0a0f]">
+    <div className="dark aspect-[4/3] p-6 bg-card text-foreground">
       <ScreenHeader title="Reportly" status="Ready to Generate" statusColor="cyan" />
 
       <div className="grid grid-cols-3 gap-4 h-[calc(100%-4rem)]">
@@ -222,18 +222,18 @@ function PopulatedScene({ progress }: SceneProps) {
           <div className="space-y-3">
             {/* Title */}
             <div className="space-y-2" style={{ opacity: Math.min(1, progress * 2) }}>
-              <div className="h-4 w-3/4 rounded bg-white/10" />
-              <div className="h-2 w-1/2 rounded bg-white/5" />
+              <div className="h-4 w-3/4 rounded bg-foreground/10" />
+              <div className="h-2 w-1/2 rounded bg-secondary" />
             </div>
 
             {/* Table section */}
             <div
-              className="p-2 rounded-lg bg-white/5 border border-white/10 transition-all duration-300"
+              className="p-2 rounded-lg bg-secondary border border-border transition-all duration-300"
               style={{ opacity: Math.max(0, Math.min(1, (progress - 0.1) / 0.3)) }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <Table className="w-3 h-3 text-[#00ffcc]/60" />
-                <span className="text-[0.6rem] text-gray-500">Instrumentation Data</span>
+                <Table className="w-3 h-3 text-primary/60" />
+                <span className="text-[0.6rem] text-muted-foreground">Instrumentation Data</span>
               </div>
               <div className="space-y-1">
                 {[0, 1, 2].map((row) => (
@@ -244,12 +244,12 @@ function PopulatedScene({ progress }: SceneProps) {
 
             {/* Chart section */}
             <div
-              className="p-2 rounded-lg bg-white/5 border border-white/10 transition-all duration-300"
+              className="p-2 rounded-lg bg-secondary border border-border transition-all duration-300"
               style={{ opacity: Math.max(0, Math.min(1, (progress - 0.3) / 0.3)) }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <BarChart2 className="w-3 h-3 text-[#00ffcc]/60" />
-                <span className="text-[0.6rem] text-gray-500">Piezometer Readings</span>
+                <BarChart2 className="w-3 h-3 text-primary/60" />
+                <span className="text-[0.6rem] text-muted-foreground">Piezometer Readings</span>
               </div>
               <div className="flex items-end gap-1 h-8">
                 {barHeights.map((h, i) => {
@@ -257,7 +257,7 @@ function PopulatedScene({ progress }: SceneProps) {
                   return (
                     <div
                       key={i}
-                      className="flex-1 rounded-t bg-gradient-to-t from-[#00ffcc]/40 to-[#00ffcc]/20 transition-all duration-300"
+                      className="flex-1 rounded-t bg-gradient-to-t from-primary/40 to-primary/20 transition-all duration-300"
                       style={{ height: `${h * barProgress}%` }}
                     />
                   );
@@ -267,12 +267,12 @@ function PopulatedScene({ progress }: SceneProps) {
 
             {/* Photos section */}
             <div
-              className="p-2 rounded-lg bg-white/5 border border-white/10 transition-all duration-300"
+              className="p-2 rounded-lg bg-secondary border border-border transition-all duration-300"
               style={{ opacity: Math.max(0, Math.min(1, (progress - 0.5) / 0.3)) }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <Image className="w-3 h-3 text-[#00ffcc]/60" />
-                <span className="text-[0.6rem] text-gray-500">Photo Appendix</span>
+                <Image className="w-3 h-3 text-primary/60" />
+                <span className="text-[0.6rem] text-muted-foreground">Photo Appendix</span>
               </div>
               <div className="flex gap-1">
                 {[...Array(4)].map((_, i) => {
@@ -280,7 +280,7 @@ function PopulatedScene({ progress }: SceneProps) {
                   return (
                     <div
                       key={i}
-                      className="flex-1 aspect-square rounded bg-white/10 transition-all duration-300"
+                      className="flex-1 aspect-square rounded bg-foreground/10 transition-all duration-300"
                       style={{ opacity: photoProgress, transform: `scale(${0.8 + photoProgress * 0.2})` }}
                     />
                   );
@@ -303,7 +303,7 @@ function GeneratingScene({ progress }: SceneProps) {
   const steps = ["Compiling data...", "Generating charts...", "Formatting tables...", "Finalizing report..."];
 
   return (
-    <div className="aspect-[4/3] p-6 bg-gradient-to-br from-[#0f1115] to-[#0a0a0f]">
+    <div className="dark aspect-[4/3] p-6 bg-card text-foreground">
       <ScreenHeader title="Reportly" status="Generating..." statusColor="yellow" />
 
       <div className="grid grid-cols-3 gap-4 h-[calc(100%-4rem)]">
@@ -319,10 +319,10 @@ function GeneratingScene({ progress }: SceneProps) {
           <div className="flex flex-col items-center justify-center h-full py-8">
             {/* Animated icon */}
             <div className="relative mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-[#00ffcc]/10 flex items-center justify-center">
-                <Zap className="w-8 h-8 text-[#00ffcc] animate-pulse" />
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Zap className="w-8 h-8 text-primary animate-pulse" />
               </div>
-              <div className="absolute -inset-2 rounded-3xl border border-[#00ffcc]/20 animate-ping" style={{ animationDuration: "2s" }} />
+              <div className="absolute -inset-2 rounded-3xl border border-primary/20 animate-ping" style={{ animationDuration: "2s" }} />
             </div>
 
             {/* Steps */}
@@ -331,7 +331,7 @@ function GeneratingScene({ progress }: SceneProps) {
                 <div
                   key={i}
                   className={`text-xs transition-all duration-300 ${
-                    i === step ? "text-[#00ffcc]" : i < step ? "text-gray-500" : "text-gray-700"
+                    i === step ? "text-primary" : i < step ? "text-muted-foreground" : "text-muted-foreground/70"
                   }`}
                 >
                   {i < step && "✓ "}{s}
@@ -340,13 +340,13 @@ function GeneratingScene({ progress }: SceneProps) {
             </div>
 
             {/* Overall progress */}
-            <div className="w-48 h-1.5 bg-white/10 rounded-full mt-6 overflow-hidden">
+            <div className="w-48 h-1.5 bg-foreground/10 rounded-full mt-6 overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#00ffcc] to-[#00ffcc]/70 rounded-full transition-all duration-300"
+                className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-300"
                 style={{ width: `${progress * 100}%` }}
               />
             </div>
-            <p className="text-[0.6rem] text-gray-500 mt-2">{Math.floor(progress * 100)}% complete</p>
+            <p className="text-[0.6rem] text-muted-foreground mt-2">{Math.floor(progress * 100)}% complete</p>
           </div>
         </PreviewPanel>
       </div>
@@ -360,7 +360,7 @@ function GeneratingScene({ progress }: SceneProps) {
 
 function CompleteScene({ progress }: SceneProps) {
   return (
-    <div className="aspect-[4/3] p-6 bg-gradient-to-br from-[#0f1115] to-[#0a0a0f]">
+    <div className="dark aspect-[4/3] p-6 bg-card text-foreground">
       <ScreenHeader title="Reportly" status="Complete" statusColor="green" />
 
       <div className="grid grid-cols-3 gap-4 h-[calc(100%-4rem)]">
@@ -384,16 +384,16 @@ function CompleteScene({ progress }: SceneProps) {
               </div>
             </div>
 
-            <h3 className="text-lg font-semibold text-white mb-2" style={{ opacity: Math.min(1, progress * 1.5) }}>
+            <h3 className="text-lg font-semibold text-foreground mb-2" style={{ opacity: Math.min(1, progress * 1.5) }}>
               Report Complete!
             </h3>
-            <p className="text-xs text-gray-500 mb-6" style={{ opacity: Math.min(1, (progress - 0.2) * 1.5) }}>
+            <p className="text-xs text-muted-foreground mb-6" style={{ opacity: Math.min(1, (progress - 0.2) * 1.5) }}>
               Annual Monitoring Report • 47 pages
             </p>
 
             {/* Download button */}
             <button
-              className="px-6 py-2 rounded-full bg-[#00ffcc] text-black text-sm font-semibold transition-all duration-300 hover:bg-[#00ffcc]/90"
+              className="px-6 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold transition-all duration-300 hover:bg-primary/90"
               style={{ opacity: Math.min(1, (progress - 0.4) * 2), transform: `translateY(${(1 - Math.min(1, (progress - 0.4) * 2)) * 10}px)` }}
             >
               Download Report

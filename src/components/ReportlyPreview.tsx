@@ -18,13 +18,13 @@ function PreviewHeader() {
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-2">
-        <div className="p-1.5 rounded-lg bg-[#00ffcc]/10">
-          <FileText className="w-4 h-4 text-[#00ffcc]" />
+        <div className="p-1.5 rounded-lg bg-primary/10">
+          <FileText className="w-4 h-4 text-primary" />
         </div>
-        <span className="text-sm font-semibold text-white">Reportly</span>
+        <span className="text-sm font-semibold text-foreground">Reportly</span>
       </div>
-      <div className="px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/20">
-        <span className="text-xs text-[#00ffcc]">Dam Safety Report</span>
+      <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+        <span className="text-xs text-primary">Dam Safety Report</span>
       </div>
     </div>
   );
@@ -46,14 +46,14 @@ function SidebarCard({
   const baseClasses = "p-3 rounded-xl";
   const variantClasses =
     variant === "highlight"
-      ? "bg-[#00ffcc]/5 border border-[#00ffcc]/20"
-      : "bg-white/5 border border-white/10";
+      ? "bg-primary/5 border border-primary/20"
+      : "bg-secondary border border-border";
 
   return (
     <div className={`${baseClasses} ${variantClasses}`}>
       <p
         className={`text-[0.6rem] uppercase tracking-wider mb-2 ${
-          variant === "highlight" ? "text-[#00ffcc]" : "text-gray-500"
+          variant === "highlight" ? "text-primary" : "text-muted-foreground"
         }`}
       >
         {label}
@@ -66,9 +66,9 @@ function SidebarCard({
             }`}
           />
         )}
-        <p className="text-xs text-white font-medium">{title}</p>
+        <p className="text-xs text-foreground font-medium">{title}</p>
       </div>
-      {subtitle && <p className="text-[0.6rem] text-gray-500 mt-1">{subtitle}</p>}
+      {subtitle && <p className="text-[0.6rem] text-muted-foreground mt-1">{subtitle}</p>}
     </div>
   );
 }
@@ -93,15 +93,15 @@ function PreviewSection({
 
   return (
     <div
-      className="p-2 rounded-lg bg-white/5 border border-white/10 transition-all duration-300"
+      className="p-2 rounded-lg bg-secondary border border-border transition-all duration-300"
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
       }}
     >
       <div className="flex items-center gap-2 mb-2">
-        <Icon className="w-3 h-3 text-[#00ffcc]/60" />
-        <span className="text-[0.6rem] text-gray-500">{label}</span>
+        <Icon className="w-3 h-3 text-primary/60" />
+        <span className="text-[0.6rem] text-muted-foreground">{label}</span>
       </div>
       {children}
     </div>
@@ -117,7 +117,7 @@ export function ReportlyPreview({ progress = 1, className = "" }: ReportlyPrevie
   const barHeights = [40, 65, 45, 80, 55, 70, 50, 75, 60];
 
   return (
-    <div className={`aspect-[4/3] p-6 bg-gradient-to-br from-[#0f1115] to-[#0a0a0f] ${className}`}>
+    <div className={`dark aspect-[4/3] p-6 bg-card text-foreground ${className}`}>
       <PreviewHeader />
 
       <div className="grid grid-cols-3 gap-4 h-[calc(100%-4rem)]">
@@ -138,8 +138,8 @@ export function ReportlyPreview({ progress = 1, className = "" }: ReportlyPrevie
         </div>
 
         {/* Preview Panel */}
-        <div className="col-span-2 rounded-xl bg-white/[0.02] border border-white/10 p-4 overflow-hidden">
-          <p className="text-[0.6rem] uppercase tracking-wider text-gray-500 mb-3">
+        <div className="col-span-2 rounded-xl bg-secondary/50 border border-border p-4 overflow-hidden">
+          <p className="text-[0.6rem] uppercase tracking-wider text-muted-foreground mb-3">
             Report Preview
           </p>
 
@@ -149,15 +149,15 @@ export function ReportlyPreview({ progress = 1, className = "" }: ReportlyPrevie
               className="space-y-2 transition-opacity duration-500"
               style={{ opacity: Math.min(1, progress * 2) }}
             >
-              <div className="h-4 w-3/4 rounded bg-white/10" />
-              <div className="h-2 w-1/2 rounded bg-white/5" />
+              <div className="h-4 w-3/4 rounded bg-foreground/10" />
+              <div className="h-2 w-1/2 rounded bg-foreground/5" />
             </div>
 
             {/* Table */}
             <PreviewSection icon={Table} label="Instrumentation Data" delay={0.1} progress={progress}>
               <div className="grid grid-cols-4 gap-1">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-2 rounded bg-white/10" />
+                  <div key={i} className="h-2 rounded bg-foreground/10" />
                 ))}
               </div>
             </PreviewSection>
@@ -170,7 +170,7 @@ export function ReportlyPreview({ progress = 1, className = "" }: ReportlyPrevie
                   return (
                     <div
                       key={i}
-                      className="flex-1 rounded-t bg-gradient-to-t from-[#00ffcc]/40 to-[#00ffcc]/20 transition-all duration-300"
+                      className="flex-1 rounded-t bg-gradient-to-t from-primary/40 to-primary/20 transition-all duration-300"
                       style={{ height: `${h * barProgress}%` }}
                     />
                   );
@@ -186,7 +186,7 @@ export function ReportlyPreview({ progress = 1, className = "" }: ReportlyPrevie
                   return (
                     <div
                       key={i}
-                      className="flex-1 aspect-square rounded bg-white/10 transition-all duration-300"
+                      className="flex-1 aspect-square rounded bg-foreground/10 transition-all duration-300"
                       style={{
                         opacity: photoProgress,
                         transform: `scale(${0.8 + photoProgress * 0.2})`,

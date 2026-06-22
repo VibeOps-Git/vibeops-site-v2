@@ -1,0 +1,11 @@
+import { chromium } from "playwright";
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ colorScheme:"light", viewport:{width:1366,height:900}});
+const page = await ctx.newPage();
+await page.goto("http://localhost:8080/", { waitUntil:"load", timeout:45000 });
+await page.evaluate(async()=>{ for(let y=0;y<6000;y+=500){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,120));} });
+await page.evaluate(()=>{ const el=[...document.querySelectorAll('*')].find(n=>n.children.length===0 && n.textContent.includes('Queensborough_Report_Draft.docx')); if(el){ const card=el.closest('.rounded-2xl')||el; card.scrollIntoView({block:'center'}); } });
+await new Promise(r=>setTimeout(r,700));
+await page.screenshot({ path:"/tmp/shots/graphic.png" });
+console.log("ok");
+await browser.close();

@@ -3,92 +3,90 @@
 @tailwind utilities;
 
 /* -------------------------------------------------------------------------- */
-/* Core design tokens – dark by default with neon teal accent                 */
+/* Design tokens — light is the default (:root), dark via .dark               */
+/* next-themes toggles the .dark class on <html>; defaults to system.         */
+/* Palette: near-monochrome neutrals + one restrained teal accent.            */
 /* -------------------------------------------------------------------------- */
 
 @layer base {
   :root {
-    /* Dark slate base */
-    --background: 222 47% 7%;
-    --foreground: 213 31% 96%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 9%;
 
-    --card: 222 40% 11%;
-    --card-foreground: 213 31% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 9%;
 
-    --popover: 222 40% 11%;
-    --popover-foreground: 213 31% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 9%;
 
-    /* #00ffcc ≈ 168 100% 50% */
-    --primary: 168 100% 50%;
-    --primary-foreground: 222 47% 8%;
+    --primary: 172 64% 36%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 213 31% 96%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 12%;
 
-    --muted: 222 23% 18%;
-    --muted-foreground: 215 20% 70%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 44%;
 
-    --accent: 168 100% 50%;
-    --accent-foreground: 222 47% 8%;
+    --accent: 172 64% 36%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 46%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 32% 20%;
-    --input: 222 32% 20%;
-    --ring: 168 100% 50%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 172 64% 36%;
 
     --radius: 0.75rem;
 
-    /* Sidebar-ish tokens if you use shadcn layouts */
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 213 31% 96%;
-    --sidebar-primary: 168 100% 50%;
-    --sidebar-primary-foreground: 222 47% 8%;
-    --sidebar-accent: 222 32% 12%;
-    --sidebar-accent-foreground: 213 31% 96%;
-    --sidebar-border: 222 32% 18%;
-    --sidebar-ring: 168 100% 50%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 240 10% 9%;
+    --sidebar-primary: 172 64% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 10% 12%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 172 64% 36%;
   }
 
-  /* Keep .dark in case something explicitly toggles it */
   .dark {
-    --background: 222 47% 7%;
-    --foreground: 213 31% 96%;
+    --background: 240 8% 5%;
+    --foreground: 0 0% 98%;
 
-    --card: 222 40% 11%;
-    --card-foreground: 213 31% 96%;
+    --card: 240 7% 8%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 40% 11%;
-    --popover-foreground: 213 31% 96%;
+    --popover: 240 7% 8%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 168 100% 50%;
-    --primary-foreground: 222 47% 8%;
+    --primary: 168 72% 50%;
+    --primary-foreground: 240 30% 6%;
 
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 213 31% 96%;
+    --secondary: 240 5% 14%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 222 23% 18%;
-    --muted-foreground: 215 20% 70%;
+    --muted: 240 5% 14%;
+    --muted-foreground: 240 5% 64%;
 
-    --accent: 168 100% 50%;
-    --accent-foreground: 222 47% 8%;
+    --accent: 168 72% 50%;
+    --accent-foreground: 240 30% 6%;
 
-    --destructive: 0 72% 46%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 46%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 222 32% 20%;
-    --input: 222 32% 20%;
-    --ring: 168 100% 50%;
+    --border: 240 5% 16%;
+    --input: 240 5% 16%;
+    --ring: 168 72% 50%;
 
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 213 31% 96%;
-    --sidebar-primary: 168 100% 50%;
-    --sidebar-primary-foreground: 222 47% 8%;
-    --sidebar-accent: 222 32% 12%;
-    --sidebar-accent-foreground: 213 31% 96%;
-    --sidebar-border: 222 32% 18%;
-    --sidebar-ring: 168 100% 50%;
+    --sidebar-background: 240 8% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 168 72% 50%;
+    --sidebar-primary-foreground: 240 30% 6%;
+    --sidebar-accent: 240 5% 14%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 5% 16%;
+    --sidebar-ring: 168 72% 50%;
   }
 }
 
@@ -99,6 +97,13 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  }
+
+  /* One brand typeface across the whole site. Headings just differ by weight. */
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -108,15 +113,15 @@
 
 @layer components {
   .nav-link {
-    @apply relative text-sm font-medium text-foreground/70 
+    @apply relative text-sm font-medium text-foreground/70
            transition-colors duration-200;
   }
 
   .nav-link::after {
     content: "";
-    @apply absolute left-1/2 -bottom-1 h-[2px] w-0 
-           -translate-x-1/2 rounded-full 
-           bg-[hsl(var(--primary))] transition-all duration-200;
+    @apply absolute left-1/2 -bottom-1 h-[2px] w-0
+           -translate-x-1/2 rounded-full
+           bg-primary transition-all duration-200;
   }
 
   .nav-link:hover {
@@ -130,39 +135,32 @@
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-full
            px-6 py-2 text-sm font-semibold
-           bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]
-           shadow-[0_0_24px_rgba(0,255,204,0.45)]
-           hover:shadow-[0_0_32px_rgba(0,255,204,0.8)]
-           hover:translate-y-[-1px]
+           bg-primary text-primary-foreground
+           hover:opacity-90
            transition-all duration-200;
   }
 
   .btn-secondary {
-    /* Dark glass with teal border/text, not teal-on-white */
     @apply inline-flex items-center justify-center rounded-full
            px-6 py-2 text-sm font-semibold
-           border border-[hsla(168,100%,50%,0.5)]
-           bg-[rgba(15,23,42,0.85)]
-           text-[hsl(var(--primary))]
-           backdrop-blur-md
-           hover:bg-[rgba(15,23,42,0.95)]
-           hover:border-[hsla(168,100%,50%,0.85)]
-           transition-all duration-200;
+           border border-border
+           bg-background text-foreground
+           hover:bg-secondary
+           transition-colors duration-200;
   }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center rounded-full
            px-5 py-2 text-sm font-medium
-           border border-border/80
-           bg-[rgba(15,23,42,0.75)]
-           hover:bg-[rgba(15,23,42,0.95)]
+           border border-border
+           bg-transparent
+           hover:bg-secondary
            transition-colors duration-200;
   }
 
   .section-title {
     @apply text-4xl md:text-5xl font-semibold leading-tight mb-4
-           bg-gradient-to-r from-[hsl(var(--primary))] via-emerald-300 to-cyan-300
-           bg-clip-text text-transparent;
+           text-foreground tracking-tight;
   }
 
   .section-subtitle {
@@ -170,21 +168,16 @@
   }
 
   .pill {
-    @apply inline-flex items-center rounded-full border border-border/80
+    @apply inline-flex items-center rounded-full border border-border
            px-3 py-1 text-[0.7rem] font-semibold tracking-[0.18em]
-           uppercase text-muted-foreground bg-[rgba(15,23,42,0.85)]
-           backdrop-blur-md;
+           uppercase text-muted-foreground bg-secondary;
   }
 
-  /* For things like the REPORTLY · VIBEOPS chip on top of the photo */
   .glass-pill {
     @apply inline-flex items-center gap-2 rounded-full
            px-4 py-2 text-xs font-semibold
-           border border-[hsla(168,100%,50%,0.75)]
-           bg-[rgba(15,23,42,0.85)]
-           text-[hsl(var(--primary))]
-           backdrop-blur-xl
-           shadow-[0_0_18px_rgba(0,0,0,0.7)];
+           border border-border
+           bg-secondary text-foreground;
   }
 }
 
@@ -197,36 +190,30 @@
   line-height: 1.7;
 }
 
-/* Headings */
-
 .blog-article h1 {
-  font-size: 1.75rem; /* ~text-2xl */
+  font-size: 1.75rem;
   font-weight: 600;
   margin-top: 0.5rem;
   margin-bottom: 1.25rem;
 }
 
 .blog-article h2 {
-  font-size: 1.5rem; /* ~text-xl */
+  font-size: 1.5rem;
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
 
 .blog-article h3 {
-  font-size: 1.25rem; /* ~text-lg */
+  font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-/* Paragraphs */
-
 .blog-article p {
   margin-bottom: 1rem;
 }
-
-/* Lists */
 
 .blog-article ul,
 .blog-article ol {
@@ -247,8 +234,6 @@
   margin-bottom: 0.25rem;
 }
 
-/* Links */
-
 .blog-article a {
   color: hsl(var(--primary));
   text-decoration: underline;
@@ -256,15 +241,13 @@
 }
 
 .blog-article a:hover {
-  color: hsla(var(--primary), 0.8);
+  opacity: 0.8;
 }
 
-/* Blockquotes */
-
 .blog-article blockquote {
-  border-left: 4px solid hsla(var(--primary), 0.6);
+  border-left: 3px solid hsl(var(--border));
   padding-left: 1rem;
-  font-style: italic;
+  color: hsl(var(--muted-foreground));
   margin: 1rem 0;
 }
 
@@ -274,53 +257,81 @@
   background: transparent !important;
 }
 
-/* Kill horizontal scroll everywhere */
-/* Kill horizontal scroll everywhere & force dark base background */
+/* Token-driven base background (no white flash, works in both themes) */
 html,
 body,
 #root {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-
-  /* This is the important part: a solid dark base that never flashes white */
-  background-color: #020617; /* tailwind slate-950-ish */
+  background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
 
 /* -------------------------------------------------------------------------- */
-/* Custom scrollbar styling                                                    */
+/* Scrollbar — neutral, theme-aware                                            */
 /* -------------------------------------------------------------------------- */
 
-/* Webkit browsers (Chrome, Safari, Edge) */
 html::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 html::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  background: transparent;
 }
 
 html::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 204, 0.3);
+  background: hsl(var(--border));
   border-radius: 4px;
 }
 
 html::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 204, 0.5);
+  background: hsl(var(--muted-foreground));
 }
 
-/* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 204, 0.3) rgba(0, 0, 0, 0.2);
+  scrollbar-color: hsl(var(--border)) transparent;
 }
 
-/* Infinite marquee — translate3d forces GPU compositing for jank-free scroll */
-@keyframes marquee-scroll {
+/* -------------------------------------------------------------------------- */
+/* Seamless marquee (functional — used by <Marquee>)                          */
+/* -------------------------------------------------------------------------- */
+
+@keyframes marquee-shift {
   from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(var(--mq-shift, -50%), 0, 0); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  [style*="marquee-shift"] {
+    animation: none !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Theme toggle — circular reveal via the View Transitions API                */
+/* The new theme wipes in as an expanding circle from the toggle button.      */
+/* -------------------------------------------------------------------------- */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}

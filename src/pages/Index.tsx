@@ -1,98 +1,81 @@
 // src/pages/Index.tsx
+// VibeOps platform homepage - customer-conversion focused.
+// Promotes the full ecosystem: Reportly, Custom Rollouts.
+// Hero: clean platform reveal, no GSAP pin.
+// Sections: problem → products → previews → proof → CTA.
 
 import {
   motion,
-  useScroll,
-  useTransform,
   useInView,
   useReducedMotion,
+  AnimatePresence,
 } from 'framer-motion';
-import { FileText, Wrench, BarChart3, Layers, Check, ArrowUpRight, ArrowRight } from 'lucide-react';
-import { useRef, useEffect, useState, ReactNode } from 'react';
+import {
+  FileText, MapPin, Wrench, Check, ArrowRight,
+  ArrowUpRight, Star,
+} from 'lucide-react';
+import { useRef, useEffect, useLayoutEffect, useState, useCallback, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
-import { ScrambleText } from '@/components/ScrambleText';
 import { HomepageDeviceStage } from '@/components/homepage/DeviceScene';
+import { VibeOpsShowcaseScreen } from '@/components/homepage/VibeOpsShowcase';
 import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
 
-const HERO_VIDEO_SRC = '/vids/demo-vid.mp4';
-const PLATFORM_VIDEO_SRC = '/vids/Product Demo Video in Green Blue Cool Corporate Style (1).mp4';
-const PITCH_VIDEO_SRC =
-  'https://www.youtube.com/embed/GIVzfvtqk3Y?autoplay=1&mute=1&loop=1&playlist=GIVzfvtqk3Y&controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1';
+// ─── Primitives ─────────────────────────────────────────────────────────────
 
-const TICKER_ITEMS = [
-  { type: 'logo' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering', url: 'https://senseengineering.com/' },
-  { type: 'logo' as const, src: '/clients/ubc-eng.jpg', alt: 'UBC Engineering', url: 'https://engineering.ubc.ca/' },
-  { type: 'text' as const, label: 'Techcouver', url: 'https://techcouver.com/2026/03/30/ubc-ventures-take-stage-at-investor-showcase/' },
-  { type: 'text' as const, label: 'UBC Investor Showcase', url: 'https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase' },
-  { type: 'text' as const, label: 'Venture Founder Cohort', url: 'https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort' },
-  { type: 'text' as const, label: 'Investor Spotlight', url: 'https://www.linkedin.com/feed/update/urn:li:share:7442251270310227970' },
-];
+const E = HOMEPAGE_EASE;
 
-// =============================================================================
-// Primitives
-// =============================================================================
-
-function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
-  const reducedMotion = useReducedMotion();
+function Reveal({
+  children, delay = 0, className,
+}: { children: ReactNode; delay?: number; className?: string }) {
+  const rm = useReducedMotion();
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: reducedMotion ? 0 : HOMEPAGE_MOTION.revealDistance, filter: reducedMotion ? 'blur(0px)' : HOMEPAGE_MOTION.revealBlur }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, y: rm ? 0 : HOMEPAGE_MOTION.revealDistance, filter: rm ? 'none' : HOMEPAGE_MOTION.revealBlur }}
+      whileInView={{ opacity: 1, y: 0, filter: 'none' }}
       viewport={HOMEPAGE_MOTION.viewport}
-      transition={{ duration: HOMEPAGE_MOTION.revealDuration, delay, ease: HOMEPAGE_EASE }}
+      transition={{ duration: HOMEPAGE_MOTION.revealDuration, delay, ease: E }}
     >
       {children}
     </motion.div>
   );
 }
 
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.065, delayChildren: 0.03 } } };
-const item = {
-  hidden: { opacity: 0, y: HOMEPAGE_MOTION.revealDistance, filter: HOMEPAGE_MOTION.revealBlur },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: HOMEPAGE_MOTION.revealDuration, ease: HOMEPAGE_EASE } },
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
+};
+const fadeUp = {
+  hidden: { opacity: 0, y: 16, filter: 'blur(4px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.55, ease: E } },
 };
 
-function useCountUp(target: number, duration = 1.8) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    import('framer-motion').then(({ animate }) => {
-      const controls = animate(0, target, { duration, ease: HOMEPAGE_EASE, onUpdate: (v) => setVal(Math.round(v)) });
-      return () => controls.stop();
-    });
-  }, [inView, target, duration]);
-  return { ref, val };
+function Label({ children }: { children: ReactNode }) {
+  return (
+    <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">
+      {children}
+    </p>
+  );
 }
 
 function Rule({ className }: { className?: string }) {
   return (
     <motion.div
-      className={`h-px bg-white/8 origin-left ${className ?? ''}`}
+      className={`h-px bg-border origin-left ${className ?? ''}`}
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.9, ease: HOMEPAGE_EASE }}
+      transition={{ duration: 0.9, ease: E }}
     />
   );
 }
 
-function Label({ children }: { children: ReactNode }) {
-  return <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/70 font-semibold">{children}</p>;
-}
-
-function Btn({ href, children, primary = false }: { href: string; children: ReactNode; primary?: boolean }) {
+function PrimaryBtn({ href, children }: { href: string; children: ReactNode }) {
   return (
     <motion.a
       href={href}
-      className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-[13.5px] font-semibold whitespace-nowrap transition-colors duration-300 ${
-        primary
-          ? 'bg-gradient-to-r from-emerald-300 to-emerald-400 text-black hover:from-emerald-200 hover:to-emerald-300'
-          : 'border border-white/14 bg-white/[0.03] text-white/78 hover:border-white/28 hover:bg-white/[0.06] hover:text-white'
-      }`}
-      whileHover={{ scale: 1.025 }}
+      className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground text-[14px] font-bold whitespace-nowrap shadow-sm"
+      whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       transition={HOMEPAGE_MOTION.hoverSpring}
     >
@@ -101,859 +84,1272 @@ function Btn({ href, children, primary = false }: { href: string; children: Reac
   );
 }
 
-function SectionBridge({ from, to, height = 80 }: { from: string; to: string; height?: number }) {
+function SecondaryBtn({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <div
-      aria-hidden="true"
-      style={{ height, background: `linear-gradient(to bottom, ${from}, ${to})`, marginTop: -1, marginBottom: -1, position: 'relative', zIndex: 1 }}
-    />
+    <motion.a
+      href={href}
+      className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-secondary text-muted-foreground text-[13.5px] font-semibold hover:border-foreground/30 hover:text-foreground transition-colors duration-200 whitespace-nowrap"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+      transition={HOMEPAGE_MOTION.hoverSpring}
+    >
+      {children}
+    </motion.a>
   );
 }
 
-function InfiniteMarquee({ speed = 35 }: { speed?: number }) {
+function useCountUp(target: number, duration = 1.8) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    import('framer-motion').then(({ animate }) => {
+      const c = animate(0, target, {
+        duration,
+        ease: E,
+        onUpdate: (v) => setVal(Math.round(v)),
+      });
+      return () => c.stop();
+    });
+  }, [inView, target, duration]);
+  return { ref, val };
+}
+
+// ─── Ticker ─────────────────────────────────────────────────────────────────
+
+// `tone` describes the logo artwork's own color so we can render every logo as
+// a consistent, readable monochrome in BOTH light and dark mode:
+//   'light' = light/white artwork  -> invert in light mode, leave in dark
+//   'dark'  = dark/ink artwork      -> leave in light mode, invert in dark
+const TICKER_ITEMS = [
+  { type: 'logo' as const, tone: 'light' as const, src: '/clients/SenseEngineering.png', alt: 'Sense Engineering', url: 'https://senseengineering.com/' },
+  { type: 'logo' as const, tone: 'dark' as const,  src: '/clients/ubc-eng.jpg', alt: 'UBC Engineering', url: 'https://engineering.ubc.ca/' },
+  { type: 'logo' as const, tone: 'dark' as const,  src: '/clients/grantfundpro.avif', alt: 'GrantFundPro', url: 'https://www.grantfundpro.com/' },
+  { type: 'logo' as const, tone: 'dark' as const,  src: '/clients/effortlo.png', alt: 'Effortlo', url: 'https://www.effortlo.com/' },
+  { type: 'text' as const, label: 'Techcouver', url: 'https://techcouver.com/2026/03/30/ubc-ventures-take-stage-at-investor-showcase/' },
+  { type: 'text' as const, label: 'UBC Investor Showcase', url: 'https://innovation.ubc.ca/news/march-03-2026/meet-12-ubc-ventures-presenting-innovation-ubcs-2026-investor-showcase' },
+  { type: 'text' as const, label: 'Venture Founder Cohort', url: 'https://innovation.ubc.ca/news/february-02-2026/meet-51st-venture-founder-cohort' },
+];
+
+function TickerItem({ t }: { t: typeof TICKER_ITEMS[number] }) {
   return (
-    <div className="overflow-hidden w-full select-none">
-      <div className="flex whitespace-nowrap w-max" style={{ animation: `marquee-scroll ${speed}s linear infinite` }}>
-        {[0, 1].map((pass) => (
-          <span key={pass} className="flex items-center shrink-0">
-            {TICKER_ITEMS.map((t, i) => (
-              <span key={`${pass}-${i}`} className="inline-flex items-center gap-3 px-6">
-                {t.type === 'logo' ? (
-                  t.url ? (
-                    <a href={t.url} target="_blank" rel="noopener noreferrer" aria-label={t.alt}>
-                      <img src={t.src} alt={t.alt} className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-70 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
-                    </a>
-                  ) : (
-                    <img src={t.src} alt={t.alt} className="h-7 w-auto max-w-[90px] object-contain opacity-40 hover:opacity-65 transition-opacity duration-300 grayscale brightness-150" loading="lazy" />
-                  )
-                ) : (
-                  <a href={t.url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.28em] text-white/35 hover:text-white/70 transition-colors duration-200 font-medium">
-                    {t.label}
-                  </a>
-                )}
-                <span className="w-1 h-1 rounded-full bg-white/15 flex-shrink-0" aria-hidden="true" />
-              </span>
-            ))}
-          </span>
+    <span className="inline-flex items-center gap-4 px-8">
+      {t.type === 'logo'
+        ? <a href={t.url} target="_blank" rel="noopener noreferrer" aria-label={t.alt}>
+            {/* eager + decoding=sync: all 4 marquee copies must resolve to the
+                same width at the same time, or the -25% loop point drifts and
+                the ticker visibly jumps on reset. Lazy-loading the off-screen
+                copies was the cause of that jump. */}
+            <img src={t.src} alt={t.alt} className={`w-auto max-w-[160px] object-contain grayscale opacity-70 hover:opacity-100 transition-opacity duration-300 ${t.alt === 'Effortlo' ? 'h-11 md:h-12' : 'h-7 md:h-8'} ${t.tone === 'light' ? 'invert dark:invert-0' : 'dark:invert'}`} loading="eager" decoding="sync" />
+          </a>
+        : <a href={t.url} target="_blank" rel="noopener noreferrer" className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground transition-colors duration-200 font-semibold whitespace-nowrap">{t.label}</a>
+      }
+      <span className="w-1.5 h-1.5 rounded-full bg-border flex-shrink-0" aria-hidden="true" />
+    </span>
+  );
+}
+
+// ─── Seamless marquee ─────────────────────────────────────────────────────────
+// Measures ONE content group + the container, then renders enough identical
+// groups to always overflow the viewport and translates by exactly one group
+// width (in px, via the --mq-shift custom property). Because the shift equals an
+// integer number of repeating units, the loop is pixel-perfect at ANY width and
+// never jumps on reset. It re-measures on resize AND once web-fonts settle
+// (ResizeObserver on the group) - late-loading assets changing the group width
+// was exactly what made the old fixed-percentage marquees jump.
+function Marquee({
+  children,
+  pxPerSec = 38,
+  className = '',
+}: {
+  children: ReactNode;
+  pxPerSec?: number;
+  className?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const [groupW, setGroupW] = useState(0);
+  const [groups, setGroups] = useState(2);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const c = containerRef.current;
+      const g = groupRef.current;
+      if (!c || !g) return;
+      const gw = g.getBoundingClientRect().width;
+      const cw = c.getBoundingClientRect().width;
+      if (gw < 1) return;
+      setGroupW(gw);
+      // After a one-group shift, the remaining (groups - 1) groups must still
+      // cover the viewport. Render ceil(viewport / group) + 2 for headroom.
+      setGroups(Math.max(2, Math.ceil(cw / gw) + 2));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (containerRef.current) ro.observe(containerRef.current);
+    if (groupRef.current) ro.observe(groupRef.current);
+    const fonts = (document as unknown as { fonts?: { ready?: Promise<unknown> } }).fonts;
+    fonts?.ready?.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [children]);
+
+  const dur = groupW > 0 ? groupW / pxPerSec : 0;
+
+  return (
+    // isolation:isolate + translateZ(0) gives the marquee its own GPU layer so
+    // unrelated fixed-overlay/viewport repaints don't jitter the animation.
+    <div
+      ref={containerRef}
+      className={`overflow-hidden w-full select-none ${className}`}
+      style={{ isolation: 'isolate', transform: 'translateZ(0)' }}
+    >
+      <div
+        className="flex w-max flex-nowrap"
+        style={{
+          animation: dur ? `marquee-shift ${dur}s linear infinite` : undefined,
+          ['--mq-shift' as string]: groupW ? `-${groupW}px` : '-50%',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+        }}
+      >
+        {Array.from({ length: groups }).map((_, i) => (
+          <div
+            key={i}
+            ref={i === 0 ? groupRef : undefined}
+            aria-hidden={i > 0}
+            className="flex flex-nowrap shrink-0"
+          >
+            {children}
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-// =============================================================================
-// Page
-// =============================================================================
+function InfiniteMarquee({ speed: _speed }: { speed?: number }) {
+  return (
+    <Marquee pxPerSec={38}>
+      {TICKER_ITEMS.map((t, i) => <TickerItem key={i} t={t} />)}
+    </Marquee>
+  );
+}
+
+// ─── Platform Ecosystem Visual ───────────────────────────────────────────────
+
+const PRODUCTS = [
+  {
+    id: 'reportly',
+    name: 'Reportly',
+    tag: 'Report Automation',
+    description: 'Engineering report drafts pulled from your templates, field notes, and data. Code references included.',
+    accent: '#34d399',
+    icon: FileText,
+    href: '/reportly',
+    badge: null,
+  },
+  {
+    id: 'codes',
+    name: 'Code Intelligence',
+    tag: 'Building Code Intelligence',
+    description: 'Type in a project address. Get every Canadian building code that applies to it.',
+    accent: '#34d399',
+    icon: MapPin,
+    href: '/reportly',
+    badge: null,
+  },
+  {
+    id: 'custom',
+    name: 'Custom Rollouts',
+    tag: 'Firm-Specific Software',
+    description: 'Tools, dashboards, and automations built around the way your firm already works.',
+    accent: '#60a5fa',
+    icon: Wrench,
+    href: '/services',
+    badge: null,
+  },
+] as const;
+
+function PlatformEcosystemCard({
+  product, delay = 0, skipReveal = false,
+}: {
+  product: typeof PRODUCTS[number];
+  delay?: number;
+  // skipReveal: pass true when rendering inside a fixed overlay.
+  // Fixed elements are always "in view" so whileInView would flash opacity:0
+  // for one frame before the observer fires. Skip it and just render visible.
+  skipReveal?: boolean;
+}) {
+  const Icon = product.icon;
+
+  return (
+    <motion.a
+      href={product.href}
+      className="group relative rounded-2xl border border-border bg-card p-5 flex flex-col gap-3 cursor-pointer shadow-sm"
+      initial={skipReveal ? false : { opacity: 0 }}
+      whileInView={skipReveal ? undefined : { opacity: 1 }}
+      viewport={{ once: true, margin: '-20px' }}
+      transition={{ duration: 0.45, delay, ease: E }}
+      whileHover={{ y: -3, transition: { duration: 0.2 } }}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: `${product.accent}14`, border: `1px solid ${product.accent}28` }}
+        >
+          <Icon className="w-4.5 h-4.5" style={{ color: product.accent }} />
+        </div>
+        {product.badge && (
+          <span
+            className="text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded-full flex-shrink-0"
+            style={{ background: `${product.accent}14`, color: product.accent, border: `1px solid ${product.accent}28` }}
+          >
+            {product.badge}
+          </span>
+        )}
+      </div>
+      <div>
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1" style={{ color: product.accent }}>
+          {product.tag}
+        </p>
+        <h3 className="text-[16px] font-bold text-foreground leading-tight mb-1.5">{product.name}</h3>
+        <p className="text-[12.5px] text-muted-foreground leading-[1.65]">{product.description}</p>
+      </div>
+      <div className="flex items-center gap-1 mt-auto" style={{ color: product.accent }}>
+        <span className="text-[11px] font-semibold">Take a look</span>
+        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
+      </div>
+    </motion.a>
+  );
+}
+
+
+// ─── Page ───────────────────────────────────────────────────────────────────
 
 export default function Index() {
   return (
     <>
       <SEO
-        title="AI Engineering Report Automation | VibeOps Technologies"
-        description="VibeOps builds Reportly, the AI report automation platform for civil and construction engineering teams, and implements it around your firm's templates, QA process, and data workflows."
+        title="Engineering Report Automation & Building Code Intelligence for AE Firms"
+        description="VibeOps builds report automation, building code intelligence, and workflow software for civil and structural AE firms, cutting manual work out of compliance."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
-      <SectionBridge from="#050912" to="#060b14" height={48} />
-      <ModelSection />
-      <SectionBridge from="#060b14" to="#08111b" height={32} />
-      <PlatformSection />
-      <SectionBridge from="#08111b" to="#060b14" height={32} />
-      <ReportlySection />
-      <PatternInterruptA />
-      <FeaturesSection />
-      <ProcessSection />
+      <ProblemSection />
+      <ProductPillarsSection />
+      <ReportlyRevealSection />
+      <CodeIntelligenceSection />
+      <TestimonialsSection />
+      <ProofSection />
       <TeamSection />
-      <CTASection />
-      {/* Hidden internal links for SEO crawlability */}
-      <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
-        <a href="/services">AI engineering automation services for civil and construction teams</a>
-        <a href="/reportly">Reportly - AI report writing software for civil engineers</a>
-        <a href="/contact">Book a demo for engineering report automation</a>
-        <a href="/team">Meet the VibeOps engineering automation team</a>
-        <a href="/blog">AI tools for civil engineering report writing and documentation</a>
-        <a href="https://reportly.ca" rel="noopener">Reportly - automated engineering report generator</a>
-      </div>
+      <FinalCTASection />
     </>
   );
 }
 
-// =============================================================================
-// Hero
-// Research basis: NN/g — information scent above the fold determines whether
-// users scroll. Hero must answer "who are you", "what do you do", and "why
-// should I keep reading" in the first viewport. The dual-identity positioning
-// line below the CTAs does this explicitly.
-// Scroll cue: science shows directional motion cues (not arrows) are more
-// effective. A glow bead traveling downward leverages motion parallax to imply
-// depth and draw the eye toward the next section.
-// =============================================================================
+// ─── 1. Hero ─────────────────────────────────────────────────────────────────
 
-const heroStats = [
-  { value: 80, suffix: '%+', label: 'Documentation Time Saved' },
-  { value: 3, suffix: ' min', label: 'Avg. Report Generation Time' },
-  { value: 100, suffix: '%', label: 'Existing Template Compatible' },
-];
-
-function HeroStatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const { ref, val } = useCountUp(value, 1.8);
-  return (
-    <div className="flex flex-col items-center sm:items-start">
-      <span ref={ref} className="text-2xl sm:text-3xl font-bold text-white tabular-nums tracking-tight">{val}{suffix}</span>
-      <span className="text-[11px] text-white/50 mt-1 leading-tight text-center sm:text-left">{label}</span>
-    </div>
-  );
-}
+// Scroll-driven phase for the hero device reveal.
+// 0=none, 1=laptop, 2=iPad, 3=phone (holds until scroll exits)
+type DevicePhase = 0 | 1 | 2 | 3;
 
 function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const deviceY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 18 : 48]);
-  const deviceOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 10 : 26]);
-  const cueOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+  const rm = useReducedMotion();
+  const spacerRef = useRef<HTMLDivElement>(null);
+  const rafRef    = useRef<number | null>(null);
+
+  const [isInView, setIsInView] = useState(true); // start true so fixed overlay shows immediately
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [overlayBottom, setOverlayBottom] = useState(0);
+  const [phase, setPhase] = useState<DevicePhase>(0);
+
+  // Laptop is shown open; devices auto-cycle on a timer (no scroll gating).
+  const lidProgress = 1;
+
+  const updateScroll = useCallback(() => {
+    const el = spacerRef.current;
+    if (!el) return;
+    const rect   = el.getBoundingClientRect();
+    const elH    = el.offsetHeight;
+    const vpH    = window.innerHeight;
+
+    const inView = rect.top < vpH && rect.bottom > 0;
+    setIsInView(inView);
+
+    // Seamless exit: shrink overlay from the bottom as spacer exits the viewport.
+    // When rect.bottom drops below vpH, ProblemSection slides up into view beneath.
+    setOverlayBottom(Math.max(0, vpH - Math.max(0, rect.bottom)));
+
+    if (!inView) { rafRef.current = null; return; }
+
+    const maxScroll = elH - vpH;
+    if (maxScroll <= 0) { rafRef.current = null; return; }
+
+    const scrolled = Math.max(0, Math.min(1, -rect.top / maxScroll));
+    setScrollProgress(scrolled);
+
+    rafRef.current = null;
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    if (rafRef.current === null) {
+      rafRef.current = requestAnimationFrame(updateScroll);
+    }
+  }, [updateScroll]);
+
+  // Auto-cycle the devices (laptop -> tablet -> phone) on a timer so the hero
+  // is no longer scroll-gated. The page scrolls freely.
+  useEffect(() => {
+    if (rm) { setPhase(3); return; }
+    setPhase(1);
+    const id = setInterval(() => {
+      setPhase((p) => (p >= 3 ? 1 : ((p + 1) as DevicePhase)));
+    }, 2800);
+    return () => clearInterval(id);
+  }, [rm]);
+
+  useEffect(() => {
+    if (rm) return;
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    // Double-deferred init so layout is settled after SPA navigation
+    let t: ReturnType<typeof setTimeout>;
+    const t0 = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        handleScroll();
+        t = setTimeout(handleScroll, 200);
+      });
+    });
+
+    let ro: ResizeObserver | null = null;
+    if (spacerRef.current && typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => handleScroll());
+      ro.observe(spacerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(t0);
+      clearTimeout(t);
+      ro?.disconnect();
+    };
+  }, [rm, handleScroll]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-screen w-full flex flex-col overflow-hidden bg-[#050912]"
-      aria-label="VibeOps - AI Engineering Report Automation for Civil and Construction"
-    >
-      <div className="relative z-10 flex w-full flex-1 flex-col md:flex-row md:items-center">
-        {/* Left text column */}
-        <motion.div
-          className="relative z-20 flex flex-col justify-center px-6 pb-4 pt-20 sm:px-10 md:w-[38%] md:min-w-[400px] md:pb-6 md:pl-14 md:pt-24 lg:pl-20 xl:w-[34%] xl:pl-24"
-          style={{ y: contentY }}
-          variants={stagger}
-          initial="hidden"
-          animate="show"
+    <>
+      {/* Scroll spacer - keeps the fixed hero overlay pinned for a short, normal
+          hero height, then releases so the page scrolls freely. Devices auto-cycle
+          on a timer rather than being gated by scroll position. */}
+      <div ref={spacerRef} style={{ height: '140vh' }} aria-hidden="true" />
+
+      {/* Reportly - laptop + text, fixed at z-2, vertically centered.
+          Reportly section (z-10) is transparent so this shows through.
+          Covered by Three Ways z-20 above and MapleCodes z-30 below. */}
+      <div className="pointer-events-none fixed inset-0 flex items-center" style={{ zIndex: 2 }}>
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-14">
+          {/* Desktop: laptop left, text right */}
+          <div className="hidden lg:grid lg:grid-cols-[1fr_380px] gap-10 lg:gap-16 items-center">
+            <HomepageDeviceStage videoSrc="/vids/demo-vid.mp4" lockedDevice="laptop" hideDots />
+            <div style={{ pointerEvents: 'auto' }} className="flex flex-col">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
+              <h2 className="font-bold text-foreground tracking-[-0.03em] leading-[1.1] mb-4"
+                style={{ fontSize: 'clamp(1.6rem, 2.2vw, 2.4rem)' }}>
+                Scattered inputs in,{' '}
+                <span className="text-primary">a report draft out.</span>
+              </h2>
+              <p className="text-muted-foreground leading-[1.75] mb-6 text-[15px]">
+                Templates, field notes, photos, tables, and the right code references. You get a first draft in minutes, not days.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a href="/reportly" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground text-[14px] font-bold whitespace-nowrap shadow-sm">
+                  See Reportly <ArrowRight className="w-4 h-4" />
+                </a>
+                <a href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-secondary text-muted-foreground text-[13.5px] font-semibold whitespace-nowrap">
+                  Book a call
+                </a>
+              </div>
+            </div>
+          </div>
+          {/* Mobile: laptop full width, generous gap, text centered below */}
+          <div className="lg:hidden flex flex-col items-center gap-12">
+            <div className="w-full">
+              <HomepageDeviceStage videoSrc="/vids/demo-vid.mp4" lockedDevice="laptop" hideDots />
+            </div>
+            <div style={{ pointerEvents: 'auto' }} className="w-full text-center px-2">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
+              <h2 className="font-bold text-foreground tracking-[-0.03em] leading-[1.1] mb-4"
+                style={{ fontSize: 'clamp(1.5rem, 5.5vw, 2.1rem)' }}>
+                Scattered inputs in,{' '}
+                <span className="text-primary">a report draft out.</span>
+              </h2>
+              <div className="flex flex-wrap gap-2 justify-center">
+                <a href="/reportly" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-bold whitespace-nowrap shadow-sm">
+                  See Reportly <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+                <a href="/contact" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-border bg-secondary text-muted-foreground text-[13px] font-semibold whitespace-nowrap">
+                  Book a call
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* Fixed overlay - only mounted while spacer is in view (same as ShowcaseSection).
+          This avoids Lenis / sticky incompatibility entirely. */}
+      {isInView && (
+        <div
+          className="fixed z-30 w-full bg-background overflow-hidden flex flex-col"
+          style={{ top: 0, left: 0, right: 0, bottom: `${overlayBottom}px` }}
         >
-          <motion.a
-            variants={item}
-            href="https://reportly.ca"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mb-7 w-fit px-4 py-2 rounded-full border border-emerald-400/20 bg-white/[0.03] shadow-[0_12px_30px_rgba(0,0,0,0.24)] backdrop-blur-md hover:border-emerald-400/40 hover:bg-white/[0.05] transition-colors duration-300"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-45" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span className="text-[10px] font-semibold text-emerald-300 uppercase tracking-[0.28em]">Reportly</span>
-            <span className="text-[10px] text-white/28">Early Access</span>
-          </motion.a>
+          {/* Main content (pt clears the fixed nav) */}
+          <div className="flex-1 flex items-start lg:items-center min-h-0 overflow-hidden">
+            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-14 pt-24 pb-4 lg:pt-28 lg:pb-20">
+              <div className="grid lg:grid-cols-[1fr_1.1fr] gap-[100px] lg:gap-10 items-center">
 
-          <motion.h1
-            variants={item}
-            className="font-bold leading-[0.88] tracking-[-0.065em] mb-5"
-            style={{ fontSize: 'clamp(2.2rem, 3.6vw, 4.2rem)' }}
-          >
-            <span className="block text-white">Less formatting.</span>
-            <span className="block text-emerald-300">More engineering.</span>
-          </motion.h1>
+                {/* LEFT - text + CTAs */}
+                <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
+                  <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
+                    style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
+                    Building code smarts and reporting software{' '}
+                    <span className="text-primary">for AE firms.</span>
+                  </motion.h1>
 
-          <motion.p variants={item} className="mb-6 max-w-[26rem] text-[0.92rem] leading-[1.65] text-white/52 lg:text-[0.98rem]">
-            We build Reportly, the AI reporting platform for civil and construction teams, and customize it around your firm's templates, QA process, and data workflows.
-          </motion.p>
+                  <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
+                    style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
+                    We help architecture and engineering teams cut down the manual work in reporting, code compliance, and field workflows. The tools fit the way your firm already works, not the other way around.
+                  </motion.p>
 
-          <motion.div variants={item} className="flex flex-nowrap items-center gap-3 mb-3">
-            <motion.a
-              href="/reportly"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-400 text-black text-[13.5px] font-bold whitespace-nowrap hover:from-emerald-200 hover:to-emerald-300 transition-colors duration-200"
-              style={{ boxShadow: '0 18px 46px rgba(52, 211, 153, 0.18)' }}
-              whileHover={{ scale: 1.03, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-              transition={HOMEPAGE_MOTION.hoverSpring}
+                  <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-1">
+                    <PrimaryBtn href="/services">See what we build <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+                    <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
+                  </motion.div>
+
+                  <motion.p variants={fadeUp} className="text-[11px] text-muted-foreground tracking-wide">
+                    <a href="/reportly" className="hover:text-primary transition-colors">Reportly</a>
+                    {' · '}
+                    <a href="/services" className="hover:text-primary transition-colors">Custom Rollouts</a>
+                  </motion.p>
+
+                </motion.div>
+
+                {/* Devices - full width, phone scaled down on mobile only via inner wrapper */}
+                <div className="relative w-full" style={{ aspectRatio: '16/9.5' }}>
+                  <AnimatePresence>
+                    {phase === 0 && (
+                      <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0.2, delay: 0 } }}
+                        transition={{ duration: 0.7, delay: 1.6 }}>
+                        <motion.svg width="52" height="72" viewBox="0 0 20 28" fill="none" className="text-muted-foreground/40"
+                          animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}>
+                          <path d="M10 2L10 24M10 24L3 17M10 24L17 17" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                        </motion.svg>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <motion.div className="absolute inset-0 flex items-center justify-center"
+                    animate={{ opacity: phase === 1 ? 1 : 0, scale: phase === 1 ? 1 : phase > 1 ? 0.94 : 0.86, x: phase === 1 ? 0 : phase > 1 ? '-10%' : 0, y: phase === 1 ? 0 : phase < 1 ? 18 : 0 }}
+                    transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
+                    <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="laptop" hideDots lidProgress={lidProgress} />
+                  </motion.div>
+                  <motion.div className="absolute inset-0 flex items-center justify-center"
+                    animate={{ opacity: phase === 2 ? 1 : 0, scale: phase === 2 ? 1 : phase > 2 ? 0.94 : 0.92, x: phase === 2 ? 0 : phase > 2 ? '-10%' : '18%' }}
+                    transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
+                    <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="tablet" hideDots />
+                  </motion.div>
+                  <motion.div className="absolute inset-0 flex items-center justify-center"
+                    animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
+                    transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
+                    {/* Phone is portrait - constrain width on mobile so it looks iPhone SE sized */}
+                    <div className="w-[52%] lg:contents">
+                      <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Ticker bar */}
+          <div className="relative z-10 bg-background border-t border-border flex-shrink-0 py-4 overflow-hidden">
+            <InfiniteMarquee speed={28} />
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// ─── 2. Problem ───────────────────────────────────────────────────────────────
+
+// A realistic half-assembled engineering report - engineers immediately recognise
+// the version chaos, reviewer comments about code year disputes, missing load
+// values, and photo placeholders with notes from a colleague.
+// Every AE engineer has a project folder that looks exactly like this.
+// No explanation needed. They feel it immediately.
+function ProblemLegacyVisual() {
+  const FILES = [
+    { name: 'Queensborough_Report_Draft.docx',          date: 'Feb 14',  note: null },
+    { name: 'Queensborough_Report_Draft_v2.docx',       date: 'Feb 22',  note: null },
+    { name: 'Queensborough_Report_JA_edits.docx',       date: 'Mar 3',   note: null },
+    { name: 'Queensborough_Report_FINAL.docx',          date: 'Mar 11',  note: null },
+    { name: 'Queensborough_Report_FINAL_v2.docx',       date: 'Mar 18',  note: null },
+    { name: 'Queensborough_Report_FINAL_client.docx',   date: 'Mar 25',  note: null },
+    { name: 'Queensborough_Report_FINAL_FINAL.docx',    date: 'Apr 4',   note: 'sent to client' },
+    { name: 'Queensborough_Report_FINAL_FINAL_rev.docx',date: 'Apr 9',   note: 'client comments' },
+  ] as const;
+
+  return (
+    <div className="relative w-full">
+      {/* Folder header */}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="flex gap-1">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+        </div>
+        <p className="text-[11px] text-muted-foreground ml-2">Projects / Bridge_Inspections / Queensborough_2024</p>
+      </div>
+
+      {/* File list */}
+      <div className="space-y-0.5">
+        {FILES.map((f, i) => {
+          const isLast = i === FILES.length - 1;
+          const isSent = f.note === 'sent to client';
+          return (
+            <motion.div
+              key={f.name}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg group"
+              style={{
+                background: isLast ? 'rgba(239,68,68,0.07)' : i % 2 === 0 ? 'hsl(var(--secondary))' : 'transparent',
+                border: isLast ? '1px solid rgba(239,68,68,0.22)' : '1px solid transparent',
+              }}
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.3, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
             >
-              Explore Reportly <ArrowRight className="w-3.5 h-3.5" />
-            </motion.a>
-            <Btn href="/services">See Custom Rollouts</Btn>
-          </motion.div>
+              {/* Word icon */}
+              <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(43,92,230,0.22)' }}>
+                <FileText className="w-3 h-3" style={{ color: '#5b8def' }} />
+              </div>
 
-          <motion.p variants={item} className="max-w-[28rem] text-[11px] text-white/22 tracking-wide leading-relaxed">
-            Flagship SaaS product &middot; Custom engineering rollouts &middot; Built for civil and construction teams
-          </motion.p>
-        </motion.div>
+              {/* Filename */}
+              <p
+                className={`text-[11.5px] flex-1 truncate ${isLast ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}
+              >
+                {f.name}
+              </p>
 
-        {/* Right device column */}
-        <motion.div
-          className="relative z-10 flex w-full items-center justify-center pb-4 pt-8 md:w-[66%] md:pb-0 md:pt-10 xl:w-[70%]"
-          style={{ y: deviceY, opacity: deviceOpacity }}
-        >
-          <motion.div className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={HOMEPAGE_MOTION.heroFade}>
-            <HomepageDeviceStage videoSrc={HERO_VIDEO_SRC} />
-          </motion.div>
-        </motion.div>
+              {/* Date + note */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className="text-[10px] text-muted-foreground">{f.date}</span>
+                {f.note && (
+                  <span
+                    className="text-[9px] font-bold px-2 py-0.5 rounded"
+                    style={{
+                      background: isSent ? 'rgba(52,211,153,0.12)' : 'rgba(239,68,68,0.12)',
+                      color: isSent ? '#34d399' : '#f87171',
+                      border: `1px solid ${isSent ? 'rgba(52,211,153,0.25)' : 'rgba(239,68,68,0.25)'}`,
+                    }}
+                  >
+                    {f.note}
+                  </span>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* Scroll path cue — glow bead traveling downward implies depth + pulls the eye.
-          Fades out when user starts scrolling (already engaged). */}
-      <motion.div
-        className="relative z-10 flex justify-center pb-2 pt-0 pointer-events-none"
-        style={{ opacity: cueOpacity }}
-      >
-        <div className="flex flex-col items-center">
-          <div className="relative h-14 w-px overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-400/22 to-transparent" />
-            {!reducedMotion && (
-              <motion.div
-                className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.65)]"
-                animate={{ y: [0, 48], opacity: [0, 0.85, 0] }}
-                transition={{ duration: 1.9, repeat: Infinity, repeatDelay: 0.7, ease: 'easeInOut' }}
-                style={{ top: 0 }}
-              />
-            )}
-          </div>
-        </div>
-      </motion.div>
-
-      <div aria-hidden="true" className="relative z-10 h-4 w-full pointer-events-none md:hidden" style={{ background: '#050912', marginBottom: -1 }} />
-
-      <div className="relative z-10 w-full border-t border-white/6 bg-[#050912]/70 backdrop-blur-md">
-        <div className="max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-20 py-6">
-          <div className="grid grid-cols-3 gap-4 text-center sm:text-left sm:flex sm:justify-evenly sm:gap-0">
-            {heroStats.map((s) => <HeroStatItem key={s.label} {...s} />)}
-          </div>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full border-t border-white/5 bg-[#050912] pt-5 pb-1 overflow-hidden">
-        <p className="text-center text-[9px] uppercase tracking-[0.38em] text-white/25 mb-4 font-medium px-6">
-          Trusted by Engineering Professionals &amp; Featured In
+      {/* Bottom line */}
+      <div className="mt-5 pt-4 border-t border-border flex items-center justify-between">
+        <p className="text-[11px] text-muted-foreground">8 versions. 1 report. 7 weeks.</p>
+        <p className="text-[11px] font-semibold" style={{ color: 'rgba(239,68,68,0.7)' }}>
+          Every. Single. Project.
         </p>
-        <InfiniteMarquee speed={35} />
       </div>
-    </section>
-  );
-}
-
-// =============================================================================
-// Model Section — dual-identity proof, the business model in two cards.
-// Research basis: BJ Fogg's behavior model — reduce ambiguity to reduce
-// cognitive load. Visitors who understand "what kind of company is this"
-// within 10 seconds have dramatically lower bounce rates.
-// =============================================================================
-
-function ModelSection() {
-  return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
-      <div className="max-w-5xl mx-auto px-6 md:px-10">
-        <Reveal>
-          <Label>The Model</Label>
-          <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-3xl mb-5 leading-[1.08] mt-4">
-            One startup. Two ways to help engineering teams move faster.
-          </h2>
-          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-xl mb-14 leading-[1.8]">
-            Reportly is the product. VibeOps is the team that implements it, integrates it, and extends it to fit how your firm actually works.
-          </p>
-        </Reveal>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Reportly SaaS card */}
-          <motion.div
-            className="group flex flex-col p-7 rounded-2xl border border-emerald-500/18 bg-gradient-to-br from-emerald-950/22 to-transparent"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
-            whileHover={{ borderColor: 'rgba(52,211,153,0.28)', y: -3 }}
-          >
-            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-600/28 text-[9px] font-semibold text-emerald-400 uppercase tracking-[0.22em] mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" /> Flagship Product
-            </span>
-            <h3 className="text-xl font-bold text-white mb-1">Reportly SaaS</h3>
-            <p className="text-[11px] text-emerald-400/58 font-medium tracking-wide mb-5">
-              AI report automation for civil and construction teams
-            </p>
-            <ul className="space-y-2.5 mb-8 flex-1">
-              {[
-                'Existing Word and Excel templates',
-                'Photos, tables, charts, and project data',
-                'QA-ready branded outputs',
-                'Built for civil and construction reports',
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
-                  <Check className="w-3.5 h-3.5 text-emerald-500/65 flex-shrink-0 mt-0.5" /> {f}
-                </li>
-              ))}
-            </ul>
-            <motion.a
-              href="/reportly"
-              className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
-              whileHover={{ x: 2 }}
-              transition={{ duration: 0.15 }}
-            >
-              View Reportly <ArrowRight className="w-3.5 h-3.5" />
-            </motion.a>
-          </motion.div>
-
-          {/* Custom Rollouts card */}
-          <motion.div
-            className="group flex flex-col p-7 rounded-2xl border border-white/8 bg-white/[0.02]"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, delay: 0.08, ease: HOMEPAGE_EASE }}
-            whileHover={{ borderColor: 'rgba(103,232,249,0.16)', y: -3 }}
-          >
-            <span className="self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/30 border border-cyan-500/20 text-[9px] font-semibold text-cyan-400/80 uppercase tracking-[0.22em] mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/70 inline-block" /> Implementation Partner
-            </span>
-            <h3 className="text-xl font-bold text-white mb-1">Custom Rollouts</h3>
-            <p className="text-[11px] text-cyan-300/45 font-medium tracking-wide mb-5">
-              We make Reportly fit your firm's exact workflow
-            </p>
-            <ul className="space-y-2.5 mb-8 flex-1">
-              {[
-                'Firm-specific template library setup',
-                'QA and approval workflow mapping',
-                'SharePoint, Bluebeam, CRM and database integrations',
-                'Custom add-ons where the product needs to go further',
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/55">
-                  <Check className="w-3.5 h-3.5 text-white/25 flex-shrink-0 mt-0.5" /> {f}
-                </li>
-              ))}
-            </ul>
-            <motion.a
-              href="/services"
-              className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-white/42 hover:text-white/72 transition-colors"
-              whileHover={{ x: 2 }}
-              transition={{ duration: 0.15 }}
-            >
-              See Services <ArrowRight className="w-3.5 h-3.5" />
-            </motion.a>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-// Platform Showcase — product "wow" moment. Comes after the model explanation
-// so the demo lands with context: "ok I understand what this is, now show me."
-// =============================================================================
-
-function PlatformSection() {
-  return (
-    <section className="relative overflow-hidden bg-[#08111b] pt-20 pb-20 md:pt-24 md:pb-24" data-testid="platform-section">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(circle at 18% 16%, rgba(125, 211, 252, 0.06) 0%, transparent 24%),
-            radial-gradient(circle at 82% 28%, rgba(16, 185, 129, 0.08) 0%, transparent 28%),
-            linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 24%)
-          `,
-        }}
-      />
-      <div className="max-w-5xl mx-auto px-6 md:px-10">
-        <Reveal>
-          <p className="text-center text-[10px] uppercase tracking-[0.38em] text-emerald-300/80 mb-5 font-semibold">
-            See It In Action
-          </p>
-          <h2 className="text-center text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.025em] text-white leading-[1.1] mb-5 max-w-3xl mx-auto">
-            Your templates in. <span className="text-emerald-300">Polished reports out.</span>
-          </h2>
-          <p className="text-center text-[0.95rem] text-white/48 max-w-xl mx-auto mb-12 leading-[1.8]">
-            QA-ready, brand-consistent civil engineering reports in minutes. Without changing a single thing about how your team works.
-          </p>
-          <div className="flex justify-center mb-14">
-            <Btn href="/reportly" primary>Explore Reportly <ArrowRight className="w-3.5 h-3.5" /></Btn>
-          </div>
-        </Reveal>
-
-        <motion.div
-          className="relative rounded-[1.75rem] overflow-hidden border border-white/10 bg-[#0b1624] shadow-[0_28px_80px_rgba(0,0,0,0.42)]"
-          initial={{ opacity: 0, y: HOMEPAGE_MOTION.revealDistance, scale: 0.985 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={HOMEPAGE_MOTION.viewport}
-          transition={HOMEPAGE_MOTION.cardReveal}
-          role="img"
-          aria-label="Reportly engineering report automation platform demo"
-        >
-          <div className="flex items-center gap-2 px-4 py-3 bg-[#0d1928] border-b border-white/8">
-            <div className="w-3 h-3 rounded-full bg-[#FF5F57]" aria-hidden="true" />
-            <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" aria-hidden="true" />
-            <div className="w-3 h-3 rounded-full bg-[#28C840]" aria-hidden="true" />
-            <a href="https://reportly.ca" target="_blank" rel="noopener noreferrer" className="ml-3 flex-1 text-[10px] text-white/32 hover:text-emerald-300 tracking-[0.18em] uppercase truncate transition-colors">
-              reportly.ca - AI Engineering Report Automation Software
-            </a>
-          </div>
-          <div className="relative aspect-video bg-black">
-            <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-tr from-black/20 via-transparent to-white/5" />
-            <video src={PLATFORM_VIDEO_SRC} autoPlay muted loop playsInline className="w-full h-full object-cover" aria-label="Reportly AI report automation demo video" />
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-// Reportly — flagship product deep dive. Now positioned AFTER the model and
-// demo so visitors arrive here already understanding "this is their product."
-// =============================================================================
-
-const featureItems = [
-  'Works with the Word templates you already use',
-  'Charts, tables, and photos from live engineering data',
-  'Brand-consistent, QA-ready civil engineering reports',
-  'No changes to your existing workflow',
-];
-
-const stats = [
-  { value: 80, suffix: '%+', label: 'Time saved on documentation' },
-  { value: 3, suffix: ' min', label: 'Avg. report generation time' },
-  { value: 100, suffix: '%', label: 'Template compatible' },
-];
-
-function StatCard({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const { ref, val } = useCountUp(value);
-  return (
-    <div className="px-7 sm:px-10 py-7 flex flex-col gap-1.5">
-      <span ref={ref} className="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums">{val}{suffix}</span>
-      <span className="text-[10px] text-white/35 uppercase tracking-[0.14em]">{label}</span>
     </div>
   );
 }
 
-function ReportlySection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
-  const imgY = useTransform(scrollYProgress, [0, 1], [35, -35]);
+function ProblemSection() {
+  return (
+    <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <div className="grid lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 items-center">
+          <div className="order-last lg:order-first max-h-[72vh] lg:max-h-none overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm"><ProblemLegacyVisual /></div>
+          <div className="order-first lg:order-last">
+            <Label>The Problem</Label>
+            <h2
+              className="font-bold text-foreground tracking-[-0.03em] leading-[1.08] mb-5 mt-3"
+              style={{ fontSize: 'clamp(1.7rem, 2.8vw, 2.5rem)' }}
+            >
+              AE teams lose months to scattered reporting.
+            </h2>
+            <p className="text-muted-foreground leading-[1.78] mb-4" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+              Templates, field photos, code references, and spreadsheets all live in different places. Every report gets assembled by hand. Every project means looking up the same codes again.
+            </p>
+            <p className="text-muted-foreground leading-[1.78]" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+              We pull that work into real software, so your engineers can spend their time on engineering instead of formatting.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── 3. Product Pillars + Laptop Reveal ──────────────────────────────────────
+// The Three Ways section lives in normal DOM flow (min-h-screen so it fills the
+// viewport). When it starts to scroll off the top, a fixed overlay activates at
+// z=25 with the FRONT LAYER (Three Ways clone) positioned at translateY=0
+// (matching the DOM section exactly - seamless handoff). The DOM section is
+// immediately hidden via direct DOM mutation. The front layer then slides upward
+// at 1.2× scroll speed, revealing the laptop + Reportly text behind it.
+// No pop-in. No black gap. No z-index tricks needed.
+
+
+function ProductPillarsSection() {
+  return (
+    <section className="relative z-20 border-t border-b border-border bg-background py-20 md:py-28">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+        <div className="mb-10 md:mb-14">
+          <Label>What we do</Label>
+          <div className="flex items-end justify-between gap-8 flex-wrap mt-3">
+            <h2
+              className="font-bold text-foreground tracking-[-0.025em] leading-[1.06]"
+              style={{ fontSize: 'clamp(1.9rem, 3vw, 2.8rem)' }}
+            >
+              Three ways we help<br />
+              <span className="text-primary">AE firms move faster.</span>
+            </h2>
+            <p className="text-[14px] text-muted-foreground max-w-xs leading-[1.7]">
+              Software we built, plus custom work for firms that need it. Either way, it fits how you already work.
+            </p>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {PRODUCTS.map((p, i) => (
+            <PlatformEcosystemCard key={p.id} product={p} delay={i * 0.08} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ReportlyRevealSection() {
+  return (
+    <section className="relative z-[10] border-t border-border"
+      style={{ minHeight: '85vh', background: 'transparent' }} />
+  );
+}
+
+
+// ─── 5. Code Intelligence Preview - animated workflow ────────────────────────
+// Bug fix: outer wrapper remounts inner via key so the loop restarts cleanly.
+// Root cause: the typing useEffect only ran once (dep=[rm]) so after the first
+// cycle reset phase→'input', the typewriter never restarted.
+
+type MCCode = { name: string; short: string; level: string; color: string };
+type MCScenario = {
+  address: string; province: string; city: string;
+  codes: MCCode[];
+  standards: { name: string; desc: string }[];
+};
+
+const MC_SCENARIOS: MCScenario[] = [
+  {
+    address: '800 Robson St, Vancouver, BC', province: 'BC', city: 'Vancouver',
+    codes: [
+      { name: 'National Building Code of Canada', short: 'NBC 2020',  level: 'Federal',    color: '#34d399' },
+      { name: 'National Fire Code of Canada',     short: 'NFC 2020',  level: 'Federal',    color: '#34d399' },
+      { name: 'BC Building Code',                 short: 'BCBC 2024', level: 'Provincial', color: '#34d399' },
+      { name: 'BC Fire Code',                     short: 'BCFC 2024', level: 'Provincial', color: '#34d399' },
+      { name: 'Vancouver Building By-law',         short: 'VBL 12511', level: 'Municipal',  color: '#34d399' },
+    ],
+    standards: [
+      { name: 'CSA A23.3-19', desc: 'Concrete structures' },
+      { name: 'CSA S16-19',   desc: 'Steel structures' },
+      { name: 'CSA O86-19',   desc: 'Engineering timber' },
+    ],
+  },
+  {
+    address: '20 Bay St, Toronto, ON', province: 'ON', city: 'Toronto',
+    codes: [
+      { name: 'National Building Code of Canada', short: 'NBC 2020',  level: 'Federal',    color: '#34d399' },
+      { name: 'National Fire Code of Canada',     short: 'NFC 2020',  level: 'Federal',    color: '#34d399' },
+      { name: 'Ontario Building Code',            short: 'OBC 2024',  level: 'Provincial', color: '#34d399' },
+      { name: 'Toronto Building By-law 569-13',   short: 'TBL 569',   level: 'Municipal',  color: '#34d399' },
+    ],
+    standards: [
+      { name: 'CSA A23.3-19', desc: 'Concrete structures' },
+      { name: 'CSA S16-14',   desc: 'Steel structures' },
+      { name: 'CSA B44-16',   desc: 'Elevators' },
+    ],
+  },
+  {
+    address: '10101 Jasper Ave, Edmonton, AB', province: 'AB', city: 'Edmonton',
+    codes: [
+      { name: 'National Building Code of Canada', short: 'NBC 2020',  level: 'Federal',    color: '#34d399' },
+      { name: 'National Fire Code of Canada',     short: 'NFC 2020',  level: 'Federal',    color: '#34d399' },
+      { name: 'Alberta Building Code',            short: 'ABC 2019',  level: 'Provincial', color: '#34d399' },
+      { name: 'Edmonton Zoning By-law 12800',     short: 'EZB 12800', level: 'Municipal',  color: '#34d399' },
+    ],
+    standards: [
+      { name: 'CSA A23.3-19', desc: 'Concrete structures' },
+      { name: 'CSA S16-19',   desc: 'Steel structures' },
+      { name: 'CSA Z662-19',  desc: 'Oil and gas pipelines' },
+    ],
+  },
+  {
+    address: '1000 De La Gauchetiere O, Montreal, QC', province: 'QC', city: 'Montreal',
+    codes: [
+      { name: 'National Building Code of Canada', short: 'NBC 2020', level: 'Federal',    color: '#34d399' },
+      { name: 'National Fire Code of Canada',     short: 'NFC 2020', level: 'Federal',    color: '#34d399' },
+      { name: 'Code de construction du Quebec',   short: 'CCQ 2023', level: 'Provincial', color: '#34d399' },
+      { name: 'Reglement urbanisme Montreal',     short: 'RU MTL',   level: 'Municipal',  color: '#34d399' },
+    ],
+    standards: [
+      { name: 'CSA A23.3-19', desc: 'Concrete structures' },
+      { name: 'CSA S16-19',   desc: 'Steel structures' },
+      { name: 'CSA S6-19',    desc: 'Bridge design' },
+    ],
+  },
+];
+
+type MCPhase = 'input' | 'analyzing' | 'jurisdictions' | 'codes' | 'standards';
+
+// Outer wrapper: increments key to remount inner and restart the loop
+function CodeIntelligenceAnimation() {
+  const [loopKey, setLoopKey] = useState(0);
+  const [addrIdx, setAddrIdx] = useState(0);
+  return (
+    <MCAnimInner
+      key={loopKey}
+      scenario={MC_SCENARIOS[addrIdx % MC_SCENARIOS.length]}
+      onDone={() => {
+        setAddrIdx((i) => i + 1);
+        setLoopKey((k) => k + 1);
+      }}
+    />
+  );
+}
+
+function MCAnimInner({
+  scenario,
+  onDone,
+}: {
+  scenario: MCScenario;
+  onDone: () => void;
+}) {
+  const rm = useReducedMotion();
+  const [phase, setPhase] = useState<MCPhase>('input');
+  const [typed, setTyped] = useState('');
+  const [visibleCodes, setVisibleCodes] = useState(0);
+
+  // Typing effect - runs once on mount (correct, because component remounts each loop)
+  useEffect(() => {
+    if (rm) {
+      setTyped(scenario.address);
+      setPhase('standards');
+      setVisibleCodes(scenario.codes.length);
+      return;
+    }
+    let i = 0;
+    let t: ReturnType<typeof setTimeout>;
+    const id = setInterval(() => {
+      i++;
+      setTyped(scenario.address.slice(0, i));
+      if (i >= scenario.address.length) {
+        clearInterval(id);
+        t = setTimeout(() => setPhase('analyzing'), 500);
+      }
+    }, 42);
+    return () => { clearInterval(id); clearTimeout(t); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Phase progression
+  useEffect(() => {
+    if (phase === 'analyzing') {
+      const t = setTimeout(() => setPhase('jurisdictions'), 1100);
+      return () => clearTimeout(t);
+    }
+    if (phase === 'jurisdictions') {
+      const t = setTimeout(() => setPhase('codes'), 700);
+      return () => clearTimeout(t);
+    }
+    if (phase === 'codes') {
+      let idx = 0;
+      const id = setInterval(() => {
+        idx++;
+        setVisibleCodes(idx);
+        if (idx >= scenario.codes.length) {
+          clearInterval(id);
+          setTimeout(() => setPhase('standards'), 350);
+        }
+      }, 160);
+      return () => clearInterval(id);
+    }
+    if (phase === 'standards') {
+      const t = setTimeout(onDone, 3800);
+      return () => clearTimeout(t);
+    }
+  }, [phase, onDone]);
+
+  const statusColor = phase === 'standards' ? '#34d399' : phase === 'analyzing' ? '#fbbf24' : '#34d399';
+  const statusLabel = phase === 'input' ? 'Ready' : phase === 'analyzing' ? 'Analyzing…' : phase === 'jurisdictions' ? 'Mapping stack…' : phase === 'codes' ? 'Loading codes…' : '✓ Grounded';
 
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
-      <div className="max-w-5xl mx-auto px-6 md:px-10" ref={sectionRef}>
-        <Reveal>
-          <div className="flex items-center justify-between mb-14">
-            <Label>Flagship Product</Label>
-            <motion.a href="https://reportly.ca" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[11px] text-white/30 hover:text-white/70 transition-colors duration-200"
-              whileHover={{ x: 1 }} transition={{ duration: 0.15 }}>
-              reportly.ca <ArrowUpRight className="w-3 h-3" />
-            </motion.a>
+    <div
+      className="rounded-2xl overflow-hidden border border-border bg-card w-full max-w-[460px] shadow-sm"
+      style={{ minHeight: '560px' }}
+    >
+      {/* App chrome */}
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+        </div>
+        <div className="flex-1 mx-2">
+          <div className="bg-muted rounded-md px-2 py-1 text-center text-[8px] text-muted-foreground border border-border truncate">
+            Reportly - Canadian Building Code Intelligence
           </div>
-        </Reveal>
+        </div>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={phase}
+            initial={{ opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="text-[7.5px] font-bold uppercase tracking-wider flex-shrink-0"
+            style={{ color: statusColor }}
+          >
+            {statusLabel}
+          </motion.span>
+        </AnimatePresence>
+      </div>
 
-        <Rule className="mb-14" />
-
-        <div className="grid lg:grid-cols-[1fr_1.1fr] gap-14 lg:gap-20 items-start">
-          <div>
-            <Reveal>
-              <h2 className="text-[4rem] sm:text-[5rem] font-black tracking-[-0.04em] text-white leading-none mb-6">
-                <ScrambleText text="Reportly" duration={2.2} trigger="inView" />
-              </h2>
-              <p className="text-white/45 text-sm md:text-[0.95rem] leading-[1.8] max-w-xs mb-10">
-                Our flagship AI report writing tool for civil engineers. Connect your existing Word templates, feed in field data, and get review-ready engineering reports automatically.
-              </p>
-            </Reveal>
-
-            <motion.ul
-              className="flex flex-col gap-3.5 mb-10"
-              variants={{ ...stagger, show: { transition: { staggerChildren: 0.07 } } }}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: '-60px' }}
-            >
-              {featureItems.map((fi) => (
-                <motion.li key={fi} variants={item} className="flex items-center gap-3 text-sm text-white/70">
-                  <span className="flex-shrink-0 w-4 h-4 rounded-full border border-emerald-600/50 flex items-center justify-center bg-emerald-950/60">
-                    <Check className="w-2.5 h-2.5 text-emerald-400" />
-                  </span>
-                  {fi}
-                </motion.li>
-              ))}
-            </motion.ul>
-
-            <Reveal delay={0.1}>
-              <div className="flex flex-wrap gap-3">
-                <Btn href="/reportly" primary>Learn About Reportly</Btn>
-                <Btn href="/contact">Schedule Demo</Btn>
-              </div>
-            </Reveal>
+      <div className="p-4 space-y-3">
+        {/* Canadian flag strip + address input */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <p className="text-[7.5px] uppercase tracking-[0.18em] text-muted-foreground font-bold">Project Address</p>
           </div>
-
-          <Reveal delay={0.12}>
+          <div className="flex gap-2">
+            <div className="flex-1 min-w-0 rounded-xl border border-border bg-secondary px-3 py-2.5 flex items-center gap-2 min-h-[40px]">
+              <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#34d399' }} />
+              <span className="text-[11px] text-foreground font-mono truncate flex-1">
+                {typed}
+                {phase === 'input' && <span className="inline-block w-0.5 h-3 bg-foreground/60 ml-0.5 animate-pulse" />}
+              </span>
+            </div>
             <motion.div
-              className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60"
-              style={{ y: imgY }}
-              whileHover={{ scale: 1.012, borderColor: 'rgba(52,211,153,0.2)' }}
-              transition={HOMEPAGE_MOTION.gentleSpring}
+              className="px-4 py-2 rounded-xl text-[10px] font-bold text-primary-foreground flex items-center flex-shrink-0"
+              style={{ background: '#34d399' }}
+              animate={{ opacity: phase === 'input' ? 0.45 : 1, scale: phase === 'analyzing' ? [1, 0.96, 1] : 1 }}
+              transition={{ duration: 0.3 }}
             >
-              <img src="/app-preview.png" alt="Reportly engineering report automation software - automated civil engineering reports in minutes" className="w-full object-cover" loading="lazy" />
+              Analyze
             </motion.div>
+          </div>
+        </div>
+
+        {/* Analyzing pulse */}
+        <AnimatePresence>
+          {phase === 'analyzing' && (
+            <motion.div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
+              style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.18)' }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0"
+                animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 0.7, repeat: Infinity }}
+              />
+              <p className="text-[9px] text-amber-400/80 font-semibold">Resolving jurisdiction stack…</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Jurisdiction layer badges */}
+        <AnimatePresence>
+          {(phase === 'jurisdictions' || phase === 'codes' || phase === 'standards') && (
+            <motion.div
+              className="space-y-1.5"
+              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <p className="text-[7.5px] uppercase tracking-[0.15em] text-muted-foreground font-bold mb-1">Jurisdiction layers</p>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { label: 'Federal - Canada',       color: '#34d399' },
+                  { label: `Provincial - ${scenario.province}`, color: '#34d399' },
+                  { label: `Municipal - ${scenario.city}`,      color: '#34d399' },
+                ].map((j, i) => (
+                  <motion.span
+                    key={j.label}
+                    initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.22, delay: i * 0.1 }}
+                    className="text-[8px] font-semibold px-2.5 py-1 rounded-full"
+                    style={{ background: `${j.color}12`, color: j.color, border: `1px solid ${j.color}28` }}
+                  >
+                    {j.label}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Codes list */}
+        <AnimatePresence>
+          {(phase === 'codes' || phase === 'standards') && (
+            <motion.div
+              className="rounded-xl border border-border overflow-hidden"
+              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.28 }}
+            >
+              <div className="px-3 py-2 border-b border-border flex items-center justify-between bg-secondary">
+                <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-wider">Applicable Codes</p>
+                <span className="text-[7.5px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,211,153,0.12)', color: '#34d399', border: '1px solid rgba(52,211,153,0.22)' }}>
+                  {visibleCodes} matched
+                </span>
+              </div>
+              {scenario.codes.slice(0, visibleCodes).map((c, i) => (
+                <motion.div
+                  key={c.name}
+                  className="flex items-center justify-between px-3 py-2 border-b border-border last:border-0"
+                  initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold text-foreground truncate">{c.name}</p>
+                    <p className="text-[7px] text-muted-foreground font-mono">{c.short}</p>
+                  </div>
+                  <span
+                    className="text-[7px] font-bold px-2 py-0.5 rounded-full ml-2 flex-shrink-0"
+                    style={{ background: `${c.color}14`, color: c.color, border: `1px solid ${c.color}28` }}
+                  >
+                    {c.level}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* CSA referenced standards */}
+        <AnimatePresence>
+          {phase === 'standards' && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.32 }}
+            >
+              <p className="text-[7.5px] uppercase tracking-[0.15em] text-muted-foreground font-bold mb-1.5">CSA Referenced Standards</p>
+              <div className="grid grid-cols-3 gap-1.5">
+                {scenario.standards.map((s, i) => (
+                  <motion.div
+                    key={s.name}
+                    className="rounded-lg px-2 py-2 text-center"
+                    style={{ background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.16)' }}
+                    initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: i * 0.08 }}
+                  >
+                    <p className="text-[8.5px] font-bold" style={{ color: '#34d399' }}>{s.name}</p>
+                    <p className="text-[7px] text-muted-foreground mt-0.5">{s.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+function CodeIntelligenceSection() {
+  return (
+    <section className="relative z-[30] border-t border-border bg-background py-20 md:py-28">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+          {/* Left: copy */}
+          <Reveal>
+            <Label>Code Intelligence</Label>
+            <h2
+              className="font-black text-foreground tracking-[-0.035em] leading-[1.06] mb-5 mt-2"
+              style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.8rem)' }}
+            >
+              Every Canadian code that applies,{' '}
+              <span className="text-primary">tied to the address.</span>
+            </h2>
+            <p className="text-muted-foreground leading-[1.75] mb-7" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.05rem)', maxWidth: '36rem' }}>
+              Canadian projects sit under federal, provincial, and municipal codes all at once. Type in a project address and Reportly works out which codes apply, across all 10 provinces and 3 territories, then pulls the right CSA standards into every draft.
+            </p>
+            <div className="space-y-3 mb-8">
+              {[
+                'National Building Code, National Fire Code, and federal standards',
+                'Provincial codes (BC, ON, AB, QC, and the rest) resolved per address',
+                'Municipal bylaws and site-specific overlays surfaced for you',
+                'CSA, ASTM, and ISO referenced standards pulled in alongside',
+                'Code references cited right inside your report draft',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.28)' }}>
+                    <Check className="w-2.5 h-2.5" style={{ color: '#34d399' }} />
+                  </div>
+                  <p className="text-[13.5px] text-muted-foreground leading-[1.65]">{item}</p>
+                </div>
+              ))}
+            </div>
+            <PrimaryBtn href="/reportly">See Reportly <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+          </Reveal>
+
+          {/* Right: animated workflow */}
+          <Reveal delay={0.1} className="flex justify-center lg:justify-end overflow-hidden">
+            <div className="w-full max-w-[480px] lg:max-w-none">
+              <CodeIntelligenceAnimation />
+            </div>
           </Reveal>
         </div>
-
-        <motion.div
-          className="mt-20 rounded-2xl overflow-hidden border border-white/8"
-          initial={{ opacity: 0, clipPath: 'inset(8% 0% 8% 0% round 16px)' }}
-          whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 16px)' }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.95, ease: HOMEPAGE_EASE }}
-        >
-          <img src="/reportly-bridge.png" alt="Engineering report automation workflow - from raw data to polished civil engineering documentation" className="w-full object-cover" loading="lazy" />
-        </motion.div>
-
-        <motion.div
-          className="mt-5 grid grid-cols-3 border border-white/8 rounded-2xl overflow-hidden"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.12, ease: HOMEPAGE_EASE }}
-        >
-          {stats.map((s, i) => (
-            <div key={s.label} className={i < 2 ? 'border-r border-white/8' : ''}>
-              <StatCard {...s} />
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
 }
 
-// =============================================================================
-// Pattern Interrupt A — copy-based disruptor between product proof and the
-// adoption ladder. Research basis: Cialdini's contrast principle. After the
-// product section, a sharp reframe ("not a generic X") resets expectations and
-// makes the following services section land with more specificity.
-// =============================================================================
+// ─── Testimonials ─────────────────────────────────────────────────────────────
 
-function PatternInterruptA() {
-  return (
-    <section className="py-16 md:py-20 bg-[#060b14] border-t border-white/5">
-      <Reveal className="max-w-3xl mx-auto px-6 md:px-10 text-center">
-        <p
-          className="font-bold text-white/52 leading-[1.32] tracking-[-0.018em]"
-          style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
-        >
-          Not a generic AI chatbot. Not a generic dev agency.
-        </p>
-        <p
-          className="font-bold text-white/88 leading-[1.32] tracking-[-0.018em] mt-2"
-          style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)' }}
-        >
-          A reporting product, customized around real civil workflows.
-        </p>
-      </Reveal>
-    </section>
-  );
-}
-
-// =============================================================================
-// Features / Adoption Ladder — replaces the equal-weight services grid.
-// Research basis: Fitts's Law and progressive disclosure. A numbered progression
-// (start here, then expand) is cognitively easier than four equal options.
-// Reportly is visually dominant as step 01; the others are secondary steps.
-// =============================================================================
-
-const adoptionSteps = [
-  {
-    step: '01',
-    icon: FileText,
-    title: 'Reportly Platform',
-    subtitle: 'Core SaaS',
-    description: 'Generate formatted civil engineering reports from your existing Word and Excel templates, photos, tables, charts, and live project data. QA-ready output every time.',
-    features: [
-      'Word and Excel template automation',
-      'Photos, tables and charts from project data',
-      'QA-ready, brand-consistent output',
-    ],
-    href: '/reportly',
-    cta: 'Explore Reportly',
-    primary: true,
-  },
-  {
-    step: '02',
-    icon: Wrench,
-    title: 'Template + QA Rollout',
-    subtitle: 'Implementation',
-    description: "Adapt Reportly to your firm's templates, QA process, approval workflow, and reporting standards. Engineers adopt it without changing how they work.",
-    href: '/services',
-    cta: 'Learn more',
-  },
-  {
-    step: '03',
-    icon: BarChart3,
-    title: 'Data + Workflow Integrations',
-    subtitle: 'Connections',
-    description: 'Connect Excel, SharePoint, Bluebeam workflows, inspection forms, project folders, CRMs, and internal databases to feed Reportly automatically.',
-    href: '/services',
-    cta: 'Learn more',
-  },
-  {
-    step: '04',
-    icon: Layers,
-    title: 'Custom Add-ons',
-    subtitle: 'Extensions',
-    description: 'Build dashboards, calculators, estimators, and lightweight internal tools that extend Reportly and support the broader reporting workflow.',
-    href: '/services',
-    cta: 'Learn more',
-  },
+const TESTIMONIALS = [
+  { name: 'Jonathan Stacey', title: 'Co-Founder, GrantFundPro', image: '/clients/jonathan.jpg' },
+  { name: 'Steve Lisle',     title: 'CEO & Founder, Effortlo',  image: '/clients/steve.png'    },
+  { name: 'Ryan Snair',      title: 'Owner, Pro Painting LLC',  image: '/clients/ryan.jpg'     },
 ];
 
-function AdoptionLadder() {
-  const primary = adoptionSteps[0];
-  const supporting = adoptionSteps.slice(1);
-
+function TestimonialsSection() {
   return (
-    <div className="relative py-10 flex flex-col gap-3">
-      {/* Step 01 — full-width featured */}
-      <motion.a
-        href={primary.href}
-        className="group relative flex flex-col md:flex-row gap-8 p-7 md:p-8 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/25 to-transparent cursor-pointer"
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.55, ease: HOMEPAGE_EASE }}
-        whileHover={{ borderColor: 'rgba(52,211,153,0.32)', y: -2 }}
-      >
-        {/* Subtle hover glow */}
-        <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'radial-gradient(circle at 80% 20%, rgba(52,211,153,0.055) 0%, transparent 55%)' }} />
-
-        <div className="flex-1 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] font-black text-emerald-500/55 uppercase tracking-[0.22em]">{primary.step}</span>
-            <span className="px-2 py-0.5 rounded-full border border-emerald-500/28 bg-emerald-950/50 text-[9px] text-emerald-400 font-semibold uppercase tracking-[0.18em]">Flagship Product</span>
-          </div>
-          <h3 className="text-xl font-bold text-white mb-1">{primary.title}</h3>
-          <p className="text-[11px] font-medium text-emerald-400/58 tracking-wide mb-4">{primary.subtitle}</p>
-          <p className="text-[13px] text-white/50 leading-relaxed mb-5 max-w-md">{primary.description}</p>
-          <ul className="space-y-2 mb-6">
-            {primary.features!.map((f, i) => (
-              <li key={i} className="flex items-center gap-2 text-[12.5px] text-white/55">
-                <Check className="w-3.5 h-3.5 text-emerald-500/65 flex-shrink-0" /> {f}
-              </li>
-            ))}
-          </ul>
-          <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-emerald-400 group-hover:text-emerald-300 transition-colors">
-            {primary.cta} <ArrowRight className="w-3 h-3" />
-          </div>
-        </div>
-      </motion.a>
-
-      {/* Connector */}
-      <div className="flex justify-center py-0.5" aria-hidden="true">
-        <div className="w-px h-5 bg-gradient-to-b from-white/10 to-transparent" />
+    <section className="relative z-20 bg-background py-10 overflow-hidden border-t border-border">
+      <p className="text-center text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-semibold mb-6">
+        Trusted by founders and engineers.
+      </p>
+      <div className="relative">
+        <Marquee pxPerSec={34}>
+          {TESTIMONIALS.map((t, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 mx-3 px-5 py-4 rounded-2xl border border-border bg-card shadow-sm flex items-center gap-4"
+            >
+              <img
+                src={t.image}
+                alt={t.name}
+                className="w-14 h-14 rounded-full object-cover border-2 border-border flex-shrink-0"
+                loading="eager"
+                decoding="sync"
+              />
+              <div>
+                <div className="flex gap-0.5 mb-1.5">
+                  {Array.from({ length: 5 }).map((_, k) => (
+                    <Star key={k} className="w-3 h-3 fill-primary text-primary" />
+                  ))}
+                </div>
+                <p className="text-[14px] font-semibold text-foreground leading-tight">{t.name}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{t.title}</p>
+              </div>
+            </div>
+          ))}
+        </Marquee>
+        <div className="absolute inset-y-0 left-0 w-24 pointer-events-none z-[1]" style={{ background: 'linear-gradient(to right, hsl(var(--background)), transparent)' }} />
+        <div className="absolute inset-y-0 right-0 w-24 pointer-events-none z-[1]" style={{ background: 'linear-gradient(to left, hsl(var(--background)), transparent)' }} />
       </div>
+    </section>
+  );
+}
 
-      {/* Steps 02-04 — 3-column grid */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-3"
-        variants={{ ...stagger, show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } } }}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: '-40px' }}
-      >
-        {supporting.map((s) => (
-          <motion.a
-            key={s.step}
-            href={s.href}
-            variants={item}
-            className="group flex flex-col p-6 rounded-xl border border-white/7 bg-white/[0.018] cursor-pointer"
-            whileHover={{ borderColor: 'rgba(255,255,255,0.12)', y: -3 }}
-            transition={HOMEPAGE_MOTION.gentleSpring}
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[9px] font-black text-white/22 uppercase tracking-[0.22em]">{s.step}</span>
-              {s.icon && <s.icon className="w-4 h-4 text-white/28" />}
-            </div>
-            <h3 className="text-[14px] font-semibold text-white mb-1">{s.title}</h3>
-            <p className="text-[10px] font-medium text-white/28 tracking-wide mb-3">{s.subtitle}</p>
-            <p className="text-[12.5px] text-white/40 leading-relaxed flex-1">{s.description}</p>
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-medium text-white/28 mt-4 group-hover:text-white/58 transition-colors">
-              {s.cta} <ArrowRight className="w-3 h-3" />
-            </div>
-          </motion.a>
-        ))}
-      </motion.div>
+// ─── 6. Proof / credibility ───────────────────────────────────────────────────
+
+function StatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { ref, val } = useCountUp(value, 1.8);
+  return (
+    <div className="flex flex-col items-center text-center">
+      <span ref={ref} className="text-4xl sm:text-5xl font-black text-foreground tabular-nums tracking-tight">
+        {val}{suffix}
+      </span>
+      <span className="text-[12px] text-muted-foreground mt-2 leading-tight max-w-[130px]">{label}</span>
     </div>
   );
 }
 
-function FeaturesSection() {
+function ProofSection() {
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
-      <div className="max-w-5xl mx-auto px-6 md:px-10">
-        <Reveal>
-          <Label>Implementation Path</Label>
-          <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-bold tracking-[-0.025em] text-white max-w-2xl mb-5 leading-[1.08] mt-4">
-            From first report to full workflow automation.
-          </h2>
-          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-lg mb-14 leading-[1.8]">
-            Start with Reportly. Then expand into the integrations, dashboards, and tools your civil team actually needs.
-          </p>
+    <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+        {/* Stats row */}
+        <Reveal className="mb-16">
+          <div className="flex flex-wrap justify-center gap-10 sm:gap-16 lg:gap-20">
+            <StatItem value={200} suffix="+" label="AE firms we talked to before building" />
+            <StatItem value={70} suffix="%" label="Reporting time we aim to cut per firm" />
+          </div>
         </Reveal>
 
-        <motion.div
-          className="rounded-2xl overflow-hidden border border-white/8 mb-16"
-          initial={{ opacity: 0, clipPath: 'inset(6% 0% 6% 0% round 16px)' }}
-          whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 16px)' }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.9, ease: HOMEPAGE_EASE }}
-        >
-          <img
-            src="/reportly-features.png"
-            alt="Reportly AI report automation features - template engine, data integration, and QA-ready output for civil engineering"
-            className="w-full object-cover"
-            loading="lazy"
-          />
-        </motion.div>
+        <Rule className="mb-16" />
 
-        <AdoptionLadder />
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-// Process
-// =============================================================================
-
-const processSteps = [
-  {
-    step: '01', title: 'Discovery',
-    description: 'We review your actual civil engineering workflows, tools, and processes. No theoretical frameworks. Just how your reporting and documentation really gets done.',
-  },
-  {
-    step: '02', title: 'Prototype',
-    description: 'We build a narrow but complete automation: ingest data, generate the report, and walk it through your QA process.',
-  },
-  {
-    step: '03', title: 'Rollout',
-    description: 'Once the first workflow is trusted, we expand carefully. Proper versioning, access control, and full documentation.',
-  },
-];
-
-function ProcessSection() {
-  return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
-      <div className="max-w-5xl mx-auto px-6 md:px-10">
-        <Reveal>
-          <Label>How We Work</Label>
-          <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mb-5 mt-4">
-            Custom engineering automation.
-          </h2>
-          <p className="text-white/40 text-sm md:text-[0.95rem] max-w-md mb-14 leading-[1.8]">
-            We get one workflow right before moving to the next. Each civil engineering team is different. We build to fit yours.
-          </p>
-        </Reveal>
-
-        <Rule className="mb-14" />
-
-        <motion.div
-          className="grid md:grid-cols-3 gap-3"
-          variants={{ ...stagger, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-60px' }}
-        >
-          {processSteps.map((step) => (
-            <motion.div
-              key={step.step}
-              variants={{
-                hidden: { opacity: 0, y: 24, filter: 'blur(5px)' },
-                show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: HOMEPAGE_MOTION.revealDuration, ease: HOMEPAGE_EASE } },
-              }}
-              className="group relative border border-white/8 rounded-2xl p-8 flex flex-col overflow-hidden cursor-default"
-              whileHover={{ borderColor: 'rgba(52,211,153,0.2)', y: -3 }}
-              transition={HOMEPAGE_MOTION.gentleSpring}
+        {/* Custom Rollouts section */}
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+          <Reveal>
+            <Label>Custom Rollouts</Label>
+            <h2
+              className="font-bold text-foreground tracking-[-0.025em] leading-[1.08] mb-5"
+              style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
             >
-              <motion.div
-                className="absolute -top-16 -right-16 w-40 h-40 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(circle, rgba(52,211,153,0.07) 0%, transparent 70%)' }}
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.35 }}
-              />
-              <span className="block text-[3.5rem] font-black text-white/10 leading-none mb-5 tracking-tight select-none">{step.step}</span>
-              <div className="w-5 h-px bg-white/12 mb-5 group-hover:bg-emerald-500/60 transition-colors duration-500" />
-              <h3 className="text-[13px] font-semibold text-white/90 mb-2 tracking-tight">{step.title}</h3>
-              <p className="text-[13px] text-white/40 leading-[1.75]">{step.description}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+              We build tools around{' '}
+              <span className="text-primary">how your firm actually works.</span>
+            </h2>
+            <p className="text-muted-foreground leading-[1.75] mb-6" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1rem)' }}>
+              Off-the-shelf software rarely fits a firm's workflow. So we set Reportly up around your templates and process, build the dashboards you actually need, automate the document grind, and hook into the tools your team already uses.
+            </p>
+            <p className="text-muted-foreground leading-[1.75] text-[14px] mb-8">
+              Bring us the workflow that slows your team down. We'll map it out and show you what software built around it would look like.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <motion.a
+                href="/services"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold bg-primary text-primary-foreground text-[14px] shadow-sm"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={HOMEPAGE_MOTION.hoverSpring}
+              >
+                See what we build <ArrowRight className="w-4 h-4" />
+              </motion.a>
+              <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
+            </div>
+          </Reveal>
+
+          {/* Pillar checklist card */}
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-primary mb-4">What we build</p>
+              {[
+                { label: 'Private Reportly Deployments', detail: 'Your templates, your writing rules, your QA workflow' },
+                { label: 'Building Code AI Systems', detail: 'Jurisdiction-specific code search and project workflows' },
+                { label: 'Dashboards & Internal Tools', detail: 'Project trackers, asset databases, compliance tools' },
+                { label: 'Document Workflow Automation', detail: 'Generation, review, and delivery, done for you' },
+                { label: 'Integration with What You Already Use', detail: 'SharePoint, Bluebeam, Procore, and custom APIs' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3 py-3 border-b border-border last:border-0">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-primary/10 border border-primary/25">
+                    <Check className="w-2.5 h-2.5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-[12.5px] font-semibold text-foreground">{item.label}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{item.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
 }
 
-// =============================================================================
-// Team
-// =============================================================================
+// ─── 7. Team ──────────────────────────────────────────────────────────────────
 
-const teamMembers = [
-  { name: 'Zander Dent', role: 'CEO', image: '/team/zander-optimized.jpg' },
-  { name: 'Félix Stewart', role: 'Sales & Ops', image: '/team/felix-optimized.jpg' },
-  { name: 'Gabriel Comla', role: 'CMO', image: '/team/gabriel-optimized.jpg' },
-  { name: 'Eric Balanecki', role: 'CTO', image: '/team/eric-optimized.jpg' },
-  { name: 'Qazi Omair Ahmed', role: 'Head of Eng.', image: '/team/omair-optimized.jpg' },
+const TEAM_MEMBERS = [
+  { name: 'Zander Dent',      role: 'CEO',                    image: '/team/zander-optimized.jpg' },
+  { name: 'Félix Stewart',    role: 'Co-Founder & Co-Owner',  image: '/team/felix-optimized.jpg'  },
+  { name: 'Qazi Omair Ahmed', role: 'CTO',                    image: '/team/omair-optimized.jpg'  },
 ];
 
 function TeamSection() {
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
+    <section className="relative z-20 border-t border-border bg-background py-20 md:py-24">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal>
-          <div className="flex items-end justify-between flex-wrap gap-4 mb-14">
+          <div className="flex items-end justify-between flex-wrap gap-4 mb-6 md:mb-14">
             <div>
-              <Label>The People</Label>
-              <h2 className="text-[2.2rem] sm:text-4xl font-bold tracking-[-0.025em] text-white mt-4">Built by engineers, for engineers.</h2>
+              <Label>Built by engineers, for engineers</Label>
+              <h2 className="text-[2.1rem] sm:text-4xl font-bold tracking-[-0.025em] text-foreground mt-3">
+                Civil engineers who can also ship the fix.
+              </h2>
             </div>
-            <motion.a href="/team" className="flex items-center gap-1.5 text-[11px] text-white/30 uppercase tracking-[0.15em] hover:text-white/70 transition-colors duration-200" whileHover={{ x: 1 }} transition={{ duration: 0.15 }}>
+            <motion.a
+              href="/team"
+              className="flex items-center gap-1.5 text-[11px] text-muted-foreground uppercase tracking-[0.15em] hover:text-foreground transition-colors duration-200"
+              whileHover={{ x: 1 }}
+            >
               Full team <ArrowUpRight className="w-3 h-3" />
             </motion.a>
           </div>
         </Reveal>
 
-        <Rule className="mb-14" />
+        <Rule className="mb-6 md:mb-14" />
 
         <Reveal className="mb-12">
           <motion.div
-            className="relative rounded-2xl overflow-hidden border border-white/8"
-            whileHover={{ borderColor: 'rgba(255,255,255,0.14)' }}
-            transition={{ duration: 0.3, ease: HOMEPAGE_EASE }}
+            className="relative rounded-2xl overflow-hidden border border-border shadow-sm"
+            transition={{ duration: 0.3, ease: E }}
           >
-            <img src="/team/full-team-pic-optimized.jpg" alt="VibeOps Technologies founding team - engineering automation specialists based in Vancouver, BC" className="w-full object-cover object-center" style={{ maxHeight: 420 }} loading="lazy" />
+            <img
+              src="/team/full-team-pic-optimized.jpg"
+              alt="VibeOps founding team"
+              className="w-full h-auto block"
+              loading="lazy"
+            />
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
-                <p className="text-[9px] uppercase tracking-[0.28em] text-white/40 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
-                <p className="text-base md:text-lg font-semibold text-white">Building AI tools for civil engineering teams.</p>
+                <p className="text-[9px] uppercase tracking-[0.28em] text-white/60 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
+                <p className="text-base md:text-lg font-semibold text-white">Built off 200+ calls with AE firms across Canada.</p>
               </div>
-              <Btn href="/contact" primary>Talk to the Team</Btn>
+              <motion.a
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-[13.5px] font-bold whitespace-nowrap shadow-sm"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={HOMEPAGE_MOTION.hoverSpring}
+              >
+                Talk to the team
+              </motion.a>
             </div>
           </motion.div>
         </Reveal>
 
         <motion.div
-          className="flex justify-center gap-8 sm:gap-12 flex-wrap"
+          className="flex justify-center gap-8 sm:gap-14 flex-wrap"
           variants={{ ...stagger, show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-50px' }}
         >
-          {teamMembers.map((member) => (
+          {TEAM_MEMBERS.map((m) => (
             <motion.a
-              key={member.name}
-              href={`/team?member=${encodeURIComponent(member.name)}`}
-              variants={{ hidden: { opacity: 0, y: 14, filter: 'blur(5px)' }, show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.48, ease: HOMEPAGE_EASE } } }}
+              key={m.name}
+              href={`/team?member=${encodeURIComponent(m.name)}`}
+              variants={fadeUp}
               className="flex flex-col items-center gap-2.5 group"
               whileHover={{ y: -3 }}
               transition={HOMEPAGE_MOTION.hoverSpring}
             >
-              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-white/12 group-hover:border-emerald-500/40 transition-colors duration-300">
-                <img src={member.image} alt={`${member.name} - ${member.role} at VibeOps Technologies`} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-border group-hover:border-primary/50 transition-colors duration-300">
+                <img
+                  src={m.image}
+                  alt={`${m.name} - ${m.role}`}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
               <div className="text-center">
-                <p className="text-[12px] font-medium text-white/75 leading-tight">{member.name.split(' ')[0]}</p>
-                <p className="text-[10px] text-white/30 leading-tight mt-0.5">{member.role}</p>
+                <p className="text-[12px] font-medium text-foreground leading-tight">{m.name.split(' ')[0]}</p>
+                <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">{m.role}</p>
               </div>
             </motion.a>
           ))}
@@ -963,30 +1359,20 @@ function TeamSection() {
   );
 }
 
-// =============================================================================
-// CTA — pre-CTA pattern interrupt (PatternInterruptB) lands just before the
-// conversion ask. Research basis: reciprocity + the "almost there" effect.
-// Naming what the visitor already has (templates, data) frames Reportly as
-// the obvious missing piece rather than an unfamiliar new investment.
-// =============================================================================
+// ─── 8. Final CTA ─────────────────────────────────────────────────────────────
 
-function CTASection() {
+const PITCH_VIDEO_SRC =
+  'https://www.youtube.com/embed/Ul6O1bC7TzE?controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1';
+
+function FinalCTASection() {
   return (
-    <section className="border-t border-white/6 bg-[#060b14] pt-20 pb-20 md:pt-24 md:pb-24">
+    <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
-
-        {/* Pattern Interrupt B — frames Reportly as the obvious missing piece */}
         <Reveal className="text-center mb-14">
-          <div className="space-y-1.5">
-            <p className="font-semibold text-white/35 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
-              Your team already has the templates.
-            </p>
-            <p className="font-semibold text-white/35 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
-              Your team already has the data.
-            </p>
-            <p className="font-bold text-white/80 tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}>
-              The missing piece is the automation layer.
-            </p>
+          <div className="space-y-2 mb-2">
+            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Your engineers already have the field data.</p>
+            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Your firm already has the templates.</p>
+            <p className="font-bold text-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Stop losing weeks to the assembly in between.</p>
           </div>
         </Reveal>
 
@@ -999,34 +1385,37 @@ function CTASection() {
           whileInView="show"
           viewport={{ once: true, margin: '-60px' }}
         >
-          <motion.div variants={item}><Label>Ready to move faster?</Label></motion.div>
+          <motion.div variants={fadeUp}><Label>Ready when you are</Label></motion.div>
           <motion.h2
-            variants={item}
-            className="text-[2.5rem] sm:text-5xl md:text-[3.5rem] font-bold tracking-[-0.03em] text-white mb-6 mt-4 leading-[1.06]"
+            variants={fadeUp}
+            className="text-[2.4rem] sm:text-5xl md:text-[3.4rem] font-bold tracking-[-0.03em] text-foreground mb-6 mt-4 leading-[1.06]"
           >
-            Get your engineering time back.
+            Get your engineering hours back.
           </motion.h2>
-          <motion.p variants={item} className="text-white/40 text-sm md:text-[0.95rem] leading-[1.8] mb-10 max-w-sm">
-            Automate your civil engineering reports and documentation so your team can focus on what matters and deliver more per project.
+          <motion.p
+            variants={fadeUp}
+            className="text-muted-foreground text-[0.95rem] leading-[1.8] mb-10 max-w-sm"
+          >
+            The average AE engineer loses 30-40% of the week to formatting, code lookups, and writing reports. Reportly hands that time back.
           </motion.p>
-          <motion.div variants={item} className="flex flex-wrap gap-3">
-            <Btn href="/contact" primary>Book a Demo <ArrowRight className="w-3.5 h-3.5" /></Btn>
-            <Btn href="/services">Explore Our Services</Btn>
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
+            <PrimaryBtn href="/contact">Book a call <ArrowRight className="w-3.5 h-3.5" /></PrimaryBtn>
+            <SecondaryBtn href="/services">See what we build</SecondaryBtn>
           </motion.div>
         </motion.div>
 
         <motion.div
-          className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60"
+          className="relative rounded-2xl overflow-hidden border border-border shadow-sm"
           style={{ paddingBottom: '56.25%', height: 0 }}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.8, ease: HOMEPAGE_EASE }}
+          transition={{ duration: 0.8, ease: E }}
         >
           <iframe
             src={PITCH_VIDEO_SRC}
-            allow="autoplay; encrypted-media"
-            title="VibeOps engineering automation platform pitch - AI report writing for civil engineers"
+            allow="encrypted-media"
+            title="VibeOps - the reporting layer for AE firms"
             className="absolute inset-0 w-full h-full"
             style={{ border: 'none' }}
             loading="lazy"

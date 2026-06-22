@@ -50,6 +50,23 @@ const AnimatedContent = ({
       opacity: animateOpacity ? initialOpacity : 1,
     });
 
+    // Safety fallback: if ScrollTrigger never fires (e.g. completely failed
+    // measurement), force the element visible - but ONLY if it's currently
+    // visible in (or just above) the viewport. Elements below the fold remain
+    // hidden until scroll reaches them, preventing everything popping in at once.
+    const fallback = setTimeout(() => {
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      // Only show elements that are currently visible in (or just above) the viewport.
+      // Elements below the fold remain hidden until scroll reaches them.
+      const isVisible = rect.top < window.innerHeight * 1.1 && rect.bottom > -50;
+      if (!isVisible) return;
+      const currentOpacity = parseFloat(el.style.opacity ?? '1');
+      if (currentOpacity < 0.5) {
+        gsap.to(el, { [axis]: 0, scale: 1, opacity: 1, duration: 0.55, ease: 'power2.out' });
+      }
+    }, 1400); // longer - give ScrollTrigger time to fire on scroll
+
     const tween = gsap.to(el, {
       [axis]: 0,
       scale: 1,
@@ -66,7 +83,19 @@ const AnimatedContent = ({
       },
     });
 
+    // Double-RAF refresh so new page DOM and layout settle before
+    // ScrollTrigger measures positions. ScrollToTop.tsx also does this
+    // at the page level, but individual components may mount after that
+    // refresh fires (e.g. lazy images, video, deferred sections).
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    });
+
     return () => {
+      clearTimeout(fallback);
+      cancelAnimationFrame(raf);
       tween.kill();
     };
   }, [

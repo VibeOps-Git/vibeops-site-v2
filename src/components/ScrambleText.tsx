@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { useInView } from 'framer-motion';
+import { useEffect, useState, useRef, useCallback } from 'react';
+
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export function ScrambleText({
   text,
   className,
-  duration = 0.6,
-  trigger = 'inView',
+  duration = 0.5,
+  trigger: _trigger = 'inView', // kept for API compat, no longer drives animation
 }: {
   text: string;
   className?: string;
@@ -15,68 +16,37 @@ export function ScrambleText({
   trigger?: 'inView' | 'mount';
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-20% 0px' });
+  const [display, setDisplay] = useState(text); // always start with real text visible
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  // ✅ Start EMPTY so real text never flashes
-  const [display, setDisplay] = useState('');
-  const [hasStarted, setHasStarted] = useState(false);
-
-  // Trigger logic
-  useEffect(() => {
-    if (trigger === 'mount') {
-      setHasStarted(true);
-    } else if (trigger === 'inView' && isInView) {
-      setHasStarted(true);
-    }
-  }, [isInView, trigger]);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-
+  const runScramble = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
     let frame = 0;
     const totalFrames = Math.floor(duration * 60);
-    const length = text.length;
-
-    const randomChar = () =>
-      chars[Math.floor(Math.random() * chars.length)];
-
-    // ✅ Immediately start fully scrambled
-    setDisplay(
-      text
-        .split('')
-        .map((char) => (char === ' ' ? ' ' : randomChar()))
-        .join('')
-    );
-
-    const interval = setInterval(() => {
+    timerRef.current = setInterval(() => {
       frame++;
       const progress = frame / totalFrames;
-      const revealCount = Math.floor(progress * length);
-
-      const scrambled = text
-        .split('')
-        .map((char, i) => {
+      const revealCount = Math.floor(progress * text.length);
+      setDisplay(
+        text.split('').map((char, i) => {
           if (char === ' ') return ' ';
           if (i < revealCount) return text[i];
-          return randomChar();
-        })
-        .join('');
-
-      setDisplay(scrambled);
-
+          return CHARS[Math.floor(Math.random() * CHARS.length)];
+        }).join('')
+      );
       if (frame >= totalFrames) {
-        clearInterval(interval);
-        setDisplay(text); // final clean state
+        clearInterval(timerRef.current!);
+        timerRef.current = null;
+        setDisplay(text);
       }
     }, 1000 / 60);
+  }, [text, duration]);
 
-    return () => clearInterval(interval);
-  }, [hasStarted, text, duration]);
+  // Cleanup on unmount
+  useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current); }, []);
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={className} onMouseEnter={runScramble}>
       {display}
     </span>
   );

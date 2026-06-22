@@ -21,10 +21,10 @@ export function VibeButton({
   const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200';
 
   const variants = {
-    primary: 'bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90 shadow-lg shadow-[#00ffcc]/25 hover:shadow-[#00ffcc]/40 hover:-translate-y-0.5',
-    secondary: 'bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30',
-    ghost: 'bg-transparent text-gray-300 hover:text-white hover:bg-white/5',
-    outline: 'bg-transparent border border-[#00ffcc]/30 text-white hover:bg-[#00ffcc]/10 hover:border-[#00ffcc]/50',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:-translate-y-0.5',
+    secondary: 'bg-secondary text-foreground border border-border hover:bg-secondary/80',
+    ghost: 'bg-transparent text-muted-foreground hover:text-foreground hover:bg-accent/10',
+    outline: 'bg-transparent border border-border text-foreground hover:bg-accent/10 hover:border-primary/40',
   };
 
   const sizes = {
@@ -64,10 +64,10 @@ export function VibeLinkButton({
   const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200';
 
   const variants = {
-    primary: 'bg-[#00ffcc] text-black hover:bg-[#00ffcc]/90 shadow-lg shadow-[#00ffcc]/25 hover:shadow-[#00ffcc]/40 hover:-translate-y-0.5',
-    secondary: 'bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30',
-    ghost: 'bg-transparent text-gray-300 hover:text-white hover:bg-white/5',
-    outline: 'bg-transparent border border-[#00ffcc]/30 text-white hover:bg-[#00ffcc]/10 hover:border-[#00ffcc]/50',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:-translate-y-0.5',
+    secondary: 'bg-secondary text-foreground border border-border hover:bg-secondary/80',
+    ghost: 'bg-transparent text-muted-foreground hover:text-foreground hover:bg-accent/10',
+    outline: 'bg-transparent border border-border text-foreground hover:bg-accent/10 hover:border-primary/40',
   };
 
   const sizes = {
