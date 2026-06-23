@@ -355,6 +355,22 @@ export default function Index() {
 
 // ─── 1. Hero ─────────────────────────────────────────────────────────────────
 
+// Renders screen content into a larger virtual canvas, then CSS-scales it down
+// to fit the device screen. The showcase uses fixed-px text and fills its box,
+// so a bigger virtual canvas = relatively smaller text + more vertical room
+// (nothing clips). `scale` is how much bigger the canvas is than the screen
+// (e.g. 2 = render at 200% then shrink to 50%). Higher = smaller, denser UI.
+function FittedScreen({ scale, children }: { scale: number; children: React.ReactNode }) {
+  const pct = `${scale * 100}%`;
+  return (
+    <div className="w-full h-full overflow-hidden">
+      <div className="origin-top-left" style={{ width: pct, height: pct, transform: `scale(${1 / scale})` }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // Scroll-driven phase for the hero device reveal.
 // 0=none, 1=laptop, 2=iPad, 3=phone (holds until scroll exits)
 type DevicePhase = 0 | 1 | 2 | 3;
@@ -504,37 +520,35 @@ function HeroSection() {
     return (
       <section className="px-6 pt-24 pb-2">
         {heroText}
-        {/* Cycling devices at their NATURAL height (no aspect-box overflow), all
-            sized to roughly the SAME height so they look proportionate to each
-            other (a phone reads smaller than the laptop/iPad, like real life). */}
-        <div className="relative w-full max-w-[320px] mx-auto mt-8 h-[270px]" data-testid="hero-device-stage">
+        {/* Cycling devices. Each is sized to fill the stage height so it uses the
+            space well, and its screen content is rendered into a larger virtual
+            canvas (FittedScreen) then scaled down — so the UI text/buttons read
+            proportionately small for that device and nothing clips. */}
+        <div className="relative w-full mx-auto mt-8 h-[clamp(310px,86vw,380px)]" data-testid="hero-device-stage">
           <motion.div className="absolute inset-0 flex items-center justify-center"
             animate={{ opacity: phase === 1 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
-            <div className="w-full max-w-[300px]">
-              <LaptopShell reducedMotion={Boolean(rm)} skipEntrance><VibeOpsShowcaseScreen /></LaptopShell>
+            <div className="w-full max-w-[340px]">
+              <LaptopShell reducedMotion={Boolean(rm)} skipEntrance>
+                <FittedScreen scale={1.18}><VibeOpsShowcaseScreen /></FittedScreen>
+              </LaptopShell>
             </div>
           </motion.div>
           <motion.div className="absolute inset-0 flex items-center justify-center"
             animate={{ opacity: phase === 2 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
-            <div className="w-full max-w-[300px]">
-              <TabletShell><VibeOpsShowcaseScreen /></TabletShell>
+            <div className="w-full max-w-[284px]">
+              <TabletShell>
+                <FittedScreen scale={1.5}><VibeOpsShowcaseScreen /></FittedScreen>
+              </TabletShell>
             </div>
           </motion.div>
           <motion.div className="absolute inset-0 flex items-center justify-center"
             animate={{ opacity: phase === 3 ? 1 : 0 }} transition={{ duration: 0.5 }}
             style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
-            <div className="w-[124px]">
+            <div className="w-[170px]">
               <PhoneShell>
-                {/* Scale the screen content down so it reads as a proportional
-                    phone miniature (smaller text), not the laptop-sized content
-                    crammed into a narrow screen. */}
-                <div className="w-full h-full overflow-hidden">
-                  <div className="origin-top-left" style={{ width: '200%', height: '200%', transform: 'scale(0.5)' }}>
-                    <VibeOpsShowcaseScreen />
-                  </div>
-                </div>
+                <FittedScreen scale={1.7}><VibeOpsShowcaseScreen /></FittedScreen>
               </PhoneShell>
             </div>
           </motion.div>
