@@ -86,6 +86,7 @@ const contributors: TeamMember[] = [
     focus: "Brand, Marketing & Engagement",
     image: "/team/sofia.jpeg",
     email: "team@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/sofia-gibb2/",
     bio: `Sofia helps lead our marketing and social media, working to grow our brand presence and engagement. She's an Economics student with a Business Certificate at the University of Wisconsin-Madison, and she brings creativity, adaptability, and a strong work ethic to everything she takes on.`,
   },
   {
