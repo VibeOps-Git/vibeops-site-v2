@@ -230,9 +230,11 @@ function DeviceShellByType({ device, videoSrc, screenContent, reducedMotion, lid
 // with custom React content as the screen. Uses whileInView reveal.
 export function SectionLaptop({
   children,
+  videoSrc,
   className = "",
 }: {
-  children: ReactNode;
+  children?: ReactNode;
+  videoSrc?: string;
   className?: string;
 }) {
   const rm = Boolean(useReducedMotion());
@@ -244,7 +246,7 @@ export function SectionLaptop({
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <LaptopShell reducedMotion={rm} skipEntrance>
+      <LaptopShell reducedMotion={rm} skipEntrance videoSrc={videoSrc}>
         {children}
       </LaptopShell>
     </motion.div>

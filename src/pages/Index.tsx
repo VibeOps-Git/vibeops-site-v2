@@ -866,7 +866,7 @@ function ReportlyRevealSection() {
       <section className="relative z-20 bg-background border-t border-border py-16 px-6 lg:hidden">
         <div className="flex flex-col items-center gap-8 max-w-md mx-auto">
           <div className="w-full max-w-[320px]">
-            <SectionLaptop><VibeOpsShowcaseScreen /></SectionLaptop>
+            <SectionLaptop videoSrc="/vids/demo-vid.mp4" />
           </div>
           <div className="text-center">
             <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
