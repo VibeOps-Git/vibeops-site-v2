@@ -113,9 +113,9 @@ function UploadScreen() {
     { name: 'Site_Assessment.docx', meta: 'Word template · 10 pages' },
   ];
   return (
-    <div className="w-full h-full p-4 sm:p-5 md:p-6 flex flex-col">
+    <div className="w-full h-full p-2.5 sm:p-5 md:p-6 flex flex-col">
       {/* App Header */}
-      <div className="flex items-center gap-2 mb-4 sm:mb-5">
+      <div className="flex items-center gap-2 mb-2 sm:mb-5">
         <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
           <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
         </div>
@@ -123,7 +123,7 @@ function UploadScreen() {
       </div>
 
       {/* Upload Zone */}
-      <div className="border-2 border-dashed border-primary/30 rounded-2xl bg-primary/5 flex flex-col items-center justify-center py-6 sm:py-8 md:py-10 px-4 mb-4 sm:mb-5">
+      <div className="border-2 border-dashed border-primary/30 rounded-2xl bg-primary/5 flex flex-col items-center justify-center py-3.5 sm:py-8 md:py-10 px-4 mb-2 sm:mb-5">
         <div className="p-3 sm:p-4 rounded-full bg-primary/10 border border-primary/30 mb-3 sm:mb-4">
           <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
         </div>
@@ -133,9 +133,9 @@ function UploadScreen() {
 
       {/* Template library */}
       <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Your templates</p>
-      <div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
+      <div className="flex-1 flex flex-col gap-1.5 sm:gap-2.5">
         {templates.map((t) => (
-          <div key={t.name} className="flex items-center gap-3 px-3 py-2.5 sm:py-3 rounded-xl bg-white/5 border border-white/10">
+          <div key={t.name} className="flex items-center gap-3 px-3 py-1.5 sm:py-3 rounded-xl bg-white/5 border border-white/10">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-500/15 flex items-center justify-center flex-shrink-0">
               <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
             </div>
@@ -163,9 +163,9 @@ function ProjectDataScreen() {
     { field: 'Bearing Capacity', val: '94%' },
   ];
   return (
-    <div className="w-full h-full p-4 sm:p-5 md:p-6 flex flex-col">
+    <div className="w-full h-full p-2.5 sm:p-5 md:p-6 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 sm:mb-5">
+      <div className="flex items-center justify-between mb-2 sm:mb-5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
             <Database className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -179,7 +179,7 @@ function ProjectDataScreen() {
 
       {/* Data sources */}
       <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Data sources</p>
-      <div className="flex flex-col gap-2 sm:gap-2.5 mb-4 sm:mb-5">
+      <div className="flex flex-col gap-1.5 sm:gap-2.5 mb-2 sm:mb-5">
         {sources.map((s) => (
           <div key={s.name} className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10">
             <DataIcon icon={s.icon} />
@@ -223,9 +223,9 @@ function BuildingCodesScreen() {
     { abbr: 'VBL 12511', name: 'Vancouver By-law', level: 'Municipal', color: '#2dd4bf' },
   ];
   return (
-    <div className="w-full h-full p-4 sm:p-5 md:p-6 flex flex-col">
+    <div className="w-full h-full p-2.5 sm:p-5 md:p-6 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 sm:mb-5">
+      <div className="flex items-center justify-between mb-2 sm:mb-5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
             <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -238,14 +238,14 @@ function BuildingCodesScreen() {
       </div>
 
       {/* Address */}
-      <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 mb-4 sm:mb-5">
+      <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 mb-2 sm:mb-5">
         <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0" />
         <span className="text-xs sm:text-sm text-white/70">800 Robson St, Vancouver, BC</span>
       </div>
 
       {/* Code stack */}
       <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Jurisdiction stack · 3 codes matched</p>
-      <div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
+      <div className="flex-1 flex flex-col gap-1.5 sm:gap-2.5">
         {codes.map((code) => (
           <div
             key={code.abbr}
@@ -284,9 +284,9 @@ function GenerateScreen() {
     { num: '04', title: 'Recommendations', status: 'pending' },
   ];
   return (
-    <div className="w-full h-full p-4 sm:p-5 md:p-6 flex flex-col">
+    <div className="w-full h-full p-2.5 sm:p-5 md:p-6 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 sm:mb-5">
+      <div className="flex items-center justify-between mb-2 sm:mb-5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
             <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -300,7 +300,7 @@ function GenerateScreen() {
 
       {/* Report sections */}
       <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Report sections</p>
-      <div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
+      <div className="flex-1 flex flex-col gap-1.5 sm:gap-2.5">
         {sections.map((s) => (
           <div
             key={s.num}
@@ -358,9 +358,9 @@ function QualityControlScreen() {
     { label: 'Executive summary length', status: 'pass' },
   ];
   return (
-    <div className="w-full h-full p-4 sm:p-5 md:p-6 flex flex-col">
+    <div className="w-full h-full p-2.5 sm:p-5 md:p-6 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 sm:mb-5">
+      <div className="flex items-center justify-between mb-2 sm:mb-5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
             <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -373,7 +373,7 @@ function QualityControlScreen() {
       </div>
 
       {/* Checklist */}
-      <div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
+      <div className="flex-1 flex flex-col gap-1.5 sm:gap-2.5">
         {checks.map((c, i) => (
           <div
             key={i}
@@ -409,9 +409,9 @@ function QualityControlScreen() {
 // Scene 5: Export & Deliver
 function ExportScreen() {
   return (
-    <div className="w-full h-full p-4 sm:p-5 md:p-6 flex flex-col">
+    <div className="w-full h-full p-2.5 sm:p-5 md:p-6 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 sm:mb-5">
+      <div className="flex items-center justify-between mb-2 sm:mb-5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -470,12 +470,12 @@ function ExportScreen() {
       </div>
 
       {/* Action buttons */}
-      <div className="mt-4 sm:mt-5 flex gap-2.5 sm:gap-3">
-        <button className="flex-1 px-3 py-2.5 sm:py-3 rounded-xl bg-primary text-black text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5">
+      <div className="mt-4 sm:mt-5 flex gap-1.5 sm:gap-3">
+        <button className="flex-1 px-3 py-1.5 sm:py-3 rounded-xl bg-primary text-black text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5">
           <Download className="w-3.5 h-3.5" />
           Download DOCX
         </button>
-        <button className="flex-1 px-3 py-2.5 sm:py-3 rounded-xl bg-white/10 text-white text-xs sm:text-sm font-semibold border border-white/20 hover:bg-white/20 transition-colors">
+        <button className="flex-1 px-3 py-1.5 sm:py-3 rounded-xl bg-white/10 text-white text-xs sm:text-sm font-semibold border border-white/20 hover:bg-white/20 transition-colors">
           Export PDF
         </button>
       </div>
