@@ -84,7 +84,7 @@ const contributors: TeamMember[] = [
     name: "Sofia Gibb",
     role: "Contributor · Marketing & Social Media",
     focus: "Brand, Marketing & Engagement",
-    image: "/team/sophia.jpeg",
+    image: "/team/sofia.jpeg",
     email: "team@vibeops.ca",
     bio: `Sofia helps lead our marketing and social media, working to grow our brand presence and engagement. She's an Economics student with a Business Certificate at the University of Wisconsin-Madison, and she brings creativity, adaptability, and a strong work ethic to everything she takes on.`,
   },
