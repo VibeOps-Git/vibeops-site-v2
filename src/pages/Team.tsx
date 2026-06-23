@@ -72,13 +72,21 @@ const coFounders: TeamMember[] = [
 
 const contributors: TeamMember[] = [
   {
-    name: "Sam Khalil",
-    role: "Contributor · Sales & Outreach",
-    focus: "Sales, Partnerships & Growth",
-    image: "/team/sam.jpg",
+    name: "Olivia Butkus",
+    role: "Contributor · Marketing Associate",
+    focus: "Social Media, Marketing & Community",
+    image: "/team/olivia-optimized.jpg",
     email: "team@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/sam-khalil-41ab6635b/",
-    bio: `Sam is a Civil Engineering student at the University of Waterloo who runs a lot of our sales and outreach. He's good at building relationships and spotting where we can grow, and he keeps the engineering side and the business side talking to each other.`,
+    linkedin: "https://www.linkedin.com/in/olivia-butkus-712489310/",
+    bio: `Olivia runs our social media, marketing, and community work. She's an Industrial Engineering student at the University of Wisconsin-Madison and likes mixing the creative side with the problem-solving side to help us grow.`,
+  },
+  {
+    name: "Sofia Gibb",
+    role: "Contributor · Marketing & Social Media",
+    focus: "Brand, Marketing & Engagement",
+    image: "/team/sofia.jpeg",
+    email: "team@vibeops.ca",
+    bio: `Sofia helps lead our marketing and social media, working to grow our brand presence and engagement. She's an Economics student with a Business Certificate at the University of Wisconsin-Madison, and she brings creativity, adaptability, and a strong work ethic to everything she takes on.`,
   },
   {
     name: "Edmund Zhang",
@@ -90,13 +98,13 @@ const contributors: TeamMember[] = [
     bio: `Edmund handles our media and turns technical work into things people actually want to watch. Demos, promo content, the story of what we're building. That's him.`,
   },
   {
-    name: "Olivia Butkus",
-    role: "Contributor · Marketing Associate",
-    focus: "Social Media, Marketing & Community",
-    image: "/team/olivia-optimized.jpg",
+    name: "Sam Khalil",
+    role: "Contributor · Sales & Outreach",
+    focus: "Sales, Partnerships & Growth",
+    image: "/team/sam.jpg",
     email: "team@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/olivia-butkus-712489310/",
-    bio: `Olivia runs our social media, marketing, and community work. She's an Industrial Engineering student at the University of Wisconsin-Madison and likes mixing the creative side with the problem-solving side to help us grow.`,
+    linkedin: "https://www.linkedin.com/in/sam-khalil-41ab6635b/",
+    bio: `Sam is a Civil Engineering student at the University of Waterloo who runs a lot of our sales and outreach. He's good at building relationships and spotting where we can grow, and he keeps the engineering side and the business side talking to each other.`,
   },
   {
     name: "Gabriel Comla",
