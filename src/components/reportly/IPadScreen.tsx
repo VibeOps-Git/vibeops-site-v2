@@ -172,7 +172,7 @@ function ProjectDataScreen() {
           </div>
           <span className="text-sm sm:text-base font-medium text-white">Project Data</span>
         </div>
-        <div className="px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30">
+        <div className="flex-shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30">
           <span className="text-[10px] sm:text-xs text-primary">3 sources</span>
         </div>
       </div>
@@ -181,7 +181,7 @@ function ProjectDataScreen() {
       <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Data sources</p>
       <div className="flex flex-col gap-1.5 sm:gap-2.5 mb-2 sm:mb-5">
         {sources.map((s) => (
-          <div key={s.name} className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10">
+          <div key={s.name} className="flex items-center gap-3 px-3 py-2 sm:py-2.5 rounded-xl bg-white/5 border border-white/10">
             <DataIcon icon={s.icon} />
             <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm font-medium text-white/90 truncate">{s.name}</p>
@@ -195,8 +195,8 @@ function ProjectDataScreen() {
       {/* Mapped fields */}
       <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Mapped to template</p>
       <div className="flex-1 flex flex-col gap-2">
-        {fields.map((row) => (
-          <div key={row.field} className="flex items-center justify-between px-3 py-2 sm:py-2.5 rounded-xl bg-white/5 border border-white/10">
+        {fields.map((row, i) => (
+          <div key={row.field} className={`${i === fields.length - 1 ? "hidden sm:flex" : "flex"} items-center justify-between px-3 py-2 sm:py-2.5 rounded-xl bg-white/5 border border-white/10`}>
             <span className="text-xs sm:text-sm text-gray-400">{row.field}</span>
             <div className="flex items-center gap-2">
               <span className="text-xs sm:text-sm text-white font-medium">{row.val}</span>
@@ -207,7 +207,7 @@ function ProjectDataScreen() {
       </div>
 
       {/* GPS indicator */}
-      <div className="mt-4 sm:mt-5 flex items-center gap-2 px-3 py-2 rounded-xl bg-primary/5 border border-primary/20">
+      <div className="mt-3 sm:mt-5 hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-primary/5 border border-primary/20">
         <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0" />
         <span className="text-[10px] sm:text-xs text-primary/80">24 photos GPS-tagged · Mapped to template</span>
       </div>
@@ -232,7 +232,7 @@ function BuildingCodesScreen() {
           </div>
           <span className="text-sm sm:text-base font-medium text-white">Code Grounding</span>
         </div>
-        <div className="px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30">
+        <div className="flex-shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30">
           <span className="text-[10px] sm:text-xs text-primary">Grounded</span>
         </div>
       </div>
@@ -249,7 +249,7 @@ function BuildingCodesScreen() {
         {codes.map((code) => (
           <div
             key={code.abbr}
-            className="flex items-center gap-3 px-3 py-3 rounded-xl bg-white/5 border border-white/10"
+            className="flex items-center gap-3 px-3 py-2 sm:py-3 rounded-xl bg-white/5 border border-white/10"
           >
             <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: code.color }} />
             <div className="flex-1 min-w-0">
@@ -267,7 +267,7 @@ function BuildingCodesScreen() {
       </div>
 
       {/* Governing brief banner */}
-      <div className="mt-4 sm:mt-5 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-primary/5 border border-primary/20">
+      <div className="mt-3 sm:mt-5 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-primary/5 border border-primary/20">
         <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
         <span className="text-[10px] sm:text-xs text-primary/80">Governing brief generated · Ready for report</span>
       </div>
@@ -293,7 +293,7 @@ function GenerateScreen() {
           </div>
           <span className="text-sm sm:text-base font-medium text-white">Generating</span>
         </div>
-        <div className="px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/30">
+        <div className="flex-shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/30">
           <span className="text-[10px] sm:text-xs text-amber-400">In Progress</span>
         </div>
       </div>
@@ -304,10 +304,10 @@ function GenerateScreen() {
         {sections.map((s) => (
           <div
             key={s.num}
-            className="flex items-center justify-between px-3 py-3 rounded-xl bg-white/5 border border-white/10"
+            className="flex items-center justify-between gap-2 px-2.5 py-2.5 sm:px-3 sm:py-3 rounded-xl bg-white/5 border border-white/10"
           >
             <div className="flex items-center gap-2.5 min-w-0">
-              <span className="text-[10px] sm:text-xs text-gray-600 font-bold flex-shrink-0">{s.num}</span>
+              <span className="flex-shrink-0 grid place-items-center w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-primary/10 border border-primary/20 text-[10px] sm:text-[11px] font-semibold text-primary/80 tabular-nums">{s.num}</span>
               <p className="text-xs sm:text-sm font-medium text-white/90 truncate">{s.title}</p>
             </div>
             <div className="flex-shrink-0 ml-2">
@@ -334,7 +334,7 @@ function GenerateScreen() {
       </div>
 
       {/* Progress */}
-      <div className="mt-4 sm:mt-5">
+      <div className="mt-3 sm:mt-5">
         <div className="flex justify-between text-xs sm:text-sm mb-2">
           <span className="text-gray-500">Draft generation</span>
           <span className="text-primary font-medium">67%</span>
@@ -367,7 +367,7 @@ function QualityControlScreen() {
           </div>
           <span className="text-sm sm:text-base font-medium text-white">QA Checklist</span>
         </div>
-        <div className="px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/30">
+        <div className="flex-shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/30">
           <span className="text-[10px] sm:text-xs text-amber-400">1 Flag</span>
         </div>
       </div>
@@ -377,7 +377,7 @@ function QualityControlScreen() {
         {checks.map((c, i) => (
           <div
             key={i}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10"
+            className="flex items-center gap-3 px-3 py-2 sm:py-2.5 rounded-xl bg-white/5 border border-white/10"
           >
             <div
               className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
@@ -398,7 +398,7 @@ function QualityControlScreen() {
       </div>
 
       {/* Flag notice */}
-      <div className="mt-4 sm:mt-5 px-3 py-3 rounded-xl bg-amber-500/[0.08] border border-amber-500/25">
+      <div className="mt-3 sm:mt-5 px-3 py-3 rounded-xl bg-amber-500/[0.08] border border-amber-500/25">
         <p className="text-xs sm:text-sm text-amber-400/90 font-semibold">1 item flagged for engineer review</p>
         <p className="text-[10px] sm:text-xs text-amber-400/60 mt-1">System flags, you decide — professional judgment required.</p>
       </div>
@@ -418,7 +418,7 @@ function ExportScreen() {
           </div>
           <span className="text-sm sm:text-base font-medium text-white">Report Ready</span>
         </div>
-        <div className="px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30">
+        <div className="flex-shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-primary/20 border border-primary/30">
           <span className="text-[10px] sm:text-xs text-primary">Complete</span>
         </div>
       </div>
@@ -470,7 +470,7 @@ function ExportScreen() {
       </div>
 
       {/* Action buttons */}
-      <div className="mt-4 sm:mt-5 flex gap-1.5 sm:gap-3">
+      <div className="mt-3 sm:mt-5 flex gap-1.5 sm:gap-3">
         <button className="flex-1 px-3 py-1.5 sm:py-3 rounded-xl bg-primary text-black text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5">
           <Download className="w-3.5 h-3.5" />
           Download DOCX

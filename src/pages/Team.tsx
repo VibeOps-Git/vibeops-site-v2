@@ -108,6 +108,15 @@ const contributors: TeamMember[] = [
     bio: `Sam is a Civil Engineering student at the University of Waterloo who runs a lot of our sales and outreach. He's good at building relationships and spotting where we can grow, and he keeps the engineering side and the business side talking to each other.`,
   },
   {
+    name: "Nishant Shah",
+    role: "Contributor · GTM Strategy",
+    focus: "Market Research & Opportunity Mapping",
+    image: "/team/nishant.png",
+    email: "team@vibeops.ca",
+    linkedin: "https://www.linkedin.com/in/nishant-shah-340869306/",
+    bio: `Nishant builds VibeOps' data-driven view of the market, pinpointing where civil-engineering and construction teams lose the most time to manual, repetitive work that AI can take off their plate. He designed an AI-powered research pipeline that mined hundreds of real practitioner pain points across estimating, submittals, drawings, and the field, then scored and ranked them into a prioritized opportunity map. That work directly informs which problems VibeOps builds for first and how the product is positioned.`,
+  },
+  {
     name: "Gabriel Comla",
     role: "Co-Founder",
     image: "/team/gabriel-optimized.jpg",

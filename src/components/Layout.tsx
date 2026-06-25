@@ -61,7 +61,7 @@ const navGroups: NavGroup[] = [
   {
     label: "Solutions",
     links: [
-      { path: "/reportly", label: "Reportly", badge: "New" },
+      { path: "/reportly", label: "Reportly" },
       { path: "/services", label: "Consulting" },
     ],
   },
