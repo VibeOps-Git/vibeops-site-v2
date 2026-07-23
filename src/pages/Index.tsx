@@ -1478,7 +1478,7 @@ function TeamSection() {
         </Reveal>
 
         <motion.div
-          className="flex justify-center gap-8 sm:gap-14 flex-wrap"
+          className="flex justify-center gap-12 sm:gap-20 flex-wrap"
           variants={{ ...stagger, show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
           initial="hidden"
           whileInView="show"
@@ -1489,11 +1489,11 @@ function TeamSection() {
               key={m.name}
               href={`/team?member=${encodeURIComponent(m.name)}`}
               variants={fadeUp}
-              className="flex flex-col items-center gap-2.5 group"
+              className="flex flex-col items-center gap-3 group"
               whileHover={{ y: -3 }}
               transition={HOMEPAGE_MOTION.hoverSpring}
             >
-              <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border border-border group-hover:border-primary/50 transition-colors duration-300">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-border group-hover:border-primary/50 transition-colors duration-300">
                 <img
                   src={m.image}
                   alt={`${m.name} - ${m.role}`}
@@ -1502,8 +1502,8 @@ function TeamSection() {
                 />
               </div>
               <div className="text-center">
-                <p className="text-[12px] font-medium text-foreground leading-tight">{m.name.split(' ')[0]}</p>
-                <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">{m.role}</p>
+                <p className="text-sm font-semibold text-foreground leading-tight">{m.name.split(' ')[0]}</p>
+                <p className="text-[11px] text-muted-foreground leading-tight mt-1">{m.role}</p>
               </div>
             </motion.a>
           ))}
