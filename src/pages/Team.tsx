@@ -311,7 +311,7 @@ export default function Team() {
             </div>
           </AnimatedContent>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
             {coFounders.map((member, idx) => (
               <AnimatedContent
                 key={`${member.name}-${idx}`}
@@ -753,7 +753,7 @@ function TeamBannerImage() {
 
   return (
     <div className="relative w-full px-4 pt-4 md:px-0 md:pt-0">
-      <div className="relative aspect-[1280/961] w-full overflow-hidden rounded-[1.25rem] md:rounded-none">
+      <div className="relative aspect-[1157/651] w-full overflow-hidden rounded-[1.25rem] md:rounded-none">
         <img
           src="/team/full-team-pic-placeholder.jpg"
           alt=""
