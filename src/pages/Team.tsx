@@ -311,7 +311,7 @@ export default function Team() {
             </div>
           </AnimatedContent>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {coFounders.map((member, idx) => (
               <AnimatedContent
                 key={`${member.name}-${idx}`}
