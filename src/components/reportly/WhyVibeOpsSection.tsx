@@ -101,7 +101,6 @@ export function WhyVibeOpsSection() {
             <div className="inline-flex items-center justify-center">
               {[
                 { name: "Zander", image: "/team/zander-optimized.jpg" },
-                { name: "Omair", image: "/team/omair-optimized.jpg" },
                 { name: "Felix", image: "/team/felix-optimized.jpg" },
               ].map((member, i) => (
                 <img

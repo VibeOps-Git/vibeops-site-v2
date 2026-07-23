@@ -1421,7 +1421,6 @@ function ProofSection() {
 const TEAM_MEMBERS = [
   { name: 'Zander Dent',      role: 'CEO',                    image: '/team/zander-optimized.jpg' },
   { name: 'Félix Stewart',    role: 'Co-Founder & Co-Owner',  image: '/team/felix-optimized.jpg'  },
-  { name: 'Qazi Omair Ahmed', role: 'CTO',                    image: '/team/omair-optimized.jpg'  },
 ];
 
 function TeamSection() {

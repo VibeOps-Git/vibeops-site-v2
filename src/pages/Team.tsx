@@ -45,27 +45,12 @@ const coFounders: TeamMember[] = [
     image: "/team/felix-optimized.jpg",
     email: "felix@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/felix-stewart-67007219a/",
-    bio: `Civil engineer and one of the people who helped get VibeOps off the ground. Félix holds an ownership stake but isn't part of the day-to-day team. Active development is led by Zander and Omair.`,
+    bio: `Civil engineer and one of the people who helped get VibeOps off the ground. Félix holds an ownership stake but isn't part of the day-to-day team. Active development is led by Zander.`,
     experience: [
       "Geotechnical Engineering",
       "Advanced Structural Engineering",
       "Geosciences",
       "1st Place, UBC Civil Engineering Capstone 2026",
-    ],
-  },
-  {
-    name: "Qazi Omair Ahmed",
-    role: "CTO & Co-Founder",
-    focus: "Systems Design & Product Delivery",
-    image: "/team/omair-optimized.jpg",
-    email: "omair@vibeops.ca",
-    linkedin: "https://www.linkedin.com/in/qazi-omair-ahmed/",
-    bio: `Omair builds the stack our product runs on. He started his first company at 16, got EB-1A approved at 20, and has shipped production AI systems at some serious places. He's the reason the hard parts actually work.`,
-    owns: ["Architecture", "Parsing", "AI", "Deployment"],
-    experience: [
-      "Founded Fazper at 16 - scaled to $350K annual revenue",
-      "3 peer-reviewed AI/ML papers · 310+ citations · 2 Clarivate Hot Papers",
-      "Built production AI/data systems across xAI, Scale AI, and UBC CS",
     ],
   },
 ];

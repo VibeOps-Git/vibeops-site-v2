@@ -78,34 +78,6 @@ Best,
 [Phone]`,
   },
   {
-    label: "Architecture & Development",
-    person: "Qazi Omair Ahmed",
-    role: "CTO & Co-Founder",
-    about:
-      "Builds the stack the product runs on. Started his first company at 16 and has shipped production AI at xAI, Scale AI, and UBC.",
-    email: "omair@vibeops.ca",
-    blurb:
-      "Technical architecture, integrations, data flows, and how the engine works under the hood.",
-    subject: "VibeOps | Technical / Integration Discussion",
-    body: `Hi Omair,
-
-I'd like to talk through technical details for a potential build.
-
-Some context:
-- Existing systems / tools:
-- Data sources (files, databases, APIs, etc.):
-- Tech constraints (security, hosting, stack):
-- What we want the system to do:
-
-Looking forward to digging into the architecture.
-
-Best,
-[Your Name]
-[Role]
-[Company]
-[Phone]`,
-  },
-  {
     label: "Contact the Team",
     person: "VibeOps Team",
     email: "team@vibeops.ca",
