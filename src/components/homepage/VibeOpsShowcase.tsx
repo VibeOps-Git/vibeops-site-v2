@@ -1,5 +1,5 @@
 // VibeOpsShowcase.tsx
-// 3-scene animated showcase: Reportly → Code Intelligence → Custom Solutions
+// 3-scene animated showcase: Report Automation → Code Intelligence → Custom Builds
 // Slower pacing so users can actually read what's happening.
 
 import { useState, useEffect } from 'react';
@@ -9,11 +9,11 @@ import { FileText, MapPin, Wrench, Check, Download, AlertCircle, BarChart3 } fro
 const E = [0.22, 1, 0.36, 1] as const;
 const SCENE_MS = 7500; // 7.5 seconds per scene - slow enough to read
 
-type Scene = 'reportly' | 'codes' | 'custom';
-const SCENES: Scene[] = ['reportly', 'codes', 'custom'];
+type Scene = 'reporting' | 'codes' | 'custom';
+const SCENES: Scene[] = ['reporting', 'codes', 'custom'];
 
-// ─── Scene 1: Reportly - Report Editor ───────────────────────────────────────
-// Looks like someone is editing a structural assessment report in Reportly.
+// ─── Scene 1: Report Automation - Report Editor ──────────────────────────────
+// Looks like someone is editing a structural assessment report in a system we built.
 // Sections build in, code citations attach, progress fills, export appears.
 
 const REPORT_SECTIONS = [
@@ -25,7 +25,7 @@ const REPORT_SECTIONS = [
   { num: '06', title: 'Recommendations',      code: null,         accent: '#34d399' },
 ];
 
-function ReportlyScene() {
+function ReportAutomationScene() {
   const [visible, setVisible] = useState(0);
   const [exporting, setExporting] = useState(false);
 
@@ -51,7 +51,7 @@ function ReportlyScene() {
         className="flex items-start justify-between gap-2 flex-shrink-0"
       >
         <div className="min-w-0">
-          <p className="text-[6px] uppercase tracking-[0.22em] font-black text-emerald-400/65 mb-0.5">Reportly</p>
+          <p className="text-[6px] uppercase tracking-[0.22em] font-black text-emerald-400/65 mb-0.5">Report Automation</p>
           <p className="text-[10.5px] font-bold text-white leading-tight truncate">Structural Assessment Report</p>
           <p className="text-[7.5px] text-white/35 mt-0.5">Bridge Inspection 2024 · Vancouver, BC · <span className="text-emerald-400/70">Draft</span></p>
         </div>
@@ -350,10 +350,10 @@ function CustomScene() {
         <div>
           <div className="flex items-center gap-1.5 mb-0.5">
             <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            <p className="text-[6px] uppercase tracking-[0.22em] font-black text-blue-400/70">Custom Solutions · AE Firm Rollout</p>
+            <p className="text-[6px] uppercase tracking-[0.22em] font-black text-blue-400/70">Custom Build · AE Firm Deployment</p>
           </div>
           <p className="text-[10.5px] font-bold text-white leading-tight">Report Automation Suite</p>
-          <p className="text-[7.5px] text-white/35 mt-0.5">Private deployment · Powered by VibeOps</p>
+          <p className="text-[7.5px] text-white/35 mt-0.5">Private deployment · Built by VibeOps</p>
         </div>
         <div className="flex-shrink-0 text-right">
           <p className="text-[7px] font-black text-white">{CUSTOM_REPORTS.filter((_,i) => i < shown && CUSTOM_REPORTS[i].status === 'complete').length}</p>
@@ -419,9 +419,9 @@ function CustomScene() {
 // ─── Chrome top bar ───────────────────────────────────────────────────────────
 
 const CHROME_CONFIG: Record<Scene, { title: string; status: string; color: string }> = {
-  reportly: { title: 'Reportly - Structural Assessment 2024',         status: 'Generating', color: '#34d399' },
-  codes:    { title: 'Reportly - Building Code Intelligence (Vancouver)', status: 'Analyzing',  color: '#34d399' },
-  custom:   { title: 'AE Firm - Custom Report Suite',                  status: 'Live',        color: '#60a5fa' },
+  reporting: { title: 'AE Firm - Structural Assessment 2024',            status: 'Generating', color: '#34d399' },
+  codes:     { title: 'AE Firm - Building Code Lookup (Vancouver)',       status: 'Analyzing',  color: '#34d399' },
+  custom:    { title: 'AE Firm - Custom Report Suite',                   status: 'Live',        color: '#60a5fa' },
 };
 
 function ChromeBar({ scene }: { scene: Scene }) {
@@ -471,7 +471,7 @@ export function VibeOpsShowcaseScreen() {
     return () => clearInterval(id);
   }, [rm]);
 
-  const scene = rm ? 'reportly' : SCENES[sceneIdx];
+  const scene = rm ? 'reporting' : SCENES[sceneIdx];
 
   return (
     <div className="dark w-full h-full flex flex-col overflow-hidden text-white" style={{ background: '#070d1a' }}>
@@ -484,7 +484,7 @@ export function VibeOpsShowcaseScreen() {
             animate={{ opacity: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, filter: 'blur(3px)' }}
             transition={{ duration: 0.4, ease: E }}>
-            {scene === 'reportly' && <ReportlyScene />}
+            {scene === 'reporting' && <ReportAutomationScene />}
             {scene === 'codes'    && <CodeIntelligenceScene />}
             {scene === 'custom'   && <CustomScene />}
           </motion.div>

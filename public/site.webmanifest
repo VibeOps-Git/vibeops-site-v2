@@ -27,16 +27,16 @@
   ],
   "shortcuts": [
     {
-      "name": "Reportly",
-      "short_name": "Reportly",
-      "description": "Engineering report automation",
-      "url": "/reportly"
+      "name": "Services",
+      "short_name": "Services",
+      "description": "Engineering software consulting for AE firms",
+      "url": "/services"
     },
     {
-      "name": "MapleCodes",
-      "short_name": "MapleCodes",
-      "description": "Canadian building code intelligence",
-      "url": "/maplecodes"
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Book a consulting call",
+      "url": "/contact"
     }
   ]
 }

@@ -24,15 +24,15 @@ const CALENDLY_URL =
 
 const contactChannels: ContactChannel[] = [
   {
-    label: "Product & Strategy",
+    label: "Strategy & Scoping",
     person: "Zander Dent",
     role: "CEO & Co-Founder",
     about:
-      "Civil engineer turned founder. Runs product, customer discovery, and most of our investor conversations.",
+      "Civil engineer turned founder. Runs engagements, client discovery, and most of our scoping conversations.",
     email: "zander@vibeops.ca",
     blurb:
-      "Big-picture questions, partnerships, and whether Reportly or a custom build fits your firm.",
-    subject: "VibeOps / Reportly | Strategy & Product Fit",
+      "Big-picture questions, partnerships, and scoping what a custom build would look like for your firm.",
+    subject: "VibeOps | Strategy & Engagement Fit",
     body: `Hi Zander,
 
 I'd like to connect about how VibeOps could fit into our workflows.
@@ -64,7 +64,7 @@ Thanks,
 I'm reaching out about a potential engagement with VibeOps.
 
 Rough outline:
-- What we're interested in (Reportly / dashboards / custom tools):
+- What we're interested in (report automation / dashboards / custom tools):
 - Size of team / project:
 - Key outcomes we care about:
 - Budget / timing (if known):

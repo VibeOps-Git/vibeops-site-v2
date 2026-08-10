@@ -58,9 +58,9 @@ test.describe("Homepage", () => {
     expect(hasHorizontalOverflow).toBe(false);
   });
 
-  test("should keep navigation reachable and surface a Reportly link", async ({ page }) => {
+  test("should keep navigation reachable and surface a Services link", async ({ page }) => {
     await expect(page.getByRole("navigation")).toBeVisible();
-    await expect(page.getByRole("link", { name: /reportly/i }).first()).toBeAttached();
+    await expect(page.getByRole("link", { name: /services/i }).first()).toBeAttached();
   });
 });
 

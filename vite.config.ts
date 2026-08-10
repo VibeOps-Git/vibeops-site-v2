@@ -28,7 +28,6 @@ function sitemapPlugin(): Plugin {
         "/contact",
         "/team",
         "/blog",
-        "/reportly",
         "/privacy",
         "/terms",
       ];

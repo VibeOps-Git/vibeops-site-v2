@@ -172,7 +172,7 @@ export default function Team() {
     <>
       <SEO
         title="Meet the Team"
-        description="Meet the civil engineers and software builders behind Reportly and VibeOps. Built from 200+ discovery calls with AE firms across Canada."
+        description="Meet the civil engineers and software builders behind VibeOps. Built from 200+ discovery calls with AE firms across Canada."
         canonical="https://www.vibeops.ca/team"
       />
       <div className="pt-24">
@@ -306,7 +306,7 @@ export default function Team() {
           >
             <div className="mb-10">
               <p className="text-muted-foreground text-sm">
-                The core team behind VibeOps and Reportly.
+                The core team behind VibeOps.
               </p>
             </div>
           </AnimatedContent>

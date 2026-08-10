@@ -9,7 +9,7 @@ export default function Terms() {
     <>
       <SEO
         title="Terms of Service"
-        description="VibeOps Technologies Inc. subscription agreement and terms of service. Governs access to and use of Reportly and other VibeOps services."
+        description="VibeOps Technologies Inc. subscription agreement and terms of service. Governs access to and use of VibeOps consulting engagements and software services."
         canonical="https://www.vibeops.ca/terms"
       />
       <div className="pt-24 pb-16">
@@ -61,7 +61,7 @@ export default function Terms() {
                       <strong>"Order Form"</strong> means an ordering document, online checkout, or subscription flow (including via Stripe) that specifies pricing, subscription term, and applicable Services, and incorporates this Agreement by reference.
                     </p>
                     <p>
-                      <strong>"Services"</strong> means VibeOps' cloud-based software platform currently branded as <strong>Reportly</strong>, including templates, workflow tools, AI Features, and related functionality.
+                      <strong>"Services"</strong> means the consulting, implementation, and software services VibeOps provides to Customer, including any custom-built tools, templates, workflow automations, AI Features, and related functionality delivered under an Order Form.
                     </p>
                     <p>
                       <strong>"Subscription Term"</strong> means the period during which Customer is authorized to access and use the Services, as specified in an Order Form.

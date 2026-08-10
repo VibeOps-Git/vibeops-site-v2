@@ -12,8 +12,8 @@ import { VibeLinkButton } from '@/components/ui/VibeButton';
 const buildBuckets = [
   {
     icon: FileText,
-    label: 'Reportly',
-    title: 'Private Reportly Deployments',
+    label: 'Reporting',
+    title: 'Report & Document Automation',
     description: 'Report automation built around your firm\'s Word, Excel, and PDF templates, your writing rules, your QA workflows, and your approval chains.',
     features: [
       'Your firm\'s writing and formatting rules',
@@ -91,7 +91,7 @@ export default function Services() {
     <>
       <SEO
         title="Custom AE Workflow Software & Consulting"
-        description="VibeOps builds reporting and workflow software for AE firms: report automation, building code lookup, and firm-specific tools built around how your team works."
+        description="VibeOps is an engineering software consultancy for AE firms: report automation, building code lookup, and firm-specific tools built around how your team works."
         canonical="https://www.vibeops.ca/services"
       />
       <div className="pt-24">
@@ -104,17 +104,17 @@ export default function Services() {
                 VibeOps Consulting
               </p>
               <h1 className="text-4xl md:text-[2.8rem] font-bold text-foreground mb-6 tracking-tight leading-[1.1]">
-                Private engineering AI, built around how your firm already works
+                Private engineering software, built around how your firm already works
               </h1>
               <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                We take the software behind Reportly and set up a private version for your firm. It runs on your templates, your code requirements, your security rules, and your reporting process.
+                We're an engineering software consultancy. We build and deploy private systems for your firm, running on your templates, your code requirements, your security rules, and your reporting process.
               </p>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <VibeLinkButton href="/contact" variant="primary" size="lg">
                   Book a Consulting Call
                 </VibeLinkButton>
-                <VibeLinkButton href="/reportly" variant="outline" size="lg">
-                  See Reportly
+                <VibeLinkButton href="/case-studies" variant="outline" size="lg">
+                  See Our Work
                 </VibeLinkButton>
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function Services() {
                 Three ways we work with AE firms.
               </h2>
               <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-14">
-                Every engagement starts from Reportly, which is already built and tested. We set it up around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
+                Every engagement starts from working engineering software we've already built and tested, then gets shaped around your firm's templates, codes, and reporting process. You're not paying for something to be built from scratch.
               </p>
             </Anim>
 
@@ -179,7 +179,7 @@ export default function Services() {
                     Not generic AI consulting.
                   </h2>
                   <p className="text-muted-foreground text-[15px] leading-relaxed mb-4 max-w-lg">
-                    Most AI consultants show up with a slide deck and some automation ideas. We show up with Reportly, software that already does engineering report automation, with Canadian building code lookup built in.
+                    Most AI consultants show up with a slide deck and some automation ideas. We show up with a working codebase that already does engineering report automation, with Canadian building code lookup built in.
                   </p>
                   <p className="text-muted-foreground text-[15px] leading-relaxed mb-8 max-w-lg">
                     Then we set it up around your firm's workflows. It's faster to get running, lower risk, and built for engineering work specifically, not borrowed from generic business software.
@@ -235,13 +235,13 @@ export default function Services() {
                 Built for sensitive engineering work.
               </h2>
               <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed mb-14">
-                Plenty of firms can't put active project work through public AI tools, especially when the documents involve government clients, confidential reports, or regulated data. We set up private versions of Reportly so your project information never leaves the environment you approve.
+                Plenty of firms can't put active project work through public AI tools, especially when the documents involve government clients, confidential reports, or regulated data. Everything we build is deployed privately, so your project information never leaves the environment you approve.
               </p>
             </Anim>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
-                { icon: Server, title: 'Private Installation', description: 'Run Reportly on your own servers or a dedicated private environment. Your data doesn\'t touch shared systems.' },
+                { icon: Server, title: 'Private Installation', description: 'Runs on your own servers or a dedicated private environment. Your data doesn\'t touch shared systems.' },
                 { icon: Shield, title: 'PIPEDA-Aware Workflows', description: 'Built to support privacy-conscious workflows and help you meet internal and client data-handling rules.' },
                 { icon: Lock, title: 'Controlled Data Handling', description: 'Sensitive project data stays inside the environment you approve. Nothing leaks out to public AI tools.' },
                 { icon: Lightbulb, title: 'Government & Infrastructure Ready', description: 'Fits firms working on municipal, provincial, federal, and confidential infrastructure projects.' },
@@ -275,10 +275,10 @@ export default function Services() {
                     Setup fee, then a monthly license.
                   </h2>
                   <p className="text-muted-foreground text-[15px] leading-relaxed mb-4 max-w-lg">
-                    We set Reportly up around your templates, workflows, and reporting process, put it in the environment your security team signs off on, and keep you running through a monthly license.
+                    We build around your templates, workflows, and reporting process, put it in the environment your security team signs off on, and keep you running through a monthly license.
                   </p>
                   <p className="text-muted-foreground text-[15px] leading-relaxed max-w-lg">
-                    You're not just buying consulting hours. You're getting Reportly, set up and maintained for your firm.
+                    You're not just buying consulting hours. You're getting working software, set up and maintained for your firm.
                   </p>
                 </div>
               </Anim>
@@ -286,8 +286,8 @@ export default function Services() {
               <Anim delay={0.1}>
                 <div className="lg:w-[400px] flex-shrink-0 w-full space-y-4">
                   {[
-                    { icon: CreditCard, step: '01', title: 'Upfront Setup Fee', description: 'We scope it, configure it, and set up Reportly around your templates, workflows, and security requirements.' },
-                    { icon: Repeat, step: '02', title: 'Monthly Software License', description: 'Ongoing access to Reportly. Includes updates, hosting where you need it, and standard support.' },
+                    { icon: CreditCard, step: '01', title: 'Upfront Setup Fee', description: 'We scope it, build it, and configure it around your templates, workflows, and security requirements.' },
+                    { icon: Repeat, step: '02', title: 'Monthly Software License', description: 'Ongoing access to what we built for you. Includes updates, hosting where you need it, and standard support.' },
                     { icon: Wrench, step: '03', title: 'Optional Ongoing Development', description: 'Extra custom work, new integrations, more report types, or additional code workflows, scoped when you need them.' },
                   ].map((item) => (
                     <div key={item.step} className="flex gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm">
@@ -350,14 +350,14 @@ export default function Services() {
                   Tell us what your firm needs.
                 </h2>
                 <p className="text-muted-foreground mb-8 max-w-xl mx-auto text-[15px] leading-relaxed">
-                  Book a 30-minute call. We'll look at the report that eats the most of your team's time, the compliance checks you want tightened up, and whether Reportly is a fit for your firm.
+                  Book a 30-minute call. We'll look at the report that eats the most of your team's time, the compliance checks you want tightened up, and what an engagement would look like for your firm.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <VibeLinkButton href="/contact" variant="primary" size="lg">
                     Book a Consulting Call
                   </VibeLinkButton>
-                  <VibeLinkButton href="/reportly" variant="outline" size="lg">
-                    See Reportly
+                  <VibeLinkButton href="/case-studies" variant="outline" size="lg">
+                    See Our Work
                   </VibeLinkButton>
                 </div>
               </VibeCard>
