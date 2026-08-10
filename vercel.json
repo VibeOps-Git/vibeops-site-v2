@@ -3,6 +3,14 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "redirects": [
+    { "source": "/reportly", "destination": "/services", "permanent": true },
+    { "source": "/maplecodes", "destination": "/services", "permanent": true },
+    { "source": "/blog/1-civil-tool", "destination": "/blog", "permanent": true },
+    { "source": "/blog/roi-ai-reporting-civil-engineering", "destination": "/blog", "permanent": true },
+    { "source": "/blog/why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors", "destination": "/blog", "permanent": true },
+    { "source": "/blog/why-reportly-by-vibeops-is-positioned-to-win-in-ai-powered-engineering-software", "destination": "/blog", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

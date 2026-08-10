@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
               <div className="space-y-8 text-muted-foreground">
                 <div>
                   <p className="mb-4">
-                    This Privacy Policy describes how <strong>VibeOps Technologies Inc.</strong> ("VibeOps", "we", "us", or "our") collects, uses, discloses, and protects personal information in connection with our websites, applications, and services, including the <strong>Reportly</strong> platform (collectively, the "Services").
+                    This Privacy Policy describes how <strong>VibeOps Technologies Inc.</strong> ("VibeOps", "we", "us", or "our") collects, uses, discloses, and protects personal information in connection with our websites, applications, and consulting and software services (collectively, the "Services").
                   </p>
                   <p>
                     This Privacy Policy forms part of, and should be read together with, the <a href="/terms" className="text-primary hover:text-primary/80 transition-colors">VibeOps Subscription Agreement / Terms and Conditions</a>.

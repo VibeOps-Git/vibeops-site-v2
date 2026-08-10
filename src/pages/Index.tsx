@@ -1,8 +1,9 @@
 // src/pages/Index.tsx
-// VibeOps platform homepage - customer-conversion focused.
-// Promotes the full ecosystem: Reportly, Custom Rollouts.
-// Hero: clean platform reveal, no GSAP pin.
-// Sections: problem → products → previews → proof → CTA.
+// VibeOps consultancy homepage - customer-conversion focused.
+// Positions the firm as an engineering software consultancy: report automation,
+// building code tooling, and custom internal software built per engagement.
+// Hero: clean reveal, no GSAP pin.
+// Sections: problem → services → capability previews → proof → CTA.
 
 import {
   motion,
@@ -16,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useRef, useEffect, useLayoutEffect, useState, useCallback, ReactNode } from 'react';
 import { SEO } from '@/components/SEO';
-import { HomepageDeviceStage, SectionLaptop, LaptopShell, TabletShell, PhoneShell } from '@/components/homepage/DeviceScene';
+import { HomepageDeviceStage, LaptopShell, TabletShell, PhoneShell } from '@/components/homepage/DeviceScene';
 import { VibeOpsShowcaseScreen } from '@/components/homepage/VibeOpsShowcase';
 import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
 
@@ -240,29 +241,29 @@ function InfiniteMarquee({ speed: _speed }: { speed?: number }) {
 
 const PRODUCTS = [
   {
-    id: 'reportly',
-    name: 'Reportly',
-    tag: 'Report Automation',
-    description: 'Engineering report drafts pulled from your templates, field notes, and data. Code references included.',
+    id: 'reporting',
+    name: 'Report & Document Automation',
+    tag: 'Engagement',
+    description: 'We build the system that drafts your reports from your own templates, field notes, and project data.',
     accent: '#34d399',
     icon: FileText,
-    href: '/reportly',
+    href: '/services',
     badge: null,
   },
   {
     id: 'codes',
-    name: 'Code Intelligence',
-    tag: 'Building Code Intelligence',
-    description: 'Type in a project address. Get every Canadian building code that applies to it.',
+    name: 'Building Code Tooling',
+    tag: 'Engagement',
+    description: 'Code lookup and citation workflows built into your projects, resolved by address across Canada.',
     accent: '#34d399',
     icon: MapPin,
-    href: '/reportly',
+    href: '/services',
     badge: null,
   },
   {
     id: 'custom',
-    name: 'Custom Rollouts',
-    tag: 'Firm-Specific Software',
+    name: 'Custom Engineering Software',
+    tag: 'Engagement',
     description: 'Tools, dashboards, and automations built around the way your firm already works.',
     accent: '#60a5fa',
     icon: Wrench,
@@ -331,14 +332,13 @@ export default function Index() {
   return (
     <>
       <SEO
-        title="Engineering Report Automation & Building Code Intelligence for AE Firms"
-        description="VibeOps builds report automation, building code intelligence, and workflow software for civil and structural AE firms, cutting manual work out of compliance."
+        title="Engineering Software Consultancy for AE Firms"
+        description="VibeOps is an engineering software consultancy. We build report automation, building code tooling, and custom internal software for civil and structural AE firms."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
       <ProblemSection />
       <ProductPillarsSection />
-      <ReportlyRevealSection />
       <CodeIntelligenceSection />
       {/* Continuous opaque backing: prevents the fixed hero background from
           bleeding through sub-pixel seams between these stacked sections during
@@ -489,8 +489,8 @@ function HeroSection() {
     <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
       <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
         style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
-        Building code smarts and reporting software{' '}
-        <span className="text-primary">for AE firms.</span>
+        We build the software{' '}
+        <span className="text-primary">your AE firm is missing.</span>
       </motion.h1>
       <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
         style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
@@ -501,9 +501,11 @@ function HeroSection() {
         <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
       </motion.div>
       <motion.p variants={fadeUp} className="text-[11px] text-muted-foreground tracking-wide">
-        <a href="/reportly" className="hover:text-primary transition-colors">Reportly</a>
+        <a href="/services" className="hover:text-primary transition-colors">Report Automation</a>
         {' · '}
-        <a href="/services" className="hover:text-primary transition-colors">Custom Rollouts</a>
+        <a href="/services" className="hover:text-primary transition-colors">Code Tooling</a>
+        {' · '}
+        <a href="/services" className="hover:text-primary transition-colors">Custom Software</a>
       </motion.p>
     </motion.div>
   );
@@ -568,60 +570,6 @@ function HeroSection() {
           on a timer rather than being gated by scroll position. */}
       <div ref={spacerRef} style={{ height: '140vh' }} aria-hidden="true" />
 
-      {/* Reportly - laptop + text, fixed at z-2, vertically centered.
-          Reportly section (z-10) is transparent so this shows through.
-          Covered by Three Ways z-20 above and MapleCodes z-30 below. */}
-      <div className="pointer-events-none fixed inset-0 flex items-center" style={{ zIndex: 2 }}>
-        <div className="w-full max-w-7xl mx-auto px-6 lg:px-14">
-          {/* Desktop: laptop left, text right */}
-          <div className="hidden lg:grid lg:grid-cols-[1fr_380px] gap-10 lg:gap-16 items-center">
-            <HomepageDeviceStage videoSrc="/vids/demo-vid.mp4" lockedDevice="laptop" hideDots />
-            <div style={{ pointerEvents: 'auto' }} className="flex flex-col">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
-              <h2 className="font-bold text-foreground tracking-[-0.03em] leading-[1.1] mb-4"
-                style={{ fontSize: 'clamp(1.6rem, 2.2vw, 2.4rem)' }}>
-                Scattered inputs in,{' '}
-                <span className="text-primary">a report draft out.</span>
-              </h2>
-              <p className="text-muted-foreground leading-[1.75] mb-6 text-[15px]">
-                Templates, field notes, photos, tables, and the right code references. You get a first draft in minutes, not days.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a href="/reportly" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground text-[14px] font-bold whitespace-nowrap shadow-sm">
-                  See Reportly <ArrowRight className="w-4 h-4" />
-                </a>
-                <a href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-secondary text-muted-foreground text-[13.5px] font-semibold whitespace-nowrap">
-                  Book a call
-                </a>
-              </div>
-            </div>
-          </div>
-          {/* Mobile: laptop full width, generous gap, text centered below */}
-          <div className="lg:hidden flex flex-col items-center gap-12">
-            <div className="w-full">
-              <HomepageDeviceStage videoSrc="/vids/demo-vid.mp4" lockedDevice="laptop" hideDots />
-            </div>
-            <div style={{ pointerEvents: 'auto' }} className="w-full text-center px-2">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
-              <h2 className="font-bold text-foreground tracking-[-0.03em] leading-[1.1] mb-4"
-                style={{ fontSize: 'clamp(1.5rem, 5.5vw, 2.1rem)' }}>
-                Scattered inputs in,{' '}
-                <span className="text-primary">a report draft out.</span>
-              </h2>
-              <div className="flex flex-wrap gap-2 justify-center">
-                <a href="/reportly" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-bold whitespace-nowrap shadow-sm">
-                  See Reportly <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-                <a href="/contact" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-border bg-secondary text-muted-foreground text-[13px] font-semibold whitespace-nowrap">
-                  Book a call
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
       {/* Fixed overlay - only mounted while spacer is in view (same as ShowcaseSection).
           This avoids Lenis / sticky incompatibility entirely. */}
       {isInView && (
@@ -639,8 +587,8 @@ function HeroSection() {
                 <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
                   <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
                     style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
-                    Building code smarts and reporting software{' '}
-                    <span className="text-primary">for AE firms.</span>
+                    We build the software{' '}
+                    <span className="text-primary">your AE firm is missing.</span>
                   </motion.h1>
 
                   <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
@@ -654,9 +602,11 @@ function HeroSection() {
                   </motion.div>
 
                   <motion.p variants={fadeUp} className="text-[11px] text-muted-foreground tracking-wide">
-                    <a href="/reportly" className="hover:text-primary transition-colors">Reportly</a>
+                    <a href="/services" className="hover:text-primary transition-colors">Report Automation</a>
                     {' · '}
-                    <a href="/services" className="hover:text-primary transition-colors">Custom Rollouts</a>
+                    <a href="/services" className="hover:text-primary transition-colors">Code Tooling</a>
+                    {' · '}
+                    <a href="/services" className="hover:text-primary transition-colors">Custom Software</a>
                   </motion.p>
 
                 </motion.div>
@@ -831,14 +781,8 @@ function ProblemSection() {
   );
 }
 
-// ─── 3. Product Pillars + Laptop Reveal ──────────────────────────────────────
-// The Three Ways section lives in normal DOM flow (min-h-screen so it fills the
-// viewport). When it starts to scroll off the top, a fixed overlay activates at
-// z=25 with the FRONT LAYER (Three Ways clone) positioned at translateY=0
-// (matching the DOM section exactly - seamless handoff). The DOM section is
-// immediately hidden via direct DOM mutation. The front layer then slides upward
-// at 1.2× scroll speed, revealing the laptop + Reportly text behind it.
-// No pop-in. No black gap. No z-index tricks needed.
+// ─── 3. Service Pillars ──────────────────────────────────────────────────────
+// The three engagement types we take on, in normal DOM flow.
 
 
 function ProductPillarsSection() {
@@ -856,7 +800,7 @@ function ProductPillarsSection() {
               <span className="text-primary">AE firms move faster.</span>
             </h2>
             <p className="text-[14px] text-muted-foreground max-w-xs leading-[1.7]">
-              Software we built, plus custom work for firms that need it. Either way, it fits how you already work.
+              Every engagement is scoped to your firm. Same starting point either way: the workflow that costs you the most hours.
             </p>
           </div>
         </div>
@@ -869,44 +813,6 @@ function ProductPillarsSection() {
     </section>
   );
 }
-
-function ReportlyRevealSection() {
-  return (
-    <>
-      {/* Desktop: transparent gap that reveals the fixed z-2 "Scattered inputs" scene */}
-      <section className="relative z-[10] border-t border-border hidden lg:block"
-        style={{ minHeight: '85vh', background: 'transparent' }} />
-      {/* Mobile: render that same scene inline, in normal flow */}
-      <section className="relative z-20 bg-background border-t border-border py-16 px-6 lg:hidden">
-        <div className="flex flex-col items-center gap-8 max-w-md mx-auto">
-          <div className="w-full max-w-[320px]">
-            <SectionLaptop videoSrc="/vids/demo-vid.mp4" />
-          </div>
-          <div className="text-center">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-primary font-black mb-3">Reportly</p>
-            <h2 className="font-bold text-foreground tracking-[-0.03em] leading-[1.1] mb-4"
-              style={{ fontSize: 'clamp(1.6rem, 6vw, 2.1rem)' }}>
-              Scattered inputs in,{' '}
-              <span className="text-primary">a report draft out.</span>
-            </h2>
-            <p className="text-muted-foreground leading-[1.7] mb-6 text-[15px]">
-              Templates, field notes, photos, tables, and the right code references. You get a first draft in minutes, not days.
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <a href="/reportly" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-[14px] font-bold shadow-sm">
-                See Reportly <ArrowRight className="w-4 h-4" />
-              </a>
-              <a href="/contact" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-border bg-secondary text-muted-foreground text-[13.5px] font-semibold">
-                Book a call
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
 
 // ─── 5. Code Intelligence Preview - animated workflow ────────────────────────
 // Bug fix: outer wrapper remounts inner via key so the loop restarts cleanly.
@@ -1076,7 +982,7 @@ function MCAnimInner({
         </div>
         <div className="flex-1 mx-2">
           <div className="bg-muted rounded-md px-2 py-1 text-center text-[8px] text-muted-foreground border border-border truncate">
-            Reportly - Canadian Building Code Intelligence
+            Code Intelligence - Canadian Building Code Lookup
           </div>
         </div>
         <AnimatePresence mode="wait">
@@ -1248,7 +1154,7 @@ function CodeIntelligenceSection() {
               <span className="text-primary">tied to the address.</span>
             </h2>
             <p className="text-muted-foreground leading-[1.75] mb-7" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.05rem)', maxWidth: '36rem' }}>
-              Canadian projects sit under federal, provincial, and municipal codes all at once. Type in a project address and Reportly works out which codes apply, across all 10 provinces and 3 territories, then pulls the right CSA standards into every draft.
+              Canadian projects sit under federal, provincial, and municipal codes all at once. We build code lookup into your firm's workflow: type in a project address, get every code that applies across all 10 provinces and 3 territories, with the right CSA standards pulled into the draft.
             </p>
             <div className="space-y-3 mb-8">
               {[
@@ -1266,7 +1172,7 @@ function CodeIntelligenceSection() {
                 </div>
               ))}
             </div>
-            <PrimaryBtn href="/reportly">See Reportly <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+            <PrimaryBtn href="/services">How we build it <ArrowRight className="w-4 h-4" /></PrimaryBtn>
           </Reveal>
 
           {/* Right: animated workflow */}
@@ -1356,10 +1262,10 @@ function ProofSection() {
 
         <Rule className="mb-16" />
 
-        {/* Custom Rollouts section */}
+        {/* Custom engagements section */}
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <Reveal>
-            <Label>Custom Rollouts</Label>
+            <Label>Custom Engagements</Label>
             <h2
               className="font-bold text-foreground tracking-[-0.025em] leading-[1.08] mb-5"
               style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
@@ -1368,7 +1274,7 @@ function ProofSection() {
               <span className="text-primary">how your firm actually works.</span>
             </h2>
             <p className="text-muted-foreground leading-[1.75] mb-6" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1rem)' }}>
-              Off-the-shelf software rarely fits a firm's workflow. So we set Reportly up around your templates and process, build the dashboards you actually need, automate the document grind, and hook into the tools your team already uses.
+              Off-the-shelf software rarely fits a firm's workflow. So we build around your templates and process instead: the dashboards you actually need, automation for the document grind, and integrations with the tools your team already uses.
             </p>
             <p className="text-muted-foreground leading-[1.75] text-[14px] mb-8">
               Bring us the workflow that slows your team down. We'll map it out and show you what software built around it would look like.
@@ -1392,7 +1298,7 @@ function ProofSection() {
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <p className="text-[10px] font-black uppercase tracking-[0.25em] text-primary mb-4">What we build</p>
               {[
-                { label: 'Private Reportly Deployments', detail: 'Your templates, your writing rules, your QA workflow' },
+                { label: 'Report & Document Automation', detail: 'Your templates, your writing rules, your QA workflow' },
                 { label: 'Building Code AI Systems', detail: 'Jurisdiction-specific code search and project workflows' },
                 { label: 'Dashboards & Internal Tools', detail: 'Project trackers, asset databases, compliance tools' },
                 { label: 'Document Workflow Automation', detail: 'Generation, review, and delivery, done for you' },
@@ -1550,7 +1456,7 @@ function FinalCTASection() {
             variants={fadeUp}
             className="text-muted-foreground text-[0.95rem] leading-[1.8] mb-10 max-w-sm"
           >
-            The average AE engineer loses 30-40% of the week to formatting, code lookups, and writing reports. Reportly hands that time back.
+            The average AE engineer loses 30-40% of the week to formatting, code lookups, and writing reports. We build the software that hands that time back.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
             <PrimaryBtn href="/contact">Book a call <ArrowRight className="w-3.5 h-3.5" /></PrimaryBtn>
@@ -1569,7 +1475,7 @@ function FinalCTASection() {
           <iframe
             src={PITCH_VIDEO_SRC}
             allow="encrypted-media"
-            title="VibeOps - the reporting layer for AE firms"
+            title="VibeOps - engineering software consulting for AE firms"
             className="absolute inset-0 w-full h-full"
             style={{ border: 'none' }}
             loading="lazy"

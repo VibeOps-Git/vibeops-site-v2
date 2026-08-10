@@ -2,9 +2,8 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown, LogOut } from "lucide-react";
+import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useAuth } from "@/contexts/AuthContext";
 import Lenis from "lenis";
 
 // ─── Scroll progress bar ──────────────────────────────────────────────────────
@@ -59,13 +58,6 @@ interface NavGroup {
 
 const navGroups: NavGroup[] = [
   {
-    label: "Solutions",
-    links: [
-      { path: "/reportly", label: "Reportly" },
-      { path: "/services", label: "Consulting" },
-    ],
-  },
-  {
     label: "Company",
     links: [
       { path: "/team", label: "Team" },
@@ -77,6 +69,7 @@ const navGroups: NavGroup[] = [
 
 const topLevelLinks: NavLink[] = [
   { path: "/", label: "Home" },
+  { path: "/services", label: "Services" },
   { path: "/contact", label: "Contact" },
 ];
 
@@ -87,7 +80,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileExpandedGroups, setMobileExpandedGroups] = useState<string[]>([]);
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { user, openLogin, logout } = useAuth();
 
   useEffect(() => {
     let lenis: Lenis | null = null;
@@ -196,6 +188,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Home
               </Link>
 
+              {/* Services Link */}
+              <Link
+                to="/services"
+                className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                  isActive("/services")
+                    ? "text-primary bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                Services
+              </Link>
+
               {/* Dropdown Groups */}
               {navGroups.map((group) => (
                 <div key={group.label} className="relative group">
@@ -257,26 +261,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
               <ThemeToggle className="ml-2" />
 
-              {user ? (
-                <div className="ml-2 flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground truncate max-w-[140px]">{user.email}</span>
-                  <button
-                    onClick={logout}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-border text-sm text-muted-foreground transition-all duration-200 hover:text-foreground hover:bg-secondary"
-                  >
-                    <LogOut size={14} /> Sign Out
-                  </button>
-                </div>
-              ) : (
-                <a
-                  href="https://reportly.ca/login"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-2 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold transition-all duration-200 hover:bg-primary/90"
-                >
-                  Login
-                </a>
-              )}
+              <Link
+                to="/contact"
+                className="ml-2 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold transition-all duration-200 hover:bg-primary/90"
+              >
+                Book a Call
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -302,6 +292,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 }`}
               >
                 Home
+              </Link>
+
+              {/* Services */}
+              <Link
+                to="/services"
+                className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
+                  isActive("/services")
+                    ? "text-primary bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                Services
               </Link>
 
               {/* Mobile Groups */}
@@ -359,23 +361,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
 
               <div className="pt-2">
-                {user ? (
-                  <button
-                    onClick={logout}
-                    className="block w-full py-3 px-4 rounded-xl border border-border text-muted-foreground text-sm font-semibold text-center transition-colors hover:text-foreground hover:bg-secondary"
-                  >
-                    Sign Out ({user.email})
-                  </button>
-                ) : (
-                  <a
-                    href="https://reportly.ca/login"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-semibold text-center"
-                  >
-                    Login
-                  </a>
-                )}
+                <Link
+                  to="/contact"
+                  className="block w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-semibold text-center"
+                >
+                  Book a Call
+                </Link>
               </div>
             </div>
           )}
@@ -397,19 +388,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="h-8 w-auto object-contain mb-4 invert dark:invert-0"
               />
               <p className="text-muted-foreground text-sm max-w-sm leading-relaxed">
-                Report automation and building code intelligence for civil, structural, geotechnical, and environmental engineering teams. Less formatting, more engineering.
+                An engineering software consultancy. We build report automation, building code tooling, and internal software for civil, structural, geotechnical, and environmental teams.
               </p>
             </div>
 
-            {/* Products */}
+            {/* Services */}
             <div>
-              <h4 className="text-sm font-semibold text-foreground mb-4">Products</h4>
+              <h4 className="text-sm font-semibold text-foreground mb-4">Services</h4>
               <div className="space-y-3 text-sm">
-                <Link to="/reportly" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Reportly
+                <Link to="/services" className="block text-muted-foreground hover:text-primary transition-colors">
+                  Report & Document Automation
                 </Link>
                 <Link to="/services" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Custom Software
+                  Building Code Tooling
+                </Link>
+                <Link to="/services" className="block text-muted-foreground hover:text-primary transition-colors">
+                  Custom Engineering Software
                 </Link>
               </div>
             </div>

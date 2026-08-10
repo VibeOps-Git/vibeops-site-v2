@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
-import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import Services from "./pages/Services";
 import CaseStudies from "./pages/CaseStudies";
@@ -14,7 +13,6 @@ import Contact from "./pages/Contact";
 import Team from "./pages/Team";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-import Reportly from "./pages/Reportly";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
@@ -36,7 +34,6 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthProvider>
           <PageTracker />
           <ScrollToTop />
           <Layout>
@@ -48,13 +45,11 @@ const App = () => (
               <Route path="/team" element={<Team />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/reportly" element={<Reportly />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
-          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

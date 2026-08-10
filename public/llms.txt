@@ -2,19 +2,24 @@
 
 > Less formatting. More engineering.
 
-VibeOps Technologies Inc. builds engineering automation, AI systems, and high-performance software for civil engineering and infrastructure teams. We eliminate manual reporting, documentation, and repetitive workflows so engineers can focus on engineering.
+VibeOps Technologies Inc. is an engineering software consultancy for civil engineering and infrastructure teams. We design, build, and deploy automation, AI systems, and high-performance software that eliminates manual reporting, documentation, and repetitive workflows, so engineers can focus on engineering. Every engagement is built around a firm's own templates, workflows, and security requirements.
 
 Website: https://vibeops.ca
 Location: Vancouver, BC, Canada
 
-## Products & Services
+## Services
 
-### Reportly (Flagship Product)
-Automated, audit-ready reports from your existing Word and Excel templates. Built by engineers, for engineers.
-- Transforms hours of manual formatting into minutes (3 min avg. report time)
-- 100% template-compatible - works with existing Word and Excel templates, zero workflow changes
-- Features: template automation, live data charts and tables, photo appendices, QA-ready output, section-level AI
-- Website: https://reportly.ca
+### Report & Document Automation
+Audit-ready reports generated from your existing Word and Excel templates.
+- Turns hours of manual formatting into minutes
+- 100% template-compatible - works with your existing Word and Excel templates, zero workflow changes
+- Template automation, live data charts and tables, photo appendices, QA-ready output, section-level AI
+
+### Building Code Tooling
+Code lookup and citation workflows built into your project process.
+- Federal, provincial, and municipal codes resolved by project address, anywhere in Canada
+- CSA, ASTM, and ISO referenced standards surfaced alongside
+- Code references cited directly inside report drafts
 
 ### Workflow Automation
 Custom-built tools that remove repetitive documentation from engineering workflows.

@@ -127,7 +127,7 @@ GTM automatically receives these events from the site:
 | `page_title` | The current page title |
 
 You can create triggers based on:
-- Specific page paths (e.g., `/contact`, `/reportly`)
+- Specific page paths (e.g., `/contact`, `/services`)
 - Page title contains certain text
 - Custom dataLayer events (requires developer help)
 

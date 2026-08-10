@@ -7,12 +7,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.vibeops.ca/reportly</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://www.vibeops.ca/services</loc>
     <lastmod>2026-06-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -53,12 +47,6 @@
     <lastmod>2026-06-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.vibeops.ca/blog/1-civil-tool</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.vibeops.ca/blog/ai-civil-engineering-reporting</loc>
@@ -109,12 +97,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.vibeops.ca/blog/roi-ai-reporting-civil-engineering</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.vibeops.ca/blog/the-best-civil-engineering-reporting-software-in-2026</loc>
     <lastmod>2026-06-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -122,18 +104,6 @@
   </url>
   <url>
     <loc>https://www.vibeops.ca/blog/the-best-reporting-solution-for-civil-engineers-in-2026</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.vibeops.ca/blog/why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.vibeops.ca/blog/why-reportly-by-vibeops-is-positioned-to-win-in-ai-powered-engineering-software</loc>
     <lastmod>2026-06-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
