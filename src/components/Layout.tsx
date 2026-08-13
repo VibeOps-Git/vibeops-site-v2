@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, Linkedin, Twitter, Instagram, ChevronDown } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { JOBS } from "@/data/jobs";
 import Lenis from "lenis";
 
 // ─── Scroll progress bar ──────────────────────────────────────────────────────
@@ -56,20 +57,28 @@ interface NavGroup {
   links: NavLink[];
 }
 
+// The dropdown is the spine of the site: six problems in the firm's own words,
+// not a menu of what we sell. Sourced from src/data/jobs.ts so the nav can
+// never drift out of sync with the pages.
 const navGroups: NavGroup[] = [
+  {
+    label: "What We Solve",
+    links: JOBS.map((j) => ({ path: `/what-we-solve/${j.id}`, label: j.navLabel })),
+  },
   {
     label: "Company",
     links: [
       { path: "/team", label: "Team" },
-      { path: "/case-studies", label: "Testimonials" },
       { path: "/blog", label: "Blog" },
+      { path: "/security", label: "Security" },
     ],
   },
 ];
 
 const topLevelLinks: NavLink[] = [
   { path: "/", label: "Home" },
-  { path: "/services", label: "Services" },
+  { path: "/how-we-work", label: "How We Work" },
+  { path: "/proof", label: "Our Work" },
   { path: "/contact", label: "Contact" },
 ];
 
@@ -188,20 +197,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Home
               </Link>
 
-              {/* Services Link */}
-              <Link
-                to="/services"
-                className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
-                  isActive("/services")
-                    ? "text-primary bg-secondary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                }`}
-              >
-                Services
-              </Link>
-
-              {/* Dropdown Groups */}
-              {navGroups.map((group) => (
+              {/* Dropdown groups, split so the nav reads in journey order:
+                  What We Solve → How We Work → Our Work → Company */}
+              {navGroups.filter((g) => g.label === "What We Solve").map((group) => (
                 <div key={group.label} className="relative group">
                   <button
                     onClick={() => setActiveDropdown(activeDropdown === group.label ? null : group.label)}
@@ -220,7 +218,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   {activeDropdown === group.label && (
                     <div
                       onMouseLeave={() => setActiveDropdown(null)}
-                      className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-2xl overflow-hidden shadow-lg animate-in fade-in slide-in-from-top-2 duration-200"
+                      className="absolute top-full left-0 mt-2 w-64 bg-card border border-border rounded-2xl overflow-hidden shadow-lg animate-in fade-in slide-in-from-top-2 duration-200"
                     >
                       <div className="p-2 space-y-1">
                         {group.links.map((link) => (
@@ -239,6 +237,69 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                 {link.badge}
                               </span>
                             )}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* How We Work */}
+              <Link
+                to="/how-we-work"
+                className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                  isActive("/how-we-work")
+                    ? "text-primary bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                How We Work
+              </Link>
+
+              {/* Our Work */}
+              <Link
+                to="/proof"
+                className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                  isActive("/proof")
+                    ? "text-primary bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                Our Work
+              </Link>
+
+              {navGroups.filter((g) => g.label === "Company").map((group) => (
+                <div key={group.label} className="relative group">
+                  <button
+                    onClick={() => setActiveDropdown(activeDropdown === group.label ? null : group.label)}
+                    onMouseEnter={() => setActiveDropdown(group.label)}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm transition-all duration-200 ${
+                      group.links.some(link => isActive(link.path))
+                        ? "text-primary bg-secondary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    {group.label}
+                    <ChevronDown size={14} className={`transition-transform duration-200 ${activeDropdown === group.label ? 'rotate-180' : ''}`} />
+                  </button>
+                  {activeDropdown === group.label && (
+                    <div
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      className="absolute top-full left-0 mt-2 w-56 bg-card border border-border rounded-2xl overflow-hidden shadow-lg animate-in fade-in slide-in-from-top-2 duration-200"
+                    >
+                      <div className="p-2 space-y-1">
+                        {group.links.map((link) => (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+                              isActive(link.path)
+                                ? "text-primary bg-secondary"
+                                : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            }`}
+                          >
+                            {link.label}
                           </Link>
                         ))}
                       </div>
@@ -294,20 +355,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Home
               </Link>
 
-              {/* Services */}
-              <Link
-                to="/services"
-                className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
-                  isActive("/services")
-                    ? "text-primary bg-secondary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                }`}
-              >
-                Services
-              </Link>
-
-              {/* Mobile Groups */}
-              {navGroups.map((group) => (
+              {/* Mobile groups, same journey order */}
+              {navGroups.filter((g) => g.label === "What We Solve").map((group) => (
                 <div key={group.label} className="space-y-1">
                   <button
                     onClick={() => toggleMobileGroup(group.label)}
@@ -335,6 +384,59 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                               {link.badge}
                             </span>
                           )}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* How We Work */}
+              <Link
+                to="/how-we-work"
+                className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
+                  isActive("/how-we-work")
+                    ? "text-primary bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                How We Work
+              </Link>
+
+              {/* Our Work */}
+              <Link
+                to="/proof"
+                className={`flex items-center gap-2 py-3 px-4 rounded-xl text-sm transition-colors ${
+                  isActive("/proof")
+                    ? "text-primary bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                Our Work
+              </Link>
+
+              {navGroups.filter((g) => g.label === "Company").map((group) => (
+                <div key={group.label} className="space-y-1">
+                  <button
+                    onClick={() => toggleMobileGroup(group.label)}
+                    className="w-full flex items-center justify-between py-3 px-4 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                  >
+                    {group.label}
+                    <ChevronDown size={16} className={`transition-transform duration-200 ${mobileExpandedGroups.includes(group.label) ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileExpandedGroups.includes(group.label) && (
+                    <div className="pl-4 space-y-1 animate-in slide-in-from-top-1 duration-200">
+                      {group.links.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          className={`flex items-center justify-between py-3 px-4 rounded-xl text-sm transition-colors ${
+                            isActive(link.path)
+                              ? "text-primary bg-secondary"
+                              : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          {link.label}
                         </Link>
                       ))}
                     </div>
@@ -388,23 +490,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="h-8 w-auto object-contain mb-4 invert dark:invert-0"
               />
               <p className="text-muted-foreground text-sm max-w-sm leading-relaxed">
-                An engineering software consultancy. We build report automation, building code tooling, and internal software for civil, structural, geotechnical, and environmental teams.
+                The AI engineering team for architecture and engineering firms. We
+                help AE firms adopt AI safely, connect it to the systems they already
+                run, and build the software nobody sells them.
               </p>
             </div>
 
-            {/* Services */}
+            {/* What we solve */}
             <div>
-              <h4 className="text-sm font-semibold text-foreground mb-4">Services</h4>
+              <h4 className="text-sm font-semibold text-foreground mb-4">What We Solve</h4>
               <div className="space-y-3 text-sm">
-                <Link to="/services" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Report & Document Automation
-                </Link>
-                <Link to="/services" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Building Code Tooling
-                </Link>
-                <Link to="/services" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Custom Engineering Software
-                </Link>
+                {JOBS.map((j) => (
+                  <Link
+                    key={j.id}
+                    to={`/what-we-solve/${j.id}`}
+                    className="block text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {j.navLabel}
+                  </Link>
+                ))}
               </div>
             </div>
 
@@ -418,8 +522,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link to="/team" className="block text-muted-foreground hover:text-primary transition-colors">
                   Team
                 </Link>
-                <Link to="/case-studies" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Case Studies
+                <Link to="/how-we-work" className="block text-muted-foreground hover:text-primary transition-colors">
+                  How We Work
+                </Link>
+                <Link to="/proof" className="block text-muted-foreground hover:text-primary transition-colors">
+                  Our Work
+                </Link>
+                <Link to="/security" className="block text-muted-foreground hover:text-primary transition-colors">
+                  Security &amp; Data Handling
                 </Link>
                 <Link to="/blog" className="block text-muted-foreground hover:text-primary transition-colors">
                   Blog
@@ -431,13 +541,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="col-span-2 md:col-span-1">
               <h4 className="text-sm font-semibold text-foreground mb-4">Get Started</h4>
               <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                Book a free 30-minute call. We'll look at the report that costs you the most hours.
+                Book a 30-minute call. Bring the workflow that costs your firm the most.
               </p>
               <Link
                 to="/contact"
                 className="inline-block px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold transition-all hover:bg-primary/90"
               >
-                Book a Vibe Check
+                Book a Call
               </Link>
             </div>
           </div>

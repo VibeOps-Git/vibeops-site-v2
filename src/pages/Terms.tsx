@@ -9,7 +9,7 @@ export default function Terms() {
     <>
       <SEO
         title="Terms of Service"
-        description="VibeOps Technologies Inc. subscription agreement and terms of service. Governs access to and use of VibeOps consulting engagements and software services."
+        description="VibeOps Technologies Inc. terms of service, governing our engineering, implementation and software engagements with client firms."
         canonical="https://www.vibeops.ca/terms"
       />
       <div className="pt-24 pb-16">
