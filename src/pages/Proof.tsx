@@ -2,13 +2,12 @@
 //
 // Step 2 of the journey: the page a champion forwards to a principal.
 //
-// Leads with the engineering problems firms trust us with. Deliberately NOT a
-// logo wall: an active engagement is described as active, an engagement that
-// has not begun is described as not begun, and nothing here claims an outcome
-// we have not measured. See the rules at the top of src/data/work.ts.
+// Client engagements are under NDA. This page therefore names WHO we work with
+// and at what stage, and nothing further — no project names, no scope, no
+// deliverables. What it can describe properly is capability we built ourselves,
+// and the discovery base behind the six problems.
 //
-// Client names appear only where that client has agreed. Commercial terms never
-// appear at all.
+// Before adding anything here, read the rule at the top of src/data/work.ts.
 
 import { Link } from 'react-router-dom';
 import { Star, ArrowRight } from 'lucide-react';
@@ -16,7 +15,7 @@ import { SEO } from '@/components/SEO';
 import AnimatedContent from '../components/AnimatedContent';
 import { SectionDivider } from '../components/ui/Section';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
-import { WORK } from '@/data/work';
+import { RELATIONSHIPS, CAPABILITIES } from '@/data/work';
 import { getJob } from '@/data/jobs';
 
 function Anim({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -50,8 +49,8 @@ export default function Proof() {
   return (
     <>
       <SEO
-        title="Engagements & Capability"
-        description="The engineering problems AE firms trust VibeOps with — described honestly by stage, with no outcome claims and no confidential client detail."
+        title="Who We Work With"
+        description="The firms VibeOps works with, the capability we have built, and the discovery base behind it. Client engagements are confidential, so we name relationships and stage rather than project detail."
         canonical="https://www.vibeops.ca/proof"
         breadcrumbs={[{ name: 'Our Work', url: '/proof' }]}
       />
@@ -64,17 +63,17 @@ export default function Proof() {
                 Our Work
               </p>
               <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground md:text-[2.8rem]">
-                The problems firms trust us with
+                Who we work with
               </h1>
               <p className="mb-4 text-base leading-relaxed text-muted-foreground md:text-lg">
-                We would rather you judge us on the class of problem engineering firms
-                hand us than on a wall of logos. Each engagement below is labelled by
-                its actual stage — active, not yet started, or capability we built
-                ourselves.
+                Our client engagements are confidential, so this page tells you who we
+                work with and at what stage — not what we are building for them. That
+                is the same discretion your firm would expect us to apply to your
+                projects.
               </p>
               <p className="text-[14px] leading-relaxed text-muted-foreground">
-                We do not publish contract values or claim outcomes we have not
-                measured.
+                What we can show you properly is the capability we have built
+                ourselves, and the discovery work the whole practice rests on.
               </p>
             </div>
           </Anim>
@@ -82,58 +81,96 @@ export default function Proof() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* Implementations */}
+        {/* Relationships — name and stage only. No project detail, by design. */}
         <section className="px-4 py-16 md:py-20">
           <div className="container mx-auto max-w-4xl">
+            <Anim>
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+                Current relationships
+              </p>
+              <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                Firms we are working with
+              </h2>
+              <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-muted-foreground">
+                Named with their permission. What we are doing for them stays between
+                us and them.
+              </p>
+            </Anim>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {RELATIONSHIPS.map((r, i) => (
+                <Anim key={r.id} delay={i * 0.06}>
+                  <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <span
+                      className={`mb-4 inline-block rounded-full px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.16em] ${
+                        r.stage === 'Working together'
+                          ? 'border border-primary/25 bg-primary/10 text-primary'
+                          : 'border border-border bg-secondary text-muted-foreground'
+                      }`}
+                    >
+                      {r.stage}
+                    </span>
+                    <h3 className="mb-1 text-[19px] font-bold text-foreground">{r.client}</h3>
+                    <p className="text-[12px] uppercase tracking-[0.14em] text-muted-foreground">
+                      {r.descriptor}
+                    </p>
+                  </div>
+                </Anim>
+              ))}
+            </div>
+            <Anim delay={0.15}>
+              <p className="mt-6 text-[13px] leading-relaxed text-muted-foreground">
+                If you want to know whether we have solved something like your problem
+                before, ask us on a call. We can talk about the shape of the work
+                without breaching anyone&rsquo;s confidence — including, later, yours.
+              </p>
+            </Anim>
+          </div>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
+        {/* Capability we own — describable in full because it is ours. */}
+        <section className="px-4 py-16 md:py-20">
+          <div className="container mx-auto max-w-4xl">
+            <Anim>
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+                Built in-house
+              </p>
+              <h2 className="mb-10 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                Capability we bring with us
+              </h2>
+            </Anim>
             <div className="space-y-6">
-              {WORK.map((w, i) => (
-                <Anim key={w.id} delay={i * 0.06}>
+              {CAPABILITIES.map((c, i) => (
+                <Anim key={c.id} delay={i * 0.06}>
                   <article className="rounded-2xl border border-border bg-card p-7 shadow-sm md:p-9">
-                    <div className="mb-5 flex flex-wrap items-center gap-3">
-                      <span
-                        className={`rounded-full px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.16em] ${
-                          w.status === 'Active engagement'
-                            ? 'border border-primary/25 bg-primary/10 text-primary'
-                            : 'border border-border bg-secondary text-muted-foreground'
-                        }`}
-                      >
-                        {w.status}
-                      </span>
-                      <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {w.client}
-                      </span>
-                    </div>
-
-                    <h2 className="mb-5 text-[22px] font-bold leading-snug tracking-tight text-foreground md:text-[26px]">
-                      {w.title}
-                    </h2>
-
+                    <h3 className="mb-5 text-[22px] font-bold leading-snug tracking-tight text-foreground md:text-[26px]">
+                      {c.title}
+                    </h3>
                     <div className="mb-6 space-y-4">
                       <div>
                         <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                           The problem
                         </p>
-                        <p className="text-[14px] leading-[1.75] text-muted-foreground">{w.problem}</p>
+                        <p className="text-[14px] leading-[1.75] text-muted-foreground">{c.problem}</p>
                       </div>
                       <div>
                         <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                          The work
+                          What it does
                         </p>
-                        <p className="text-[14px] leading-[1.75] text-muted-foreground">{w.scope}</p>
+                        <p className="text-[14px] leading-[1.75] text-muted-foreground">{c.scope}</p>
                       </div>
                     </div>
-
                     <ul className="mb-6 space-y-2 border-t border-border pt-5">
-                      {w.detail.map((d) => (
+                      {c.detail.map((d) => (
                         <li key={d} className="flex items-start gap-2.5 text-[13px] leading-relaxed text-muted-foreground">
                           <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-primary" />
                           {d}
                         </li>
                       ))}
                     </ul>
-
                     <div className="flex flex-wrap gap-2">
-                      {w.jobs.map((jid) => {
+                      {c.jobs.map((jid) => {
                         const job = getJob(jid);
                         if (!job) return null;
                         return (
