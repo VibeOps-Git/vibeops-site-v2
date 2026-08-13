@@ -23,8 +23,16 @@ function sitemapPlugin(): Plugin {
 
       const staticRoutes = [
         "/",
-        "/services",
-        "/case-studies",
+        "/what-we-solve",
+        "/what-we-solve/secure-ai",
+        "/what-we-solve/document-production",
+        "/what-we-solve/systems-integration",
+        "/what-we-solve/internal-tools",
+        "/what-we-solve/institutional-knowledge",
+        "/what-we-solve/ai-governance",
+        "/how-we-work",
+        "/security",
+        "/proof",
         "/contact",
         "/team",
         "/blog",

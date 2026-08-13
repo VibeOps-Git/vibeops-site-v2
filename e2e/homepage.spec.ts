@@ -58,9 +58,12 @@ test.describe("Homepage", () => {
     expect(hasHorizontalOverflow).toBe(false);
   });
 
-  test("should keep navigation reachable and surface a Services link", async ({ page }) => {
+  test("should keep navigation reachable and surface the core journey links", async ({ page }) => {
     await expect(page.getByRole("navigation")).toBeVisible();
-    await expect(page.getByRole("link", { name: /services/i }).first()).toBeAttached();
+    // The nav is the buyer journey: what we solve -> how we work -> our work.
+    await expect(page.getByRole("link", { name: /how we work/i }).first()).toBeAttached();
+    await expect(page.getByRole("link", { name: /our work/i }).first()).toBeAttached();
+    await expect(page.getByRole("link", { name: /book a call/i }).first()).toBeAttached();
   });
 });
 
@@ -183,5 +186,59 @@ test.describe("Accessibility", () => {
     const h1Count = await page.locator("h1").count();
     // Should have at least one h1
     expect(h1Count).toBeGreaterThanOrEqual(1);
+  });
+});
+
+// ─── New architecture: the six job pages plus the journey destinations ───────
+// Added with the jobs-to-be-done restructure. Guards the two things most likely
+// to regress as pages are edited: that every route still renders a single H1,
+// and that nothing overflows the viewport on a phone.
+
+const NEW_ROUTES = [
+  "/what-we-solve",
+  "/what-we-solve/secure-ai",
+  "/what-we-solve/document-production",
+  "/what-we-solve/systems-integration",
+  "/what-we-solve/internal-tools",
+  "/what-we-solve/institutional-knowledge",
+  "/what-we-solve/ai-governance",
+  "/how-we-work",
+  "/security",
+  "/proof",
+];
+
+test.describe("Repositioned architecture", () => {
+  for (const route of NEW_ROUTES) {
+    test(`${route} renders with one H1 and no horizontal overflow`, async ({ page }) => {
+      const response = await page.goto(route);
+      expect(response?.status()).toBeLessThan(400);
+
+      const h1 = page.locator("h1");
+      await expect(h1).toHaveCount(1);
+      await expect(h1).toBeVisible();
+
+      const overflows = await page.evaluate(() => {
+        const { documentElement, body } = document;
+        const maxScrollWidth = Math.max(
+          documentElement.scrollWidth,
+          body.scrollWidth
+        );
+        return maxScrollWidth > window.innerWidth;
+      });
+      expect(overflows).toBe(false);
+    });
+  }
+
+  test("an unknown job slug redirects to the index rather than 404ing", async ({ page }) => {
+    await page.goto("/what-we-solve/not-a-real-job");
+    await expect(page).toHaveURL(/\/what-we-solve$/);
+  });
+
+  test("legacy paths still land somewhere useful", async ({ page }) => {
+    await page.goto("/services");
+    await expect(page).toHaveURL(/\/what-we-solve$/);
+
+    await page.goto("/case-studies");
+    await expect(page).toHaveURL(/\/proof$/);
   });
 });

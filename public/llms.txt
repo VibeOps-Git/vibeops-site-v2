@@ -1,40 +1,54 @@
 # VibeOps
 
-> Less formatting. More engineering.
+> The AI engineering team your firm hasn't hired.
 
-VibeOps Technologies Inc. is an engineering software consultancy for civil engineering and infrastructure teams. We design, build, and deploy automation, AI systems, and high-performance software that eliminates manual reporting, documentation, and repetitive workflows, so engineers can focus on engineering. Every engagement is built around a firm's own templates, workflows, and security requirements.
+VibeOps Technologies Inc. is the external AI engineering team for architecture and engineering firms. Firms in the 75-750 staff range have real AI mandates and no software engineers to deliver them: the largest firms built internal digital teams, the smallest do not yet need one, and everyone in between appointed an AI champion or committee with no engineering capacity behind it. VibeOps becomes that capability.
+
+We are civil engineers who write software. We do not sell a product, we do not deliver strategy decks, and we do not do AI training. We design, build and deploy working systems inside the security boundary a firm's IT department approves, and the firm owns what we deliver.
 
 Website: https://vibeops.ca
-Location: Vancouver, BC, Canada
+Location: Vancouver, BC, Canada. Serving the United States and Canada.
+Positioning: The AI engineering team your firm hasn't hired.
 
-## Services
+## What We Solve
 
-### Report & Document Automation
-Audit-ready reports generated from your existing Word and Excel templates.
-- Turns hours of manual formatting into minutes
-- 100% template-compatible - works with your existing Word and Excel templates, zero workflow changes
-- Template automation, live data charts and tables, photo appendices, QA-ready output, section-level AI
+Six problems, derived from documented discovery conversations with more than a hundred architecture, engineering, construction and public infrastructure professionals across 89 firms.
 
-### Building Code Tooling
-Code lookup and citation workflows built into your project process.
-- Federal, provincial, and municipal codes resolved by project address, anywhere in Canada
-- CSA, ASTM, and ISO referenced standards surfaced alongside
-- Code references cited directly inside report drafts
+### 1. "We can't put client data into AI"
+Private and secure AI deployment. Project material is client property under confidentiality terms, and IT departments are right to block public tools. We deploy into the firm's own tenancy, infrastructure or a dedicated environment; client data is never used to train models or pooled across clients; data residency is treated as a hard requirement. Every engagement produces a data governance, security and usage plan approved in writing before development.
+https://www.vibeops.ca/what-we-solve/secure-ai
 
-### Workflow Automation
-Custom-built tools that remove repetitive documentation from engineering workflows.
-- Field data ingestion, inspection checklists, site documentation
-- White-labeled tools tailored to your team's processes
+### 2. "We produce the same documents over and over, and our standard is slipping"
+Engineering document and report production systems built on the firm's own templates, approved wording and house style. AI is a drafting and acceleration layer with a person in the loop, never an unchecked decision-maker. Accuracy is evaluated against real documents and verified human ground truth before anything reaches production.
+https://www.vibeops.ca/what-we-solve/document-production
 
-### Engineering Dashboards
-Turn raw technical data into actionable insight.
-- Instrument dashboards, construction tracking, map-based views
-- Shareable, live field operations dashboards
+### 3. "Our software doesn't talk to each other"
+Integration between the design, modelling, document management, project controls and finance systems a firm already runs. We build the connective tissue nobody sells because it is specific to each firm.
+https://www.vibeops.ca/what-we-solve/systems-integration
 
-### Internal Tools
-Rapid engineering calculators and lightweight apps.
-- Cost estimators, asset tracking, pilot tools
-- Mirror workflows without full platform overhead
+### 4. "The tool we need doesn't exist and we can't staff to build it"
+Custom internal software: field capture tools, client portals, dashboards, trackers and platforms. Fixed scope, fixed fee, milestone-based, with the delivered codebase, workflows and documentation owned by the client on acceptance.
+https://www.vibeops.ca/what-we-solve/internal-tools
+
+### 5. "Everything we know is locked inside past projects"
+Institutional knowledge and document intelligence. Making completed work searchable, extracting structure from PDFs, drawings and scans, and surfacing version drift between carried-forward documents.
+https://www.vibeops.ca/what-we-solve/institutional-knowledge
+
+### 6. "We need oversight before this gets away from us"
+AI governance and quality oversight. Review workflows, audit trails and written policy so that AI-assisted engineering work remains defensible and a licensed professional can still stamp it. Review capacity, not production capacity, is the binding constraint at most firms.
+https://www.vibeops.ca/what-we-solve/ai-governance
+
+## How We Work
+
+1. Discovery - a paid, scoped phase producing a technical development plan, domain knowledge memorandum, workflow charts, AI evaluation and validation plan, data governance and security plan, integration checklist, prioritised build backlog and risk register. The client approves it in writing before development starts.
+2. Proof-of-concept gate - where an engagement depends on AI performing a specific task, it is evaluated against the client's real documents and verified human ground truth, with limitations documented, before the build is funded.
+3. Build - fixed scope, fixed fee, milestone-based, against defined acceptance tests.
+4. Pilot and revision - internal use on live project work through structured revision periods; acceptance requires the client's written approval.
+5. Handover - the client owns the delivered platform, codebase, workflows, configuration and documentation. Hosting, support and ongoing development run under a separate agreement.
+
+Governing principle: AI drafts and accelerates; a licensed professional decides. Everything we build assumes a qualified engineer reviews and signs what goes out the door.
+
+Security and data handling: https://www.vibeops.ca/security
 
 ## Who We Serve
 
@@ -44,30 +58,24 @@ Rapid engineering calculators and lightweight apps.
 - Municipal government
 - Engineering consulting and design firms
 
-## The Problem We Solve
+## The Gap We Fill
 
-Engineers lose 700+ hours per year on manual documentation and report formatting. That's $35,000 in wasted salary per engineer (on a $100K salary) and 30-40% of total project time lost to documentation. We interviewed 100+ firms across Vancouver and validated this pain point firsthand.
+Architecture and engineering firms are under real pressure to adopt AI, and almost none of them have the engineering capacity to do it. Firms above roughly 10,000 staff have built internal digital and AI teams — though their own engineers told us the internal queue is often too slow to be useful. Firms below fifty typically have neither budget nor need. Between those two sits the majority of the industry: enough scale to feel the problem acutely, not enough to justify hiring software engineers into an engineering practice.
 
-## Our Approach
+Those firms respond by appointing someone — an AI champion, an innovation lead, a committee — and giving them a mandate with no engineering capacity behind it. VibeOps is that capacity, hired externally.
 
-1. Discovery - review your actual workflows, tools, and templates
-2. Prototype - build a narrow but complete solution with QA walkthrough
-3. Rollout - expand carefully with versioning and access control
-
-Working prototype in weeks, not months.
+The binding constraint in this industry is professional responsibility. A licensed engineer stamps the work and carries the liability, which is why review capacity, not production capacity, is the real ceiling on what a firm can take on. Everything we build is designed so a qualified engineer can review and sign it quickly and defensibly.
 
 ## Team
 
-### Co-Founders
-- Zander Dent - CEO & Co-Founder. Civil engineering workflows and product vision. zander@vibeops.ca
-- Felix Stewart - COO. Strategy, partnerships, business development. felix@vibeops.ca
-- Gabriel Comla - CMO & Co-Founder. Storytelling for engineers, marketing. gabriel@vibeops.ca
-- Eric Balanecki - CTO & Co-Founder. Technical architecture, automation engine. eric@vibeops.ca
-- Hrudai Rajesh - Co-Founder. Implementation and delivery. hrudai@vibeops.ca
+### Core team
+- Zander Dent - CEO & Co-Founder. Civil engineer. Owns product, client discovery and engagement scoping. zander@vibeops.ca
+- Felix Stewart - Co-Founder & Co-Owner. Civil engineer. Owns client accounts, pilots and implementation delivery. felix@vibeops.ca
 
 ### Advisors
-- Dr. Tamara Etmannski - UBC Assistant Professor, Civil Engineering
-- Dr. Noboru Yonemitsu - UBC Associate Professor, Hydrotechnical Engineering
+- Dr. Tamara Etmannski - UBC, Civil Engineering. Entrepreneurship and engineering leadership.
+- Dr. Noboru Yonemitsu - UBC, Hydrotechnical Engineering. Technical insight and design education.
+- Hassan Pardawalla - Operations and scaling.
 
 ## Press & Recognition
 

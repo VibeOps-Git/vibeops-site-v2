@@ -39,10 +39,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Fallback title - react-helmet-async overrides this per page -->
-    <title>VibeOps | Engineering Software Consulting for AE Firms</title>
+    <title>VibeOps | The AI Engineering Team for Architecture & Engineering Firms</title>
 
     <!-- Fallback description -->
-    <meta name="description" content="VibeOps is an engineering software consultancy. We build report automation, building code tooling, and custom workflow software for architecture and engineering firms across Canada." />
+    <meta name="description" content="VibeOps is the AI engineering team your firm hasn't hired. We help architecture and engineering firms adopt AI safely on confidential project data, connect the systems they already run, and build the internal software nobody sells." />
 
     <!-- Identity -->
     <meta name="author" content="VibeOps Technologies Inc." />
@@ -64,26 +64,26 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Canonical fallback -->
-    <link rel="canonical" href="https://www.vibeops.ca/" />
+    <!-- No static canonical: react-helmet-async sets a per-route canonical on
+         every page. A fallback here is appended rather than replaced, which
+         produced two conflicting canonical tags per page. -->
 
     <!-- Open Graph fallbacks (react-helmet-async overrides per-page) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="VibeOps" />
     <meta property="og:locale" content="en_CA" />
-    <meta property="og:title" content="VibeOps | Engineering Software Consulting for AE Firms" />
-    <meta property="og:description" content="VibeOps is an engineering software consultancy. We build report automation, building code tooling, and custom workflow software for architecture and engineering firms across Canada." />
-    <meta property="og:url" content="https://www.vibeops.ca/" />
+    <meta property="og:title" content="VibeOps | The AI Engineering Team for Architecture &amp; Engineering Firms" />
+    <meta property="og:description" content="The AI engineering team your firm hasn't hired. We help AE firms adopt AI safely, connect existing systems, and build the internal software nobody sells." />
     <meta property="og:image" content="https://www.vibeops.ca/app-preview.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="VibeOps - engineering software consulting for architecture and engineering firms" />
+    <meta property="og:image:alt" content="VibeOps - the AI engineering team for architecture and engineering firms" />
 
     <!-- Twitter Card fallbacks -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@VibeOps" />
-    <meta name="twitter:title" content="VibeOps | Engineering Software Consulting for AE Firms" />
-    <meta name="twitter:description" content="VibeOps is an engineering software consultancy building report automation, building code tooling, and custom workflow software for AE firms." />
+    <meta name="twitter:title" content="VibeOps | The AI Engineering Team for AE Firms" />
+    <meta name="twitter:description" content="The AI engineering team your firm hasn't hired. Built for architecture and engineering firms across North America." />
     <meta name="twitter:image" content="https://www.vibeops.ca/app-preview.png" />
 
     <!-- Performance: preconnect to critical third-party origins -->
@@ -106,7 +106,7 @@
         "width": 200,
         "height": 60
       },
-      "description": "VibeOps is an engineering software consultancy building report automation, building code tooling, and custom workflow software for architecture and engineering firms.",
+      "description": "VibeOps is the external AI engineering team for architecture and engineering firms. We help AE firms adopt AI safely on confidential project data, integrate the systems they already run, and build custom internal software.",
       "foundingDate": "2024",
       "foundingLocation": {
         "@type": "Place",
@@ -128,23 +128,29 @@
     }
     </script>
 
-    <!-- Consulting service structured data -->
+    <!-- Practice-level service structured data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "VibeOps Technologies Inc.",
-      "url": "https://www.vibeops.ca/services",
-      "description": "Engineering software consulting for architecture and engineering firms. We build report automation, building code tooling, and custom internal software around each firm's existing templates, workflows, and security requirements.",
-      "areaServed": {
-        "@type": "Country",
-        "name": "Canada"
+      "url": "https://www.vibeops.ca/what-we-solve",
+      "description": "The external AI engineering team for architecture and engineering firms. VibeOps helps AE firms adopt AI safely on confidential project data, connect the systems they already run, build custom internal software, and put oversight around AI-assisted engineering work.",
+      "areaServed": [
+        { "@type": "Country", "name": "United States" },
+        { "@type": "Country", "name": "Canada" }
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Architecture and engineering firms"
       },
       "serviceType": [
-        "Engineering report automation",
-        "Building code compliance tooling",
-        "Custom engineering software development",
-        "Engineering workflow automation"
+        "Private and secure AI deployment for engineering firms",
+        "Engineering document and report production systems",
+        "Engineering software integration and workflow automation",
+        "Custom internal software development for engineering firms",
+        "Institutional knowledge and document intelligence",
+        "AI governance and quality oversight for engineering work"
       ],
       "provider": {
         "@type": "Organization",
@@ -161,7 +167,7 @@
       "@type": "WebSite",
       "name": "VibeOps",
       "url": "https://www.vibeops.ca",
-      "description": "Engineering software consulting for AE firms: report automation, building code tooling, and custom workflow software.",
+      "description": "The AI engineering team for architecture and engineering firms: secure AI adoption, systems integration, custom internal software, and oversight.",
       "publisher": {
         "@type": "Organization",
         "name": "VibeOps Technologies Inc."

@@ -22,8 +22,8 @@ export default function Blog() {
   return (
     <>
       <SEO
-        title="Lab Notes - Engineering Automation & AEC Workflow"
-        description="Practical notes, implementation guides, and experiments in engineering report automation, building code compliance, and AEC workflow software."
+        title="Notes on AI in Engineering Practice"
+        description="Practical notes on implementing AI inside architecture and engineering firms: document production, building code compliance, oversight, and workflow software."
         canonical="https://www.vibeops.ca/blog"
       />
       <div className="pt-24">
