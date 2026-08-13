@@ -1,5 +1,7 @@
 // VibeOpsShowcase.tsx
-// 3-scene animated showcase: Report Automation → Code Intelligence → Custom Builds
+// 3-scene animated showcase: Custom Build → Report Automation → Code Intelligence.
+// Order matters: this is the hero visual, and opening on a report generator reads
+// as a document-automation product before the copy can say otherwise.
 // Slower pacing so users can actually read what's happening.
 
 import { useState, useEffect } from 'react';
@@ -10,7 +12,7 @@ const E = [0.22, 1, 0.36, 1] as const;
 const SCENE_MS = 7500; // 7.5 seconds per scene - slow enough to read
 
 type Scene = 'reporting' | 'codes' | 'custom';
-const SCENES: Scene[] = ['reporting', 'codes', 'custom'];
+const SCENES: Scene[] = ['custom', 'reporting', 'codes'];
 
 // ─── Scene 1: Report Automation - Report Editor ──────────────────────────────
 // Looks like someone is editing a structural assessment report in a system we built.
@@ -471,7 +473,7 @@ export function VibeOpsShowcaseScreen() {
     return () => clearInterval(id);
   }, [rm]);
 
-  const scene = rm ? 'reporting' : SCENES[sceneIdx];
+  const scene = rm ? 'custom' : SCENES[sceneIdx];
 
   return (
     <div className="dark w-full h-full flex flex-col overflow-hidden text-white" style={{ background: '#070d1a' }}>

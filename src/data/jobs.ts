@@ -7,7 +7,8 @@
 // operates, which is why they survive new work: every implementation we take
 // on lands under one or more of them without the architecture changing.
 //
-// Grounded in 260 documented discovery conversations, the signed Civil-Connect
+// Grounded in documented discovery conversations with 100+ AE and construction
+// professionals across 89 firms, the scoped Civil-Connect
 // engagement, and direct customer correspondence. The `evidence` field on each
 // job is a real thing a real person said — keep it that way. If a claim here
 // cannot be traced to a conversation, it does not belong on the site.

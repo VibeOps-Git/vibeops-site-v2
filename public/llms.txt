@@ -12,7 +12,7 @@ Positioning: The AI engineering team your firm hasn't hired.
 
 ## What We Solve
 
-Six problems, derived from 260 documented discovery conversations with architecture, engineering, construction and public infrastructure professionals.
+Six problems, derived from documented discovery conversations with more than a hundred architecture, engineering, construction and public infrastructure professionals across 89 firms.
 
 ### 1. "We can't put client data into AI"
 Private and secure AI deployment. Project material is client property under confidentiality terms, and IT departments are right to block public tools. We deploy into the firm's own tenancy, infrastructure or a dedicated environment; client data is never used to train models or pooled across clients; data residency is treated as a hard requirement. Every engagement produces a data governance, security and usage plan approved in writing before development.

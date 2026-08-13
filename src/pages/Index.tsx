@@ -14,7 +14,6 @@
 
 import {
   motion,
-  useInView,
   useReducedMotion,
   AnimatePresence,
 } from 'framer-motion';
@@ -106,24 +105,6 @@ function SecondaryBtn({ href, children }: { href: string; children: ReactNode })
       {children}
     </motion.a>
   );
-}
-
-function useCountUp(target: number, duration = 1.8) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    import('framer-motion').then(({ animate }) => {
-      const c = animate(0, target, {
-        duration,
-        ease: E,
-        onUpdate: (v) => setVal(Math.round(v)),
-      });
-      return () => c.stop();
-    });
-  }, [inView, target, duration]);
-  return { ref, val };
 }
 
 // ─── Ticker ─────────────────────────────────────────────────────────────────
@@ -825,7 +806,7 @@ function TheGapSection() {
                 </div>
               ))}
               <p className="pt-2 text-center text-[11.5px] text-muted-foreground">
-                Drawn from 260 documented discovery conversations.
+                Drawn from documented conversations with 100+ AE and construction professionals.
               </p>
             </div>
           </Reveal>
@@ -1414,7 +1395,7 @@ Civil engineers who can also ship the software.
             <div className="absolute bottom-0 inset-x-0 px-8 py-7 flex items-end justify-between flex-wrap gap-4">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.28em] text-white/60 mb-1">VibeOps Technologies Inc. - Vancouver, BC</p>
-                <p className="text-base md:text-lg font-semibold text-white">Built off 200+ calls with AE firms across Canada.</p>
+                <p className="text-base md:text-lg font-semibold text-white">Built on documented conversations with 100+ AE professionals across North America.</p>
               </div>
               <motion.a
                 href="/contact"

@@ -64,8 +64,9 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Canonical fallback -->
-    <link rel="canonical" href="https://www.vibeops.ca/" />
+    <!-- No static canonical: react-helmet-async sets a per-route canonical on
+         every page. A fallback here is appended rather than replaced, which
+         produced two conflicting canonical tags per page. -->
 
     <!-- Open Graph fallbacks (react-helmet-async overrides per-page) -->
     <meta property="og:type" content="website" />
@@ -73,7 +74,6 @@
     <meta property="og:locale" content="en_CA" />
     <meta property="og:title" content="VibeOps | The AI Engineering Team for Architecture &amp; Engineering Firms" />
     <meta property="og:description" content="The AI engineering team your firm hasn't hired. We help AE firms adopt AI safely, connect existing systems, and build the internal software nobody sells." />
-    <meta property="og:url" content="https://www.vibeops.ca/" />
     <meta property="og:image" content="https://www.vibeops.ca/app-preview.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

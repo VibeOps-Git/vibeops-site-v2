@@ -167,18 +167,19 @@ export default function Proof() {
                 Every problem on this site came from a conversation, not a whiteboard
               </h2>
               <p className="mb-10 max-w-2xl text-[15px] leading-[1.8] text-muted-foreground">
-                Before writing software for this industry we ran 260 documented
-                discovery conversations with engineers, principals, digital leads and
-                operations managers across architecture, engineering, construction and
-                public infrastructure — from two-person consultancies to firms of
-                35,000. The six problems we work on are the ones that kept recurring.
+                Before writing software for this industry we ran documented discovery
+                conversations with more than a hundred engineers, principals, digital
+                leads and operations managers, across 89 architecture, engineering,
+                construction and public infrastructure firms — from two-person
+                consultancies to firms of 35,000. The six problems we work on are the
+                ones that kept recurring.
               </p>
             </Anim>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                { stat: '260', label: 'Documented discovery conversations with AE and construction professionals' },
+                { stat: '100+', label: 'Documented conversations with AE and construction professionals' },
+                { stat: '89', label: 'Architecture, engineering and construction firms represented' },
                 { stat: '6', label: 'Recurring problems those conversations converged on' },
-                { stat: '2', label: 'UBC engineering faculty advisors on our advisory board' },
               ].map((s, i) => (
                 <Anim key={s.label} delay={i * 0.06}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm">

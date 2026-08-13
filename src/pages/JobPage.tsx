@@ -9,7 +9,7 @@ import { SEO } from '@/components/SEO';
 import AnimatedContent from '../components/AnimatedContent';
 import { SectionDivider } from '../components/ui/Section';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
-import { getJob, JOBS } from '@/data/jobs';
+import { getJob } from '@/data/jobs';
 import { workForJob } from '@/data/work';
 
 function Anim({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -264,5 +264,3 @@ export default function JobPage() {
     </>
   );
 }
-
-export { JOBS };

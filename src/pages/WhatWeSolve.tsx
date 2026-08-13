@@ -30,9 +30,10 @@ export default function WhatWeSolve() {
                 Six problems we hear in almost every firm
               </h1>
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                These came out of 260 conversations with architecture and engineering
-                teams. You do not need a view on AI to recognise them. Find the one
-                that sounds like your firm.
+                These came out of documented conversations with more than a hundred
+                architecture, engineering and construction professionals. You do not
+                need a view on AI to recognise them. Find the one that sounds like your
+                firm.
               </p>
             </div>
           </AnimatedContent>
