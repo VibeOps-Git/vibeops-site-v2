@@ -10,7 +10,7 @@ import AnimatedContent from '../components/AnimatedContent';
 import { SectionDivider } from '../components/ui/Section';
 import { VibeLinkButton } from '@/components/ui/VibeButton';
 import { getJob } from '@/data/jobs';
-import { workForJob } from '@/data/work';
+import { capabilitiesForJob } from '@/data/work';
 
 function Anim({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -27,7 +27,7 @@ export default function JobPage() {
   if (!job) return <Navigate to="/what-we-solve" replace />;
 
   const related = job.related.map(getJob).filter(Boolean);
-  const proof = workForJob(job.id);
+  const capabilities = capabilitiesForJob(job.id);
 
   return (
     <>
@@ -153,46 +153,37 @@ export default function JobPage() {
         </section>
 
         {/* Proof for this specific job */}
-        {proof.length > 0 && (
+        {capabilities.length > 0 && (
           <>
             <SectionDivider className="mx-auto max-w-5xl" />
             <section className="px-4 py-16 md:py-20">
               <div className="container mx-auto max-w-5xl">
                 <Anim>
                   <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
-                    Work on this problem
+                    Built in-house
                   </p>
                   <h2 className="mb-10 text-3xl font-bold tracking-tight text-foreground">
-                    Where we are doing this
+                    Capability we bring to this
                   </h2>
                 </Anim>
                 <div className="grid gap-4 md:grid-cols-2">
-                  {proof.map((w, i) => (
+                  {capabilities.map((w, i) => (
                     <Anim key={w.id} delay={i * 0.06}>
                       <Link
                         to="/proof"
                         className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/40"
                       >
                         <div className="mb-2 flex items-center gap-2">
-                          <span
-                            className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] ${
-                              w.status === 'Active engagement'
-                                ? 'border border-primary/25 bg-primary/10 text-primary'
-                                : 'border border-border bg-secondary text-muted-foreground'
-                            }`}
-                          >
-                            {w.status}
+                          <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-primary">
+                            Built in-house
                           </span>
                         </div>
-                        <h3 className="mb-1.5 text-[16px] font-bold text-foreground">{w.title}</h3>
-                        <p className="mb-3 text-[11.5px] uppercase tracking-[0.14em] text-muted-foreground">
-                          {w.client}
-                        </p>
+                        <h3 className="mb-3 text-[16px] font-bold text-foreground">{w.title}</h3>
                         <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground">
                           {w.scope}
                         </p>
                         <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary">
-                          See the engagement
+                          See what it does
                           <ArrowUpRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
                         </span>
                       </Link>
