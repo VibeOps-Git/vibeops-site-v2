@@ -8,8 +8,8 @@
 // on lands under one or more of them without the architecture changing.
 //
 // Grounded in documented discovery conversations with 100+ AE and construction
-// professionals across 89 firms, the scoped Civil-Connect
-// engagement, and direct customer correspondence. The `evidence` field on each
+// professionals across 89 firms and direct customer correspondence. Nothing here
+// draws on material covered by a client NDA. The `evidence` field on each
 // job is a real thing a real person said — keep it that way. If a claim here
 // cannot be traced to a conversation, it does not belong on the site.
 
@@ -338,7 +338,7 @@ export const JOBS: Job[] = [
       {
         title: 'Keep an audit trail',
         detail:
-          'What was generated, from which source, reviewed by whom, and when — chain-of-custody records that hold up when a deliverable is questioned.',
+          'What was generated, from which source, reviewed by whom, and when — a record that holds up when a deliverable is questioned months later.',
       },
       {
         title: 'Set the policy with you',

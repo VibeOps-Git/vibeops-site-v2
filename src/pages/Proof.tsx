@@ -51,7 +51,7 @@ export default function Proof() {
     <>
       <SEO
         title="Engagements & Capability"
-        description="The engineering problems AE firms trust VibeOps with: report production, submittal intelligence, and jurisdictional code intelligence — described honestly by stage, with no outcome claims."
+        description="The engineering problems AE firms trust VibeOps with — described honestly by stage, with no outcome claims and no confidential client detail."
         canonical="https://www.vibeops.ca/proof"
         breadcrumbs={[{ name: 'Our Work', url: '/proof' }]}
       />

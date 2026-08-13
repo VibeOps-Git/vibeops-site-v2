@@ -13,9 +13,13 @@
 //      field changes first.
 //   2. No commercial terms. No contract values, pipeline figures, fees or
 //      anything else that is not already public.
-//   3. Client names only with that client's permission. Sense Engineering and
-//      Civil-Connect are cleared; anyone else stays anonymised until they are.
-//   4. Describe the class of problem we were trusted with. Do not claim
+//   3. NDA FIRST. Before any client appears here — named or not — confirm the
+//      engagement is not under a non-disclosure agreement. Scope, deliverables
+//      and problem statements taken from a proposal or SOW are exactly the
+//      material an NDA covers, and anonymising the client does not cure that.
+//      When in doubt, leave it out and ask.
+//   4. Client names only with that client's written permission.
+//   5. Describe the class of problem we were trusted with. Do not claim
 //      outcomes, savings or results we have not measured and published.
 
 export type WorkStatus =
@@ -58,23 +62,6 @@ export const WORK: WorkItem[] = [
       'Field data, tables and photographs placed into the structure the firm already uses',
       'An engineer reviews and validates every output before it leaves the firm',
       'Delivered as software the firm operates, not a subscription they rent',
-    ],
-  },
-  {
-    id: 'submittal-intelligence',
-    title: 'Submittal intelligence platform',
-    client: 'Civil-Connect',
-    status: 'Upcoming engagement',
-    jobs: ['internal-tools', 'systems-integration', 'institutional-knowledge', 'ai-governance'],
-    problem:
-      'Every civil project needs a submittal register before construction can start, and it is built by hand from specification books that can run to thousands of pages. Requirements then multiply across each definable feature of work, and each has to be tied to the schedule so procurement happens early enough not to delay the job.',
-    scope:
-      'Scoped and agreed; work has not started. The engagement will begin with a structured discovery phase before any development, covering workflow documentation, a data governance and security plan, and an accuracy evaluation against real project material before the build is committed to.',
-    detail: [
-      'Planned scope: document management, extraction, submittal register, schedule integration, reviewer routing and approval tracking',
-      'Chain-of-custody logging so delay claims can be evidenced rather than reconstructed from email',
-      'Discovery deliverables approved in writing by the client before development begins',
-      'On acceptance, the delivered platform, workflows and documentation are owned by the client',
     ],
   },
   {
