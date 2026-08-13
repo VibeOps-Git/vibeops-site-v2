@@ -1,9 +1,16 @@
 // src/pages/Index.tsx
-// VibeOps consultancy homepage - customer-conversion focused.
-// Positions the firm as an engineering software consultancy: report automation,
-// building code tooling, and custom internal software built per engagement.
-// Hero: clean reveal, no GSAP pin.
-// Sections: problem → services → capability previews → proof → CTA.
+//
+// Homepage. One job: make the category unmistakable in the first screen.
+//
+// VibeOps is the AI engineering team an AE firm has not hired. Not a product,
+// not a consultancy that delivers slides. The page is ordered so a visitor
+// recognises their own problem before we describe anything we do:
+//
+//   hero (category) → the problem → the gap in the market → which of these is
+//   you (six jobs) → an example of the work → how we work → security → team → CTA
+//
+// Nothing here should name a product. If a future implementation would require
+// changing this page's structure, the structure was not abstract enough.
 
 import {
   motion,
@@ -12,11 +19,13 @@ import {
   AnimatePresence,
 } from 'framer-motion';
 import {
-  FileText, MapPin, Wrench, Check, ArrowRight,
-  ArrowUpRight, Star,
+  FileText, MapPin, Check, ArrowRight,
+  ArrowUpRight, ShieldCheck,
 } from 'lucide-react';
 import { useRef, useEffect, useLayoutEffect, useState, useCallback, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
+import { JOBS } from '@/data/jobs';
 import { HomepageDeviceStage, LaptopShell, TabletShell, PhoneShell } from '@/components/homepage/DeviceScene';
 import { VibeOpsShowcaseScreen } from '@/components/homepage/VibeOpsShowcase';
 import { HOMEPAGE_EASE, HOMEPAGE_MOTION } from '@/components/homepage/motion';
@@ -237,94 +246,40 @@ function InfiniteMarquee({ speed: _speed }: { speed?: number }) {
   );
 }
 
-// ─── Platform Ecosystem Visual ───────────────────────────────────────────────
+// ─── Problem cards (driven by src/data/jobs.ts) ─────────────────────────────
+// Deliberately data-driven: a seventh job appears here automatically, and no
+// homepage restructuring is needed when new implementations land.
 
-const PRODUCTS = [
-  {
-    id: 'reporting',
-    name: 'Report & Document Automation',
-    tag: 'Engagement',
-    description: 'We build the system that drafts your reports from your own templates, field notes, and project data.',
-    accent: '#34d399',
-    icon: FileText,
-    href: '/services',
-    badge: null,
-  },
-  {
-    id: 'codes',
-    name: 'Building Code Tooling',
-    tag: 'Engagement',
-    description: 'Code lookup and citation workflows built into your projects, resolved by address across Canada.',
-    accent: '#34d399',
-    icon: MapPin,
-    href: '/services',
-    badge: null,
-  },
-  {
-    id: 'custom',
-    name: 'Custom Engineering Software',
-    tag: 'Engagement',
-    description: 'Tools, dashboards, and automations built around the way your firm already works.',
-    accent: '#60a5fa',
-    icon: Wrench,
-    href: '/services',
-    badge: null,
-  },
-] as const;
-
-function PlatformEcosystemCard({
-  product, delay = 0, skipReveal = false,
-}: {
-  product: typeof PRODUCTS[number];
-  delay?: number;
-  // skipReveal: pass true when rendering inside a fixed overlay.
-  // Fixed elements are always "in view" so whileInView would flash opacity:0
-  // for one frame before the observer fires. Skip it and just render visible.
-  skipReveal?: boolean;
-}) {
-  const Icon = product.icon;
-
+function ProblemCard({ job, delay = 0 }: { job: typeof JOBS[number]; delay?: number }) {
+  const Icon = job.icon;
   return (
-    <motion.a
-      href={product.href}
-      className="group relative rounded-2xl border border-border bg-card p-5 flex flex-col gap-3 cursor-pointer shadow-sm"
-      initial={skipReveal ? false : { opacity: 0 }}
-      whileInView={skipReveal ? undefined : { opacity: 1 }}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-20px' }}
       transition={{ duration: 0.45, delay, ease: E }}
-      whileHover={{ y: -3, transition: { duration: 0.2 } }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: `${product.accent}14`, border: `1px solid ${product.accent}28` }}
-        >
-          <Icon className="w-4.5 h-4.5" style={{ color: product.accent }} />
+      <Link
+        to={`/what-we-solve/${job.id}`}
+        className="group relative flex h-full cursor-pointer flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+      >
+        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border border-border bg-secondary">
+          <Icon className="h-4 w-4 text-primary" />
         </div>
-        {product.badge && (
-          <span
-            className="text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded-full flex-shrink-0"
-            style={{ background: `${product.accent}14`, color: product.accent, border: `1px solid ${product.accent}28` }}
-          >
-            {product.badge}
-          </span>
-        )}
-      </div>
-      <div>
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1" style={{ color: product.accent }}>
-          {product.tag}
-        </p>
-        <h3 className="text-[16px] font-bold text-foreground leading-tight mb-1.5">{product.name}</h3>
-        <p className="text-[12.5px] text-muted-foreground leading-[1.65]">{product.description}</p>
-      </div>
-      <div className="flex items-center gap-1 mt-auto" style={{ color: product.accent }}>
-        <span className="text-[11px] font-semibold">Take a look</span>
-        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
-      </div>
-    </motion.a>
+        <div>
+          <h3 className="mb-2 text-[15.5px] font-bold leading-snug text-foreground">
+            “{job.headline}”
+          </h3>
+          <p className="text-[12.5px] leading-[1.65] text-muted-foreground">{job.summary}</p>
+        </div>
+        <div className="mt-auto flex items-center gap-1 text-primary">
+          <span className="text-[11px] font-semibold">How we solve it</span>
+          <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </div>
+      </Link>
+    </motion.div>
   );
 }
-
 
 // ─── Page ───────────────────────────────────────────────────────────────────
 
@@ -332,20 +287,21 @@ export default function Index() {
   return (
     <>
       <SEO
-        title="Engineering Software Consultancy for AE Firms"
-        description="VibeOps is an engineering software consultancy. We build report automation, building code tooling, and custom internal software for civil and structural AE firms."
+        title="The AI Engineering Team for Architecture & Engineering Firms"
+        description="VibeOps is the AI engineering team your firm hasn't hired. We help AE firms adopt AI safely on confidential project data, connect the systems they already run, and build the internal software nobody sells."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
       <ProblemSection />
-      <ProductPillarsSection />
+      <TheGapSection />
+      <SixProblemsSection />
       <CodeIntelligenceSection />
       {/* Continuous opaque backing: prevents the fixed hero background from
           bleeding through sub-pixel seams between these stacked sections during
-          fast smooth-scroll (the testimonials "separation"/jump). */}
+          fast smooth-scroll (the "separation"/jump on fast scroll). */}
       <div className="relative z-20 bg-background">
-        <TestimonialsSection />
-        <ProofSection />
+        <HowWeWorkSection />
+        <SecuritySection />
         <TeamSection />
         <FinalCTASection />
       </div>
@@ -489,23 +445,23 @@ function HeroSection() {
     <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
       <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
         style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
-        We build the software{' '}
-        <span className="text-primary">your AE firm is missing.</span>
+        The AI engineering team{' '}
+        <span className="text-primary">your firm hasn’t hired.</span>
       </motion.h1>
       <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
         style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
-        We help architecture and engineering teams cut down the manual work in reporting, code compliance, and field workflows. The tools fit the way your firm already works, not the other way around.
+        Architecture and engineering firms have engineering capacity and no software team. We become that capability — adopting AI safely on confidential project data, connecting the systems you already run, and building the internal tools nobody sells you.
       </motion.p>
       <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-1">
-        <PrimaryBtn href="/services">See what we build <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+        <PrimaryBtn href="/what-we-solve">See what we solve <ArrowRight className="w-4 h-4" /></PrimaryBtn>
         <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
       </motion.div>
       <motion.p variants={fadeUp} className="text-[11px] text-muted-foreground tracking-wide">
-        <a href="/services" className="hover:text-primary transition-colors">Report Automation</a>
+        <a href="/what-we-solve/secure-ai" className="hover:text-primary transition-colors">AI on confidential data</a>
         {' · '}
-        <a href="/services" className="hover:text-primary transition-colors">Code Tooling</a>
+        <a href="/what-we-solve/internal-tools" className="hover:text-primary transition-colors">Tools that don’t exist</a>
         {' · '}
-        <a href="/services" className="hover:text-primary transition-colors">Custom Software</a>
+        <a href="/what-we-solve/ai-governance" className="hover:text-primary transition-colors">Oversight</a>
       </motion.p>
     </motion.div>
   );
@@ -587,26 +543,26 @@ function HeroSection() {
                 <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
                   <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
                     style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
-                    We build the software{' '}
-                    <span className="text-primary">your AE firm is missing.</span>
+                    The AI engineering team{' '}
+                    <span className="text-primary">your firm hasn’t hired.</span>
                   </motion.h1>
 
                   <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
                     style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
-                    We help architecture and engineering teams cut down the manual work in reporting, code compliance, and field workflows. The tools fit the way your firm already works, not the other way around.
+                    Architecture and engineering firms have engineering capacity and no software team. We become that capability — adopting AI safely on confidential project data, connecting the systems you already run, and building the internal tools nobody sells you.
                   </motion.p>
 
                   <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-1">
-                    <PrimaryBtn href="/services">See what we build <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+                    <PrimaryBtn href="/what-we-solve">See what we solve <ArrowRight className="w-4 h-4" /></PrimaryBtn>
                     <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
                   </motion.div>
 
                   <motion.p variants={fadeUp} className="text-[11px] text-muted-foreground tracking-wide">
-                    <a href="/services" className="hover:text-primary transition-colors">Report Automation</a>
+                    <a href="/what-we-solve/secure-ai" className="hover:text-primary transition-colors">AI on confidential data</a>
                     {' · '}
-                    <a href="/services" className="hover:text-primary transition-colors">Code Tooling</a>
+                    <a href="/what-we-solve/internal-tools" className="hover:text-primary transition-colors">Tools that don’t exist</a>
                     {' · '}
-                    <a href="/services" className="hover:text-primary transition-colors">Custom Software</a>
+                    <a href="/what-we-solve/ai-governance" className="hover:text-primary transition-colors">Oversight</a>
                   </motion.p>
 
                 </motion.div>
@@ -772,7 +728,7 @@ function ProblemSection() {
               Templates, field photos, code references, and spreadsheets all live in different places. Every report gets assembled by hand. Every project means looking up the same codes again.
             </p>
             <p className="text-muted-foreground leading-[1.78]" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
-              We pull that work into real software, so your engineers can spend their time on engineering instead of formatting.
+              Every firm we speak to has a version of this, and a list of fixes nobody has time to build. We are the engineering team that builds them.
             </p>
           </div>
         </div>
@@ -781,32 +737,131 @@ function ProblemSection() {
   );
 }
 
-// ─── 3. Service Pillars ──────────────────────────────────────────────────────
-// The three engagement types we take on, in normal DOM flow.
+// ─── 3. The gap in the market ────────────────────────────────────────────────
+// The wedge, and the most-repeated structural finding in discovery: the largest
+// firms built internal AI capability, the smallest have no budget, and the
+// firms in between appointed an AI champion who already has a full-time job.
 
+function TheGapSection() {
+  return (
+    <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        <div className="grid items-start gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+          <Reveal>
+            <Label>The gap</Label>
+            <h2
+              className="mb-6 mt-3 font-bold leading-[1.08] tracking-[-0.03em] text-foreground"
+              style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
+            >
+              The largest firms built AI teams.{' '}
+              <span className="text-primary">You got an AI committee.</span>
+            </h2>
+            <p className="mb-5 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+              Firms of 10,000 and up have digital centres of excellence and internal
+              software teams. Firms under fifty have neither the budget nor the need.
+              In between sits almost everyone else: enough scale to have the problem,
+              not enough to justify hiring software engineers into an engineering
+              practice.
+            </p>
+            <p className="mb-8 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+              So those firms appoint someone. An AI champion, an innovation lead, a
+              committee. Capable people, given a mandate and no engineering capacity
+              to deliver it. That is the gap we fill — not with advice, with built and
+              deployed software.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <PrimaryBtn href="/how-we-work">How we work <ArrowRight className="h-4 w-4" /></PrimaryBtn>
+              <SecondaryBtn href="/proof">See what we have built</SecondaryBtn>
+            </div>
+          </Reveal>
 
-function ProductPillarsSection() {
+          <Reveal delay={0.1}>
+            <div className="space-y-3">
+              {[
+                {
+                  size: '10,000+ staff',
+                  state: 'Has an internal AI team',
+                  quote: 'By the time the internal team delivers the tool, the moment for it has passed.',
+                  who: 'Engineer, multinational AE firm',
+                  dim: true,
+                },
+                {
+                  size: '75–750 staff',
+                  state: 'Has a mandate and no team',
+                  quote: 'They were weighing whether to spend capital building internally. So far the internal attempt had failed.',
+                  who: 'Coordinator, national construction group',
+                  dim: false,
+                },
+                {
+                  size: 'Under 50 staff',
+                  state: 'Not yet the problem',
+                  quote: 'Everything still runs on paper and spreadsheets.',
+                  who: 'President, regional engineering firm',
+                  dim: true,
+                },
+              ].map((t) => (
+                <div
+                  key={t.size}
+                  className={`rounded-2xl border p-6 transition-colors ${
+                    t.dim
+                      ? 'border-border bg-card opacity-60'
+                      : 'border-primary/30 bg-primary/[0.05]'
+                  }`}
+                >
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-foreground">
+                      {t.size}
+                    </p>
+                    <p className={`text-[10px] font-bold uppercase tracking-[0.14em] ${t.dim ? 'text-muted-foreground' : 'text-primary'}`}>
+                      {t.state}
+                    </p>
+                  </div>
+                  <p className="mb-2 text-[13.5px] italic leading-relaxed text-muted-foreground">
+                    “{t.quote}”
+                  </p>
+                  <p className="text-[10.5px] uppercase tracking-[0.13em] text-muted-foreground">
+                    {t.who}
+                  </p>
+                </div>
+              ))}
+              <p className="pt-2 text-center text-[11.5px] text-muted-foreground">
+                Drawn from 260 documented discovery conversations.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── 4. Which of these is you ────────────────────────────────────────────────
+// The primary navigation device on the page. Someone should find themselves
+// here without needing a view on AI.
+
+function SixProblemsSection() {
   return (
     <section className="relative z-20 border-t border-b border-border bg-background py-20 md:py-28">
-      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
         <div className="mb-10 md:mb-14">
-          <Label>What we do</Label>
-          <div className="flex items-end justify-between gap-8 flex-wrap mt-3">
+          <Label>Which of these is you?</Label>
+          <div className="mt-3 flex flex-wrap items-end justify-between gap-8">
             <h2
-              className="font-bold text-foreground tracking-[-0.025em] leading-[1.06]"
+              className="font-bold leading-[1.06] tracking-[-0.025em] text-foreground"
               style={{ fontSize: 'clamp(1.9rem, 3vw, 2.8rem)' }}
             >
-              Three ways we help<br />
-              <span className="text-primary">AE firms move faster.</span>
+              Six problems we hear<br />
+              <span className="text-primary">in almost every firm.</span>
             </h2>
-            <p className="text-[14px] text-muted-foreground max-w-xs leading-[1.7]">
-              Every engagement is scoped to your firm. Same starting point either way: the workflow that costs you the most hours.
+            <p className="max-w-xs text-[14px] leading-[1.7] text-muted-foreground">
+              You do not need an opinion about AI to recognise these. Pick the one
+              that sounds like your week.
             </p>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PRODUCTS.map((p, i) => (
-            <PlatformEcosystemCard key={p.id} product={p} delay={i * 0.08} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {JOBS.map((j, i) => (
+            <ProblemCard key={j.id} job={j} delay={i * 0.06} />
           ))}
         </div>
       </div>
@@ -982,7 +1037,7 @@ function MCAnimInner({
         </div>
         <div className="flex-1 mx-2">
           <div className="bg-muted rounded-md px-2 py-1 text-center text-[8px] text-muted-foreground border border-border truncate">
-            Code Intelligence - Canadian Building Code Lookup
+            Code Intelligence — Jurisdictional Lookup
           </div>
         </div>
         <AnimatePresence mode="wait">
@@ -1145,24 +1200,24 @@ function CodeIntelligenceSection() {
         <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           {/* Left: copy */}
           <Reveal>
-            <Label>Code Intelligence</Label>
+            <Label>One example of the work</Label>
             <h2
               className="font-black text-foreground tracking-[-0.035em] leading-[1.06] mb-5 mt-2"
               style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.8rem)' }}
             >
-              Every Canadian code that applies,{' '}
+              Every code that applies,{' '}
               <span className="text-primary">tied to the address.</span>
             </h2>
             <p className="text-muted-foreground leading-[1.75] mb-7" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.05rem)', maxWidth: '36rem' }}>
-              Canadian projects sit under federal, provincial, and municipal codes all at once. We build code lookup into your firm's workflow: type in a project address, get every code that applies across all 10 provinces and 3 territories, with the right CSA standards pulled into the draft.
+              This is one implementation, not the business. North American projects sit under federal, state or provincial, and municipal codes at once. For firms where that lookup is a daily tax, we build it into the workflow: enter a project address, get the applicable code stack and the referenced standards, with every citation traceable to source so a reviewer can verify it.
             </p>
             <div className="space-y-3 mb-8">
               {[
-                'National Building Code, National Fire Code, and federal standards',
-                'Provincial codes (BC, ON, AB, QC, and the rest) resolved per address',
+                'Federal, state/provincial and municipal layers resolved together',
                 'Municipal bylaws and site-specific overlays surfaced for you',
-                'CSA, ASTM, and ISO referenced standards pulled in alongside',
-                'Code references cited right inside your report draft',
+                'Referenced standards pulled in alongside the codes that invoke them',
+                'Every citation traceable to source — the reviewer verifies, not trusts',
+                'Deployed inside the environment your security team approved',
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
                   <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.28)' }}>
@@ -1172,7 +1227,10 @@ function CodeIntelligenceSection() {
                 </div>
               ))}
             </div>
-            <PrimaryBtn href="/services">How we build it <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+            <div className="flex flex-wrap gap-3">
+              <PrimaryBtn href="/proof">See our work <ArrowRight className="w-4 h-4" /></PrimaryBtn>
+              <SecondaryBtn href="/what-we-solve">All six problems</SecondaryBtn>
+            </div>
           </Reveal>
 
           {/* Right: animated workflow */}
@@ -1187,138 +1245,126 @@ function CodeIntelligenceSection() {
   );
 }
 
-// ─── Testimonials ─────────────────────────────────────────────────────────────
+// ─── 6. How we work ──────────────────────────────────────────────────────────
+// Step 2 of the journey lives here: the champion has forwarded the page and a
+// principal wants to know what an engagement actually is.
 
-const TESTIMONIALS = [
-  { name: 'Jonathan Stacey', title: 'Co-Founder, GrantFundPro', image: '/clients/jonathan.jpg' },
-  { name: 'Steve Lisle',     title: 'CEO & Founder, Effortlo',  image: '/clients/steve.png'    },
-  { name: 'Ryan Snair',      title: 'Owner, Pro Painting LLC',  image: '/clients/ryan.jpg'     },
-];
-
-function TestimonialsSection() {
-  return (
-    <section className="relative z-20 bg-background py-10 overflow-hidden border-t border-border">
-      <p className="text-center text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-semibold mb-6">
-        Trusted by founders and engineers.
-      </p>
-      <div className="relative">
-        <Marquee pxPerSec={34}>
-          {TESTIMONIALS.map((t, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 mx-3 px-5 py-4 rounded-2xl border border-border bg-card shadow-sm flex items-center gap-4"
-            >
-              <img
-                src={t.image}
-                alt={t.name}
-                className="w-14 h-14 rounded-full object-cover border-2 border-border flex-shrink-0"
-                loading="eager"
-                decoding="sync"
-              />
-              <div>
-                <div className="flex gap-0.5 mb-1.5">
-                  {Array.from({ length: 5 }).map((_, k) => (
-                    <Star key={k} className="w-3 h-3 fill-primary text-primary" />
-                  ))}
-                </div>
-                <p className="text-[14px] font-semibold text-foreground leading-tight">{t.name}</p>
-                <p className="text-[11px] text-muted-foreground mt-0.5">{t.title}</p>
-              </div>
-            </div>
-          ))}
-        </Marquee>
-        <div className="absolute inset-y-0 left-0 w-24 pointer-events-none z-[1]" style={{ background: 'linear-gradient(to right, hsl(var(--background)), transparent)' }} />
-        <div className="absolute inset-y-0 right-0 w-24 pointer-events-none z-[1]" style={{ background: 'linear-gradient(to left, hsl(var(--background)), transparent)' }} />
-      </div>
-    </section>
-  );
-}
-
-// ─── 6. Proof / credibility ───────────────────────────────────────────────────
-
-function StatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const { ref, val } = useCountUp(value, 1.8);
-  return (
-    <div className="flex flex-col items-center text-center">
-      <span ref={ref} className="text-4xl sm:text-5xl font-black text-foreground tabular-nums tracking-tight">
-        {val}{suffix}
-      </span>
-      <span className="text-[12px] text-muted-foreground mt-2 leading-tight max-w-[130px]">{label}</span>
-    </div>
-  );
-}
-
-function ProofSection() {
+function HowWeWorkSection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
-      <div className="max-w-6xl mx-auto px-6 lg:px-10">
-        {/* Stats row */}
-        <Reveal className="mb-16">
-          <div className="flex flex-wrap justify-center gap-10 sm:gap-16 lg:gap-20">
-            <StatItem value={200} suffix="+" label="AE firms we talked to before building" />
-            <StatItem value={70} suffix="%" label="Reporting time we aim to cut per firm" />
-          </div>
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        <Reveal>
+          <Label>How we work</Label>
+          <h2
+            className="mb-5 mt-3 max-w-2xl font-bold leading-[1.08] tracking-[-0.025em] text-foreground"
+            style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
+          >
+            We scope it in writing{' '}
+            <span className="text-primary">before anyone commits to a build.</span>
+          </h2>
+          <p className="mb-12 max-w-2xl leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+            Discovery produces a technical plan, workflow documentation, a data
+            governance and security plan and a prioritised backlog, which you approve
+            before development starts. Where the work depends on AI doing something
+            specific, we prove it on your own documents first.
+          </p>
         </Reveal>
 
-        <Rule className="mb-16" />
-
-        {/* Custom engagements section */}
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-          <Reveal>
-            <Label>Custom Engagements</Label>
-            <h2
-              className="font-bold text-foreground tracking-[-0.025em] leading-[1.08] mb-5"
-              style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
-            >
-              We build tools around{' '}
-              <span className="text-primary">how your firm actually works.</span>
-            </h2>
-            <p className="text-muted-foreground leading-[1.75] mb-6" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1rem)' }}>
-              Off-the-shelf software rarely fits a firm's workflow. So we build around your templates and process instead: the dashboards you actually need, automation for the document grind, and integrations with the tools your team already uses.
-            </p>
-            <p className="text-muted-foreground leading-[1.75] text-[14px] mb-8">
-              Bring us the workflow that slows your team down. We'll map it out and show you what software built around it would look like.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <motion.a
-                href="/services"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold bg-primary text-primary-foreground text-[14px] shadow-sm"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                transition={HOMEPAGE_MOTION.hoverSpring}
-              >
-                See what we build <ArrowRight className="w-4 h-4" />
-              </motion.a>
-              <SecondaryBtn href="/contact">Book a call</SecondaryBtn>
-            </div>
-          </Reveal>
-
-          {/* Pillar checklist card */}
-          <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-primary mb-4">What we build</p>
-              {[
-                { label: 'Report & Document Automation', detail: 'Your templates, your writing rules, your QA workflow' },
-                { label: 'Building Code AI Systems', detail: 'Jurisdiction-specific code search and project workflows' },
-                { label: 'Dashboards & Internal Tools', detail: 'Project trackers, asset databases, compliance tools' },
-                { label: 'Document Workflow Automation', detail: 'Generation, review, and delivery, done for you' },
-                { label: 'Integration with What You Already Use', detail: 'SharePoint, Bluebeam, Procore, and custom APIs' },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 py-3 border-b border-border last:border-0">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-primary/10 border border-primary/25">
-                    <Check className="w-2.5 h-2.5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-[12.5px] font-semibold text-foreground">{item.label}</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{item.detail}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+          {[
+            { n: '01', t: 'Discovery', d: 'We learn your workflow and write it down. You approve it.' },
+            { n: '02', t: 'Proof gate', d: 'We prove the hard part on your real documents before you fund the build.' },
+            { n: '03', t: 'Build', d: 'Fixed scope, fixed fee, defined acceptance tests.' },
+            { n: '04', t: 'Pilot', d: 'Your team runs it on live work through structured revisions.' },
+            { n: '05', t: 'You own it', d: 'Codebase, workflows and documentation transfer to you.' },
+          ].map((step, i) => (
+            <Reveal key={step.n} delay={i * 0.05}>
+              <div className="h-full rounded-2xl border border-border bg-card p-5 shadow-sm">
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.22em] text-primary">
+                  {step.n}
+                </p>
+                <h3 className="mb-2 text-[14.5px] font-bold text-foreground">{step.t}</h3>
+                <p className="text-[12.5px] leading-[1.6] text-muted-foreground">{step.d}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
+
+        <Reveal delay={0.15}>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <PrimaryBtn href="/how-we-work">See the full engagement <ArrowRight className="h-4 w-4" /></PrimaryBtn>
+            <SecondaryBtn href="/proof">What we have built</SecondaryBtn>
+          </div>
+        </Reveal>
       </div>
     </section>
+  );
+}
+
+// ─── 7. Security ─────────────────────────────────────────────────────────────
+// Step 3 of the journey. Discovery said the IT gate kills more deals than the
+// technology does, so it gets a homepage slot and a no-form destination.
+
+function SecuritySection() {
+  return (
+    <section className="relative z-20 border-t border-border bg-background py-20 md:py-24">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        <Reveal>
+          <div className="rounded-2xl border border-border bg-card p-8 shadow-sm md:p-12">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+              <div>
+                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
+                  <ShieldCheck className="h-4.5 w-4.5 text-primary" />
+                </div>
+                <Label>For whoever has to approve this</Label>
+                <h2
+                  className="mb-5 mt-3 font-bold leading-[1.1] tracking-[-0.025em] text-foreground"
+                  style={{ fontSize: 'clamp(1.6rem, 2.4vw, 2.2rem)' }}
+                >
+                  Your IT department is right to block the public tools.
+                </h2>
+                <p className="mb-7 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.9rem, 1.2vw, 0.98rem)' }}>
+                  Project material is client property under confidentiality terms, and
+                  most firms told us their blocker was never the technology — it was
+                  the approval. We design for that review from the first week:
+                  deployment inside your boundary, no training on your data, and a
+                  written governance plan your team signs off before we build.
+                </p>
+                <VibeLinkishBtn />
+              </div>
+              <div className="space-y-2.5">
+                {[
+                  'Deployed in your tenancy, your infrastructure, or a dedicated environment',
+                  'Your data is never used to train models or pooled across clients',
+                  'Data residency treated as a hard requirement, not a preference',
+                  'Governance and security plan approved in writing before development',
+                  'Audit trail of what was generated, from what source, reviewed by whom',
+                ].map((t) => (
+                  <div key={t} className="flex items-start gap-3">
+                    <div
+                      className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
+                      style={{ background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.28)' }}
+                    >
+                      <Check className="h-2.5 w-2.5" style={{ color: '#34d399' }} />
+                    </div>
+                    <p className="text-[13px] leading-[1.65] text-muted-foreground">{t}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function VibeLinkishBtn() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <PrimaryBtn href="/security">Read our data handling <ArrowRight className="h-4 w-4" /></PrimaryBtn>
+      <SecondaryBtn href="/what-we-solve/secure-ai">AI on confidential data</SecondaryBtn>
+    </div>
   );
 }
 
@@ -1338,7 +1384,7 @@ function TeamSection() {
             <div>
               <Label>Built by engineers, for engineers</Label>
               <h2 className="text-[2.1rem] sm:text-4xl font-bold tracking-[-0.025em] text-foreground mt-3">
-                Civil engineers who can also ship the fix.
+Civil engineers who can also ship the software.
               </h2>
             </div>
             <motion.a
@@ -1430,9 +1476,9 @@ function FinalCTASection() {
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <Reveal className="text-center mb-14">
           <div className="space-y-2 mb-2">
-            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Your engineers already have the field data.</p>
-            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Your firm already has the templates.</p>
-            <p className="font-bold text-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Stop losing weeks to the assembly in between.</p>
+            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Your firm has an AI mandate.</p>
+            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>It does not have AI engineers.</p>
+            <p className="font-bold text-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>That is the whole of what we do.</p>
           </div>
         </Reveal>
 
@@ -1450,17 +1496,18 @@ function FinalCTASection() {
             variants={fadeUp}
             className="text-[2.4rem] sm:text-5xl md:text-[3.4rem] font-bold tracking-[-0.03em] text-foreground mb-6 mt-4 leading-[1.06]"
           >
-            Get your engineering hours back.
+            Become a firm that builds its own tools.
           </motion.h2>
           <motion.p
             variants={fadeUp}
             className="text-muted-foreground text-[0.95rem] leading-[1.8] mb-10 max-w-sm"
           >
-            The average AE engineer loses 30-40% of the week to formatting, code lookups, and writing reports. We build the software that hands that time back.
+            You already have the engineering capacity. What you do not have is a
+            software team to build around it. That is the part we do.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
             <PrimaryBtn href="/contact">Book a call <ArrowRight className="w-3.5 h-3.5" /></PrimaryBtn>
-            <SecondaryBtn href="/services">See what we build</SecondaryBtn>
+            <SecondaryBtn href="/what-we-solve">See what we solve</SecondaryBtn>
           </motion.div>
         </motion.div>
 

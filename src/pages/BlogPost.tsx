@@ -100,6 +100,38 @@ export default function BlogPost() {
                   <post.Content />
                 </article>
               </Card>
+
+              {/* Category anchor: a post is many visitors' first page, and the
+                  archive skews toward document production. Say plainly who we
+                  are so the post cannot be mistaken for the whole business. */}
+              <div className="mt-10 rounded-2xl border border-border bg-card p-6 sm:p-8">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-primary">
+                  Who writes this
+                </p>
+                <h2 className="mb-3 text-xl font-bold text-foreground sm:text-2xl">
+                  VibeOps is the AI engineering team your firm hasn’t hired
+                </h2>
+                <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
+                  We are civil engineers who write software. Architecture and
+                  engineering firms bring us the problems they have no software team
+                  to solve — AI on confidential project data, systems that don’t talk,
+                  internal tools nobody sells, and oversight of AI-assisted work.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    to="/what-we-solve"
+                    className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    See what we solve
+                  </Link>
+                  <Link
+                    to="/how-we-work"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-5 py-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    How we work
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </AnimatedContent>

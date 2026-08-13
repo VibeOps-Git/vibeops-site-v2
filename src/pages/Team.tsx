@@ -171,8 +171,8 @@ export default function Team() {
   return (
     <>
       <SEO
-        title="Meet the Team"
-        description="Meet the civil engineers and software builders behind VibeOps. Built from 200+ discovery calls with AE firms across Canada."
+        title="The Engineers Behind Your AI Team"
+        description="Meet the civil engineers and software builders behind VibeOps — the AI engineering team for architecture and engineering firms. Built on 260 discovery conversations across the industry."
         canonical="https://www.vibeops.ca/team"
       />
       <div className="pt-24">

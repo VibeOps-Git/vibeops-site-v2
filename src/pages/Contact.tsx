@@ -162,8 +162,8 @@ export default function Contact() {
   return (
     <>
       <SEO
-        title="Book a Demo or Workflow Audit"
-        description="Book a free 30-minute workflow audit with VibeOps. Show us the reporting or code compliance work slowing your AE team down and we'll show what to build."
+        title="Talk to Your AI Engineering Team"
+        description="Book a 30-minute call with VibeOps. Bring the workflow costing your engineering firm the most, and we'll tell you honestly whether it's worth building software for."
         canonical="https://www.vibeops.ca/contact"
       />
       <div className="pt-24 pb-16 px-4 relative overflow-hidden">
@@ -179,11 +179,11 @@ export default function Contact() {
             Get in touch
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-3">
-            Book a demo or workflow audit
+            Bring us the workflow that costs you the most
           </h1>
           <p className="text-muted-foreground text-base max-w-2xl mx-auto">
-            Show us the reporting or compliance workflow that's slowing your team down.
-            We'll show you what software built around it looks like.
+            We'll tell you honestly whether it's worth building software for — and if
+            it is, what an engagement would involve.
           </p>
         </motion.div>
 

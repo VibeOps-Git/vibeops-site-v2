@@ -51,3 +51,7 @@ test-results/
 
 # Ad-hoc dev screenshot / measurement / verification scripts (not part of the build)
 scripts/*.mjs
+
+# Customer discovery data — contains personal contact information, never commit
+Meeting Tracker.xlsx
+*.xlsx

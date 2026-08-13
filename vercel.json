@@ -4,12 +4,46 @@
   "installCommand": "npm install",
   "framework": "vite",
   "redirects": [
-    { "source": "/reportly", "destination": "/services", "permanent": true },
-    { "source": "/maplecodes", "destination": "/services", "permanent": true },
-    { "source": "/blog/1-civil-tool", "destination": "/blog", "permanent": true },
-    { "source": "/blog/roi-ai-reporting-civil-engineering", "destination": "/blog", "permanent": true },
-    { "source": "/blog/why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors", "destination": "/blog", "permanent": true },
-    { "source": "/blog/why-reportly-by-vibeops-is-positioned-to-win-in-ai-powered-engineering-software", "destination": "/blog", "permanent": true }
+    {
+      "source": "/reportly",
+      "destination": "/what-we-solve/document-production",
+      "permanent": true
+    },
+    {
+      "source": "/maplecodes",
+      "destination": "/what-we-solve/institutional-knowledge",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/what-we-solve",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies",
+      "destination": "/proof",
+      "permanent": true
+    },
+    {
+      "source": "/blog/1-civil-tool",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog/roi-ai-reporting-civil-engineering",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog/why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog/why-reportly-by-vibeops-is-positioned-to-win-in-ai-powered-engineering-software",
+      "destination": "/blog",
+      "permanent": true
+    }
   ],
   "rewrites": [
     {
