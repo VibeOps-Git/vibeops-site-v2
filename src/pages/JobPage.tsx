@@ -163,7 +163,7 @@ export default function JobPage() {
                     Work on this problem
                   </p>
                   <h2 className="mb-10 text-3xl font-bold tracking-tight text-foreground">
-                    What we have built here
+                    Where we are doing this
                   </h2>
                 </Anim>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -174,7 +174,13 @@ export default function JobPage() {
                         className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/40"
                       >
                         <div className="mb-2 flex items-center gap-2">
-                          <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-primary">
+                          <span
+                            className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] ${
+                              w.status === 'Active engagement'
+                                ? 'border border-primary/25 bg-primary/10 text-primary'
+                                : 'border border-border bg-secondary text-muted-foreground'
+                            }`}
+                          >
                             {w.status}
                           </span>
                         </div>
@@ -183,10 +189,10 @@ export default function JobPage() {
                           {w.client}
                         </p>
                         <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground">
-                          {w.built}
+                          {w.scope}
                         </p>
                         <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary">
-                          See the work
+                          See the engagement
                           <ArrowUpRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
                         </span>
                       </Link>

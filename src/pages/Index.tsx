@@ -722,13 +722,13 @@ function ProblemSection() {
               className="font-bold text-foreground tracking-[-0.03em] leading-[1.08] mb-5 mt-3"
               style={{ fontSize: 'clamp(1.7rem, 2.8vw, 2.5rem)' }}
             >
-              AE teams lose months to scattered reporting.
+              Every firm has a list of fixes nobody has time to build.
             </h2>
             <p className="text-muted-foreground leading-[1.78] mb-4" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
-              Templates, field photos, code references, and spreadsheets all live in different places. Every report gets assembled by hand. Every project means looking up the same codes again.
+              This folder is one version of it — the one every engineer recognises. Yours might be the systems that don’t talk to each other, the spreadsheet one person maintains, or the twenty years of past projects nobody can search.
             </p>
             <p className="text-muted-foreground leading-[1.78]" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
-              Every firm we speak to has a version of this, and a list of fixes nobody has time to build. We are the engineering team that builds them.
+              The fixes are obvious. What is missing is anyone to build them, because a firm of engineers has no reason to employ software engineers. That is the role we take on.
             </p>
           </div>
         </div>
@@ -1522,7 +1522,7 @@ function FinalCTASection() {
           <iframe
             src={PITCH_VIDEO_SRC}
             allow="encrypted-media"
-            title="VibeOps - engineering software consulting for AE firms"
+            title="VibeOps - the AI engineering team for architecture and engineering firms"
             className="absolute inset-0 w-full h-full"
             style={{ border: 'none' }}
             loading="lazy"

@@ -99,7 +99,7 @@ const contributors: TeamMember[] = [
     image: "/team/nishant.png",
     email: "team@vibeops.ca",
     linkedin: "https://www.linkedin.com/in/nishant-shah-340869306/",
-    bio: `Nishant builds VibeOps' data-driven view of the market, pinpointing where civil-engineering and construction teams lose the most time to manual, repetitive work that AI can take off their plate. He designed an AI-powered research pipeline that mined hundreds of real practitioner pain points across estimating, submittals, drawings, and the field, then scored and ranked them into a prioritized opportunity map. That work directly informs which problems VibeOps builds for first and how the product is positioned.`,
+    bio: `Nishant builds VibeOps' data-driven view of the market, pinpointing where civil-engineering and construction teams lose the most time to manual, repetitive work that AI can take off their plate. He designed an AI-powered research pipeline that mined hundreds of real practitioner pain points across estimating, submittals, drawings, and the field, then scored and ranked them into a prioritized opportunity map. That work directly informs which problems VibeOps takes on first and how we describe them.`,
   },
   {
     name: "Gabriel Comla",
@@ -192,12 +192,12 @@ export default function Team() {
               Our Team
             </p>
             <h1 className="text-4xl md:text-5xl font-semibold text-foreground mb-6">
-              The People Building Your Tools
+              The engineers who become your AI team
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              We build software for engineering and construction teams: reports,
-              dashboards, field data tools, and internal apps that fit how you
-              actually work.
+              Civil engineers who also write software. We embed with architecture and
+              engineering firms as the AI and software capability they have not hired,
+              and leave them owning what we build.
             </p>
           </div>
         </AnimatedContent>
@@ -470,27 +470,31 @@ export default function Team() {
                 <div>
                   <h2 className="text-2xl font-semibold text-foreground mb-3">How we work</h2>
                   <p className="text-muted-foreground mb-6">
-                    We build software for engineering teams: reports, dashboards,
-                    workflow tools, and internal apps. One focused solution at a time.
+                    We embed with an engineering firm as the AI and software team it
+                    does not have: learning the workflow, proving the hard part on real
+                    project material, building it, and handing over something the firm
+                    owns and operates.
                   </p>
                   <div className="grid gap-4 md:grid-cols-2 text-sm">
                     <div className="rounded-xl border border-border bg-secondary p-4">
                       <p className="font-semibold text-foreground mb-1">Mission</p>
                       <p className="text-muted-foreground">
-                        Make engineering teams faster with software that fits real workflows.
+                        Give engineering firms the AI and software capability they
+                        would otherwise have to hire.
                       </p>
                     </div>
                     <div className="rounded-xl border border-border bg-secondary p-4">
                       <p className="font-semibold text-foreground mb-1">What we do</p>
                       <p className="text-muted-foreground">
-                        Report generation, dashboards, data pipelines, and custom internal tools.
+                        Implement AI on confidential project data, integrate the systems
+                        you already run, and build the tools nobody sells you.
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <p className="text-sm text-muted-foreground">
-                    Need software built for your team?
+Need an AI team you don’t have to hire?
                   </p>
                   <Link
                     to="/contact"
@@ -499,7 +503,7 @@ export default function Team() {
                     Talk to the team
                   </Link>
                   <p className="text-xs text-muted-foreground">
-                    Bring your workflow. We'll build the software around it.
+                    Bring the problem. We embed, build it, and hand it over.
                   </p>
                 </div>
               </div>

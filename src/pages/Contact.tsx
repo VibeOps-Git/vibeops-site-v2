@@ -50,15 +50,15 @@ Thanks,
       [Phone]`,
   },
   {
-    label: "Sales & Partnerships",
+    label: "Engagements & Partnerships",
     person: "Felix Stewart",
     role: "Director of Sales and Partnerships",
     about:
-      "Civil engineer and co-owner. Handles sales, partnerships, pricing, and pilots.",
+      "Civil engineer and co-owner. Runs client engagements, pilots and delivery.",
     email: "felix@vibeops.ca",
     blurb:
-      "Pricing, pilots, procurement, and tying automation back to real business outcomes.",
-    subject: "VibeOps | Sales / Partnership Inquiry",
+      "Scoping an engagement, pilots, procurement, and what it takes to get started.",
+    subject: "VibeOps | Engagement Inquiry",
     body: `Hi Felix,
 
 I'm reaching out about a potential engagement with VibeOps.

@@ -2,13 +2,13 @@
 //
 // Step 2 of the journey: the page a champion forwards to a principal.
 //
-// Leads with engineering evidence — implementations, the discovery base, the
-// advisory board. Earlier client work in adjacent industries is kept, because
-// it is legitimate, but placed below and labelled honestly so a principal at an
-// AE firm is not evaluating us on a landing page for a painting company.
+// Leads with the engineering problems firms trust us with. Deliberately NOT a
+// logo wall: an active engagement is described as active, an engagement that
+// has not begun is described as not begun, and nothing here claims an outcome
+// we have not measured. See the rules at the top of src/data/work.ts.
 //
-// Client names and commercial terms are deliberately absent. See the rules at
-// the top of src/data/work.ts.
+// Client names appear only where that client has agreed. Commercial terms never
+// appear at all.
 
 import { Link } from 'react-router-dom';
 import { Star, ArrowRight } from 'lucide-react';
@@ -50,8 +50,8 @@ export default function Proof() {
   return (
     <>
       <SEO
-        title="Our Work With Engineering Firms"
-        description="Implementations VibeOps has delivered for architecture and engineering firms — submittal intelligence, report production, and jurisdictional code intelligence — plus the discovery base behind them."
+        title="Engagements & Capability"
+        description="The engineering problems AE firms trust VibeOps with: report production, submittal intelligence, and jurisdictional code intelligence — described honestly by stage, with no outcome claims."
         canonical="https://www.vibeops.ca/proof"
         breadcrumbs={[{ name: 'Our Work', url: '/proof' }]}
       />
@@ -64,13 +64,17 @@ export default function Proof() {
                 Our Work
               </p>
               <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground md:text-[2.8rem]">
-                What we have actually built
+                The problems firms trust us with
               </h1>
-              <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-                Real engagements with engineering and construction firms. Client names
-                and commercial terms are held back until those clients tell us
-                otherwise — the work is described honestly enough that you can judge it
-                either way.
+              <p className="mb-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+                We would rather you judge us on the class of problem engineering firms
+                hand us than on a wall of logos. Each engagement below is labelled by
+                its actual stage — active, not yet started, or capability we built
+                ourselves.
+              </p>
+              <p className="text-[14px] leading-relaxed text-muted-foreground">
+                We do not publish contract values or claim outcomes we have not
+                measured.
               </p>
             </div>
           </Anim>
@@ -86,7 +90,13 @@ export default function Proof() {
                 <Anim key={w.id} delay={i * 0.06}>
                   <article className="rounded-2xl border border-border bg-card p-7 shadow-sm md:p-9">
                     <div className="mb-5 flex flex-wrap items-center gap-3">
-                      <span className="rounded-full border border-primary/25 bg-primary/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-primary">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.16em] ${
+                          w.status === 'Active engagement'
+                            ? 'border border-primary/25 bg-primary/10 text-primary'
+                            : 'border border-border bg-secondary text-muted-foreground'
+                        }`}
+                      >
                         {w.status}
                       </span>
                       <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
@@ -107,9 +117,9 @@ export default function Proof() {
                       </div>
                       <div>
                         <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                          What we built
+                          The work
                         </p>
-                        <p className="text-[14px] leading-[1.75] text-muted-foreground">{w.built}</p>
+                        <p className="text-[14px] leading-[1.75] text-muted-foreground">{w.scope}</p>
                       </div>
                     </div>
 
@@ -244,7 +254,7 @@ export default function Proof() {
           <Anim>
             <div className="container mx-auto max-w-3xl text-center">
               <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                Your firm could be the next one
+Bring us the problem you have no team for
               </h2>
               <p className="mx-auto mb-8 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
                 Every engagement starts the same way: we scope the real problem in
