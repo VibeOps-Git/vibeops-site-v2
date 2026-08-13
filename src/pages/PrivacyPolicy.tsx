@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
                     This Privacy Policy describes how <strong>VibeOps Technologies Inc.</strong> ("VibeOps", "we", "us", or "our") collects, uses, discloses, and protects personal information in connection with our websites, applications, and consulting and software services (collectively, the "Services").
                   </p>
                   <p>
-                    This Privacy Policy forms part of, and should be read together with, the <a href="/terms" className="text-primary hover:text-primary/80 transition-colors">VibeOps Subscription Agreement / Terms and Conditions</a>.
+                    This Privacy Policy forms part of, and should be read together with, the <a href="/terms" className="text-primary hover:text-primary/80 transition-colors">VibeOps Services Agreement / Terms and Conditions</a>.
                   </p>
                 </div>
 
@@ -100,7 +100,7 @@ export default function PrivacyPolicy() {
                   <ul className="list-disc pl-6 space-y-2">
                     <li>Create and manage user accounts</li>
                     <li>Provide access to the Services</li>
-                    <li>Process payments and subscriptions</li>
+                    <li>Process payments and administer engagements</li>
                     <li>Provide customer support</li>
                     <li>Maintain security and prevent misuse</li>
                     <li>Improve functionality and performance</li>
@@ -184,7 +184,7 @@ export default function PrivacyPolicy() {
                     <li>Meet legal, accounting, or regulatory requirements</li>
                   </ul>
                   <p className="mt-4">
-                    Upon termination of a Customer's subscription, Customer Data may be retained temporarily to allow export, after which it may be deleted in accordance with our data retention practices, unless legally required to retain it longer.
+                    Upon termination of an engagement, Customer Data may be retained temporarily to allow export, after which it may be deleted in accordance with our data retention practices, unless legally required to retain it longer.
                   </p>
                 </div>
 

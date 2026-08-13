@@ -230,7 +230,7 @@ export default function Team() {
                     VibeOps Technologies Inc.
                   </p>
                   <p className="text-xl font-semibold text-foreground">
-                    Software for engineering teams.
+                    The AI engineering team for AE firms.
                   </p>
                 </div>
                 <Link
@@ -247,7 +247,7 @@ export default function Team() {
                     VibeOps Technologies Inc.
                   </p>
                   <p className="text-2xl font-semibold text-white">
-                    Software for engineering teams.
+                    The AI engineering team for AE firms.
                   </p>
                 </div>
                 <Link
@@ -757,7 +757,7 @@ function TeamBannerImage() {
 
   return (
     <div className="relative w-full px-4 pt-4 md:px-0 md:pt-0">
-      <div className="relative aspect-[1157/651] w-full overflow-hidden rounded-[1.25rem] md:rounded-none">
+      <div className="relative aspect-[1157/651] min-h-[320px] w-full overflow-hidden rounded-[1.25rem] md:min-h-0 md:rounded-none">
         <img
           src="/team/full-team-pic-placeholder.jpg"
           alt=""
