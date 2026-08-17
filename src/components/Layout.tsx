@@ -169,7 +169,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             : "bg-transparent"
         }`}
       >
-        <nav className="container mx-auto pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-4 pt-[max(1rem,env(safe-area-inset-top))]">
+        <nav className="container mx-auto pb-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-[max(1rem,env(safe-area-inset-top))] max-w-[min(94vw,2560px)]">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
@@ -480,7 +480,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-border bg-background">
-        <div className="container mx-auto pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-16 pb-[max(4rem,env(safe-area-inset-bottom))]">
+        <div className="container mx-auto pb-[max(4rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-16 max-w-[min(94vw,2560px)]">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-10">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
@@ -490,9 +490,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="h-8 w-auto object-contain mb-4 invert dark:invert-0"
               />
               <p className="text-muted-foreground text-sm max-w-sm leading-relaxed">
-                The AI engineering team for architecture and engineering firms. We
-                help AE firms adopt AI safely, connect it to the systems they already
-                run, and build the software nobody sells them.
+                The AI engineering team for architecture and engineering firms. Civil
+                engineers who write software, embedded in your projects, building the
+                AI, the integrations and the internal tools nobody sells you.
               </p>
             </div>
 

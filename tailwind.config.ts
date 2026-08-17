@@ -9,11 +9,21 @@ export default {
     container: {
       center: true,
       padding: "2rem",
+      // The old config capped every container at 1400px, so on a 2560px display
+      // the site used roughly half the screen and centred it between two large
+      // empty margins. These caps let layout keep growing on wide monitors
+      // while still holding a readable measure for prose.
       screens: {
         "2xl": "1400px",
+        "3xl": "1680px",
+        "4xl": "1920px",
       },
     },
     extend: {
+      screens: {
+        "3xl": "1800px",
+        "4xl": "2200px",
+      },
       fontFamily: {
         // Single brand typeface everywhere (geometric sans matching the logo).
         // `mono` intentionally maps to the same family so no monospace "slop" remains.

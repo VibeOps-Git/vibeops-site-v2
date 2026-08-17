@@ -3,8 +3,8 @@
 // Two separate things, deliberately kept apart because they carry different
 // disclosure risk:
 //
-//   RELATIONSHIPS — who we are working with. Name and stage ONLY.
-//   CAPABILITIES  — what we have built ourselves. Ours to describe in full.
+//   RELATIONSHIPS: who we are working with. Name and stage ONLY.
+//   CAPABILITIES:  what we have built ourselves. Ours to describe in full.
 //
 // ─── THE RULE ────────────────────────────────────────────────────────────────
 //
@@ -32,7 +32,7 @@ export type RelationshipStage =
 
 export type Relationship = {
   id: string;
-  /** Client name — only with that client's permission. */
+  /** Client name. Only with that client's permission. */
   client: string;
   stage: RelationshipStage;
   /** What kind of firm they are. Publicly known facts only, no project detail. */
@@ -74,13 +74,13 @@ export const CAPABILITIES: Capability[] = [
     title: 'Jurisdictional building code intelligence',
     jobs: ['institutional-knowledge', 'ai-governance', 'document-production'],
     problem:
-      'North American projects sit under federal, state or provincial, and municipal codes simultaneously. Working out which apply to a given site, and citing them correctly, is repeated manual research on every project — and firms told us it is one of the easiest places for an error to reach a stamped deliverable.',
+      'North American projects sit under federal, state or provincial and municipal codes all at once. Working out which apply to a given site, and citing them correctly, is manual research repeated on every single project. Firms told us it is one of the easiest places for an error to reach a stamped deliverable.',
     scope:
-      'A code lookup capability we built ourselves. It resolves the applicable code stack from a project location and surfaces the referenced standards, with citations traceable to source so a reviewer can verify them. We bring it to engagements where jurisdictional lookup is part of the problem.',
+      'A code lookup we built ourselves, on our own time, off the back of the same problem showing up in conversation after conversation. It resolves the applicable code stack from a project location and surfaces the referenced standards, with every citation traceable to source so a reviewer can check it. Where jurisdictional lookup is part of your problem, it arrives already working.',
     detail: [
       'Federal, state/provincial and municipal layers resolved together rather than searched separately',
       'Referenced standards surfaced alongside the codes that invoke them',
-      'Every citation traceable to its source document — the reviewer checks, rather than trusts',
+      'Every citation traceable to its source document, so the reviewer checks rather than trusts',
     ],
   },
 ];

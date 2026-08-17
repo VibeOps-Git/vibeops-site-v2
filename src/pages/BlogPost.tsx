@@ -114,7 +114,7 @@ export default function BlogPost() {
                 <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
                   We are civil engineers who write software. Architecture and
                   engineering firms bring us the problems they have no software team
-                  to solve — AI on confidential project data, systems that don’t talk,
+                  to solve: AI on confidential project data, systems that don’t talk,
                   internal tools nobody sells, and oversight of AI-assisted work.
                 </p>
                 <div className="flex flex-wrap gap-3">

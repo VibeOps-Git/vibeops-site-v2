@@ -10,7 +10,7 @@
 // Grounded in documented discovery conversations with 100+ AE and construction
 // professionals across 89 firms and direct customer correspondence. Nothing here
 // draws on material covered by a client NDA. The `evidence` field on each
-// job is a real thing a real person said — keep it that way. If a claim here
+// job is a real thing a real person said. Keep it that way: if a claim here
 // cannot be traced to a conversation, it does not belong on the site.
 
 import {
@@ -39,7 +39,7 @@ export type Job = {
   /** The situation, in their terms. 2-3 paragraphs. */
   situation: string[];
 
-  /** What it actually costs them — specific, not "wasted time". */
+  /** What it actually costs them. Specific, never "wasted time". */
   cost: string[];
 
   /** What we do about it. Capability statements, not product features. */
@@ -66,7 +66,7 @@ export const JOBS: Job[] = [
       'Run AI on confidential project data without it leaving your environment. VibeOps builds private, IT-approvable AI deployments for architecture and engineering firms.',
     situation: [
       'Almost every firm we have spoken to has the same shape of problem. Engineers are already using AI on personal accounts, on personal devices, for work they cannot admit to. Meanwhile the firm has a blanket policy against putting project material into anything public, because old reports are client property and the contracts say so.',
-      'The result is a capability the firm cannot use on the work that matters. General-purpose assistants get approved for email and meeting notes, then stop at the boundary of actual project data — which is precisely where the value was.',
+      'So the firm ends up with a capability it cannot use on the work that matters. General-purpose assistants get approved for email and meeting notes, then stop dead at the boundary of actual project data, which is exactly where the value was.',
       'This is not a technology problem. It is an approvals problem, and it is won or lost inside the IT department.',
     ],
     cost: [
@@ -83,7 +83,7 @@ export const JOBS: Job[] = [
       {
         title: 'Answer IT before they have to ask',
         detail:
-          'Every engagement produces a written data governance, security and usage plan covering where data sits, who can reach it, what is retained, and what is sent to a model provider — reviewed before build, not after.',
+          'Every engagement produces a written data governance, security and usage plan covering where data sits, who can reach it, what is retained, and what is sent to a model provider. Your team reviews it before we build, not after.',
       },
       {
         title: 'Keep client material out of shared systems',
@@ -93,7 +93,7 @@ export const JOBS: Job[] = [
       {
         title: 'Make the approval reviewable',
         detail:
-          'We produce the artifacts an internal reviewer actually needs — architecture, dependencies, data flow — so the decision is a review rather than a leap of faith.',
+          'We hand an internal reviewer what they actually need: architecture, dependencies, data flow. Approving us should be a review, not a leap of faith.',
       },
     ],
     evidence: {
@@ -107,7 +107,7 @@ export const JOBS: Job[] = [
   {
     id: 'document-production',
     navLabel: 'Document production',
-    headline: 'We produce the same documents over and over — and our standard is slipping.',
+    headline: 'We produce the same documents over and over, and our standard is slipping.',
     summary:
       'The problem was never typing speed. It is that the firm’s standard erodes under deadline pressure. We build production systems that hold the standard instead of trading it away.',
     icon: FileStack,
@@ -117,7 +117,7 @@ export const JOBS: Job[] = [
       'Automate repetitive engineering documentation without lowering the standard your firm signs off on. Purpose-built production systems for AE firms.',
     situation: [
       'Reports, submittals, assessments, proposals, permits. The technical thinking is a fraction of the effort; the rest is assembly, formatting, cross-referencing and chasing consistency across documents that are 80% the same as the last one.',
-      'The firms we talk to are blunt about where this ends up. One VP described a steady erosion in what counts as acceptable written work — the drive for accuracy in documentation quietly dropping off because there is never time. Generic AI assistants make this worse, not better: they produce plausible text that a reviewer then has to unpick line by line.',
+      'The firms we talk to are blunt about where this ends up. One VP described a steady erosion in what counts as acceptable written work, the drive for accuracy quietly dropping off because there is never time. Generic AI assistants make that worse. They produce plausible text a reviewer then has to unpick line by line.',
       'For work that gets stamped, output nobody trusts is worse than no output at all.',
     ],
     cost: [
@@ -139,7 +139,7 @@ export const JOBS: Job[] = [
       {
         title: 'Make every claim traceable',
         detail:
-          'Content ties back to the source it came from — field data, prior work, the referenced standard — so a reviewer can verify rather than re-do.',
+          'Content ties back to where it came from: field data, prior work, the referenced standard. A reviewer verifies it instead of redoing it.',
       },
       {
         title: 'Prove accuracy before you depend on it',
@@ -165,7 +165,7 @@ export const JOBS: Job[] = [
     feltBy: 'Digital / BIM leads · Operations · Project managers',
     seoTitle: 'Engineering Software Integration & Workflow Automation',
     seoDescription:
-      'Connect the engineering software your firm already runs — design tools, document systems, project and finance platforms — with custom integrations built by engineers.',
+      'Connect the engineering software your firm already runs. Design tools, document systems, project and finance platforms, joined by custom integrations built by engineers.',
     situation: [
       'A structural principal told us the links between his modelling and analysis software simply do not work, so his team import and export by hand between three or four packages on every project. A utilities director described budgeting in one enterprise system, documents in another, and no path between them. A municipal consultancy runs whatever platform each city client already uses.',
       'The pattern repeats everywhere: firms have spent heavily on platforms, and the gaps between those platforms are filled by people, spreadsheets and email.',
@@ -173,7 +173,7 @@ export const JOBS: Job[] = [
     ],
     cost: [
       'Data gets re-keyed between systems, and every re-keying is a chance to be wrong.',
-      'Expensive platforms sit largely unused — one construction manager estimated 90% of the features in their document system had never been touched.',
+      'Expensive platforms sit largely unused. One construction manager estimated 90% of the features in their document system had never been touched.',
       'Nobody has a single view of a project, so status meetings become archaeology.',
     ],
     whatWeDo: [
@@ -190,7 +190,7 @@ export const JOBS: Job[] = [
       {
         title: 'Map the workflow before writing code',
         detail:
-          'Every engagement starts by documenting how work actually moves through your firm — including the parts that live in someone’s head.',
+          'Every engagement starts by documenting how work actually moves through your firm, including the parts that only live in someone’s head.',
       },
       {
         title: 'Build it to be handed over',
@@ -216,7 +216,7 @@ export const JOBS: Job[] = [
     feltBy: 'Principals · Operations directors · Anyone maintaining a critical spreadsheet',
     seoTitle: 'Custom Internal Software for Engineering Firms',
     seoDescription:
-      'Custom dashboards, field tools, portals and internal platforms built for AE firms by engineers — the software your firm needs but nobody sells.',
+      'Custom dashboards, field tools, portals and internal platforms built for AE firms by engineers. The software your firm needs and nobody sells.',
     situation: [
       'Every firm has a list. A field capture app that would end double entry. A client-facing status portal. A dashboard that finally shows the whole portfolio. A tool that turns the master spreadsheet nobody else understands into something the whole team can use.',
       'The list never gets built, because building it means hiring software engineers into a firm whose business is engineering. We have watched firms attempt it and stall: one construction group told us they were weighing whether to spend capital building internally, and that so far the internal attempt had failed. A consultancy told us they had a software engineer five years ago and no longer do.',
@@ -231,7 +231,7 @@ export const JOBS: Job[] = [
       {
         title: 'Scope it properly before quoting it',
         detail:
-          'A structured discovery phase produces a technical plan, workflow documentation, a prioritised build backlog and a written risk register — approved by you before development starts.',
+          'A structured discovery phase produces a technical plan, workflow documentation, a prioritised build backlog and a written risk register. You approve all of it before development starts.',
       },
       {
         title: 'Build to a fixed scope and fixed fee',
@@ -269,8 +269,8 @@ export const JOBS: Job[] = [
     seoDescription:
       'Turn decades of completed engineering projects into searchable, reusable institutional knowledge instead of folders nobody can find anything in.',
     situation: [
-      'The most common workflow we found for starting a new document is: find a similar old one and edit it. Not the master template — a specific past project someone remembers. That is institutional knowledge working at the speed of human memory.',
-      'It fails in predictable ways. An engineer at a large consultancy described carrying specifications forward from project to project with no way to compare versions or see what had drifted. A construction partner described joint ventures spending millions producing work plans, quality documents and templates that simply evaporate when the venture dissolves — the next job starts from zero.',
+      'The most common way we saw people start a new document: find a similar old one and edit it. Not the master template. A specific past project someone happens to remember. That is institutional knowledge running at the speed of human memory.',
+      'It fails in predictable ways. An engineer at a large consultancy described carrying specifications forward from project to project with no way to compare versions or see what had drifted. A construction partner described joint ventures spending millions on work plans, quality documents and templates that simply evaporate when the venture dissolves. The next job starts from zero.',
       'The firm knows an enormous amount. It just cannot get at it.',
     ],
     cost: [
@@ -282,7 +282,7 @@ export const JOBS: Job[] = [
       {
         title: 'Make completed work searchable',
         detail:
-          'Reports, specifications, drawings, correspondence — retrievable by what is in them, not by who remembers the folder name.',
+          'Reports, specifications, drawings, correspondence, all retrievable by what is in them rather than by who remembers the folder name.',
       },
       {
         title: 'Extract structure from documents',
@@ -318,7 +318,7 @@ export const JOBS: Job[] = [
     feltBy: 'Principals who seal work · QA/QC leads · Risk and professional liability owners',
     seoTitle: 'AI Governance & Quality Oversight for Engineering Firms',
     seoDescription:
-      'Review workflows, audit trails and governance for AI-assisted engineering work — so a licensed professional can still defensibly stamp what goes out the door.',
+      'Review workflows, audit trails and governance for AI-assisted engineering work, so a licensed professional can still defensibly stamp what goes out the door.',
     situation: [
       'A senior vice-president at a 35,000-person consultancy told us the quality control portion is the single biggest headache in their business. Not production. Review.',
       'That pressure gets worse, not better, as firms adopt AI. A licensed professional engineer put it to us directly: the constraint in this industry is that licensed people must stamp and take responsibility for larger amounts of work, to a higher standard, and managers will need to examine and oversee far more of it than they do today.',
@@ -338,7 +338,7 @@ export const JOBS: Job[] = [
       {
         title: 'Keep an audit trail',
         detail:
-          'What was generated, from which source, reviewed by whom, and when — a record that holds up when a deliverable is questioned months later.',
+          'What was generated, from which source, reviewed by whom and when. A record that holds up when a deliverable is questioned months later.',
       },
       {
         title: 'Set the policy with you',

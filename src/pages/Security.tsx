@@ -1,7 +1,7 @@
 // src/pages/Security.tsx
 //
 // Step 3 of the journey. A principal has forwarded this to IT or security, and
-// that reviewer will never book a call — they want a document.
+// that reviewer will never book a call. They want a document.
 //
 // Written as direct answers to the questions AE firms actually raised in
 // discovery. Deliberately contains no certification claims we do not hold and
@@ -28,7 +28,7 @@ const PRINCIPLES = [
     icon: Server,
     title: 'Deployed where you say',
     detail:
-      'Your cloud tenancy, your own infrastructure, or a dedicated environment scoped to your firm. The deployment model is a decision your security team makes during Discovery, before anything is built — not a constraint we hand you afterwards.',
+      'Your cloud tenancy, your own infrastructure, or a dedicated environment scoped to your firm. Your security team picks the deployment model during Discovery, before anything is built. It is not a constraint we hand you afterwards.',
   },
   {
     icon: EyeOff,
@@ -65,7 +65,7 @@ const PRINCIPLES = [
 const FAQ: { q: string; a: string }[] = [
   {
     q: 'Does our project data leave our environment?',
-    a: 'That is determined by the deployment model you choose during Discovery. We support deployment into your own cloud tenancy or infrastructure so that project data remains inside your boundary. Where a component calls an external model provider, that path is documented explicitly in the data governance plan — including what is sent, what is retained, and what alternatives exist — so your team is approving a known architecture rather than a black box.',
+    a: 'That depends on the deployment model you choose during Discovery. We support deployment into your own cloud tenancy or infrastructure so project data stays inside your boundary. Where a component calls an external model provider, that path is written into the data governance plan explicitly: what is sent, what is retained, and what the alternatives are. Your team approves a known architecture, not a black box.',
   },
   {
     q: 'Is our data used to train AI models?',
@@ -73,7 +73,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Can this run entirely on our own infrastructure?',
-    a: 'Yes, and several firms have told us this is the only arrangement they can approve. Self-hosted and dedicated-environment deployments are a supported model. The trade-offs — infrastructure cost, update cadence, and what your team takes on operationally — are scoped honestly in Discovery rather than glossed over.',
+    a: 'Yes, and several firms have told us it is the only arrangement they can approve. Self-hosted and dedicated-environment deployments are a supported model. The trade-offs are real, so we scope them in Discovery rather than gloss over them: infrastructure cost, update cadence, and what your team takes on operationally.',
   },
   {
     q: 'What about client confidentiality and contractual obligations?',
@@ -81,7 +81,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'How do we know the AI output is accurate enough to rely on?',
-    a: 'Where an engagement depends on AI performing a specific task, we evaluate it against your real documents and verified human ground truth at a proof-of-concept gate before the build begins. We measure performance, document the limitations in writing, and confirm the acceptance criteria still hold. Everything we build assumes a qualified engineer reviews and signs the output — the system accelerates and evidences that review, it does not replace it.',
+    a: 'Where an engagement depends on AI performing a specific task, we evaluate it against your real documents and verified human ground truth at a proof-of-concept gate before the build begins. We measure performance, document the limitations in writing, and confirm the acceptance criteria still hold. Everything we build assumes a qualified engineer reviews and signs the output. The system makes that review faster and better evidenced. It never replaces it.',
   },
   {
     q: 'Who owns what you build for us?',
@@ -93,7 +93,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Are you certified against a specific security standard?',
-    a: 'We are a small engineering firm and we are not going to claim certifications we do not hold. What we do is work to the standard your security team sets, produce the documentation your review process requires, and put the architecture, data flows and dependencies in front of your reviewers before we build. If your procurement process requires a specific certification, tell us early — it is better established at the start than discovered at contract stage.',
+    a: 'We are a small engineering firm and we are not going to claim certifications we do not hold. What we do is work to the standard your security team sets, produce the documentation your review process requires, and put the architecture, data flows and dependencies in front of your reviewers before we build. If your procurement process requires a specific certification, tell us early. It is much better established at the start than discovered at contract stage.',
   },
   {
     q: 'Our IT department has blocked AI tools before. How is this different?',
@@ -101,7 +101,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'How is this different from the Microsoft Copilot licence we already have?',
-    a: 'General assistants are broad and shallow: useful for email and meeting notes, and typically blocked at the boundary of actual project data — which is where firms told us the value was. We build systems that run on your templates, your standards and your project material inside the boundary your security team approved, and that are evaluated for accuracy on your documents before you depend on them. Several firms we work with have Copilot deployed and still cannot use it for the work described on this site.',
+    a: 'General assistants are broad and shallow. They are useful for email and meeting notes, and they are usually blocked at the boundary of actual project data, which is where firms told us the value was. We build systems that run on your templates, your standards and your project material inside the boundary your security team approved, and we evaluate them for accuracy on your documents before you depend on them. Several firms we work with have Copilot deployed and still cannot use it for the work described on this site.',
   },
 ];
 
@@ -116,7 +116,7 @@ export default function Security() {
         breadcrumbs={[{ name: 'Security & Data Handling', url: '/security' }]}
       />
       <div className="pt-24">
-        {/* Hero — speaks directly to the reviewer */}
+        {/* Hero: speaks directly to the reviewer */}
         <section className="px-4 py-20">
           <Anim>
             <div className="container mx-auto max-w-3xl">
@@ -145,13 +145,13 @@ export default function Security() {
 
         {/* Principles */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-5xl">
+          <div className="container mx-auto max-w-[min(92vw,1600px)]">
             <Anim>
               <h2 className="mb-12 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 How we handle your data
               </h2>
             </Anim>
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-6 3xl:gap-6">
               {PRINCIPLES.map((p, i) => (
                 <Anim key={p.title} delay={i * 0.05}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -169,7 +169,7 @@ export default function Security() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* FAQ — the actual review questions */}
+        {/* FAQ: the actual review questions */}
         <section className="px-4 py-16 md:py-20">
           <div className="container mx-auto max-w-3xl">
             <Anim>
@@ -180,7 +180,7 @@ export default function Security() {
                 The questions we get asked
               </h2>
             </Anim>
-            <div className="space-y-4">
+            <div className="space-y-4 3xl:grid 3xl:grid-cols-2 3xl:gap-4 3xl:space-y-0">
               {FAQ.map((f, i) => (
                 <Anim key={f.q} delay={Math.min(i, 6) * 0.04}>
                   <div className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-7">
@@ -197,7 +197,7 @@ export default function Security() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* CTA — low friction, no form */}
+        {/* CTA: low friction, no form */}
         <section className="px-4 py-20">
           <Anim>
             <div className="container mx-auto max-w-3xl text-center">
@@ -207,7 +207,7 @@ export default function Security() {
               <p className="mx-auto mb-8 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
                 Send it to us directly. If your review process needs specific
                 documentation, tell us at the start of the conversation rather than at
-                contract stage — it is much easier to design for.
+                contract stage. It is much easier to design for.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <VibeLinkButton href="/contact" variant="primary" size="lg">

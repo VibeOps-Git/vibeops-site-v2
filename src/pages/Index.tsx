@@ -2,9 +2,12 @@
 //
 // Homepage. One job: make the category unmistakable in the first screen.
 //
-// VibeOps is the AI engineering team an AE firm has not hired. Not a product,
-// not a consultancy that delivers slides. The page is ordered so a visitor
-// recognises their own problem before we describe anything we do:
+// VibeOps is the AI engineering team an AE firm has not hired: civil engineers
+// who write software, working embedded inside the firm's own projects. Not a
+// product, not a consultancy that delivers slides. Every engagement solves a
+// real problem for one firm and leaves us with capability we carry to the next.
+// The page is ordered so a visitor recognises their own problem before we
+// describe anything we do:
 //
 //   hero (category) → the problem → the gap in the market → which of these is
 //   you (six jobs) → an example of the work → how we work → security → team → CTA
@@ -269,7 +272,7 @@ export default function Index() {
     <>
       <SEO
         title="The AI Engineering Team for Architecture & Engineering Firms"
-        description="VibeOps is the AI engineering team your firm hasn't hired. We help AE firms adopt AI safely on confidential project data, connect the systems they already run, and build the internal software nobody sells."
+        description="VibeOps is the AI engineering team your firm hasn't hired. Civil engineers who write software, embedded in your projects: AI that runs on confidential data, the systems you already own finally talking, and the internal tools nobody sells you."
         canonical="https://www.vibeops.ca/"
       />
       <HeroSection />
@@ -302,6 +305,53 @@ function FittedScreen({ scale, children }: { scale: number; children: React.Reac
   return (
     <div className="w-full h-full overflow-hidden">
       <div className="origin-top-left" style={{ width: pct, height: pct, transform: `scale(${1 / scale})` }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// Renders screen content at a fixed reference size and scales it to COVER the
+// box it is given. Without this the showcase renders at its native pixel size,
+// so on a 27" monitor the laptop screen is ~1400px wide with 8px text sitting in
+// the top third and nothing underneath. Scaling to cover keeps the UI
+// proportional at every viewport: same composition, just larger.
+const SCREEN_REF_W = 900;
+const SCREEN_REF_H = 560;
+
+function ScaledScreen({ children }: { children: React.ReactNode }) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const measure = () => {
+      const { width, height } = el.getBoundingClientRect();
+      if (width < 1 || height < 1) return;
+      // CONTAIN, not cover. The three device shells have very different
+      // aspects (laptop ~16:10, tablet ~4:3, phone portrait), so scaling to
+      // cover a single reference box crops the sides on the narrower ones.
+      // Contain guarantees nothing clips; the wrapper carries the same
+      // background as the screen so any letterboxing is invisible.
+      setScale(Math.min(width / SCREEN_REF_W, height / SCREEN_REF_H));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={boxRef} className="relative h-full w-full overflow-hidden" style={{ background: '#070d1a' }}>
+      <div
+        className="absolute left-1/2 top-1/2"
+        style={{
+          width: SCREEN_REF_W,
+          height: SCREEN_REF_H,
+          transform: `translate(-50%, -50%) scale(${scale})`,
+        }}
+      >
         {children}
       </div>
     </div>
@@ -425,13 +475,13 @@ function HeroSection() {
   const heroText = (
     <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
       <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
-        style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
+        style={{ fontSize: 'clamp(2.2rem, 4.6vw, 6.2rem)' }}>
         The AI engineering team{' '}
         <span className="text-primary">your firm hasn’t hired.</span>
       </motion.h1>
       <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
-        style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
-        Architecture and engineering firms have engineering capacity and no software team. We become that capability — adopting AI safely on confidential project data, connecting the systems you already run, and building the internal tools nobody sells you.
+        style={{ fontSize: 'clamp(0.95rem, 1.05vw, 1.35rem)', maxWidth: '44rem' }}>
+        Your firm has engineering capacity and no software team. We&rsquo;re civil engineers who write software, and we work embedded in your projects: AI that runs on confidential data, the systems you already own finally talking, and the internal tools you keep putting off.
       </motion.p>
       <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-1">
         <PrimaryBtn href="/what-we-solve">See what we solve <ArrowRight className="w-4 h-4" /></PrimaryBtn>
@@ -517,20 +567,20 @@ function HeroSection() {
         >
           {/* Main content (pt clears the fixed nav) */}
           <div className="flex-1 flex items-start lg:items-center min-h-0 overflow-hidden">
-            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-14 pt-16 pb-4 lg:pt-28 lg:pb-20">
-              <div className="grid lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-10 items-center">
+            <div className="mx-auto w-full max-w-[min(93vw,2560px)] px-6 pb-4 pt-16 sm:px-10 lg:px-14 lg:pb-12 lg:pt-20 3xl:px-20">
+              <div className="grid items-center gap-6 lg:grid-cols-[1fr_1.1fr] lg:gap-10 3xl:gap-16 4xl:gap-20">
 
                 {/* LEFT - text + CTAs */}
                 <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-4 lg:gap-6">
                   <motion.h1 variants={fadeUp} className="font-black text-foreground leading-[1.03] tracking-[-0.04em]"
-                    style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)' }}>
+                    style={{ fontSize: 'clamp(2.2rem, 4.6vw, 6.2rem)' }}>
                     The AI engineering team{' '}
                     <span className="text-primary">your firm hasn’t hired.</span>
                   </motion.h1>
 
                   <motion.p variants={fadeUp} className="text-muted-foreground leading-[1.75]"
-                    style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', maxWidth: '36rem' }}>
-                    Architecture and engineering firms have engineering capacity and no software team. We become that capability — adopting AI safely on confidential project data, connecting the systems you already run, and building the internal tools nobody sells you.
+                    style={{ fontSize: 'clamp(0.95rem, 1.05vw, 1.35rem)', maxWidth: '44rem' }}>
+                    Your firm has engineering capacity and no software team. We&rsquo;re civil engineers who write software, and we work embedded in your projects: AI that runs on confidential data, the systems you already own finally talking, and the internal tools you keep putting off.
                   </motion.p>
 
                   <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-1">
@@ -551,7 +601,7 @@ function HeroSection() {
                 {/* Devices - on mobile the box is height-bounded to the viewport so
                     every device (incl. the tall portrait phone) fits short screens
                     like the iPhone SE; desktop keeps the fixed 16/9.5 aspect box. */}
-                <div className="relative w-full max-w-[240px] mx-auto h-[26vh] max-h-[220px] lg:max-w-none lg:h-auto lg:max-h-none lg:aspect-[16/9.5]">
+                <div className="relative mx-auto h-[26vh] max-h-[220px] w-full max-w-[240px] lg:aspect-[16/9.5] lg:h-auto lg:max-h-none lg:max-w-none lg:min-h-[min(62vh,980px)]">
                   <AnimatePresence>
                     {phase === 0 && (
                       <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
@@ -568,19 +618,19 @@ function HeroSection() {
                   <motion.div className="absolute inset-0 flex items-center justify-center"
                     animate={{ opacity: phase === 1 ? 1 : 0, scale: phase === 1 ? 1 : phase > 1 ? 0.94 : 0.86, x: phase === 1 ? 0 : phase > 1 ? '-10%' : 0, y: phase === 1 ? 0 : phase < 1 ? 18 : 0 }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 1 ? 'auto' : 'none' }}>
-                    <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="laptop" hideDots lidProgress={lidProgress} />
+                    <HomepageDeviceStage screenContent={<ScaledScreen><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="laptop" hideDots lidProgress={lidProgress} />
                   </motion.div>
                   <motion.div className="absolute inset-0 flex items-center justify-center"
                     animate={{ opacity: phase === 2 ? 1 : 0, scale: phase === 2 ? 1 : phase > 2 ? 0.94 : 0.92, x: phase === 2 ? 0 : phase > 2 ? '-10%' : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
-                    <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="tablet" hideDots />
+                    <HomepageDeviceStage screenContent={<ScaledScreen><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="tablet" hideDots />
                   </motion.div>
                   <motion.div className="absolute inset-0 flex items-center justify-center"
                     animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
                     {/* Phone is portrait - constrain width on mobile so it looks iPhone SE sized */}
-                    <div className="w-[12vh] max-w-[120px] lg:contents">
-                      <HomepageDeviceStage screenContent={<VibeOpsShowcaseScreen />} lockedDevice="phone" hideDots />
+                    <div className="w-[12vh] max-w-[120px] lg:w-[min(27vh,420px)] lg:max-w-none">
+                      <HomepageDeviceStage screenContent={<ScaledScreen><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="phone" hideDots />
                     </div>
                   </motion.div>
                 </div>
@@ -694,22 +744,22 @@ function ProblemLegacyVisual() {
 function ProblemSection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+      <div className="mx-auto max-w-[min(92vw,1900px)] px-6 lg:px-10">
         <div className="grid lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 items-center">
           <div className="order-last lg:order-first max-h-[72vh] lg:max-h-none overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm"><ProblemLegacyVisual /></div>
           <div className="order-first lg:order-last">
             <Label>The Problem</Label>
             <h2
               className="font-bold text-foreground tracking-[-0.03em] leading-[1.08] mb-5 mt-3"
-              style={{ fontSize: 'clamp(1.7rem, 2.8vw, 2.5rem)' }}
+              style={{ fontSize: 'clamp(1.7rem, 2.3vw, 3.2rem)' }}
             >
               Every firm has a list of fixes nobody has time to build.
             </h2>
-            <p className="text-muted-foreground leading-[1.78] mb-4" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
-              This folder is one version of it — the one every engineer recognises. Yours might be the systems that don’t talk to each other, the spreadsheet one person maintains, or the twenty years of past projects nobody can search.
+            <p className="text-muted-foreground leading-[1.78] mb-4" style={{ fontSize: 'clamp(0.92rem, 0.95vw, 1.2rem)' }}>
+              This folder is one version of it, and every engineer recognises it. Yours might be the systems that don’t talk to each other, the spreadsheet one person maintains, or twenty years of past projects nobody can search.
             </p>
-            <p className="text-muted-foreground leading-[1.78]" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
-              The fixes are obvious. What is missing is anyone to build them, because a firm of engineers has no reason to employ software engineers. That is the role we take on.
+            <p className="text-muted-foreground leading-[1.78]" style={{ fontSize: 'clamp(0.92rem, 0.95vw, 1.2rem)' }}>
+              The fixes are obvious. Nobody builds them, because a firm full of engineers has no reason to also employ software engineers. That’s the job we take.
             </p>
           </div>
         </div>
@@ -726,29 +776,28 @@ function ProblemSection() {
 function TheGapSection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto max-w-[min(92vw,1800px)] px-6 lg:px-10">
         <div className="grid items-start gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
           <Reveal>
             <Label>The gap</Label>
             <h2
               className="mb-6 mt-3 font-bold leading-[1.08] tracking-[-0.03em] text-foreground"
-              style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
+              style={{ fontSize: 'clamp(1.8rem, 2.4vw, 3.4rem)' }}
             >
               The largest firms built AI teams.{' '}
               <span className="text-primary">You got an AI committee.</span>
             </h2>
-            <p className="mb-5 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+            <p className="mb-5 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 0.95vw, 1.2rem)' }}>
               Firms of 10,000 and up have digital centres of excellence and internal
               software teams. Firms under fifty have neither the budget nor the need.
-              In between sits almost everyone else: enough scale to have the problem,
-              not enough to justify hiring software engineers into an engineering
-              practice.
+              Almost everyone else sits in between: enough scale to have the problem,
+              nowhere near enough to justify hiring software engineers into an
+              engineering practice.
             </p>
-            <p className="mb-8 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
+            <p className="mb-8 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 0.95vw, 1.2rem)' }}>
               So those firms appoint someone. An AI champion, an innovation lead, a
-              committee. Capable people, given a mandate and no engineering capacity
-              to deliver it. That is the gap we fill — not with advice, with built and
-              deployed software.
+              committee. Capable people handed a mandate and no engineering capacity
+              to deliver it. We fill that gap with software that ships, not advice.
             </p>
             <div className="flex flex-wrap gap-3">
               <PrimaryBtn href="/how-we-work">How we work <ArrowRight className="h-4 w-4" /></PrimaryBtn>
@@ -823,24 +872,24 @@ function TheGapSection() {
 function SixProblemsSection() {
   return (
     <section className="relative z-20 border-t border-b border-border bg-background py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto max-w-[min(92vw,1800px)] px-6 lg:px-10">
         <div className="mb-10 md:mb-14">
           <Label>Which of these is you?</Label>
           <div className="mt-3 flex flex-wrap items-end justify-between gap-8">
             <h2
               className="font-bold leading-[1.06] tracking-[-0.025em] text-foreground"
-              style={{ fontSize: 'clamp(1.9rem, 3vw, 2.8rem)' }}
+              style={{ fontSize: 'clamp(1.9rem, 2.6vw, 3.8rem)' }}
             >
               Six problems we hear<br />
               <span className="text-primary">in almost every firm.</span>
             </h2>
             <p className="max-w-xs text-[14px] leading-[1.7] text-muted-foreground">
-              You do not need an opinion about AI to recognise these. Pick the one
+              You don’t need an opinion about AI to recognise these. Pick the one
               that sounds like your week.
             </p>
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-6 3xl:gap-5">
           {JOBS.map((j, i) => (
             <ProblemCard key={j.id} job={j} delay={i * 0.06} />
           ))}
@@ -1018,7 +1067,7 @@ function MCAnimInner({
         </div>
         <div className="flex-1 mx-2">
           <div className="bg-muted rounded-md px-2 py-1 text-center text-[8px] text-muted-foreground border border-border truncate">
-            Code Intelligence — Jurisdictional Lookup
+            Code Intelligence · Jurisdictional Lookup
           </div>
         </div>
         <AnimatePresence mode="wait">
@@ -1177,27 +1226,30 @@ function MCAnimInner({
 function CodeIntelligenceSection() {
   return (
     <section className="relative z-[30] border-t border-border bg-background py-20 md:py-28">
-      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+      <div className="mx-auto max-w-[min(92vw,1800px)] px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           {/* Left: copy */}
           <Reveal>
-            <Label>One example of the work</Label>
+            <Label>Something we already built</Label>
             <h2
               className="font-black text-foreground tracking-[-0.035em] leading-[1.06] mb-5 mt-2"
-              style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.8rem)' }}
+              style={{ fontSize: 'clamp(1.9rem, 2.6vw, 3.8rem)' }}
             >
               Every code that applies,{' '}
               <span className="text-primary">tied to the address.</span>
             </h2>
-            <p className="text-muted-foreground leading-[1.75] mb-7" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.05rem)', maxWidth: '36rem' }}>
-              This is one implementation, not the business. North American projects sit under federal, state or provincial, and municipal codes at once. For firms where that lookup is a daily tax, we build it into the workflow: enter a project address, get the applicable code stack and the referenced standards, with every citation traceable to source so a reviewer can verify it.
+            <p className="text-muted-foreground leading-[1.75] mb-5" style={{ fontSize: 'clamp(0.95rem, 1vw, 1.25rem)', maxWidth: '46rem' }}>
+              North American projects sit under federal, state or provincial and municipal codes at once, and working out which apply is a tax every project pays. So we built the lookup. Enter a project address, get the applicable code stack and the referenced standards, with every citation traceable to source.
+            </p>
+            <p className="text-muted-foreground leading-[1.75] mb-7" style={{ fontSize: 'clamp(0.95rem, 1vw, 1.25rem)', maxWidth: '46rem' }}>
+              This one is ours, and it is the point of working the way we do. Every engagement leaves us with something we can carry into the next one, so the firm after you isn’t paying us to learn civil engineering from scratch.
             </p>
             <div className="space-y-3 mb-8">
               {[
                 'Federal, state/provincial and municipal layers resolved together',
                 'Municipal bylaws and site-specific overlays surfaced for you',
                 'Referenced standards pulled in alongside the codes that invoke them',
-                'Every citation traceable to source — the reviewer verifies, not trusts',
+                'Every citation traceable to source, so a reviewer checks it instead of trusting it',
                 'Deployed inside the environment your security team approved',
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
@@ -1233,27 +1285,29 @@ function CodeIntelligenceSection() {
 function HowWeWorkSection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto max-w-[min(92vw,1800px)] px-6 lg:px-10">
         <Reveal>
           <Label>How we work</Label>
           <h2
             className="mb-5 mt-3 max-w-2xl font-bold leading-[1.08] tracking-[-0.025em] text-foreground"
-            style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)' }}
+            style={{ fontSize: 'clamp(1.8rem, 2.4vw, 3.4rem)' }}
           >
-            We scope it in writing{' '}
-            <span className="text-primary">before anyone commits to a build.</span>
+            We embed with your team{' '}
+            <span className="text-primary">and scope it in writing first.</span>
           </h2>
-          <p className="mb-12 max-w-2xl leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 1.3vw, 1rem)' }}>
-            Discovery produces a technical plan, workflow documentation, a data
-            governance and security plan and a prioritised backlog, which you approve
-            before development starts. Where the work depends on AI doing something
-            specific, we prove it on your own documents first.
+          <p className="mb-12 max-w-2xl leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.92rem, 0.95vw, 1.2rem)' }}>
+            Our engineers work inside your projects, on your real files, next to the
+            people who do the work. It’s the only way to learn a workflow well enough
+            to build for it. Discovery writes that down as a technical plan, a data
+            governance and security plan and a prioritised backlog, and you approve all
+            of it before anyone starts building. Where the work depends on AI doing
+            something specific, we prove it on your own documents first.
           </p>
         </Reveal>
 
-        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5 3xl:gap-6">
           {[
-            { n: '01', t: 'Discovery', d: 'We learn your workflow and write it down. You approve it.' },
+            { n: '01', t: 'Discovery', d: 'We sit with your team, learn the workflow and write it down. You approve it.' },
             { n: '02', t: 'Proof gate', d: 'We prove the hard part on your real documents before you fund the build.' },
             { n: '03', t: 'Build', d: 'Fixed scope, fixed fee, defined acceptance tests.' },
             { n: '04', t: 'Pilot', d: 'Your team runs it on live work through structured revisions.' },
@@ -1289,7 +1343,7 @@ function HowWeWorkSection() {
 function SecuritySection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-24">
-      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto max-w-[min(92vw,1800px)] px-6 lg:px-10">
         <Reveal>
           <div className="rounded-2xl border border-border bg-card p-8 shadow-sm md:p-12">
             <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
@@ -1300,14 +1354,14 @@ function SecuritySection() {
                 <Label>For whoever has to approve this</Label>
                 <h2
                   className="mb-5 mt-3 font-bold leading-[1.1] tracking-[-0.025em] text-foreground"
-                  style={{ fontSize: 'clamp(1.6rem, 2.4vw, 2.2rem)' }}
+                  style={{ fontSize: 'clamp(1.6rem, 2vw, 2.9rem)' }}
                 >
                   Your IT department is right to block the public tools.
                 </h2>
-                <p className="mb-7 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.9rem, 1.2vw, 0.98rem)' }}>
-                  Project material is client property under confidentiality terms, and
-                  most firms told us their blocker was never the technology — it was
-                  the approval. We design for that review from the first week:
+                <p className="mb-7 leading-[1.8] text-muted-foreground" style={{ fontSize: 'clamp(0.9rem, 0.92vw, 1.15rem)' }}>
+                  Project material is client property under confidentiality terms. Most
+                  firms told us the blocker was never the technology, it was the
+                  approval. So we design for that review from the first week:
                   deployment inside your boundary, no training on your data, and a
                   written governance plan your team signs off before we build.
                 </p>
@@ -1359,7 +1413,7 @@ const TEAM_MEMBERS = [
 function TeamSection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-24">
-      <div className="max-w-5xl mx-auto px-6 md:px-10">
+      <div className="mx-auto max-w-[min(92vw,1600px)] px-6 md:px-10">
         <Reveal>
           <div className="flex items-end justify-between flex-wrap gap-4 mb-6 md:mb-14">
             <div>
@@ -1454,12 +1508,12 @@ const PITCH_VIDEO_SRC =
 function FinalCTASection() {
   return (
     <section className="relative z-20 border-t border-border bg-background py-20 md:py-28">
-      <div className="max-w-5xl mx-auto px-6 md:px-10">
+      <div className="mx-auto max-w-[min(92vw,1600px)] px-6 md:px-10">
         <Reveal className="text-center mb-14">
           <div className="space-y-2 mb-2">
             <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>Your firm has an AI mandate.</p>
-            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>It does not have AI engineers.</p>
-            <p className="font-bold text-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>That is the whole of what we do.</p>
+            <p className="font-semibold text-muted-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>It doesn’t have AI engineers.</p>
+            <p className="font-bold text-foreground tracking-tight" style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)' }}>That’s the whole of what we do.</p>
           </div>
         </Reveal>
 
@@ -1483,8 +1537,8 @@ function FinalCTASection() {
             variants={fadeUp}
             className="text-muted-foreground text-[0.95rem] leading-[1.8] mb-10 max-w-sm"
           >
-            You already have the engineering capacity. What you do not have is a
-            software team to build around it. That is the part we do.
+            You already have the engineering capacity. What you don’t have is a
+            software team built around it. That’s our half of the work.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
             <PrimaryBtn href="/contact">Book a call <ArrowRight className="w-3.5 h-3.5" /></PrimaryBtn>
