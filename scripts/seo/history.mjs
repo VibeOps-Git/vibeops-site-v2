@@ -143,16 +143,27 @@ const obsRows = snapshots.map((s) => {
 
   const t_ = g?.data.totals ?? {};
   const mix = g?.data.topicality_mix ?? {};
+  // Per-cluster columns are generated from config.clusters rather than named
+  // here. The port originally carried roadway.tools' two hardcoded cluster keys
+  // and blew up the first time real Search Console data arrived — `g` is falsy
+  // until then, so the bad lookup was unreachable and invisible. Config-driven
+  // means adding a cluster is a config edit, and a renamed cluster degrades to
+  // an empty column instead of throwing.
   const cluster = (key) => {
-    const pages = CONFIG.clusters[key].pages;
+    const pages = CONFIG.clusters[key]?.pages ?? [];
     const rows = (g?.data.pages ?? []).filter((x) => pages.includes(x.page));
     return {
       impressions: rows.reduce((a, b) => a + b.impressions, 0),
       clicks: rows.reduce((a, b) => a + b.clicks, 0),
     };
   };
-  const ssd = g ? cluster('ssd') : {};
-  const vc = g ? cluster('vertical-curve') : {};
+  const clusterCols = {};
+  for (const key of Object.keys(CONFIG.clusters)) {
+    const c = g ? cluster(key) : {};
+    const col = key.replace(/-/g, '_');
+    clusterCols[`${col}_impressions`] = c.impressions ?? '';
+    clusterCols[`${col}_clicks`] = c.clicks ?? '';
+  }
 
   const mobile = (g?.data.devices ?? []).find((d) => /mobile/i.test(d.device ?? ''));
   const desktop = (g?.data.devices ?? []).find((d) => /desktop/i.test(d.device ?? ''));
@@ -176,10 +187,7 @@ const obsRows = snapshots.map((s) => {
     adjacent_query_count: mix.adjacent ?? '',
     irrelevant_query_count: mix.irrelevant ?? '',
 
-    ssd_impressions: ssd.impressions ?? '',
-    ssd_clicks: ssd.clicks ?? '',
-    vertical_curve_impressions: vc.impressions ?? '',
-    vertical_curve_clicks: vc.clicks ?? '',
+    ...clusterCols,
 
     countries_with_impressions: g?.data.country_count_reported ?? g?.data.countries?.length ?? '',
 

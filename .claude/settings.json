@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run seo:daily)",
+      "Bash(npm run seo:weekly)",
+      "Bash(npm run seo:verify)",
+      "Bash(npm run seo:collect)",
+      "Bash(npm run seo:history)",
+      "Bash(npm run seo:analyze)",
+      "Bash(npm run seo:charts)",
+      "Bash(npm run seo:sync-probe)",
+      "Bash(npm run seo:discovery-build)",
+      "Bash(node scripts/seo/*)",
+      "Bash(launchctl list)",
+      "Bash(launchctl list | grep *)",
+      "Bash(launchctl load ~/Library/LaunchAgents/ca.vibeops.seo-daily.plist)",
+      "Bash(launchctl unload ~/Library/LaunchAgents/ca.vibeops.seo-daily.plist)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:run)",
+      "Bash(npm run build)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Read"
+    ],
+    "deny": [
+      "Bash(npm run seo:freeze*)",
+      "Bash(vercel deploy*)",
+      "Bash(vercel --prod*)",
+      "Bash(npx vercel deploy*)",
+      "Bash(node scripts/seo/ingest-gsc.mjs*)",
+      "Bash(git push*)",
+      "Bash(rm -rf *)"
+    ]
+  }
+}

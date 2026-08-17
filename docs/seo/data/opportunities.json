@@ -5171,7 +5171,932 @@
       "confidence": "LOW",
       "recommended_action": "TECHNICAL",
       "recommendation_why": "Technical defect on 16 URLs: 16 tracked URLs return BYTE-IDENTICAL html (md5 1d201f7d). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
+    },
+    {
+      "id": "query:vibeops",
+      "query_or_topic": "vibeops",
+      "kind": "query",
+      "cluster": "sitewide",
+      "target_page": "/",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 61,
+          "clicks": 9,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 2,
+      "impressions_28d": 0,
+      "clicks_7d": 1,
+      "ctr": 0.5,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 4.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 5.7,
+          "of": 25,
+          "note": "2 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "2 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "2 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 2 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:vibe-ops",
+      "query_or_topic": "vibe ops",
+      "kind": "query",
+      "cluster": null,
+      "target_page": null,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 15,
+          "clicks": 3,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 15,
+      "impressions_28d": 0,
+      "clicks_7d": 3,
+      "ctr": 0.2,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 18.2,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 14.4,
+          "of": 25,
+          "note": "15 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "15 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 0,
+          "of": 10,
+          "note": "no cluster mapping"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 15 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:ai-tool-for-civil-engineering",
+      "query_or_topic": "ai tool for civil engineering",
+      "kind": "query",
+      "cluster": "sitewide",
+      "target_page": "/",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 1,
+          "clicks": 1,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 1,
+      "impressions_28d": 0,
+      "clicks_7d": 1,
+      "ctr": 1,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 4.4,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 3.6,
+          "of": 25,
+          "note": "1 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "1 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "1 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 1 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:best-ai-tools-for-civil-engineers",
+      "query_or_topic": "best ai tools for civil engineers",
+      "kind": "query",
+      "cluster": null,
+      "target_page": null,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 26,
+          "clicks": 0,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 26,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 19.6,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 17.2,
+          "of": 25,
+          "note": "26 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "26 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 0,
+          "of": 10,
+          "note": "no cluster mapping"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 26 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:best-ai-for-civil-engineering",
+      "query_or_topic": "best ai for civil engineering",
+      "kind": "query",
+      "cluster": "sitewide",
+      "target_page": "/",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 16,
+          "clicks": 0,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 16,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 20.4,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 14.8,
+          "of": 25,
+          "note": "16 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "16 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 16 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:vipbops",
+      "query_or_topic": "vipbops",
+      "kind": "query",
+      "cluster": null,
+      "target_page": null,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 9,
+          "clicks": 0,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 9,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 5.1,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 12,
+          "of": 25,
+          "note": "9 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "9 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 0,
+          "of": 10,
+          "note": "no cluster mapping"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "9 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 9 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:reportly",
+      "query_or_topic": "reportly",
+      "kind": "query",
+      "cluster": null,
+      "target_page": null,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 7,
+          "clicks": 0,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 7,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 4.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 10.8,
+          "of": 25,
+          "note": "7 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "7 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 0,
+          "of": 10,
+          "note": "no cluster mapping"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "7 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 7 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:civil-engineering-ai-tools",
+      "query_or_topic": "civil engineering ai tools",
+      "kind": "query",
+      "cluster": "sitewide",
+      "target_page": "/",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 6,
+          "clicks": 0,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 6,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 5.4,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 10.1,
+          "of": 25,
+          "note": "6 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "6 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "6 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 6 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "query:ai-tools-for-civil-engineers",
+      "query_or_topic": "ai tools for civil engineers",
+      "kind": "query",
+      "cluster": null,
+      "target_page": null,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 4,
+          "clicks": 0,
+          "position": null,
+          "source": "search_console"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 4,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "flat",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 4.6,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 8.4,
+          "of": 25,
+          "note": "4 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 7,
+          "of": 15,
+          "note": "impressions flat"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "4 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 0,
+          "of": 10,
+          "note": "no cluster mapping"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "4 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 4 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "technical:16-urls-16-tracked-urls-return-byte-identical-html-md5-6a64cf3f-the-site-is-serving-an-un-prerendered-spa-shell-so-on-a-crawler-s-first-pass-every-one-of-these-urls-has-the-same-title-the-same-content-and-no-links-google-does-render-js-so-this-is-not-fatal-but-it-delays-indexing-spends-crawl-budget-on-duplicates-and-makes-per-page-metadata-invisible-until-render-fix-is-prerendering-or-ssr-not-a-metadata-change",
+      "query_or_topic": "16 URLs: 16 tracked URLs return BYTE-IDENTICAL html (md5 6a64cf3f). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change.",
+      "kind": "technical",
+      "cluster": "sitewide",
+      "target_page": "16 URLs",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "READY",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "technical"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "TECHNICAL",
+      "recommendation_why": "Technical defect on 16 URLs: 16 tracked URLs return BYTE-IDENTICAL html (md5 6a64cf3f). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
     }
   ],
-  "updated_at": "2026-08-17T20:49:15.436Z"
+  "updated_at": "2026-08-17T21:27:10.176Z"
 }

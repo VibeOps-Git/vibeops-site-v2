@@ -3,6 +3,7 @@ import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import mdx from "@mdx-js/rollup";
 import path from "path";
+import { allRoutes as routeList } from "./scripts/routes.mjs";
 import { readdirSync, writeFileSync } from "fs";
 import { componentTagger } from "lovable-tagger";
 
@@ -21,33 +22,12 @@ function sitemapPlugin(): Plugin {
     closeBundle() {
       const SITE_URL = "https://www.vibeops.ca";
 
-      const staticRoutes = [
-        "/",
-        "/what-we-solve",
-        "/what-we-solve/secure-ai",
-        "/what-we-solve/document-production",
-        "/what-we-solve/systems-integration",
-        "/what-we-solve/internal-tools",
-        "/what-we-solve/institutional-knowledge",
-        "/what-we-solve/ai-governance",
-        "/how-we-work",
-        "/security",
-        "/proof",
-        "/contact",
-        "/team",
-        "/blog",
-        "/privacy",
-        "/terms",
-      ];
+      // Route list lives in scripts/routes.mjs so the sitemap, the prerenderer
+      // and docs/seo/config.json cannot drift apart. It used to be inline here
+      // under a comment calling it the "prerender route list" — which it was
+      // not, since nothing prerendered until 2026-08-17.
+      const allRoutes = routeList();
 
-      // Get blog slugs from blog files
-      const blogsDir = path.resolve(__dirname, "src/pages/blogs");
-      const blogFiles = readdirSync(blogsDir).filter((f) => f.endsWith(".mdx"));
-      const blogRoutes = blogFiles.map(
-        (f) => `/blog/${f.replace(".mdx", "")}`
-      );
-
-      const allRoutes = [...staticRoutes, ...blogRoutes];
       const today = new Date().toISOString().split("T")[0];
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

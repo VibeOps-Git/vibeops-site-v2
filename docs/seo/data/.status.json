@@ -1,0 +1,15 @@
+{
+  "date": "2026-08-17",
+  "verdict": "TECHNICAL — investigate now",
+  "why": "1 technical issue(s) at high/critical severity. This is the one category that may justify same-day remediation.",
+  "critical_count": 1,
+  "ready_count": 2,
+  "headline": "16 tracked URLs return BYTE-IDENTICAL html (md5 6a64cf3f)",
+  "notify": true,
+  "gsc_latest": "2026-08-15",
+  "pending": [
+    "page_speed",
+    "serp_probe",
+    "vercel_web_analytics"
+  ]
+}

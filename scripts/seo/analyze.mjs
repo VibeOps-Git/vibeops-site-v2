@@ -18,8 +18,8 @@
 
 import { join } from 'node:path';
 import {
-  CONFIG, QUERY_SET, DAILY_REPORT_DIR, resolveDate, hasFlag, listSnapshotDates, loadSnapshot,
-  writeText, domainAge, daysBetween, fmtPct, log, clusterForPath, inferCluster,
+  CONFIG, QUERY_SET, DAILY_REPORT_DIR, DATA_DIR, resolveDate, hasFlag, listSnapshotDates, loadSnapshot,
+  writeText, writeJSON, domainAge, daysBetween, fmtPct, log, clusterForPath, inferCluster,
 } from './lib/core.mjs';
 import { momentum, windowGrowth, positionChange, ctrOpportunity, detectCannibalisation } from './lib/trends.mjs';
 import { loadOpportunities, saveOpportunities, upsert, opportunityId } from './lib/opportunities.mjs';
@@ -230,15 +230,42 @@ if (serp?.data.results) {
 if (gsc?.data.indexed_pages != null && tech?.data.sitemap?.entries) {
   const indexed = gsc.data.indexed_pages;
   const inSitemap = tech.data.sitemap.entries;
-  facts.push(`Indexation: **${indexed} of ${inSitemap} sitemap URLs indexed** (Search Console, through ${latestCovered}).`);
-  if (indexed < inSitemap) {
+  const notIndexed = gsc.data.not_indexed_pages;
+  facts.push(
+    `Indexation: **${indexed} URLs indexed**${notIndexed != null ? `, ${notIndexed} not indexed` : ''} ` +
+      `against ${inSitemap} in the sitemap (Search Console, through ${latestCovered}).`,
+  );
+
+  if (indexed > inSitemap) {
+    // Not an error, and worth saying out loud: Google indexes what it finds,
+    // not what we advertise. The excess is retired URLs, parameterised
+    // variants, or pages we removed from the sitemap but not from the web.
+    risks.push(
+      `**Google has indexed ${indexed - inSitemap} more URLs than the sitemap advertises** (${indexed} vs ${inSitemap}). ` +
+        `The sitemap is a suggestion, not a boundary. The excess is usually retired URLs still being served or ` +
+        `parameterised variants of a real page. Identify them in the Page indexing report before assuming they are harmless: ` +
+        `an indexed URL we no longer maintain can outrank the page meant to replace it.`,
+    );
+  } else if (indexed < inSitemap) {
     const gap = inSitemap - indexed;
     risks.push(
-      `**${gap} of ${inSitemap} sitemap URLs are not indexed.** All ${inSitemap} return 200, so this is a ` +
-        `Google inclusion decision rather than a site defect — but an unindexed page cannot rank, and ` +
-        `\`/sources\` is among the candidates while also being the lead backlink asset. ` +
+      `**${gap} of ${inSitemap} sitemap URLs are not indexed.** They return 200, so this is a Google inclusion ` +
+        `decision rather than a fetch failure, but an unindexed page cannot rank. ` +
         `${gsc.data.coverage_notes ? 'Coverage detail: ' + gsc.data.coverage_notes : 'Check the Page indexing report for the stated reasons.'}`,
     );
+  }
+
+  // The stated reasons, when we captured them, are more actionable than the
+  // count. A 'noindex' exclusion is ours to fix; 'Discovered - currently not
+  // indexed' is Google declining, which is a different problem entirely.
+  for (const r of gsc.data.indexing_reasons ?? []) {
+    if (/noindex/i.test(r.reason)) {
+      risks.push(`**${r.pages} page(s) excluded by a \`noindex\` tag.** That is our directive, not Google's decision. Confirm every one of them is deliberately excluded.`);
+    } else if (/duplicate/i.test(r.reason)) {
+      risks.push(`**${r.pages} page(s) are "${r.reason}".** On an un-prerendered SPA this is the expected downstream symptom: Google saw identical HTML at several URLs and picked one. It should resolve when the shell does.`);
+    } else if (/soft 404/i.test(r.reason)) {
+      risks.push(`**${r.pages} page(s) reported as Soft 404** — a URL returning 200 with content Google reads as "not found". On a client-rendered SPA this is often a real route rendering an empty shell.`);
+    }
   }
 }
 
@@ -660,6 +687,30 @@ if (criticalIssues.length) {
   verdict = 'CANDIDATE FOR WEEKLY GATE';
   verdictWhy = `${ready.length} opportunit${ready.length === 1 ? 'y has' : 'ies have'} reached READY. They do not authorise a change — they queue for the weekly decision gate.`;
 }
+
+/* ------------------------------------------------------- status file --- */
+
+// A tiny machine-readable verdict for the scheduled runner to act on. The
+// point of the whole system is that nobody has to read a daily report to find
+// out nothing happened, so the runner notifies ONLY when this says to, and the
+// decision about what is worth interrupting someone for is made here, in the
+// analysis, rather than in shell.
+writeJSON(join(DATA_DIR, '.status.json'), {
+  date,
+  verdict,
+  why: verdictWhy,
+  critical_count: criticalIssues.length,
+  ready_count: ready.length,
+  // The single line worth putting in a notification, if any.
+  headline: criticalIssues.length
+    ? criticalIssues[0].issue.split('.')[0].slice(0, 140)
+    : ready.length
+      ? `${ready.length} opportunity(ies) ready for the weekly gate`
+      : null,
+  notify: criticalIssues.length > 0,
+  gsc_latest: latestCovered ?? null,
+  pending: Object.entries(cur?.sources ?? {}).filter(([, b]) => b.status === 'pending').map(([k]) => k),
+});
 
 /* ========================================================== the report === */
 

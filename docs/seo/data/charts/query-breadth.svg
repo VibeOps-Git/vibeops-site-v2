@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" width="720" height="260" font-family="system-ui, -apple-system, sans-serif" role="img" aria-label="Disclosed query breadth and topicality">
+  <title>Disclosed query breadth and topicality</title>
+  <text x="52" y="14" font-size="13" font-weight="600" fill="#888">Disclosed query breadth and topicality</text>
+  <text x="700" y="14" text-anchor="end" font-size="10" fill="#999">per observation date, not per calendar day</text>
+  <line x1="52" y1="220.0" x2="700" y2="220.0" stroke="#8888" stroke-width="0.5"/><text x="44" y="224.0" text-anchor="end" font-size="11" fill="#888">0</text><line x1="52" y1="134.8" x2="700" y2="134.8" stroke="#8888" stroke-width="0.5"/><text x="44" y="138.8" text-anchor="end" font-size="11" fill="#888">5</text><line x1="52" y1="49.6" x2="700" y2="49.6" stroke="#8888" stroke-width="0.5"/><text x="44" y="53.6" text-anchor="end" font-size="11" fill="#888">10</text>
+  <line x1="52" y1="24" x2="52" y2="220" stroke="#8888" stroke-width="1"/>
+  <line x1="52" y1="220" x2="700" y2="220" stroke="#8888" stroke-width="1"/>
+  <circle cx="376.0" cy="49.6" r="3" fill="#4c8dd9"/><circle cx="376.0" cy="49.6" r="2.5" fill="#4c8dd9"/><circle cx="376.0" cy="49.6" r="3" fill="#2fa37c"/><circle cx="376.0" cy="49.6" r="2.5" fill="#2fa37c"/>
+  <text x="376.0" y="236" text-anchor="middle" font-size="10" fill="#888">08-17</text>
+  <rect x="52" y="248" width="10" height="3" fill="#4c8dd9"/><text x="67" y="252" font-size="10" fill="#888">disclosed</text><rect x="182" y="248" width="10" height="3" fill="#2fa37c"/><text x="197" y="252" font-size="10" fill="#888">on-topic</text>
+  <text x="10" y="122" font-size="10" fill="#888" transform="rotate(-90 10 122)" text-anchor="middle">queries</text>
+</svg>

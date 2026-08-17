@@ -3,12 +3,12 @@
   "date": "2026-08-17",
   "domain_age_days": 57,
   "first_collected_at": "2026-08-17T20:48:08.824Z",
-  "revision": 13,
+  "revision": 30,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-17T20:48:25.509Z",
+      "collected_at": "2026-08-17T21:26:57.461Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -34,7 +34,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -50,7 +50,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -66,7 +66,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -82,7 +82,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -98,7 +98,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -114,7 +114,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -130,7 +130,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -146,7 +146,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -162,7 +162,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -178,7 +178,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -194,7 +194,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -210,7 +210,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -226,7 +226,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -242,7 +242,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -258,7 +258,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           },
           {
@@ -274,7 +274,7 @@
             "h1_count": 0,
             "og_image": true,
             "anchor_count": 0,
-            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
+            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
             "bytes": 9063
           }
         ],
@@ -643,7 +643,7 @@
           {
             "severity": "critical",
             "path": "16 URLs",
-            "issue": "16 tracked URLs return BYTE-IDENTICAL html (md5 1d201f7d). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
+            "issue": "16 tracked URLs return BYTE-IDENTICAL html (md5 6a64cf3f). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
           }
         ],
         "prerendered": false,
@@ -670,7 +670,7 @@
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-17T20:48:33.305Z",
+      "collected_at": "2026-08-17T21:27:05.409Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -1191,7 +1191,7 @@
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-17T20:48:37.559Z",
+      "collected_at": "2026-08-17T21:27:09.791Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -1353,7 +1353,7 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-17T20:48:37.769Z",
+      "collected_at": "2026-08-17T21:27:09.935Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -1369,7 +1369,7 @@
     "vercel": {
       "source": "vercel-api",
       "status": "ok",
-      "collected_at": "2026-08-17T20:48:37.908Z",
+      "collected_at": "2026-08-17T21:27:10.070Z",
       "represents": {
         "start": "2026-05-02",
         "end": "2026-08-17"
@@ -1380,9 +1380,15 @@
         "Vercel Web Analytics is NOT included: it is enabled on the project but has no stable REST endpoint. It is collected as a separate browser-gated source."
       ],
       "data": {
-        "latest_production_deploy": "2026-08-17T20:28:05.798Z",
+        "latest_production_deploy": "2026-08-17T20:52:17.646Z",
         "days_since_deploy": -1,
         "deployments": [
+          {
+            "created_at": "2026-08-17T20:52:17.646Z",
+            "state": "READY",
+            "commit_sha": "60970c5",
+            "commit_message": "Fix device sizing on large screens; widen cards instead of thinning them (#172)"
+          },
           {
             "created_at": "2026-08-17T20:28:05.798Z",
             "state": "READY",
@@ -1496,30 +1502,305 @@
             "state": "READY",
             "commit_sha": "76918c1",
             "commit_message": "blog: add best-ai-tools-for-civil-engineers-in-2026 (#119)"
-          },
-          {
-            "created_at": "2026-05-02T02:12:37.322Z",
-            "state": "READY",
-            "commit_sha": "1d9da18",
-            "commit_message": "blog: add engineering-report-automation-the-future-of-civil-engineering-workflows (#121)"
           }
         ]
       }
     },
     "search_console": {
       "source": "google-search-console",
-      "status": "pending",
-      "collected_at": "2026-08-17T20:48:08.828Z",
+      "status": "ok",
+      "collected_at": "2026-08-17T21:16:12.742Z",
       "represents": {
-        "start": null,
-        "end": null
+        "start": "2026-08-09",
+        "end": "2026-08-15"
       },
-      "lag_days": null,
+      "lag_days": 2,
       "limitations": [
-        "Requires an interactively authenticated browser session; not collectable by an unattended run."
+        "Collected on 2026-08-17, but the data covers only through 2026-08-15. These figures do NOT describe searches on 2026-08-17.",
+        "Search Console discloses only queries above an anonymity threshold. Undisclosed impressions are real exposure that cannot be attributed to a query.",
+        "497 of 644 impressions come from queries Search Console will not name.",
+        "Average position is impression-weighted across all queries; on small samples it moves for reasons unrelated to ranking quality (broader testing at deeper positions lowers it).",
+        "Transcribed by hand from the Search Console UI — a transcription error is possible and is the main data-quality risk in this source."
       ],
       "data": {
-        "how_to_collect": "Capture the figures from Search Console as team@vibeops.ca on property sc-domain:vibeops.ca, then run scripts/seo/ingest-gsc.mjs."
+        "property": "sc-domain:vibeops.ca",
+        "account_verified": "team@vibeops.ca",
+        "latest_date_available": "2026-08-15",
+        "totals": {
+          "impressions": 644,
+          "clicks": 19,
+          "ctr": 0.03,
+          "position": 9.8
+        },
+        "by_day": [
+          {
+            "date": "2026-08-09",
+            "impressions": 100,
+            "clicks": 3
+          },
+          {
+            "date": "2026-08-10",
+            "impressions": 155,
+            "clicks": 4
+          },
+          {
+            "date": "2026-08-11",
+            "impressions": 106,
+            "clicks": 6
+          },
+          {
+            "date": "2026-08-12",
+            "impressions": 76,
+            "clicks": 0
+          },
+          {
+            "date": "2026-08-13",
+            "impressions": 101,
+            "clicks": 1
+          },
+          {
+            "date": "2026-08-14",
+            "impressions": 55,
+            "clicks": 3
+          },
+          {
+            "date": "2026-08-15",
+            "impressions": 51,
+            "clicks": 2
+          }
+        ],
+        "pages": [
+          {
+            "page": "/",
+            "cluster": "sitewide",
+            "impressions": 206,
+            "clicks": 13,
+            "ctr": 0.06310679611650485,
+            "position": null
+          },
+          {
+            "page": "/blog/best-ai-tools-for-civil-engineers-in-2026",
+            "cluster": "sitewide",
+            "impressions": 248,
+            "clicks": 3,
+            "ctr": 0.012096774193548387,
+            "position": null
+          },
+          {
+            "page": "/blog/ai-reporting-software-civil-engineers",
+            "cluster": "sitewide",
+            "impressions": 63,
+            "clicks": 1,
+            "ctr": 0.015873015873015872,
+            "position": null
+          },
+          {
+            "page": "/team",
+            "cluster": "sitewide",
+            "impressions": 63,
+            "clicks": 1,
+            "ctr": 0.015873015873015872,
+            "position": null
+          },
+          {
+            "page": "/team?member=Zander Dent",
+            "cluster": "sitewide",
+            "impressions": 21,
+            "clicks": 1,
+            "ctr": 0.047619047619047616,
+            "position": null
+          },
+          {
+            "page": "/reportly",
+            "cluster": "sitewide",
+            "impressions": 41,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null
+          },
+          {
+            "page": "/blog/civil-engineering-report-automation-vs-manual",
+            "cluster": "sitewide",
+            "impressions": 29,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null
+          },
+          {
+            "page": "/services",
+            "cluster": "sitewide",
+            "impressions": 28,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null
+          },
+          {
+            "page": "/blog",
+            "cluster": "blog",
+            "impressions": 19,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null
+          },
+          {
+            "page": "/blog/the-best-civil-engineering-reporting-software-in-2026",
+            "cluster": "sitewide",
+            "impressions": 13,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null
+          }
+        ],
+        "queries": [
+          {
+            "query": "vibeops",
+            "impressions": 61,
+            "clicks": 9,
+            "ctr": 0.14754098360655737,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "vibe ops",
+            "impressions": 15,
+            "clicks": 3,
+            "ctr": 0.2,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "\"vibeops\"",
+            "impressions": 2,
+            "clicks": 1,
+            "ctr": 0.5,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "ai tool for civil engineering",
+            "impressions": 1,
+            "clicks": 1,
+            "ctr": 1,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "best ai tools for civil engineers",
+            "impressions": 26,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "best ai for civil engineering",
+            "impressions": 16,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "vipbops",
+            "impressions": 9,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "reportly",
+            "impressions": 7,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "civil engineering ai tools",
+            "impressions": 6,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
+            "query": "ai tools for civil engineers",
+            "impressions": 4,
+            "clicks": 0,
+            "ctr": 0,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          }
+        ],
+        "disclosed_query_count": 10,
+        "disclosed_impressions": 147,
+        "undisclosed_impressions": 497,
+        "topicality_mix": {
+          "on_topic": 10,
+          "adjacent": 0,
+          "irrelevant": 0
+        },
+        "devices": [],
+        "countries": [],
+        "country_count_reported": 0,
+        "countries_captured": 0,
+        "indexed_pages": 32,
+        "not_indexed_pages": 17,
+        "indexing_reasons": [
+          {
+            "reason": "Excluded by 'noindex' tag",
+            "source": "Website",
+            "pages": 5
+          },
+          {
+            "reason": "Duplicate without user-selected canonical",
+            "source": "Website",
+            "pages": 5
+          },
+          {
+            "reason": "Page with redirect",
+            "source": "Website",
+            "pages": 3
+          },
+          {
+            "reason": "Soft 404",
+            "source": "Website",
+            "pages": 1
+          },
+          {
+            "reason": "Crawled - currently not indexed",
+            "source": "Google systems",
+            "pages": 2
+          },
+          {
+            "reason": "Discovered - currently not indexed",
+            "source": "Google systems",
+            "pages": 1
+          }
+        ],
+        "coverage_notes": null,
+        "notes": null
       }
     },
     "serp_probe": {
@@ -1633,7 +1914,109 @@
       "source": "vercel",
       "action": "replaced",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:51:39.535Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:51:39.537Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:51:39.538Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:51:39.539Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-17T20:51:39.540Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:14:30.049Z",
+      "source": "search_console",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:16:12.743Z",
+      "source": "search_console",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:17:31.343Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:17:31.344Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:17:31.346Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:17:31.347Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-17T21:17:31.348Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:27:10.071Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:27:10.072Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:27:10.073Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T21:27:10.075Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-17T21:27:10.076Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
     }
   ],
-  "updated_at": "2026-08-17T20:48:37.914Z"
+  "updated_at": "2026-08-17T21:27:10.076Z"
 }

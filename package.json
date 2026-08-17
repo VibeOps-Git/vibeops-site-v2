@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -25,7 +25,9 @@
     "seo:charts": "node scripts/seo/charts.mjs",
     "seo:sync-probe": "node scripts/seo/sync-probe.mjs",
     "seo:discovery-build": "node scripts/seo/discovery-probe-build.mjs",
-    "seo:freeze": "node scripts/seo/freeze.mjs"
+    "seo:freeze": "node scripts/seo/freeze.mjs",
+    "build:nopre": "vite build",
+    "prerender": "node scripts/prerender.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
