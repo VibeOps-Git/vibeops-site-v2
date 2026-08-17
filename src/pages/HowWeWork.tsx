@@ -30,7 +30,7 @@ const PHASES = [
     title: 'Discovery',
     lead: 'We sit with your team before we write a line of code.',
     detail:
-      'Our engineers work alongside yours, on your real files and your real projects, and turn what they learn into a confirmed technical and functional plan. Discovery is a paid, scoped phase with defined deliverables. It is not a free sales call.',
+      'Our engineers work alongside yours, on your real files and your real projects, and turn what they learn into a confirmed technical and functional plan. Discovery is a paid, scoped phase with defined deliverables. It isn’t a free sales call.',
     outputs: [
       'Technical development plan',
       'Domain knowledge memorandum',
@@ -198,7 +198,7 @@ export default function HowWeWork() {
                 {
                   title: 'Never an unchecked decision-maker',
                   detail:
-                    'AI generates drafts and accelerates workflow. It does not make engineering decisions autonomously.',
+                    'AI drafts and accelerates. It doesn’t make engineering decisions on its own.',
                 },
                 {
                   title: 'Traceable to source',
@@ -308,7 +308,7 @@ export default function HowWeWork() {
                 {
                   title: 'We already know the industry',
                   detail:
-                    'We are civil engineers. You are not funding six weeks of us learning what a submittal is, or why the stamp matters.',
+                    'We’re civil engineers. You aren’t funding six weeks of us working out what a submittal is, or why the stamp matters.',
                 },
                 {
                   title: 'We bring working parts, not slides',
