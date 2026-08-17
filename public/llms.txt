@@ -2,13 +2,16 @@
 
 > The AI engineering team your firm hasn't hired.
 
-VibeOps Technologies Inc. is the external AI engineering team for architecture and engineering firms. Firms in the 75-750 staff range have real AI mandates and no software engineers to deliver them: the largest firms built internal digital teams, the smallest do not yet need one, and everyone in between appointed an AI champion or committee with no engineering capacity behind it. VibeOps becomes that capability.
+VibeOps Technologies Inc. is the external AI engineering team for architecture and engineering firms, with civil engineering as its home market. Firms in the 75-750 staff range have real AI mandates and no software engineers to deliver them: the largest firms built internal digital teams, the smallest do not yet need one, and everyone in between appointed an AI champion or committee with no engineering capacity behind it. VibeOps becomes that capability.
 
 We are civil engineers who write software. We do not sell a product, we do not deliver strategy decks, and we do not do AI training. We design, build and deploy working systems inside the security boundary a firm's IT department approves, and the firm owns what we deliver.
+
+We work forward deployed. Our engineers embed in the client's own projects, on their real files, alongside the people doing the work, because that is the only reliable way to learn a workflow well enough to build for it. Each engagement solves a real problem for one firm and leaves us with reusable capability we carry into the next, so later clients pay for less discovery and get working components on day one. Clients own the platform we deliver for them; the background tooling we bring stays ours and ships licensed inside what they own.
 
 Website: https://vibeops.ca
 Location: Vancouver, BC, Canada. Serving the United States and Canada.
 Positioning: The AI engineering team your firm hasn't hired.
+Model: Forward deployed engineering. Embedded engagements in civil, infrastructure and AE firms, producing client-owned software and reusable in-house capability.
 
 ## What We Solve
 
@@ -60,11 +63,18 @@ Security and data handling: https://www.vibeops.ca/security
 
 ## The Gap We Fill
 
-Architecture and engineering firms are under real pressure to adopt AI, and almost none of them have the engineering capacity to do it. Firms above roughly 10,000 staff have built internal digital and AI teams — though their own engineers told us the internal queue is often too slow to be useful. Firms below fifty typically have neither budget nor need. Between those two sits the majority of the industry: enough scale to feel the problem acutely, not enough to justify hiring software engineers into an engineering practice.
+Architecture and engineering firms are under real pressure to adopt AI, and almost none of them have the engineering capacity to do it. Firms above roughly 10,000 staff have built internal digital and AI teams, though their own engineers told us the internal queue is often too slow to be useful. Firms below fifty typically have neither budget nor need. Between those two sits the majority of the industry: enough scale to feel the problem acutely, not enough to justify hiring software engineers into an engineering practice.
 
-Those firms respond by appointing someone — an AI champion, an innovation lead, a committee — and giving them a mandate with no engineering capacity behind it. VibeOps is that capacity, hired externally.
+Those firms respond by appointing someone: an AI champion, an innovation lead, a committee. Then they give that person a mandate with no engineering capacity behind it. VibeOps is that capacity, hired externally.
 
 The binding constraint in this industry is professional responsibility. A licensed engineer stamps the work and carries the liability, which is why review capacity, not production capacity, is the real ceiling on what a firm can take on. Everything we build is designed so a qualified engineer can review and sign it quickly and defensibly.
+
+## Capability We Bring With Us
+
+Built in-house, on our own time, from problems that recurred across discovery. These are not client work and can be described in full.
+
+- Jurisdictional building code intelligence. Resolves the applicable federal, state or provincial and municipal code stack from a project address and surfaces the referenced CSA standards, with every citation traceable to source. Brought into engagements where jurisdictional lookup is part of the problem.
+https://www.vibeops.ca/proof
 
 ## Team
 

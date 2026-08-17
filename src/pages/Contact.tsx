@@ -182,8 +182,8 @@ export default function Contact() {
             Bring us the workflow that costs you the most
           </h1>
           <p className="text-muted-foreground text-base max-w-2xl mx-auto">
-            We'll tell you honestly whether it's worth building software for — and if
-            it is, what an engagement would involve.
+            We'll tell you honestly whether it's worth building software for, and if it
+            is, what an engagement would actually involve.
           </p>
         </motion.div>
 

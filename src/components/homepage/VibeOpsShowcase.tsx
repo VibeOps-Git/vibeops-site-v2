@@ -76,7 +76,7 @@ function ReportAutomationScene() {
             key={r.num}
             initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, ease: E }}
-            className="flex items-center justify-between px-2 py-1.5 rounded-lg border border-white/6 flex-shrink-0"
+            className="flex flex-shrink-0 items-center justify-between rounded-lg border border-white/6 px-2 py-1.5"
             style={{ background: 'rgba(255,255,255,0.025)' }}
           >
             <div className="flex items-center gap-1.5 min-w-0">
@@ -110,7 +110,7 @@ function ReportAutomationScene() {
 
         {/* Placeholder rows for sections not yet generated */}
         {REPORT_SECTIONS.slice(visible).map((r) => (
-          <div key={r.num} className="h-7 rounded-lg border border-white/4 flex-shrink-0"
+          <div key={r.num} className="h-7 flex-shrink-0 rounded-lg border border-white/4"
             style={{ background: 'rgba(255,255,255,0.01)' }} />
         ))}
       </div>
@@ -323,7 +323,10 @@ const CUSTOM_REPORTS = [
   { name: 'Fraser Valley Bridge Inspection',    type: 'Structural', status: 'complete',   code: 'NBCC 2020', pct: 100 },
   { name: 'UBC Bldg C - Seismic Assessment',   type: 'Seismic',    status: 'review',     code: 'NBC S832',  pct: 88  },
   { name: 'Burnaby SkyTrain Station Survey',    type: 'Condition',  status: 'generating', code: 'BCBC 2024', pct: 61  },
-  { name: 'Surrey Overpass Load Analysis',      type: 'Structural', status: 'queued',     code: null,        pct: 0   },
+  { name: 'Surrey Overpass Load Analysis',      type: 'Structural', status: 'review',     code: 'CSA S6-19', pct: 74  },
+  { name: 'Coquitlam Pump Station Condition',   type: 'Condition',  status: 'generating', code: 'BCBC 2024', pct: 43  },
+  { name: 'Delta Culvert Replacement Study',    type: 'Hydraulic',  status: 'queued',     code: null,        pct: 0   },
+  { name: 'Richmond Dyke Stability Review',     type: 'Geotech',    status: 'queued',     code: null,        pct: 0   },
 ];
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
@@ -337,7 +340,7 @@ function CustomScene() {
   const [shown, setShown] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => setShown(s => Math.min(s + 1, CUSTOM_REPORTS.length)), 700);
+    const id = setInterval(() => setShown(s => Math.min(s + 1, CUSTOM_REPORTS.length)), 480);
     return () => clearInterval(id);
   }, []);
 
@@ -387,7 +390,8 @@ function CustomScene() {
         ))}
       </motion.div>
 
-      {/* Report queue */}
+      {/* Report queue — rows flex to fill so the panel has no dead band at the
+          bottom when the device is rendered large. */}
       <div className="flex-1 flex flex-col gap-1 overflow-hidden">
         <p className="text-[6.5px] font-black uppercase tracking-[0.18em] text-white/28 flex-shrink-0">Active Projects</p>
         {CUSTOM_REPORTS.slice(0, shown).map((r, i) => {
@@ -396,7 +400,7 @@ function CustomScene() {
             <motion.div key={r.name}
               initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.28, delay: i * 0.05 }}
-              className="flex items-center gap-2 px-2 py-1.5 rounded-lg border border-white/5 flex-shrink-0"
+              className="flex flex-shrink-0 items-center gap-2 rounded-lg border border-white/5 px-2 py-1.5"
               style={{ background: 'rgba(255,255,255,0.025)' }}
             >
               <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: st.color }} />

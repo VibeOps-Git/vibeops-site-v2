@@ -42,7 +42,7 @@ export default function JobPage() {
         ]}
       />
       <div className="pt-24">
-        {/* Hero — the problem, in their words */}
+        {/* Hero: the problem, in their words */}
         <section className="px-4 py-16 md:py-20">
           <Anim>
             <div className="container mx-auto max-w-3xl">
@@ -55,7 +55,7 @@ export default function JobPage() {
               <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-secondary">
                 <job.icon className="h-5 w-5 text-primary" />
               </div>
-              <h1 className="mb-6 text-[2rem] font-bold leading-[1.12] tracking-tight text-foreground md:text-[2.7rem]">
+              <h1 className="mb-6 text-[2rem] font-bold leading-[1.12] tracking-tight text-foreground md:text-[2.7rem] 3xl:text-[3.6rem]">
                 “{job.headline}”
               </h1>
               <p className="mb-6 text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -79,7 +79,7 @@ export default function JobPage() {
               </p>
               <div className="space-y-5">
                 {job.situation.map((p, i) => (
-                  <p key={i} className="text-[15px] leading-[1.8] text-muted-foreground">
+                  <p key={i} className="text-[15px] leading-[1.8] text-muted-foreground 3xl:text-[17px]">
                     {p}
                   </p>
                 ))}
@@ -125,7 +125,7 @@ export default function JobPage() {
 
         {/* What we do */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-5xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
                 What we do about it
@@ -134,7 +134,7 @@ export default function JobPage() {
                 How we solve this as your engineering team
               </h2>
             </Anim>
-            <div className="grid gap-5 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 3xl:grid-cols-4 3xl:gap-6">
               {job.whatWeDo.map((w, i) => (
                 <Anim key={w.title} delay={i * 0.06}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -157,7 +157,7 @@ export default function JobPage() {
           <>
             <SectionDivider className="mx-auto max-w-5xl" />
             <section className="px-4 py-16 md:py-20">
-              <div className="container mx-auto max-w-5xl">
+              <div className="container mx-auto max-w-[min(92vw,1500px)]">
                 <Anim>
                   <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
                     Built in-house
@@ -197,7 +197,7 @@ export default function JobPage() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* CTA ladder — three commitment levels, incl. the one for IT */}
+        {/* CTA ladder: three commitment levels, incl. the one for IT */}
         <section className="px-4 py-20">
           <div className="container mx-auto max-w-3xl">
             <Anim>

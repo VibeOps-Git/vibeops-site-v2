@@ -3,7 +3,7 @@
 // Step 2 of the journey: the page a champion forwards to a principal.
 //
 // Client engagements are under NDA. This page therefore names WHO we work with
-// and at what stage, and nothing further — no project names, no scope, no
+// and at what stage, and nothing further. No project names, no scope, no
 // deliverables. What it can describe properly is capability we built ourselves,
 // and the discovery base behind the six problems.
 //
@@ -58,7 +58,7 @@ export default function Proof() {
         {/* Hero */}
         <section className="px-4 py-20">
           <Anim>
-            <div className="container mx-auto max-w-3xl text-center">
+            <div className="container mx-auto max-w-3xl text-center 3xl:max-w-4xl">
               <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.32em] text-primary">
                 Our Work
               </p>
@@ -67,7 +67,7 @@ export default function Proof() {
               </h1>
               <p className="mb-4 text-base leading-relaxed text-muted-foreground md:text-lg">
                 Our client engagements are confidential, so this page tells you who we
-                work with and at what stage — not what we are building for them. That
+                work with and at what stage, not what we are building for them. That
                 is the same discretion your firm would expect us to apply to your
                 projects.
               </p>
@@ -81,9 +81,9 @@ export default function Proof() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* Relationships — name and stage only. No project detail, by design. */}
+        {/* Relationships: name and stage only. No project detail, by design. */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
                 Current relationships
@@ -96,7 +96,7 @@ export default function Proof() {
                 us and them.
               </p>
             </Anim>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 3xl:gap-6">
               {RELATIONSHIPS.map((r, i) => (
                 <Anim key={r.id} delay={i * 0.06}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -121,7 +121,7 @@ export default function Proof() {
               <p className="mt-6 text-[13px] leading-relaxed text-muted-foreground">
                 If you want to know whether we have solved something like your problem
                 before, ask us on a call. We can talk about the shape of the work
-                without breaching anyone&rsquo;s confidence — including, later, yours.
+                without breaching anyone&rsquo;s confidence, including, later on, yours.
               </p>
             </Anim>
           </div>
@@ -129,16 +129,22 @@ export default function Proof() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* Capability we own — describable in full because it is ours. */}
+        {/* Capability we own: describable in full because it is ours. */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
                 Built in-house
               </p>
-              <h2 className="mb-10 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 Capability we bring with us
               </h2>
+              <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-muted-foreground">
+                Working embedded means the same problems keep showing up. When one
+                shows up often enough, we build it properly on our own time and bring
+                it with us. Your engagement starts with these already running, and you
+                still own everything we build specifically for you.
+              </p>
             </Anim>
             <div className="space-y-6">
               {CAPABILITIES.map((c, i) => (
@@ -193,9 +199,9 @@ export default function Proof() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* The discovery base — this is real, distinctive evidence */}
+        {/* The discovery base: real, distinctive evidence */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
                 How we know
@@ -207,12 +213,12 @@ export default function Proof() {
                 Before writing software for this industry we ran documented discovery
                 conversations with more than a hundred engineers, principals, digital
                 leads and operations managers, across 89 architecture, engineering,
-                construction and public infrastructure firms — from two-person
+                construction and public infrastructure firms, from two-person
                 consultancies to firms of 35,000. The six problems we work on are the
                 ones that kept recurring.
               </p>
             </Anim>
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-3 3xl:gap-6">
               {[
                 { stat: '100+', label: 'Documented conversations with AE and construction professionals' },
                 { stat: '89', label: 'Architecture, engineering and construction firms represented' },
@@ -228,7 +234,7 @@ export default function Proof() {
             </div>
             <Anim delay={0.15}>
               <p className="mt-8 text-center text-[13px] text-muted-foreground">
-                We are civil engineers who write software.{' '}
+                We&rsquo;re civil engineers who write software.{' '}
                 <Link to="/team" className="text-primary hover:underline">
                   Meet the team
                 </Link>
@@ -240,9 +246,9 @@ export default function Proof() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
-        {/* Earlier work — kept, but honestly framed and clearly secondary */}
+        {/* Earlier work: kept, but honestly framed and clearly secondary */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                 Earlier work
@@ -251,12 +257,12 @@ export default function Proof() {
                 Before we focused on engineering firms
               </h2>
               <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-muted-foreground">
-                We built software for clients in other industries first. It is not
-                engineering work and we are not going to present it as though it were,
-                but it is what these clients said about working with us.
+                We built software for clients in other industries first. It isn&rsquo;t
+                engineering work and we&rsquo;re not going to dress it up as though it
+                were, but it is what those clients said about working with us.
               </p>
             </Anim>
-            <div className="grid gap-5 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 3xl:gap-6">
               {EARLIER_WORK.map((r, i) => (
                 <Anim key={r.name} delay={i * 0.06}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -290,7 +296,7 @@ export default function Proof() {
         {/* CTA */}
         <section className="px-4 py-20">
           <Anim>
-            <div className="container mx-auto max-w-3xl text-center">
+            <div className="container mx-auto max-w-3xl text-center 3xl:max-w-4xl">
               <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
 Bring us the problem you have no team for
               </h2>

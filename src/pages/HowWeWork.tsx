@@ -1,8 +1,13 @@
 // src/pages/HowWeWork.tsx
 // Step 2 of the journey: the champion has forwarded a link to a principal.
-// This page answers what a principal actually asks — what does it cost, what do
+// This page answers what a principal actually asks: what does it cost, what do
 // we own, how long, and what happens if it doesn't work. Grounded in the
 // engagement structure we actually contract under.
+//
+// The model is forward deployed and it should read that way here: our engineers
+// work inside the client's projects, and what we learn there becomes capability
+// we carry to the next firm. That is stated as a client benefit, never as our
+// business model.
 
 import { Search, FileCheck, Hammer, Repeat, KeyRound, HandshakeIcon, ArrowRight } from 'lucide-react';
 import { SEO } from '@/components/SEO';
@@ -23,9 +28,9 @@ const PHASES = [
     icon: Search,
     step: '01',
     title: 'Discovery',
-    lead: 'We learn your workflow before we write a line of code.',
+    lead: 'We sit with your team before we write a line of code.',
     detail:
-      'We translate your domain expertise, documentation practices and commercial objectives into a confirmed technical and functional plan. Discovery is a paid, scoped phase with defined deliverables, not a free sales call.',
+      'Our engineers work alongside yours, on your real files and your real projects, and turn what they learn into a confirmed technical and functional plan. Discovery is a paid, scoped phase with defined deliverables. It isn’t a free sales call.',
     outputs: [
       'Technical development plan',
       'Domain knowledge memorandum',
@@ -42,7 +47,7 @@ const PHASES = [
     title: 'Proof of concept gate',
     lead: 'We prove the hard part works on your material before you fund the build.',
     detail:
-      'Where an engagement depends on AI doing something specific — extracting requirements, reading drawings, drafting to your standard — we evaluate it against your real documents and verified human ground truth. We measure it, we document where it is weak, and we confirm the acceptance criteria still make sense. If it does not clear the bar, you find out here.',
+      'Some engagements hang on AI doing one specific thing: extracting requirements, reading drawings, drafting to your standard. We evaluate that against your real documents and verified human ground truth, measure it, write down where it is weak, and confirm the acceptance criteria still make sense. If it does not clear the bar, you find out here rather than three months in.',
     outputs: [
       'Evaluation against representative project material',
       'Measured accuracy, with limitations documented in writing',
@@ -69,7 +74,7 @@ const PHASES = [
     title: 'Pilot and revision',
     lead: 'Real users, real projects, before anyone commits further.',
     detail:
-      'You run it inside your firm on live work and give consolidated feedback through structured revision periods. Acceptance is based on completing the defined tests plus your written approval — not on us declaring it finished.',
+      'You run it inside your firm on live work and give consolidated feedback through structured revision periods. It is accepted when the defined tests pass and you approve it in writing, not when we declare it finished.',
     outputs: [
       'Internal pilot on live project work',
       'Structured revision periods with consolidated feedback',
@@ -82,7 +87,7 @@ const PHASES = [
     title: 'Handover and ongoing capability',
     lead: 'You own what we built. We stay as the team behind it.',
     detail:
-      'On acceptance you own the delivered platform and its commercial rights — the application codebase, your workflows, prompts, architecture, configuration and documentation. We retain only our pre-existing background tooling, licensed to you as embedded in what we delivered. Hosting, support and continued development run under a separate agreement, because it should be your choice to keep us.',
+      'On acceptance you own the delivered platform and its commercial rights: the application codebase, your workflows, prompts, architecture, configuration and documentation. We keep only the background tooling we brought with us, licensed to you as embedded in what we delivered. Hosting, support and continued development run under a separate agreement, because keeping us should be your choice.',
     outputs: [
       'You own the delivered codebase, workflows and documentation',
       'Ongoing hosting, support and development under a separate agreement',
@@ -96,7 +101,7 @@ export default function HowWeWork() {
     <>
       <SEO
         title="How We Work With Engineering Firms"
-        description="Discovery, a proof-of-concept gate, fixed-fee build, internal pilot, then handover — how VibeOps operates as the external AI engineering team for AE firms, and what you own at the end."
+        description="Discovery, a proof-of-concept gate, fixed-fee build, internal pilot, then handover. How VibeOps embeds with AE firms as their AI engineering team, and what you own at the end."
         canonical="https://www.vibeops.ca/how-we-work"
         breadcrumbs={[{ name: 'How We Work', url: '/how-we-work' }]}
       />
@@ -104,18 +109,19 @@ export default function HowWeWork() {
         {/* Hero */}
         <section className="px-4 py-20">
           <Anim>
-            <div className="container mx-auto max-w-3xl text-center">
+            <div className="container mx-auto max-w-3xl text-center 3xl:max-w-4xl">
               <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.32em] text-primary">
                 How We Work
               </p>
               <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground md:text-[2.8rem]">
-                We operate as your AI engineering team, not as a vendor
+                We deploy into your firm, not into a ticket queue
               </h1>
               <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-                Your firm has engineering capacity and no software team. We become
-                that capability: we learn how you actually work, prove the hard part
-                on your own material, build to a fixed scope, and hand you something
-                you own.
+                Your firm has engineering capacity and no software team. We become that
+                team, and we do it from inside: our engineers work on your projects,
+                with your people, on your real files. Then we prove the hard part on
+                your own material, build to a fixed scope, and hand you something you
+                own.
               </p>
             </div>
           </Anim>
@@ -125,7 +131,7 @@ export default function HowWeWork() {
 
         {/* The five phases */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <h2 className="mb-14 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 What an engagement looks like
@@ -136,7 +142,7 @@ export default function HowWeWork() {
                 <Anim key={p.step} delay={i * 0.05}>
                   <div className="rounded-2xl border border-border bg-card p-7 shadow-sm md:p-8">
                     <div className="flex flex-col gap-6 md:flex-row">
-                      <div className="flex-shrink-0 md:w-44">
+                      <div className="flex-shrink-0 md:w-44 3xl:w-56">
                         <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-secondary">
                           <p.icon className="h-4.5 w-4.5 text-primary" />
                         </div>
@@ -150,7 +156,7 @@ export default function HowWeWork() {
                         <p className="mb-5 text-[13.5px] leading-relaxed text-muted-foreground">
                           {p.detail}
                         </p>
-                        <ul className="grid gap-2 sm:grid-cols-2">
+                        <ul className="grid gap-2 sm:grid-cols-2 3xl:grid-cols-3">
                           {p.outputs.map((o) => (
                             <li key={o} className="flex items-start gap-2 text-[12.5px] text-muted-foreground">
                               <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-primary" />
@@ -171,7 +177,7 @@ export default function HowWeWork() {
 
         {/* The principle that governs everything */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
                 The rule we build to
@@ -187,12 +193,12 @@ export default function HowWeWork() {
                 checked is not an asset.
               </p>
             </Anim>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-3 3xl:gap-6">
               {[
                 {
                   title: 'Never an unchecked decision-maker',
                   detail:
-                    'AI generates drafts and accelerates workflow. It does not make engineering decisions autonomously.',
+                    'AI drafts and accelerates. It doesn’t make engineering decisions on its own.',
                 },
                 {
                   title: 'Traceable to source',
@@ -220,7 +226,7 @@ export default function HowWeWork() {
 
         {/* Who we are and aren't */}
         <section className="px-4 py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
             <Anim>
               <h2 className="mb-10 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 What we are, and what we are not
@@ -239,6 +245,7 @@ export default function HowWeWork() {
                     {[
                       'The AI engineering capability your firm has not hired',
                       'Civil engineers who also write the software',
+                      'Embedded in your projects rather than briefed from a distance',
                       'Accountable for a working outcome, not for hours logged',
                       'Working inside the security boundary your IT team sets',
                     ].map((t) => (
@@ -276,16 +283,68 @@ export default function HowWeWork() {
 
         <SectionDivider className="mx-auto max-w-5xl" />
 
+        {/* Why the model works this way. The compounding argument, stated as a
+            client benefit rather than as our business model. */}
+        <section className="px-4 py-16 md:py-20">
+          <div className="container mx-auto max-w-[min(92vw,1500px)]">
+            <Anim>
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+                Why we work this way
+              </p>
+              <h2 className="mb-6 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl">
+                The second firm pays for less of it than the first
+              </h2>
+              <p className="mb-10 max-w-2xl text-[15px] leading-[1.8] text-muted-foreground">
+                Working embedded is slower to start and much better at the finish. It
+                is also how we build things we can use again. A code lookup, a document
+                extraction pipeline, a review workflow: each one comes out of a real
+                problem at a real firm, and each one arrives at the next engagement
+                already working. You get the benefit of every project before yours, and
+                you still own everything we build for you.
+              </p>
+            </Anim>
+            <div className="grid gap-4 md:grid-cols-3 3xl:gap-6">
+              {[
+                {
+                  title: 'We already know the industry',
+                  detail:
+                    'We’re civil engineers. You aren’t funding six weeks of us working out what a submittal is, or why the stamp matters.',
+                },
+                {
+                  title: 'We bring working parts, not slides',
+                  detail:
+                    'Where something we have already built fits your problem, it starts the engagement rather than getting quoted into it.',
+                },
+                {
+                  title: 'You own your side of it',
+                  detail:
+                    'The platform we deliver, and its commercial rights, are yours. Our background tooling stays ours and comes licensed inside what you own.',
+                },
+              ].map((c, i) => (
+                <Anim key={c.title} delay={i * 0.06}>
+                  <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h3 className="mb-2 text-[14.5px] font-semibold text-foreground">{c.title}</h3>
+                    <p className="text-[13px] leading-relaxed text-muted-foreground">{c.detail}</p>
+                  </div>
+                </Anim>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider className="mx-auto max-w-5xl" />
+
         {/* CTA */}
         <section className="px-4 py-20">
           <Anim>
-            <div className="container mx-auto max-w-3xl text-center">
+            <div className="container mx-auto max-w-3xl text-center 3xl:max-w-4xl">
               <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 Start with the problem, not the solution
               </h2>
               <p className="mx-auto mb-8 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-                Bring us the workflow that costs your firm the most, and we will tell
-                you honestly whether it is worth building software for.
+                Bring us the workflow that costs your firm the most and we&rsquo;ll tell
+                you honestly whether it&rsquo;s worth building software for. Sometimes
+                the answer is no.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <VibeLinkButton href="/contact" variant="primary" size="lg">

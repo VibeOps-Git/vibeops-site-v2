@@ -22,16 +22,16 @@ export default function WhatWeSolve() {
       <div className="pt-24">
         <section className="py-20 px-4">
           <AnimatedContent distance={50} direction="vertical" duration={0.8} ease="power3.out" initialOpacity={0} animateOpacity threshold={0.15}>
-            <div className="container mx-auto max-w-3xl text-center">
+            <div className="container mx-auto max-w-3xl text-center 3xl:max-w-4xl">
               <p className="text-[10px] uppercase tracking-[0.32em] text-primary mb-4 font-semibold">
                 What We Solve
               </p>
-              <h1 className="text-4xl md:text-[2.8rem] font-bold text-foreground mb-6 tracking-tight leading-[1.1]">
+              <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground md:text-[2.8rem] 3xl:text-[3.6rem]">
                 Six problems we hear in almost every firm
               </h1>
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
                 These came out of documented conversations with more than a hundred
-                architecture, engineering and construction professionals. You do not
+                architecture, engineering and construction professionals. You don&rsquo;t
                 need a view on AI to recognise them. Find the one that sounds like your
                 firm.
               </p>
@@ -42,7 +42,7 @@ export default function WhatWeSolve() {
         <SectionDivider className="mx-auto max-w-5xl" />
 
         <section className="py-16 px-4">
-          <div className="container mx-auto max-w-5xl grid md:grid-cols-2 gap-5">
+          <div className="container mx-auto grid max-w-5xl gap-5 md:grid-cols-2 max-w-[min(92vw,1600px)] 3xl:grid-cols-3 3xl:gap-6">
             {JOBS.map((job, i) => (
               <AnimatedContent key={job.id} distance={40} direction="vertical" duration={0.6} ease="power3.out" initialOpacity={0} animateOpacity threshold={0.2} delay={i * 0.06}>
                 <Link
@@ -77,9 +77,9 @@ export default function WhatWeSolve() {
                 None of these quite fit?
               </h2>
               <p className="mb-8 text-[15px] leading-relaxed text-muted-foreground">
-                That is common, and it is usually a sign the problem is worth a
-                conversation rather than a web page. Tell us what your firm is
-                actually dealing with.
+                That happens a lot, and it usually means the problem is worth a
+                conversation rather than a web page. Tell us what your firm is actually
+                dealing with.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <VibeLinkButton href="/contact" variant="primary" size="lg">
