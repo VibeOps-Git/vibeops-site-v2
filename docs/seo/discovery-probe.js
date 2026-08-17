@@ -35,7 +35,8 @@
  * Seed a discovery query only from EVIDENCE — a query Search Console disclosed,
  * or a phrase a real prospect used. Never from a guess; that is what the
  * benchmark already is.
- *
+ */
+
 // __DISCOVERY_QUERIES__ — generated; do not hand-edit.
 const DISCOVERY_QUERIES = [
 

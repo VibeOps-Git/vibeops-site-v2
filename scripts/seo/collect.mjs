@@ -35,6 +35,7 @@
  */
 
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import {
   CONFIG, loadEnv, redact, resolveDate, hasFlag, mergeSource, sourceBlock,
@@ -105,17 +106,24 @@ const PACE_MS = 250;
  * The point of this block is to separate "a ranking moved" from "something
  * broke". Only the latter may justify a same-day production change.
  *
- * SPA caveat, and it matters for how a failure here should be read: this site
- * is client-rendered with a prerender step, so a raw fetch sees the prerendered
- * html. That is genuinely what Googlebot's first pass sees, so these checks are
- * meaningful. But anything react-helmet-async injects at runtime that is NOT in
- * the prerendered output reads as missing here while being visible to a
- * rendering crawler. Confirm against the rendered page before calling it a bug.
+ * SPA REALITY, established by measurement on 2026-08-17 and not assumed: this
+ * site does NOT prerender. The "prerender route list" in vite.config.ts only
+ * generates the sitemap. Every route on the origin returns a byte-identical
+ * copy of dist/index.html — same md5, same fallback <title>, zero <a> tags.
+ * Titles, descriptions, canonicals and links exist only after React and
+ * react-helmet-async have run.
+ *
+ * So these checks measure what Googlebot sees on its FIRST pass, before it
+ * decides whether a URL is worth queuing for rendering. That is the useful
+ * reading, and it is why the shell-duplication check below exists: it is the
+ * single most consequential technical fact about this site's crawlability, and
+ * it is completely invisible in a browser.
  */
 async function technical() {
   const checks = [];
   const issues = [];
   const titles = new Map();
+  const bodyHashes = new Map();  // md5 -> [path]
 
   for (const page of CONFIG.pages) {
     const url = ORIGIN + page.path;
@@ -132,6 +140,12 @@ async function technical() {
         ?.match(/content=["']([^"']*)["']/i)?.[1] ?? null;
       const h1Count = (html.match(/<h1[\s>]/gi) ?? []).length;
       const ogImage = /property=["']og:image["']/i.test(html);
+      const anchors = (html.match(/<a\b[^>]*href=/gi) ?? []).length;
+      const bodyHash = createHash('md5').update(html).digest('hex');
+      if (html) {
+        if (!bodyHashes.has(bodyHash)) bodyHashes.set(bodyHash, []);
+        bodyHashes.get(bodyHash).push(page.path);
+      }
 
       const check = {
         path: page.path,
@@ -145,6 +159,8 @@ async function technical() {
         description_length: desc?.length ?? 0,
         h1_count: h1Count,
         og_image: ogImage,
+        anchor_count: anchors,
+        body_md5: html ? bodyHash : null,
         bytes: html.length,
       };
       checks.push(check);
@@ -173,9 +189,30 @@ async function technical() {
     }
   }
 
-  for (const [title, paths] of titles) {
-    if (paths.length > 1) {
-      issues.push({ severity: 'medium', path: paths.join(', '), issue: `duplicate <title>: "${title}"` });
+  // THE ONE THAT MATTERS. If several URLs return byte-identical html, the site
+  // is serving an un-prerendered SPA shell and every one of those URLs looks
+  // like the same page to a crawler that has not yet spent budget rendering it.
+  // Reported as a single critical finding rather than as N duplicate-title
+  // findings, because it is one cause and it has one fix.
+  const [biggestHash, biggestGroup] = [...bodyHashes.entries()]
+    .sort((a, b) => b[1].length - a[1].length)[0] ?? [null, []];
+  const identicalShell = biggestGroup.length > 1;
+  if (identicalShell) {
+    issues.push({
+      severity: 'critical',
+      path: `${biggestGroup.length} URLs`,
+      issue:
+        `${biggestGroup.length} tracked URLs return BYTE-IDENTICAL html (md5 ${biggestHash?.slice(0, 8)}). ` +
+        `The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these ` +
+        `URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, ` +
+        `but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible ` +
+        `until render. Fix is prerendering or SSR, not a metadata change.`,
+    });
+  } else {
+    for (const [title, paths] of titles) {
+      if (paths.length > 1) {
+        issues.push({ severity: 'medium', path: paths.join(', '), issue: `duplicate <title>: "${title}"` });
+      }
     }
   }
 
@@ -226,10 +263,17 @@ async function technical() {
     lag_days: 0,
     limitations: [
       'A live fetch of the production origin at collection time — a point sample, not a crawl.',
-      'Reads the PRERENDERED html. Anything injected only at runtime by react-helmet-async will read as missing here but is visible to a rendering crawler.',
+      'This site does not prerender: reads the raw SPA shell, which is what a crawler sees BEFORE it decides to render. Per-page titles, descriptions, canonicals and links are injected by React afterwards and are correctly reported as absent here.',
       'Indexed page count is NOT measurable here; it comes from Search Console and is ingested separately.',
     ],
-    data: { pages: checks, robots, sitemap, issues },
+    data: {
+      pages: checks,
+      robots,
+      sitemap,
+      issues,
+      prerendered: !identicalShell,
+      identical_shell_urls: identicalShell ? biggestGroup : [],
+    },
   });
 }
 
@@ -351,7 +395,7 @@ async function links() {
     window_end: date,
     lag_days: 0,
     limitations: [
-      'Reads the prerendered html, so links rendered only after hydration are invisible here. On this site the nav and footer are prerendered, so the graph is substantially complete.',
+      'Reads the raw html. This site does not prerender, so the nav and footer links are NOT present and every page will read as an orphan. That is a true statement about what a non-rendering crawler sees, and it is the finding, not a bug in this collector. Once prerendering or SSR lands, this graph becomes the real internal link graph.',
       'An "off-sitemap link" is not automatically a defect: /blog/* posts and legal pages are legitimately linked. Read the list, do not act on the count.',
       'Anchor text is truncated to 80 characters per link.',
     ],

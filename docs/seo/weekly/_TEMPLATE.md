@@ -4,7 +4,7 @@ Domain age: N days · Week number: N · Previous report: `weekly/YYYY-MM-DD.md`
 
 ## 1. Search Console (authoritative)
 
-Property `sc-domain:roadway.tools`, accessed as **dentzander@gmail.com**
+Property `sc-domain:vibeops.ca`, accessed as **team@vibeops.ca**
 (identity confirmed before access: yes/no). Last 7 days.
 
 | Metric | This week | Last week | Δ | All-time trend |
@@ -21,8 +21,8 @@ Property `sc-domain:roadway.tools`, accessed as **dentzander@gmail.com**
 
 | Page | Impressions | Clicks | CTR | Avg position |
 |---|---|---|---|---|
-| /stopping-sight-distance-calculator | | | | |
-| /vertical-curve-calculator | | | | |
+| /what-we-solve/secure-ai | | | | |
+| /what-we-solve/document-production | | | | |
 | /stopping-sight-distance-table | | | | |
 | / | | | | |
 
@@ -47,8 +47,8 @@ query on the same day. Trend signal only — do not act on a single position.
 
 ### Head terms
 
-- `stopping sight distance calculator`:
-- `vertical curve calculator`:
+- `engineering report automation`:
+- `custom software for engineering firms`:
 
 ### Strongest long-tail
 

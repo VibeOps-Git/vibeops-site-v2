@@ -2,13 +2,13 @@
   "schema_version": 1,
   "date": "2026-08-17",
   "domain_age_days": 57,
-  "first_collected_at": "2026-08-17T20:46:54.019Z",
-  "revision": 8,
+  "first_collected_at": "2026-08-17T20:48:08.824Z",
+  "revision": 13,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-17T20:46:41.408Z",
+      "collected_at": "2026-08-17T20:48:25.509Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -16,7 +16,7 @@
       "lag_days": 0,
       "limitations": [
         "A live fetch of the production origin at collection time — a point sample, not a crawl.",
-        "Reads the PRERENDERED html. Anything injected only at runtime by react-helmet-async will read as missing here but is visible to a rendering crawler.",
+        "This site does not prerender: reads the raw SPA shell, which is what a crawler sees BEFORE it decides to render. Per-page titles, descriptions, canonicals and links are injected by React afterwards and are correctly reported as absent here.",
         "Indexed page count is NOT measurable here; it comes from Search Console and is ingested separately."
       ],
       "data": {
@@ -33,6 +33,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -47,6 +49,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -61,6 +65,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -75,6 +81,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -89,6 +97,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -103,6 +113,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -117,6 +129,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -131,6 +145,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -145,6 +161,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -159,6 +177,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -173,6 +193,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -187,6 +209,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -201,6 +225,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -215,6 +241,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -229,6 +257,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           },
           {
@@ -243,6 +273,8 @@
             "description_length": 49,
             "h1_count": 0,
             "og_image": true,
+            "anchor_count": 0,
+            "body_md5": "1d201f7dc044a8b1aef5fb50056963d0",
             "bytes": 9063
           }
         ],
@@ -609,24 +641,43 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/, /what-we-solve, /what-we-solve/secure-ai, /what-we-solve/document-production, /what-we-solve/systems-integration, /what-we-solve/internal-tools, /what-we-solve/institutional-knowledge, /what-we-solve/ai-governance, /how-we-work, /proof, /security, /team, /contact, /blog, /privacy, /terms",
-            "issue": "duplicate <title>: \"VibeOps | The AI Engineering Team for Architecture & Engineering Firms\""
+            "severity": "critical",
+            "path": "16 URLs",
+            "issue": "16 tracked URLs return BYTE-IDENTICAL html (md5 1d201f7d). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
           }
+        ],
+        "prerendered": false,
+        "identical_shell_urls": [
+          "/",
+          "/what-we-solve",
+          "/what-we-solve/secure-ai",
+          "/what-we-solve/document-production",
+          "/what-we-solve/systems-integration",
+          "/what-we-solve/internal-tools",
+          "/what-we-solve/institutional-knowledge",
+          "/what-we-solve/ai-governance",
+          "/how-we-work",
+          "/proof",
+          "/security",
+          "/team",
+          "/contact",
+          "/blog",
+          "/privacy",
+          "/terms"
         ]
       }
     },
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-17T20:46:49.257Z",
+      "collected_at": "2026-08-17T20:48:33.305Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
       },
       "lag_days": 0,
       "limitations": [
-        "Reads the prerendered html, so links rendered only after hydration are invisible here. On this site the nav and footer are prerendered, so the graph is substantially complete.",
+        "Reads the raw html. This site does not prerender, so the nav and footer links are NOT present and every page will read as an orphan. That is a true statement about what a non-rendering crawler sees, and it is the finding, not a bug in this collector. Once prerendering or SSR lands, this graph becomes the real internal link graph.",
         "An \"off-sitemap link\" is not automatically a defect: /blog/* posts and legal pages are legitimately linked. Read the list, do not act on the count.",
         "Anchor text is truncated to 80 characters per link."
       ],
@@ -1140,7 +1191,7 @@
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-17T20:46:53.679Z",
+      "collected_at": "2026-08-17T20:48:37.559Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -1302,7 +1353,7 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-17T20:46:53.893Z",
+      "collected_at": "2026-08-17T20:48:37.769Z",
       "represents": {
         "start": "2026-08-17",
         "end": "2026-08-17"
@@ -1318,7 +1369,7 @@
     "vercel": {
       "source": "vercel-api",
       "status": "ok",
-      "collected_at": "2026-08-17T20:46:54.019Z",
+      "collected_at": "2026-08-17T20:48:37.908Z",
       "represents": {
         "start": "2026-05-02",
         "end": "2026-08-17"
@@ -1458,7 +1509,7 @@
     "search_console": {
       "source": "google-search-console",
       "status": "pending",
-      "collected_at": "2026-08-17T20:46:54.025Z",
+      "collected_at": "2026-08-17T20:48:08.828Z",
       "represents": {
         "start": null,
         "end": null
@@ -1474,7 +1525,7 @@
     "serp_probe": {
       "source": "fixed-serp-probe",
       "status": "pending",
-      "collected_at": "2026-08-17T20:46:54.026Z",
+      "collected_at": "2026-08-17T20:48:08.829Z",
       "represents": {
         "start": null,
         "end": null
@@ -1490,7 +1541,7 @@
     "vercel_web_analytics": {
       "source": "vercel-web-analytics-ui",
       "status": "pending",
-      "collected_at": "2026-08-17T20:46:54.027Z",
+      "collected_at": "2026-08-17T20:48:08.831Z",
       "represents": {
         "start": null,
         "end": null
@@ -1506,53 +1557,83 @@
   },
   "collection_log": [
     {
-      "at": "2026-08-17T20:46:54.019Z",
+      "at": "2026-08-17T20:48:08.824Z",
       "source": "technical",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:46:54.021Z",
+      "at": "2026-08-17T20:48:08.825Z",
       "source": "internal_links",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:46:54.022Z",
+      "at": "2026-08-17T20:48:08.826Z",
       "source": "structured_data",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:46:54.023Z",
+      "at": "2026-08-17T20:48:08.827Z",
       "source": "page_speed",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:46:54.024Z",
+      "at": "2026-08-17T20:48:08.828Z",
       "source": "vercel",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:46:54.025Z",
+      "at": "2026-08-17T20:48:08.829Z",
       "source": "search_console",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:46:54.026Z",
+      "at": "2026-08-17T20:48:08.830Z",
       "source": "serp_probe",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:46:54.027Z",
+      "at": "2026-08-17T20:48:08.831Z",
       "source": "vercel_web_analytics",
       "action": "added",
       "status": "pending"
+    },
+    {
+      "at": "2026-08-17T20:48:37.911Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:48:37.912Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:48:37.913Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-17T20:48:37.914Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-17T20:48:37.914Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
     }
   ],
-  "updated_at": "2026-08-17T20:46:54.027Z"
+  "updated_at": "2026-08-17T20:48:37.914Z"
 }
