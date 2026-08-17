@@ -1,0 +1,175 @@
+{
+  "_comment": "Single source of truth for the VibeOps SEO intelligence system. Read by everything in scripts/seo/. No secrets here — credentials live in .env (gitignored). The Vercel project and team ids are already visible to anyone with repo access and in deployment URLs, so they are kept here for reproducibility.",
+  "site": {
+    "domain": "vibeops.ca",
+    "origin": "https://www.vibeops.ca",
+    "launch_date": "2026-06-21",
+    "_launch_date_note": "First commit of this site generation (v16). Used only for the 'domain age' line in reports and for the RUM-equivalent window start. The vibeops.ca domain itself is older; if a precise domain registration date matters for an authority argument, measure it, do not assume this one.",
+    "gsc_property": "sc-domain:vibeops.ca",
+    "gsc_account": "team@vibeops.ca",
+    "_gsc_note": "Domain property, so it covers www and apex and http and https in one. The account gate is enforced by verify.mjs and again by ingest-gsc.mjs: this Chrome profile also has dentzander@gmail.com signed in, which owns roadway.tools. Ingesting one property's numbers into the other's dataset would be unrecoverable, so the account is checked twice."
+  },
+  "vercel": {
+    "team_id": "team_WfOi17TqUdoAWPXrSvxSPK8U",
+    "project_id": "prj_5AT415Lo1ugL29nvs5yYdg0MqvLa",
+    "project_name": "vibeops-site-v2",
+    "api": "https://api.vercel.com",
+    "_note": "Deployments are readable through the public API using the token the Vercel CLI already stores locally, so this collector needs no new credential. Web Analytics is a different matter: it is ENABLED on the project (webAnalytics.id 8CUSrk83TU3AhuPqdh4WElirv) but Vercel exposes no stable REST endpoint for it. Five endpoint shapes were probed on 2026-08-17 and all returned 404. It is therefore collected the same way Search Console is — from the browser, by a person — and recorded as `pending` until then.",
+    "_why_deployments_matter": "Not vanity. A ranking or Core Web Vitals change that lines up with a deploy has a candidate cause; one that does not is either SERP volatility or something external. Without the deploy timeline that distinction is guesswork."
+  },
+  "pagespeed": {
+    "endpoint": "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
+    "strategy": "mobile",
+    "_strategy_note": "Mobile only. Google indexes mobile-first, and running both doubles a quota that is already the binding constraint.",
+    "sampled_pages": [
+      "/",
+      "/what-we-solve",
+      "/how-we-work",
+      "/proof",
+      "/security",
+      "/contact"
+    ],
+    "_sampling_note": "PageSpeed is rate-limited and slow (roughly 15-25s per URL), so it samples the six pages that carry the commercial journey rather than all 28. Blog posts are deliberately excluded: they share one template, so measuring one measures all of them.",
+    "_key_note": "Works without an API key at low volume, but the shared anonymous quota is frequently exhausted (observed HTTP 429 on 2026-08-17 during setup). Set PAGESPEED_API_KEY in .env for a free, reliable per-project quota. A 429 is recorded as `pending`, never as an error, and never as a zero."
+  },
+  "pages": [
+    { "path": "/", "cluster": "sitewide", "title": "Home", "in_sitemap": true, "journey": "entry" },
+    { "path": "/what-we-solve", "cluster": "sitewide", "title": "What We Solve", "in_sitemap": true, "journey": "entry" },
+    { "path": "/what-we-solve/secure-ai", "cluster": "secure-ai", "title": "AI on confidential data", "in_sitemap": true, "journey": "problem" },
+    { "path": "/what-we-solve/document-production", "cluster": "document-production", "title": "Document production", "in_sitemap": true, "journey": "problem" },
+    { "path": "/what-we-solve/systems-integration", "cluster": "systems-integration", "title": "Systems that don't talk", "in_sitemap": true, "journey": "problem" },
+    { "path": "/what-we-solve/internal-tools", "cluster": "internal-tools", "title": "Tools that don't exist", "in_sitemap": true, "journey": "problem" },
+    { "path": "/what-we-solve/institutional-knowledge", "cluster": "institutional-knowledge", "title": "Knowledge locked in past work", "in_sitemap": true, "journey": "problem" },
+    { "path": "/what-we-solve/ai-governance", "cluster": "ai-governance", "title": "Oversight and governance", "in_sitemap": true, "journey": "problem" },
+    { "path": "/how-we-work", "cluster": "sitewide", "title": "How We Work", "in_sitemap": true, "journey": "consideration" },
+    { "path": "/proof", "cluster": "sitewide", "title": "Our Work", "in_sitemap": true, "journey": "consideration" },
+    { "path": "/security", "cluster": "sitewide", "title": "Security and Data Handling", "in_sitemap": true, "journey": "gate" },
+    { "path": "/team", "cluster": "sitewide", "title": "Team", "in_sitemap": true, "journey": "consideration" },
+    { "path": "/contact", "cluster": "sitewide", "title": "Contact", "in_sitemap": true, "journey": "conversion" },
+    { "path": "/blog", "cluster": "blog", "title": "Blog index", "in_sitemap": true, "journey": "entry" },
+    { "path": "/privacy", "cluster": "sitewide", "title": "Privacy", "in_sitemap": true, "journey": "utility" },
+    { "path": "/terms", "cluster": "sitewide", "title": "Terms", "in_sitemap": true, "journey": "utility" }
+  ],
+  "_pages_note": "The 16 non-blog URLs. The 12 blog posts are in the sitemap and are crawled by the link-graph collector, but they are not tracked individually here: they share a template, and listing them would make the per-page technical table unreadable without adding information. If a blog post starts earning real impressions, promote it into this list deliberately.",
+  "_journey_note": "`journey` marks where a page sits in the buyer path the site was built around: entry -> problem -> consideration -> gate -> conversion. It is used by analyze.mjs to say something more useful than 'this page got impressions', namely whether search demand is arriving at the top of the journey or halfway down it.",
+  "clusters": {
+    "secure-ai": {
+      "label": "AI on confidential data",
+      "primary_page": "/what-we-solve/secure-ai",
+      "pages": ["/what-we-solve/secure-ai", "/security"],
+      "infer_terms": ["confidential", "private ai", "secure ai", "on-premise", "on premise", "self-host", "self host", "data residency", "client data", "nda", "it approval", "security review", "soc 2", "tenancy"]
+    },
+    "document-production": {
+      "label": "Document production",
+      "primary_page": "/what-we-solve/document-production",
+      "pages": ["/what-we-solve/document-production"],
+      "infer_terms": ["report automation", "report writing", "document automation", "engineering report", "inspection report", "submittal", "specification", "proposal automation", "deliverable", "template"]
+    },
+    "systems-integration": {
+      "label": "Systems integration",
+      "primary_page": "/what-we-solve/systems-integration",
+      "pages": ["/what-we-solve/systems-integration"],
+      "infer_terms": ["integration", "api", "connect", "bim", "revit", "autocad", "civil 3d", "procore", "sharepoint", "bluebeam", "middleware", "data migration"]
+    },
+    "internal-tools": {
+      "label": "Custom internal software",
+      "primary_page": "/what-we-solve/internal-tools",
+      "pages": ["/what-we-solve/internal-tools"],
+      "infer_terms": ["custom software", "internal tool", "bespoke", "build software", "software development", "dashboard", "portal", "field app", "spreadsheet replacement", "in-house"]
+    },
+    "institutional-knowledge": {
+      "label": "Institutional knowledge",
+      "primary_page": "/what-we-solve/institutional-knowledge",
+      "pages": ["/what-we-solve/institutional-knowledge"],
+      "infer_terms": ["knowledge management", "document search", "search past projects", "archive", "document intelligence", "rag", "retrieval", "ocr", "drawing search", "version drift"]
+    },
+    "ai-governance": {
+      "label": "AI governance and oversight",
+      "primary_page": "/what-we-solve/ai-governance",
+      "pages": ["/what-we-solve/ai-governance"],
+      "infer_terms": ["governance", "oversight", "audit trail", "quality control", "qa/qc", "liability", "stamp", "professional responsibility", "review workflow", "ai policy", "compliance"]
+    },
+    "blog": {
+      "label": "Blog / editorial",
+      "primary_page": "/blog",
+      "pages": ["/blog"],
+      "infer_terms": []
+    },
+    "sitewide": {
+      "label": "Sitewide / navigational / brand",
+      "primary_page": "/",
+      "pages": ["/", "/what-we-solve", "/how-we-work", "/proof", "/team", "/contact", "/privacy", "/terms"],
+      "infer_terms": ["vibeops", "ai consultant", "ai consulting", "ae firm", "aec", "architecture and engineering", "civil engineering", "engineering firm", "forward deployed", "vancouver"]
+    }
+  },
+  "technical": {
+    "daily_checks": ["http_status", "noindex", "canonical", "robots_txt", "sitemap_xml", "title", "h1", "internal_links"],
+    "weekly_checks": ["sitemap_url_parity", "structured_data", "core_web_vitals_regression", "duplicate_titles", "orphan_pages"],
+    "_note": "Daily checks are cheap HTTP reads of the 16 tracked URLs plus robots and sitemap. The link-graph crawl reads all 28 sitemap URLs once. Anything slower than that (PageSpeed) samples 6 pages. See PLAYBOOK.md.",
+    "_spa_caveat": "This site is a client-rendered Vite SPA with a prerender step. A raw fetch sees the PRERENDERED html, which is what Googlebot's first pass sees too — so these checks are meaningful. But anything injected by react-helmet-async at runtime and NOT present in the prerendered output will read as missing here while being visible to a rendering crawler. When a check flags a missing title or canonical, confirm against the rendered page before treating it as a defect."
+  },
+  "thresholds": {
+    "_comment": "Evidence gates. Set in advance so readings are not rationalised after the fact. Changing these is a methodology change: record it in the weekly report.",
+    "ctr_min_impressions_7d": 100,
+    "_ctr_note": "Below 100 impressions in 7 days, CTR is arithmetic noise and is never flagged as an opportunity.",
+    "ctr_underperformance_ratio": 0.5,
+    "ranking_min_impressions": 10,
+    "position_material_move": 5,
+    "trend_min_days": 3,
+    "impression_growth_material_pct": 25,
+    "opportunity_promote_to_ready_days": 7,
+    "min_daily_impressions_for_daily_report_detail": 20,
+    "psi_lcp_regression_ms": 400,
+    "_psi_note": "Core Web Vitals move on their own between runs. Only an LCP change beyond this, sustained across trend_min_days, is treated as a regression worth investigating."
+  },
+  "expansion_criteria": [
+    { "id": 1, "criterion": "More than one problem cluster receiving meaningful organic impressions" },
+    { "id": 2, "criterion": "Clicks arriving consistently, not a single spike" },
+    { "id": 3, "criterion": "Query breadth expanding week over week" },
+    { "id": 4, "criterion": "Queries arriving with buying intent, not only definitional intent" },
+    { "id": 5, "criterion": "At least one problem page ranking top 10 for a non-brand term" },
+    { "id": 6, "criterion": "Organic arrivals reaching /contact, not only reading and leaving" }
+  ],
+  "product_scope": {
+    "_comment": "Hard scope gate. This system OBSERVES and RECOMMENDS. It may identify a content gap; it must never write a page, publish a post, or deploy.",
+    "may_edit_production": false,
+    "may_publish_content": false,
+    "_scope_note": "Deliberate, and it reflects a stated preference: legitimate on-codebase SEO only. No auto-publishing, no generated backlink outreach, no programmatic doorway pages. If a report recommends new content, a person writes it."
+  },
+  "gsc": {
+    "typical_lag_days": 2,
+    "_lag_note": "Search Console publishes roughly 2 days behind. A snapshot collected on day D usually covers through D-2. NEVER present a GSC figure as representing the collection date."
+  },
+  "topicality": {
+    "_comment": "Heuristic classification of disclosed queries. Measures whether Google is learning what this domain is about.",
+    "on_topic_terms": [
+      "ae firm", "aec", "architecture and engineering", "engineering firm", "civil engineering", "civil engineer",
+      "engineering consultancy", "construction", "infrastructure",
+      "ai for engineering", "ai for construction", "ai for civil", "engineering ai", "construction ai",
+      "report automation", "engineering report", "document automation", "specification", "submittal",
+      "custom software", "internal tool", "systems integration", "bim", "revit", "civil 3d", "procore",
+      "knowledge management", "document intelligence", "ai governance", "audit trail", "qa/qc",
+      "confidential", "private ai", "secure ai", "data residency", "forward deployed", "vibeops"
+    ],
+    "adjacent_terms": [
+      "consultant", "consulting", "automation", "workflow", "software development", "machine learning",
+      "artificial intelligence", "llm", "chatgpt", "copilot", "dashboard", "integration", "vancouver",
+      "engineering", "project management", "productivity"
+    ],
+    "_classification_note": "on_topic if it matches an on_topic term; adjacent if it only matches an adjacent term; irrelevant otherwise. Heuristic only. The daily report may override a classification by hand, and overrides are recorded in the snapshot."
+  },
+  "benchmark": {
+    "_comment": "Immutability fingerprint for the frozen benchmark in queries.json. verify.mjs fails if it changes. The benchmark measures a fixed thing over time; changing it silently would destroy comparability with every prior week and there would be no way to tell from the data.",
+    "frozen_on": null,
+    "query_count": null,
+    "sha256": null,
+    "_pending_freeze": "Set by `npm run seo:freeze` on the first clean verify. Until then verify.mjs reports the benchmark as UNFROZEN and warns, rather than failing, so the system is usable from day one. Freeze it before the first weekly review or the first week has nothing to be compared against.",
+    "_if_this_must_change": "It should not. If a query becomes genuinely invalid, mark it deprecated in queries.json and KEEP MEASURING IT. If the fingerprint truly must be updated, record the change and its reason in that week's report, because every prior comparison becomes suspect."
+  },
+  "discovery": {
+    "_comment": "The secondary discovery set is deliberately NOT fingerprinted — it is expected to evolve. Its integrity check is disjointness from the benchmark, not immutability.",
+    "set_file": "docs/seo/discovery-queries.json",
+    "probe_file": "docs/seo/discovery-probe.js",
+    "source_block": "serp_discovery"
+  }
+}

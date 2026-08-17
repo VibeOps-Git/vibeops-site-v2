@@ -1,0 +1,28 @@
+{
+  "_comment": "SECONDARY DISCOVERY QUERY SET. This is NOT the benchmark. It exists alongside docs/seo/queries.json, which is frozen and must never change.",
+
+  "version": 1,
+  "created": "2026-08-17",
+  "last_revised": "2026-08-17",
+
+  "purpose": "Measure what Google actually associates with each page, as opposed to what we assumed when the benchmark was written. The benchmark for vibeops.ca was built from the site's own positioning and from the vocabulary of 100+ discovery interviews. That is a deliberate bet on intent match over keyword volume, and it is exactly the kind of bet that needs an instrument capable of showing it was wrong.",
+
+  "seeding_rule": "A discovery query is added only from EVIDENCE: a query Search Console disclosed for one of our pages, a phrase a real prospect used in a call or an email, or a term a competitor visibly ranks for. NEVER from a guess or a keyword tool. Guessing is what the benchmark already does, and duplicating that here would just produce a second set of zeros with none of the comparability.",
+
+  "why_it_starts_empty": "Because there is no evidence yet. Search Console has disclosed nothing for this property in this dataset, so there is nothing legitimate to seed. Populating it now with plausible-sounding phrases would be a guess wearing the costume of a finding, and it would corrupt the one instrument built specifically to catch our own wrong assumptions. It fills up on its own at the first weekly review that has Search Console data.",
+
+  "rules": [
+    "Disjoint from the benchmark. verify.mjs FAILS if any active discovery query also appears in queries.json.",
+    "Never promote a discovery query into the frozen benchmark. Doing so would retroactively manufacture an improvement out of a query we already ranked for.",
+    "Every query records its provenance. verify.mjs fails without it.",
+    "Retire by setting status to 'retired', never by deleting the row. The history of what we thought was worth measuring is itself informative.",
+    "Results land in the `serp_discovery` source block, never in `serp_probe`. The two are labelled separately in every report because their totals mean different things: the benchmark's totals are a trend series, this set's are not."
+  ],
+
+  "status_values": {
+    "active": "Included in discovery-probe.js and probed at the weekly review.",
+    "retired": "No longer probed. Kept for the record."
+  },
+
+  "queries": []
+}

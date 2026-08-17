@@ -1,0 +1,5177 @@
+{
+  "_comment": "The opportunity register. Written by scripts/seo/analyze.mjs, never by hand. Each record accumulates evidence across days so that an opportunity has to persist before it can be acted on — see thresholds.opportunity_promote_to_ready_days in config.json.",
+  "_actions": "Every record carries exactly one recommended_action from: HOLD, OPTIMIZE, CREATE, PROMOTE, TECHNICAL, UX. verify.mjs fails on anything else.",
+  "opportunities": [
+    {
+      "id": "structure:what-we-solve-orphan",
+      "query_or_topic": "/what-we-solve: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/what-we-solve",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-secure-ai-orphan",
+      "query_or_topic": "/what-we-solve/secure-ai: orphan page",
+      "kind": "structure",
+      "cluster": "secure-ai",
+      "target_page": "/what-we-solve/secure-ai",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve/secure-ai. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the secure-ai cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-document-production-orphan",
+      "query_or_topic": "/what-we-solve/document-production: orphan page",
+      "kind": "structure",
+      "cluster": "document-production",
+      "target_page": "/what-we-solve/document-production",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve/document-production. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the document-production cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-systems-integration-orphan",
+      "query_or_topic": "/what-we-solve/systems-integration: orphan page",
+      "kind": "structure",
+      "cluster": "systems-integration",
+      "target_page": "/what-we-solve/systems-integration",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve/systems-integration. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the systems-integration cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-internal-tools-orphan",
+      "query_or_topic": "/what-we-solve/internal-tools: orphan page",
+      "kind": "structure",
+      "cluster": "internal-tools",
+      "target_page": "/what-we-solve/internal-tools",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve/internal-tools. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the internal-tools cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-institutional-knowledge-orphan",
+      "query_or_topic": "/what-we-solve/institutional-knowledge: orphan page",
+      "kind": "structure",
+      "cluster": "institutional-knowledge",
+      "target_page": "/what-we-solve/institutional-knowledge",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve/institutional-knowledge. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the institutional-knowledge cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-ai-governance-orphan",
+      "query_or_topic": "/what-we-solve/ai-governance: orphan page",
+      "kind": "structure",
+      "cluster": "ai-governance",
+      "target_page": "/what-we-solve/ai-governance",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /what-we-solve/ai-governance. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the ai-governance cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:how-we-work-orphan",
+      "query_or_topic": "/how-we-work: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/how-we-work",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /how-we-work. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:security-orphan",
+      "query_or_topic": "/security: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/security",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /security. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:proof-orphan",
+      "query_or_topic": "/proof: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/proof",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /proof. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:contact-orphan",
+      "query_or_topic": "/contact: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/contact",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /contact. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:team-orphan",
+      "query_or_topic": "/team: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/team",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /team. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-orphan",
+      "query_or_topic": "/blog: orphan page",
+      "kind": "structure",
+      "cluster": "blog",
+      "target_page": "/blog",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the blog cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:privacy-orphan",
+      "query_or_topic": "/privacy: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/privacy",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /privacy. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:terms-orphan",
+      "query_or_topic": "/terms: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/terms",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /terms. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-accountability-code-compliance-aec-allplan-take-orphan",
+      "query_or_topic": "/blog/ai-accountability-code-compliance-aec-allplan-take: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-accountability-code-compliance-aec-allplan-take",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/ai-accountability-code-compliance-aec-allplan-take. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-civil-engineering-reporting-orphan",
+      "query_or_topic": "/blog/ai-civil-engineering-reporting: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-civil-engineering-reporting",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/ai-civil-engineering-reporting. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-reporting-software-civil-engineers-orphan",
+      "query_or_topic": "/blog/ai-reporting-software-civil-engineers: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-reporting-software-civil-engineers",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/ai-reporting-software-civil-engineers. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-tipping-point-construction-what-it-means-for-engineering-firms-orphan",
+      "query_or_topic": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/ai-tipping-point-construction-what-it-means-for-engineering-firms. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-asce-construction-robots-data-collection-engineers-take-orphan",
+      "query_or_topic": "/blog/asce-construction-robots-data-collection-engineers-take: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/asce-construction-robots-data-collection-engineers-take",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/asce-construction-robots-data-collection-engineers-take. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-automated-reports-civil-engineering-orphan",
+      "query_or_topic": "/blog/automated-reports-civil-engineering: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/automated-reports-civil-engineering",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/automated-reports-civil-engineering. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-best-ai-tools-for-civil-engineers-in-2026-orphan",
+      "query_or_topic": "/blog/best-ai-tools-for-civil-engineers-in-2026: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/best-ai-tools-for-civil-engineers-in-2026",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/best-ai-tools-for-civil-engineers-in-2026. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-civil-engineering-report-automation-vs-manual-orphan",
+      "query_or_topic": "/blog/civil-engineering-report-automation-vs-manual: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/civil-engineering-report-automation-vs-manual",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/civil-engineering-report-automation-vs-manual. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-civil-engineering-workflow-automation-how-ai-is-changing-the-industry-orphan",
+      "query_or_topic": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-engineering-report-automation-the-future-of-civil-engineering-workflows-orphan",
+      "query_or_topic": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/engineering-report-automation-the-future-of-civil-engineering-workflows. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-the-best-civil-engineering-reporting-software-in-2026-orphan",
+      "query_or_topic": "/blog/the-best-civil-engineering-reporting-software-in-2026: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/the-best-civil-engineering-reporting-software-in-2026",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/the-best-civil-engineering-reporting-software-in-2026. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-the-best-reporting-solution-for-civil-engineers-in-2026-orphan",
+      "query_or_topic": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026: orphan page",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "Nothing on the site links to /blog/the-best-reporting-solution-for-civil-engineers-in-2026. It is in the sitemap, so Google can find it, but it is being told the site does not consider it important.",
+      "ux_metric": "inbound_internal_links",
+      "ux_value": 0,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Add a contextual internal link from a related page. This is fully within our control and needs no traffic to justify.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-unreachable",
+      "query_or_topic": "/what-we-solve: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/what-we-solve",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-secure-ai-unreachable",
+      "query_or_topic": "/what-we-solve/secure-ai: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "secure-ai",
+      "target_page": "/what-we-solve/secure-ai",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve/secure-ai cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the secure-ai cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-document-production-unreachable",
+      "query_or_topic": "/what-we-solve/document-production: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "document-production",
+      "target_page": "/what-we-solve/document-production",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve/document-production cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the document-production cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-systems-integration-unreachable",
+      "query_or_topic": "/what-we-solve/systems-integration: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "systems-integration",
+      "target_page": "/what-we-solve/systems-integration",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve/systems-integration cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the systems-integration cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-internal-tools-unreachable",
+      "query_or_topic": "/what-we-solve/internal-tools: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "internal-tools",
+      "target_page": "/what-we-solve/internal-tools",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve/internal-tools cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the internal-tools cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-institutional-knowledge-unreachable",
+      "query_or_topic": "/what-we-solve/institutional-knowledge: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "institutional-knowledge",
+      "target_page": "/what-we-solve/institutional-knowledge",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve/institutional-knowledge cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the institutional-knowledge cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:what-we-solve-ai-governance-unreachable",
+      "query_or_topic": "/what-we-solve/ai-governance: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "ai-governance",
+      "target_page": "/what-we-solve/ai-governance",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/what-we-solve/ai-governance cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the ai-governance cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:how-we-work-unreachable",
+      "query_or_topic": "/how-we-work: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/how-we-work",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/how-we-work cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:security-unreachable",
+      "query_or_topic": "/security: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/security",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/security cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:proof-unreachable",
+      "query_or_topic": "/proof: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/proof",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/proof cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:contact-unreachable",
+      "query_or_topic": "/contact: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/contact",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/contact cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:team-unreachable",
+      "query_or_topic": "/team: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/team",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/team cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-unreachable",
+      "query_or_topic": "/blog: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "blog",
+      "target_page": "/blog",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 3.8,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 10,
+          "of": 10,
+          "note": "strengthens the blog cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:privacy-unreachable",
+      "query_or_topic": "/privacy: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/privacy",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/privacy cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:terms-unreachable",
+      "query_or_topic": "/terms: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/terms",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/terms cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-accountability-code-compliance-aec-allplan-take-unreachable",
+      "query_or_topic": "/blog/ai-accountability-code-compliance-aec-allplan-take: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-accountability-code-compliance-aec-allplan-take",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/ai-accountability-code-compliance-aec-allplan-take cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-civil-engineering-reporting-unreachable",
+      "query_or_topic": "/blog/ai-civil-engineering-reporting: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-civil-engineering-reporting",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/ai-civil-engineering-reporting cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-reporting-software-civil-engineers-unreachable",
+      "query_or_topic": "/blog/ai-reporting-software-civil-engineers: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-reporting-software-civil-engineers",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/ai-reporting-software-civil-engineers cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-ai-tipping-point-construction-what-it-means-for-engineering-firms-unreachable",
+      "query_or_topic": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-asce-construction-robots-data-collection-engineers-take-unreachable",
+      "query_or_topic": "/blog/asce-construction-robots-data-collection-engineers-take: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/asce-construction-robots-data-collection-engineers-take",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/asce-construction-robots-data-collection-engineers-take cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-automated-reports-civil-engineering-unreachable",
+      "query_or_topic": "/blog/automated-reports-civil-engineering: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/automated-reports-civil-engineering",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/automated-reports-civil-engineering cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-best-ai-tools-for-civil-engineers-in-2026-unreachable",
+      "query_or_topic": "/blog/best-ai-tools-for-civil-engineers-in-2026: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/best-ai-tools-for-civil-engineers-in-2026",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/best-ai-tools-for-civil-engineers-in-2026 cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-civil-engineering-report-automation-vs-manual-unreachable",
+      "query_or_topic": "/blog/civil-engineering-report-automation-vs-manual: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/civil-engineering-report-automation-vs-manual",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/civil-engineering-report-automation-vs-manual cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-civil-engineering-workflow-automation-how-ai-is-changing-the-industry-unreachable",
+      "query_or_topic": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-engineering-report-automation-the-future-of-civil-engineering-workflows-unreachable",
+      "query_or_topic": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-the-best-civil-engineering-reporting-software-in-2026-unreachable",
+      "query_or_topic": "/blog/the-best-civil-engineering-reporting-software-in-2026: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/the-best-civil-engineering-reporting-software-in-2026",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/the-best-civil-engineering-reporting-software-in-2026 cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "structure:blog-the-best-reporting-solution-for-civil-engineers-in-2026-unreachable",
+      "query_or_topic": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026: unreachable from the homepage",
+      "kind": "structure",
+      "cluster": "sitewide",
+      "target_page": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "WATCHING",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "internal_links"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": "STRUCTURAL",
+      "ux_finding": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026 cannot be reached from / by following internal links.",
+      "ux_metric": "click_depth",
+      "ux_value": null,
+      "ux_denominator": 28,
+      "ux_hypothesis": "Either it should be linked from the navigation or a hub page, or it should not be in the sitemap.",
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "HOLD",
+      "recommendation_why": "Only 1 day(s) of evidence at 0 impressions — not enough to distinguish signal from noise."
+    },
+    {
+      "id": "technical:16-urls-16-tracked-urls-return-byte-identical-html-md5-1d201f7d-the-site-is-serving-an-un-prerendered-spa-shell-so-on-a-crawler-s-first-pass-every-one-of-these-urls-has-the-same-title-the-same-content-and-no-links-google-does-render-js-so-this-is-not-fatal-but-it-delays-indexing-spends-crawl-budget-on-duplicates-and-makes-per-page-metadata-invisible-until-render-fix-is-prerendering-or-ssr-not-a-metadata-change",
+      "query_or_topic": "16 URLs: 16 tracked URLs return BYTE-IDENTICAL html (md5 1d201f7d). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change.",
+      "kind": "technical",
+      "cluster": "sitewide",
+      "target_page": "16 URLs",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "days_seen": 1,
+      "status": "READY",
+      "evidence": [
+        {
+          "date": "2026-08-17",
+          "impressions": 0,
+          "clicks": 0,
+          "position": null,
+          "source": "technical"
+        }
+      ],
+      "notes": "",
+      "topicality": "on_topic",
+      "impressions_7d": 0,
+      "impressions_28d": 0,
+      "clicks_7d": 0,
+      "ctr": 0,
+      "average_position": null,
+      "position_trend": "unknown",
+      "impression_trend": "unknown",
+      "intent": null,
+      "intent_match": "unassessed",
+      "content_gap": null,
+      "competitor_gap": null,
+      "link_worthy": false,
+      "ux_signal": null,
+      "ux_finding": null,
+      "ux_metric": null,
+      "ux_value": null,
+      "ux_denominator": null,
+      "ux_hypothesis": null,
+      "score": 2.9,
+      "score_components": [
+        {
+          "factor": "impression_volume",
+          "points": 0,
+          "of": 25,
+          "note": "0 impressions in the 7-day window"
+        },
+        {
+          "factor": "impression_growth",
+          "points": 0,
+          "of": 15,
+          "note": "no growth data"
+        },
+        {
+          "factor": "position_headroom",
+          "points": 0,
+          "of": 20,
+          "note": "no position recorded"
+        },
+        {
+          "factor": "ctr_gap",
+          "points": 0,
+          "of": 15,
+          "note": "0 impressions is below the 100 needed for CTR to be signal rather than arithmetic noise"
+        },
+        {
+          "factor": "relevance",
+          "points": 15,
+          "of": 15,
+          "note": "classified on_topic"
+        },
+        {
+          "factor": "cluster_fit",
+          "points": 4,
+          "of": 10,
+          "note": "strengthens the sitewide cluster"
+        }
+      ],
+      "score_penalties": [
+        {
+          "penalty": "tiny_sample",
+          "factor": 0.3,
+          "note": "0 impressions is below the 10-impression floor for reading anything into this"
+        },
+        {
+          "penalty": "short_history",
+          "factor": 0.5,
+          "note": "seen on 1 day(s); a trend needs at least 3"
+        }
+      ],
+      "confidence": "LOW",
+      "recommended_action": "TECHNICAL",
+      "recommendation_why": "Technical defect on 16 URLs: 16 tracked URLs return BYTE-IDENTICAL html (md5 1d201f7d). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
+    }
+  ],
+  "updated_at": "2026-08-17T20:49:15.436Z"
+}

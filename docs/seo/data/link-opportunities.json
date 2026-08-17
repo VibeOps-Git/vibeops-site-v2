@@ -1,0 +1,6 @@
+{
+  "_comment": "Places a link to this site would be genuinely useful to that page's readers. Written and pursued by hand.",
+  "_hard_rule": "No automated outreach, no link exchanges, no paid placements, no directory spam. If a link would not be worth having when a human editor looked at it, it is not an opportunity, it is a liability. This register exists to make that judgement explicit rather than delegating it to a tool.",
+  "_shape": "{ id, target, why_relevant, our_asset, status: 'idea' | 'contacted' | 'live' | 'declined', notes }",
+  "opportunities": []
+}

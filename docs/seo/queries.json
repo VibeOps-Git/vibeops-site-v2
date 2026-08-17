@@ -1,0 +1,66 @@
+{
+  "_comment": "The FIXED SERP probe query set for vibeops.ca. Do not add, remove or reword a query once frozen — the whole value of a fixed set is that it can show us we were wrong. If a query becomes genuinely irrelevant, set deprecated:true and KEEP MEASURING IT; do not delete the row.",
+  "_parity": "scripts/seo/verify.mjs asserts this list matches the arrays embedded in probe.js. probe.js has to stay self-contained because it is pasted into a browser page context, so the two copies are checked rather than shared. Regenerate the probe arrays with `npm run seo:sync-probe` rather than editing them by hand.",
+  "_how_this_set_was_chosen": "Built from the site's own positioning rather than from a keyword tool, deliberately. The six problem clusters come from documented discovery with 100+ AE professionals (see src/data/jobs.ts), so they are the language real buyers used, not the language a volume estimator suggests. That is a bet: it optimises for intent match over search volume. If after several weeks these queries show near-zero impressions while Search Console discloses a completely different vocabulary, the bet was wrong and the DISCOVERY set (discovery-queries.json) is where that correction gets made. The benchmark itself stays frozen so the correction is visible as a difference rather than hidden by a rewrite.",
+  "_expect_zeros": "Most of these will read 0 for a long time. This is a 16-page consultancy site competing against established agencies and directories. A frozen set of zeros that slowly becomes a set of ranked positions is exactly the measurement being taken; do not treat early zeros as a defect or as a reason to reword the set.",
+
+  "frozen_on": null,
+
+  "queries": [
+    { "q": "vibeops", "cluster": "sitewide", "target": "/", "head": true, "brand": true, "note": "Brand navigational. If this is not position 1 within weeks of launch, something is technically wrong, not competitively wrong." },
+    { "q": "vibeops ca", "cluster": "sitewide", "target": "/", "brand": true },
+    { "q": "vibeops technologies", "cluster": "sitewide", "target": "/", "brand": true },
+    { "q": "vibeops engineering", "cluster": "sitewide", "target": "/", "brand": true },
+
+    { "q": "ai engineering team for ae firms", "cluster": "sitewide", "target": "/", "head": true, "strategic": true, "note": "The category phrase the whole site is built on. Almost certainly zero volume today. Tracked because owning a category you named is a slow, checkable process." },
+    { "q": "ai consultant for engineering firms", "cluster": "sitewide", "target": "/", "head": true, "strategic": true },
+    { "q": "ai consulting architecture engineering", "cluster": "sitewide", "target": "/what-we-solve", "strategic": true },
+    { "q": "forward deployed engineer consulting", "cluster": "sitewide", "target": "/how-we-work", "strategic": true, "note": "Rising term, mostly associated with Palantir. Watch whether it drifts toward or away from our meaning." },
+    { "q": "ai adoption for engineering firms", "cluster": "sitewide", "target": "/what-we-solve" },
+
+    { "q": "private ai for engineering firms", "cluster": "secure-ai", "target": "/what-we-solve/secure-ai", "head": true, "strategic": true },
+    { "q": "secure ai confidential project data", "cluster": "secure-ai", "target": "/what-we-solve/secure-ai", "strategic": true },
+    { "q": "ai on confidential client data", "cluster": "secure-ai", "target": "/what-we-solve/secure-ai" },
+    { "q": "self hosted ai for engineering firm", "cluster": "secure-ai", "target": "/security" },
+    { "q": "ai data residency engineering firm", "cluster": "secure-ai", "target": "/security" },
+    { "q": "it approval for ai engineering firm", "cluster": "secure-ai", "target": "/security", "strategic": true, "note": "Discovery said the IT gate kills more deals than the technology does. /security exists as a no-form document for exactly this searcher." },
+    { "q": "ai without training on our data", "cluster": "secure-ai", "target": "/security" },
+
+    { "q": "engineering report automation", "cluster": "document-production", "target": "/what-we-solve/document-production", "head": true, "strategic": true },
+    { "q": "automated engineering reports", "cluster": "document-production", "target": "/what-we-solve/document-production", "head": true },
+    { "q": "civil engineering report automation", "cluster": "document-production", "target": "/what-we-solve/document-production", "strategic": true, "note": "We already have blog content targeting this exact phrase." },
+    { "q": "ai engineering report writing", "cluster": "document-production", "target": "/what-we-solve/document-production" },
+    { "q": "engineering document automation software", "cluster": "document-production", "target": "/what-we-solve/document-production" },
+    { "q": "ai report generation for engineering firms", "cluster": "document-production", "target": "/what-we-solve/document-production" },
+    { "q": "specification automation engineering", "cluster": "document-production", "target": "/what-we-solve/document-production" },
+
+    { "q": "engineering software integration", "cluster": "systems-integration", "target": "/what-we-solve/systems-integration", "head": true },
+    { "q": "aec software integration services", "cluster": "systems-integration", "target": "/what-we-solve/systems-integration", "strategic": true },
+    { "q": "connect engineering software systems", "cluster": "systems-integration", "target": "/what-we-solve/systems-integration" },
+    { "q": "bim systems integration consultant", "cluster": "systems-integration", "target": "/what-we-solve/systems-integration" },
+    { "q": "civil 3d custom integration", "cluster": "systems-integration", "target": "/what-we-solve/systems-integration" },
+    { "q": "procore custom integration development", "cluster": "systems-integration", "target": "/what-we-solve/systems-integration" },
+
+    { "q": "custom software for engineering firms", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools", "head": true, "strategic": true },
+    { "q": "custom internal tools engineering firm", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools", "strategic": true },
+    { "q": "software development for aec firms", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools", "head": true },
+    { "q": "bespoke software architecture engineering firm", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools" },
+    { "q": "custom dashboard for engineering firm", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools" },
+    { "q": "field data capture app engineering", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools" },
+    { "q": "replace spreadsheet with custom software engineering", "cluster": "internal-tools", "target": "/what-we-solve/internal-tools", "note": "Long, specific, and exactly how the problem was described in discovery. Low volume by design." },
+
+    { "q": "engineering document search ai", "cluster": "institutional-knowledge", "target": "/what-we-solve/institutional-knowledge", "head": true },
+    { "q": "search past engineering projects", "cluster": "institutional-knowledge", "target": "/what-we-solve/institutional-knowledge" },
+    { "q": "institutional knowledge engineering firm", "cluster": "institutional-knowledge", "target": "/what-we-solve/institutional-knowledge", "strategic": true },
+    { "q": "ai document intelligence construction", "cluster": "institutional-knowledge", "target": "/what-we-solve/institutional-knowledge" },
+    { "q": "engineering drawing search software", "cluster": "institutional-knowledge", "target": "/what-we-solve/institutional-knowledge" },
+    { "q": "knowledge management for aec firms", "cluster": "institutional-knowledge", "target": "/what-we-solve/institutional-knowledge" },
+
+    { "q": "ai governance for engineering firms", "cluster": "ai-governance", "target": "/what-we-solve/ai-governance", "head": true, "strategic": true },
+    { "q": "ai oversight engineering deliverables", "cluster": "ai-governance", "target": "/what-we-solve/ai-governance" },
+    { "q": "ai audit trail engineering", "cluster": "ai-governance", "target": "/what-we-solve/ai-governance" },
+    { "q": "ai quality control engineering firm", "cluster": "ai-governance", "target": "/what-we-solve/ai-governance" },
+    { "q": "ai policy for engineering firms", "cluster": "ai-governance", "target": "/what-we-solve/ai-governance" },
+    { "q": "stamping ai generated engineering work", "cluster": "ai-governance", "target": "/what-we-solve/ai-governance", "strategic": true, "note": "Professional liability is the binding constraint in this industry. Anyone searching this is deep in the real problem." }
+  ]
+}
