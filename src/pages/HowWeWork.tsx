@@ -156,7 +156,7 @@ export default function HowWeWork() {
                         <p className="mb-5 text-[13.5px] leading-relaxed text-muted-foreground">
                           {p.detail}
                         </p>
-                        <ul className="grid gap-2 sm:grid-cols-2 3xl:grid-cols-3">
+                        <ul className="grid gap-2 sm:grid-cols-2">
                           {p.outputs.map((o) => (
                             <li key={o} className="flex items-start gap-2 text-[12.5px] text-muted-foreground">
                               <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-primary" />

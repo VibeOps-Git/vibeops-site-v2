@@ -55,3 +55,9 @@ scripts/*.mjs
 # Customer discovery data — contains personal contact information, never commit
 Meeting Tracker.xlsx
 *.xlsx
+
+# SEO cron log (machine-local run output, not part of the dataset)
+docs/seo/data/.cron.log
+
+# TypeScript incremental build artifacts
+*.tsbuildinfo

@@ -1,0 +1,6 @@
+{
+  "_comment": "Domains that repeatedly appear above us for benchmark queries. Populated from the `top3` column of the SERP probe output, so it reflects who Google actually ranks rather than who we consider a competitor commercially.",
+  "_why_that_distinction_matters": "The firms VibeOps competes with for clients and the pages VibeOps competes with for a SERP position are usually not the same. This file tracks the second kind.",
+  "_shape": "{ domain, appearances, clusters: [], first_seen, last_seen, notes }",
+  "competitors": []
+}

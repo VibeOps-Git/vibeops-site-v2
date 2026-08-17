@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Daily SEO intelligence run for vibeops.ca.
+
+  Install:
+    cp scripts/seo/ca.vibeops.seo-daily.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/ca.vibeops.seo-daily.plist
+
+  Remove:
+    launchctl unload ~/Library/LaunchAgents/ca.vibeops.seo-daily.plist
+    rm ~/Library/LaunchAgents/ca.vibeops.seo-daily.plist
+
+  Check it is registered:
+    launchctl list | grep vibeops
+
+  Runs the daily orchestrator, which is READ-ONLY toward production: it writes
+  only inside docs/seo/. It does not commit and does not deploy — committing
+  stays a human decision so the dataset is reviewed before it becomes history.
+
+  Search Console, the fixed SERP probe and Vercel Web Analytics are NOT
+  collected here. All three need an interactively authenticated browser session.
+  They are recorded as `pending`, which is a first-class state and can never be
+  misread as a zero. See docs/seo/SCHEDULING.md.
+
+  09:12 rather than 09:00 deliberately — an off-minute avoids the hour-boundary
+  pile-up, and nothing here needs a precise time. It is also deliberately clear
+  of the 08:47 roadway.tools job on this same machine, so the two never contend
+  for the network or for the PageSpeed quota they both draw on.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ca.vibeops.seo-daily</string>
+
+  <!-- Invokes a wrapper in the repo rather than a login shell running npm.
+       A login shell here resolves `node` to the Homebrew build, which is broken
+       on this machine (dyld cannot load libsimdjson) and aborts with SIGABRT.
+       That failure mode is invisible: every manual run works and every
+       scheduled run dies. The wrapper resolves a node that actually executes
+       and sets the working directory without a login shell. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16/scripts/seo/run-daily.sh</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16</string>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key><integer>9</integer>
+    <key>Minute</key><integer>12</integer>
+  </dict>
+
+  <!-- Do not run on load. Loading the agent is an install action, not a request
+       to collect; firing immediately would write a snapshot dated by whenever
+       someone happened to run launchctl. -->
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16/docs/seo/data/.cron.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16/docs/seo/data/.cron.log</string>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>

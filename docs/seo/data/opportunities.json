@@ -1,0 +1,5 @@
+{
+  "_comment": "The opportunity register. Written by scripts/seo/analyze.mjs, never by hand. Each record accumulates evidence across days so that an opportunity has to persist before it can be acted on — see thresholds.opportunity_promote_to_ready_days in config.json.",
+  "_actions": "Every record carries exactly one recommended_action from: HOLD, OPTIMIZE, CREATE, PROMOTE, TECHNICAL, UX. verify.mjs fails on anything else.",
+  "opportunities": []
+}

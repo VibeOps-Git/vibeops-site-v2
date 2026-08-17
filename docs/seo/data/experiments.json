@@ -1,0 +1,6 @@
+{
+  "_comment": "Deliberate changes made to the site for SEO reasons, with the date and the prediction recorded BEFORE the outcome is known. Written by hand.",
+  "_why": "Without a prediction written down in advance, every outcome gets rationalised into a success. An experiment with no falsifiable prediction is not an experiment, it is a change.",
+  "_shape": "{ id, opened, page, change, prediction, evaluate_after, outcome: null | 'confirmed' | 'refuted' | 'inconclusive', closed, notes }",
+  "experiments": []
+}

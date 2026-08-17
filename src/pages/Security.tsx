@@ -151,7 +151,7 @@ export default function Security() {
                 How we handle your data
               </h2>
             </Anim>
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-6 3xl:gap-6">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 3xl:gap-6">
               {PRINCIPLES.map((p, i) => (
                 <Anim key={p.title} delay={i * 0.05}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">

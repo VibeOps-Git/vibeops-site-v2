@@ -134,7 +134,7 @@ export default function JobPage() {
                 How we solve this as your engineering team
               </h2>
             </Anim>
-            <div className="grid gap-5 md:grid-cols-2 3xl:grid-cols-4 3xl:gap-6">
+            <div className="grid gap-5 md:grid-cols-2 3xl:gap-6">
               {job.whatWeDo.map((w, i) => (
                 <Anim key={w.title} delay={i * 0.06}>
                   <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">

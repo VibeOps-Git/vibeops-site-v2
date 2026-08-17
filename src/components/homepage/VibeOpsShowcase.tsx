@@ -76,7 +76,7 @@ function ReportAutomationScene() {
             key={r.num}
             initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, ease: E }}
-            className="flex flex-shrink-0 items-center justify-between rounded-lg border border-white/6 px-2 py-1.5"
+            className="flex min-h-[1.75rem] max-h-[3rem] flex-1 items-center justify-between rounded-lg border border-white/6 px-2 py-1.5"
             style={{ background: 'rgba(255,255,255,0.025)' }}
           >
             <div className="flex items-center gap-1.5 min-w-0">
@@ -110,7 +110,7 @@ function ReportAutomationScene() {
 
         {/* Placeholder rows for sections not yet generated */}
         {REPORT_SECTIONS.slice(visible).map((r) => (
-          <div key={r.num} className="h-7 flex-shrink-0 rounded-lg border border-white/4"
+          <div key={r.num} className="min-h-[1.75rem] max-h-[3rem] flex-1 rounded-lg border border-white/4"
             style={{ background: 'rgba(255,255,255,0.01)' }} />
         ))}
       </div>
@@ -327,6 +327,10 @@ const CUSTOM_REPORTS = [
   { name: 'Coquitlam Pump Station Condition',   type: 'Condition',  status: 'generating', code: 'BCBC 2024', pct: 43  },
   { name: 'Delta Culvert Replacement Study',    type: 'Hydraulic',  status: 'queued',     code: null,        pct: 0   },
   { name: 'Richmond Dyke Stability Review',     type: 'Geotech',    status: 'queued',     code: null,        pct: 0   },
+  { name: 'Langley Watermain Condition Report',  type: 'Condition',  status: 'queued',     code: null,        pct: 0   },
+  { name: 'North Shore Retaining Wall Review',   type: 'Geotech',    status: 'queued',     code: null,        pct: 0   },
+  { name: 'Abbotsford Interchange Assessment',   type: 'Structural', status: 'queued',     code: null,        pct: 0   },
+  { name: 'Squamish Bridge Deck Inspection',     type: 'Structural', status: 'queued',     code: null,        pct: 0   },
 ];
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
@@ -400,7 +404,7 @@ function CustomScene() {
             <motion.div key={r.name}
               initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.28, delay: i * 0.05 }}
-              className="flex flex-shrink-0 items-center gap-2 rounded-lg border border-white/5 px-2 py-1.5"
+              className="flex min-h-[1.85rem] max-h-[3.1rem] flex-1 items-center gap-2 rounded-lg border border-white/5 px-2 py-1.5"
               style={{ background: 'rgba(255,255,255,0.025)' }}
             >
               <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: st.color }} />

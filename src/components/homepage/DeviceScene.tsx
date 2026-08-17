@@ -206,10 +206,14 @@ export function PhoneShell({ videoSrc, children }: { videoSrc?: string; children
 const DEVICES = ["laptop", "tablet", "phone"] as const;
 type DeviceType = (typeof DEVICES)[number];
 
+// These caps were tuned for a ~1280px layout. Left fixed, a 27" monitor showed a
+// 188px phone floating in a 1500px stage. They now grow with the viewport while
+// preserving the relative size story between the three devices: a laptop should
+// still read as a laptop next to a phone.
 const DEVICE_MAX_W: Record<DeviceType, string> = {
-  laptop: "max-w-[1000px]",
-  tablet: "max-w-[720px]",  // iPad landscape: meaningfully smaller than laptop
-  phone:  "max-w-[188px]",  // iPhone portrait: compact, phone-sized
+  laptop: "max-w-[1000px] 2xl:max-w-[1160px] 3xl:max-w-[1360px] 4xl:max-w-[1500px]",
+  tablet: "max-w-[720px] 2xl:max-w-[840px] 3xl:max-w-[980px] 4xl:max-w-[1080px]",
+  phone:  "max-w-[188px] 2xl:max-w-[230px] 3xl:max-w-[290px] 4xl:max-w-[330px]",
 };
 
 const AUTO_ROTATE_MS = 8000;

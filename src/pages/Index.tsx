@@ -316,10 +316,19 @@ function FittedScreen({ scale, children }: { scale: number; children: React.Reac
 // so on a 27" monitor the laptop screen is ~1400px wide with 8px text sitting in
 // the top third and nothing underneath. Scaling to cover keeps the UI
 // proportional at every viewport: same composition, just larger.
-const SCREEN_REF_W = 900;
-const SCREEN_REF_H = 560;
-
-function ScaledScreen({ children }: { children: React.ReactNode }) {
+// Reference size must roughly match the aspect of the shell it is going into,
+// otherwise contain-scaling letterboxes hard. The showcase is a landscape
+// desktop UI, so it gets a landscape reference on the laptop and a squarer one
+// on the tablet. The phone does NOT use this — see the note at its call site.
+function ScaledScreen({
+  children,
+  refW = 900,
+  refH = 560,
+}: {
+  children: React.ReactNode;
+  refW?: number;
+  refH?: number;
+}) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -334,21 +343,21 @@ function ScaledScreen({ children }: { children: React.ReactNode }) {
       // cover a single reference box crops the sides on the narrower ones.
       // Contain guarantees nothing clips; the wrapper carries the same
       // background as the screen so any letterboxing is invisible.
-      setScale(Math.min(width / SCREEN_REF_W, height / SCREEN_REF_H));
+      setScale(Math.min(width / refW, height / refH));
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [refW, refH]);
 
   return (
     <div ref={boxRef} className="relative h-full w-full overflow-hidden" style={{ background: '#070d1a' }}>
       <div
         className="absolute left-1/2 top-1/2"
         style={{
-          width: SCREEN_REF_W,
-          height: SCREEN_REF_H,
+          width: refW,
+          height: refH,
           transform: `translate(-50%, -50%) scale(${scale})`,
         }}
       >
@@ -623,14 +632,14 @@ function HeroSection() {
                   <motion.div className="absolute inset-0 flex items-center justify-center"
                     animate={{ opacity: phase === 2 ? 1 : 0, scale: phase === 2 ? 1 : phase > 2 ? 0.94 : 0.92, x: phase === 2 ? 0 : phase > 2 ? '-10%' : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }}>
-                    <HomepageDeviceStage screenContent={<ScaledScreen><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="tablet" hideDots />
+                    <HomepageDeviceStage screenContent={<ScaledScreen refW={900} refH={700}><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="tablet" hideDots />
                   </motion.div>
                   <motion.div className="absolute inset-0 flex items-center justify-center"
                     animate={{ opacity: phase === 3 ? 1 : 0, scale: phase === 3 ? 1 : 0.92, x: phase === 3 ? 0 : '18%' }}
                     transition={{ duration: 0.65, ease: E }} style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }}>
                     {/* Phone is portrait - constrain width on mobile so it looks iPhone SE sized */}
                     <div className="w-[12vh] max-w-[120px] lg:w-[min(27vh,420px)] lg:max-w-none">
-                      <HomepageDeviceStage screenContent={<ScaledScreen><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="phone" hideDots />
+                      <HomepageDeviceStage screenContent={<ScaledScreen refW={400} refH={866}><VibeOpsShowcaseScreen /></ScaledScreen>} lockedDevice="phone" hideDots />
                     </div>
                   </motion.div>
                 </div>
@@ -889,7 +898,7 @@ function SixProblemsSection() {
             </p>
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-6 3xl:gap-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 3xl:gap-6">
           {JOBS.map((j, i) => (
             <ProblemCard key={j.id} job={j} delay={i * 0.06} />
           ))}
