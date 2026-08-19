@@ -576,14 +576,19 @@ async function psi() {
  */
 async function vercel() {
   const env = loadEnv();
-  let token = env.VERCEL_TOKEN ?? null;
+  // Accept either name. The Vercel docs say VERCEL_TOKEN; a human creating a
+  // token in the dashboard naturally writes VERCEL_API_KEY. Supporting both
+  // costs one line and removes a silent failure that looks identical to a
+  // missing credential.
+  let token = env.VERCEL_TOKEN ?? env.VERCEL_API_KEY ?? null;
+  let tokenSource = env.VERCEL_TOKEN ? 'VERCEL_TOKEN' : env.VERCEL_API_KEY ? 'VERCEL_API_KEY' : null;
   if (!token) {
     for (const p of [
       join(env.HOME ?? '', 'Library', 'Application Support', 'com.vercel.cli', 'auth.json'),
       join(env.HOME ?? '', '.vercel', 'auth.json'),
       join(env.HOME ?? '', '.config', 'com.vercel.cli', 'auth.json'),
     ]) {
-      try { token = JSON.parse(readFileSync(p, 'utf8')).token; if (token) break; } catch { /* next */ }
+      try { token = JSON.parse(readFileSync(p, 'utf8')).token; if (token) { tokenSource = 'vercel CLI login'; break; } } catch { /* next */ }
     }
   }
 
@@ -607,13 +612,32 @@ async function vercel() {
     // is an auth state and belongs in `pending` alongside Search Console: it
     // tells the reader what to do, and it cannot later be misread as "we looked
     // and there were no deployments". Anything else is a genuine error.
-    if (r.status === 401 || r.status === 403) {
-      log('  Vercel      pending — CLI token rejected (HTTP ' + r.status + '); run `vercel login`');
+    if (r.status === 401 || r.status === 403 || r.status === 404) {
+      // Distinguish the three ways this fails, because the remedy differs and a
+      // wrong remedy costs more time than no remedy. Ask the token who it is: if
+      // /v2/user answers, the credential is valid and the problem is SCOPE, not
+      // authentication. Observed 2026-08-19 with a token that returned 200 on
+      // /v2/user, 0 deployments unfiltered, and 403 on anything team-scoped.
+      let whoami = null;
+      try {
+        const w = await get(`${api}/v2/user`, { headers: { Authorization: `Bearer ${token}` }, retry: false });
+        if (w.ok) whoami = (await w.json())?.user?.username ?? 'unknown';
+      } catch { /* leave null */ }
+
+      const scoped = Boolean(whoami);
+      const how = scoped
+        ? `The token (${tokenSource}) is valid and authenticates as "${whoami}", but cannot see project ${CONFIG.vercel.project_name} `
+          + `under team ${CONFIG.vercel.team_id}. That is a SCOPE problem, not an auth one: the token was created against the `
+          + `personal account rather than the team that owns the project. Recreate it at `
+          + `https://vercel.com/account/settings/tokens with Scope set to the team, then put it in .env as VERCEL_TOKEN or VERCEL_API_KEY.`
+        : `The stored token was rejected outright (HTTP ${r.status}). Run \`vercel login\`, or set a valid VERCEL_TOKEN in .env.`;
+
+      log(`  Vercel      pending — ${scoped ? `token valid as "${whoami}" but not scoped to this project` : 'token rejected'} (HTTP ${r.status})`);
       return sourceBlock({
         source: 'vercel-api',
         status: 'pending',
-        limitations: ['The stored Vercel CLI token was rejected, so deploy history is unavailable until it is refreshed.'],
-        data: { how_to_collect: 'Run `vercel login` in this repo. The collector reads the CLI token directly, so no other step is needed.', http_status: r.status },
+        limitations: ['Deploy history is unavailable until the credential can see this project, so metric changes cannot be correlated against deploys.'],
+        data: { how_to_collect: how, http_status: r.status, authenticates: scoped, authenticated_as: whoami, token_source: tokenSource },
       });
     }
     if (!r.ok) throw new Error(`HTTP ${r.status}`);

@@ -3,7 +3,7 @@
   "date": "2026-08-19",
   "domain_age_days": 59,
   "first_collected_at": "2026-08-19T19:18:07.846Z",
-  "revision": 17,
+  "revision": 18,
   "sources": {
     "technical": {
       "source": "http-technical-check",
@@ -1369,18 +1369,21 @@
     "vercel": {
       "source": "vercel-api",
       "status": "pending",
-      "collected_at": "2026-08-19T23:34:23.142Z",
+      "collected_at": "2026-08-19T23:42:40.730Z",
       "represents": {
         "start": null,
         "end": null
       },
       "lag_days": null,
       "limitations": [
-        "The stored Vercel CLI token was rejected, so deploy history is unavailable until it is refreshed."
+        "Deploy history is unavailable until the credential can see this project, so metric changes cannot be correlated against deploys."
       ],
       "data": {
-        "how_to_collect": "Run `vercel login` in this repo. The collector reads the CLI token directly, so no other step is needed.",
-        "http_status": 403
+        "how_to_collect": "The token (VERCEL_API_KEY) is valid and authenticates as \"vibeops-team\", but cannot see project vibeops-site-v2 under team team_WfOi17TqUdoAWPXrSvxSPK8U. That is a SCOPE problem, not an auth one: the token was created against the personal account rather than the team that owns the project. Recreate it at https://vercel.com/account/settings/tokens with Scope set to the team, then put it in .env as VERCEL_TOKEN or VERCEL_API_KEY.",
+        "http_status": 403,
+        "authenticates": true,
+        "authenticated_as": "vibeops-team",
+        "token_source": "VERCEL_API_KEY"
       }
     },
     "search_console": {
@@ -2653,7 +2656,13 @@
       "source": "vercel",
       "action": "replaced",
       "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:42:40.734Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
     }
   ],
-  "updated_at": "2026-08-19T23:34:23.191Z"
+  "updated_at": "2026-08-19T23:42:40.734Z"
 }
