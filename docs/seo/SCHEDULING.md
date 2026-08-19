@@ -37,11 +37,47 @@ run worked:
 `run-daily.sh` resolves a node that actually executes, sets the directory
 explicitly, and avoids a login shell entirely. Do not "simplify" it back.
 
-### If the log is empty every morning
+### Why the repository is not in ~/Desktop
 
-macOS may be blocking a scheduled job from reading `~/Desktop`. Grant Full Disk
-Access to `/bin/bash` in System Settings → Privacy & Security, or move the repo
-out of `~/Desktop`. The wrapper prints a specific message for this case.
+It used to be, and the scheduled job **never once ran** because of it. `launchctl
+list` reported exit 126 every morning and the log only ever contained:
+
+    shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+    /bin/bash: .../run-daily.sh: Operation not permitted
+
+macOS shields `~/Desktop`, `~/Documents` and `~/Downloads` from background jobs
+under TCC. A launchd agent has no UI to grant consent through, so it is denied
+silently.
+
+This was measured rather than assumed, on 2026-08-19, with a throwaway launchd
+agent whose only job was to report what it could reach:
+
+| Operation against the repo in ~/Desktop | Result |
+|---|---|
+| write to /tmp (control) | OK |
+| `ls` the repo directory | **FAIL** |
+| read a file in the repo | **FAIL** |
+| exec a script in the repo | **126** |
+| write a new file into the repo | OK (!) |
+
+That last row is a genuine oddity — writes pass while reads are denied — and it
+is exactly why the failure looked confusing from the outside. It also rules out
+the tempting half-fix: **moving only the wrapper script out of ~/Desktop does
+not work**, because the job still cannot read `config.json`, the scripts, or any
+snapshot.
+
+So the repository lives at `~/Work/VibeOps/Website/v16`. A symlink remains at the
+old `~/Desktop/Work/VibeOps/Website/v16` path so existing terminals and shell
+history keep working; the launchd plist deliberately points at the **real** path,
+not the symlink.
+
+The alternative was granting Full Disk Access to `/bin/bash` in System Settings.
+That was rejected: it is a broad grant to a shared binary that every scheduled
+job on the machine inherits, to solve a problem that a `mv` solves completely.
+
+**If you ever move this repo again**, update `scripts/seo/run-daily.sh` (the
+`REPO` variable), `scripts/seo/ca.vibeops.seo-daily.plist` (three paths), and
+reinstall the agent. Do not put it back under a protected folder.
 
 ## The weekly review (interactive, and it has to be)
 

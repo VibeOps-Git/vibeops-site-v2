@@ -3,12 +3,12 @@
   "date": "2026-08-19",
   "domain_age_days": 59,
   "first_collected_at": "2026-08-19T19:18:07.846Z",
-  "revision": 12,
+  "revision": 17,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-19T19:17:54.083Z",
+      "collected_at": "2026-08-19T23:34:08.515Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -670,7 +670,7 @@
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-19T19:18:03.002Z",
+      "collected_at": "2026-08-19T23:34:17.170Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1191,7 +1191,7 @@
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-19T19:18:07.620Z",
+      "collected_at": "2026-08-19T23:34:22.203Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1353,7 +1353,7 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-19T19:18:07.777Z",
+      "collected_at": "2026-08-19T23:34:23.053Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1369,7 +1369,7 @@
     "vercel": {
       "source": "vercel-api",
       "status": "pending",
-      "collected_at": "2026-08-19T19:18:37.876Z",
+      "collected_at": "2026-08-19T23:34:23.142Z",
       "represents": {
         "start": null,
         "end": null
@@ -2623,7 +2623,37 @@
       "source": "serp_discovery",
       "action": "added",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:34:23.146Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:34:23.156Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:34:23.180Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:34:23.188Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:34:23.191Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
     }
   ],
-  "updated_at": "2026-08-19T19:24:34.813Z"
+  "updated_at": "2026-08-19T23:34:23.191Z"
 }

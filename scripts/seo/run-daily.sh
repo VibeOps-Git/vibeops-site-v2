@@ -24,14 +24,16 @@
 
 set -uo pipefail
 
-REPO="/Users/zandipie/Desktop/Work/VibeOps/Website/v16"
+REPO="/Users/zandipie/Work/VibeOps/Website/v16"
 
 cd "$REPO" || {
   echo "[run-daily] FATAL: cannot cd to $REPO"
-  echo "[run-daily] If this reads 'Operation not permitted', macOS is blocking the"
-  echo "[run-daily] scheduled job from the Desktop folder. Grant Full Disk Access to"
-  echo "[run-daily] /bin/bash in System Settings > Privacy & Security, or move the"
-  echo "[run-daily] repository out of ~/Desktop."
+  echo "[run-daily] If this reads 'Operation not permitted', the repository is somewhere"
+  echo "[run-daily] macOS shields from scheduled jobs. Measured on 2026-08-19: a launchd"
+  echo "[run-daily] agent under ~/Desktop could not ls or read a single file in the repo"
+  echo "[run-daily] and exec returned 126, while writes oddly succeeded. Moving the"
+  echo "[run-daily] repository out of ~/Desktop fixed it outright. ~/Documents and"
+  echo "[run-daily] ~/Downloads carry the same protection; ~/Work does not."
   exit 1
 }
 
