@@ -24,14 +24,16 @@
 
 set -uo pipefail
 
-REPO="/Users/zandipie/Desktop/Work/VibeOps/Website/v16"
+REPO="/Users/zandipie/Work/VibeOps/Website/v16"
 
 cd "$REPO" || {
   echo "[run-daily] FATAL: cannot cd to $REPO"
-  echo "[run-daily] If this reads 'Operation not permitted', macOS is blocking the"
-  echo "[run-daily] scheduled job from the Desktop folder. Grant Full Disk Access to"
-  echo "[run-daily] /bin/bash in System Settings > Privacy & Security, or move the"
-  echo "[run-daily] repository out of ~/Desktop."
+  echo "[run-daily] If this reads 'Operation not permitted', the repository is somewhere"
+  echo "[run-daily] macOS shields from scheduled jobs. Measured on 2026-08-19: a launchd"
+  echo "[run-daily] agent under ~/Desktop could not ls or read a single file in the repo"
+  echo "[run-daily] and exec returned 126, while writes oddly succeeded. Moving the"
+  echo "[run-daily] repository out of ~/Desktop fixed it outright. ~/Documents and"
+  echo "[run-daily] ~/Downloads carry the same protection; ~/Work does not."
   exit 1
 }
 
@@ -73,4 +75,37 @@ echo "[run-daily] node $("$NODE" --version) at $NODE"
 STATUS=$?
 
 echo "[run-daily] $(date -u +%Y-%m-%dT%H:%M:%SZ) finished, exit $STATUS"
+
+# Notify only when there is something a person actually has to decide.
+#
+# The whole point of this system is that nobody reads a daily report to find out
+# that nothing happened. analyze.mjs decides what is worth interrupting someone
+# for and writes it to .status.json; this only delivers it. Keeping the judgement
+# in the analysis and out of the shell means the threshold is versioned, tested
+# and visible, rather than buried in a bash conditional.
+#
+# A failed RUN is always worth knowing about: silence from a broken scheduled job
+# is indistinguishable from silence from a healthy site, and that is precisely
+# how the roadway.tools job went a week without anyone noticing it had never run.
+STATUS_FILE="$REPO/docs/seo/data/.status.json"
+
+notify() {
+  # osascript reaches the logged-in GUI session. If nobody is logged in it
+  # fails harmlessly and the log still has everything.
+  /usr/bin/osascript -e "display notification \"$2\" with title \"$1\"" 2>/dev/null || true
+}
+
+if [ $STATUS -ne 0 ]; then
+  notify "VibeOps SEO: run failed" "Exit $STATUS. See docs/seo/data/.cron.log"
+elif [ -f "$STATUS_FILE" ]; then
+  SHOULD_NOTIFY="$("$NODE" -e "try{const s=require('$STATUS_FILE');process.stdout.write(s.notify?'1':'0')}catch(e){process.stdout.write('0')}")"
+  if [ "$SHOULD_NOTIFY" = "1" ]; then
+    HEADLINE="$("$NODE" -e "try{const s=require('$STATUS_FILE');process.stdout.write(String(s.headline||s.verdict||'').replace(/\"/g,''))}catch(e){}")"
+    notify "VibeOps SEO: action needed" "$HEADLINE"
+    echo "[run-daily] notified: $HEADLINE"
+  else
+    echo "[run-daily] nothing worth notifying about"
+  fi
+fi
+
 exit $STATUS

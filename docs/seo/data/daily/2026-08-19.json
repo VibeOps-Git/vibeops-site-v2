@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
-  "date": "2026-08-17",
-  "domain_age_days": 57,
-  "first_collected_at": "2026-08-17T20:48:08.824Z",
-  "revision": 30,
+  "date": "2026-08-19",
+  "domain_age_days": 59,
+  "first_collected_at": "2026-08-19T19:18:07.846Z",
+  "revision": 27,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-17T21:26:57.461Z",
+      "collected_at": "2026-08-19T23:50:22.586Z",
       "represents": {
-        "start": "2026-08-17",
-        "end": "2026-08-17"
+        "start": "2026-08-19",
+        "end": "2026-08-19"
       },
       "lag_days": 0,
       "limitations": [
@@ -670,10 +670,10 @@
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-17T21:27:05.409Z",
+      "collected_at": "2026-08-19T23:50:30.718Z",
       "represents": {
-        "start": "2026-08-17",
-        "end": "2026-08-17"
+        "start": "2026-08-19",
+        "end": "2026-08-19"
       },
       "lag_days": 0,
       "limitations": [
@@ -1191,10 +1191,10 @@
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-17T21:27:09.791Z",
+      "collected_at": "2026-08-19T23:50:35.619Z",
       "represents": {
-        "start": "2026-08-17",
-        "end": "2026-08-17"
+        "start": "2026-08-19",
+        "end": "2026-08-19"
       },
       "lag_days": 0,
       "limitations": [
@@ -1353,10 +1353,10 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-17T21:27:09.935Z",
+      "collected_at": "2026-08-19T23:50:35.737Z",
       "represents": {
-        "start": "2026-08-17",
-        "end": "2026-08-17"
+        "start": "2026-08-19",
+        "end": "2026-08-19"
       },
       "lag_days": null,
       "limitations": [
@@ -1369,10 +1369,10 @@
     "vercel": {
       "source": "vercel-api",
       "status": "ok",
-      "collected_at": "2026-08-17T21:27:10.070Z",
+      "collected_at": "2026-08-19T23:50:35.844Z",
       "represents": {
         "start": "2026-05-02",
-        "end": "2026-08-17"
+        "end": "2026-08-19"
       },
       "lag_days": 0,
       "limitations": [
@@ -1381,7 +1381,7 @@
       ],
       "data": {
         "latest_production_deploy": "2026-08-17T20:52:17.646Z",
-        "days_since_deploy": -1,
+        "days_since_deploy": 1,
         "deployments": [
           {
             "created_at": "2026-08-17T20:52:17.646Z",
@@ -1509,40 +1509,30 @@
     "search_console": {
       "source": "google-search-console",
       "status": "ok",
-      "collected_at": "2026-08-17T21:16:12.742Z",
+      "collected_at": "2026-08-19T19:21:08.045Z",
       "represents": {
-        "start": "2026-08-09",
-        "end": "2026-08-15"
+        "start": "2026-08-11",
+        "end": "2026-08-17"
       },
       "lag_days": 2,
       "limitations": [
-        "Collected on 2026-08-17, but the data covers only through 2026-08-15. These figures do NOT describe searches on 2026-08-17.",
+        "Collected on 2026-08-19, but the data covers only through 2026-08-17. These figures do NOT describe searches on 2026-08-19.",
         "Search Console discloses only queries above an anonymity threshold. Undisclosed impressions are real exposure that cannot be attributed to a query.",
-        "497 of 644 impressions come from queries Search Console will not name.",
+        "367 of 518 impressions come from queries Search Console will not name.",
         "Average position is impression-weighted across all queries; on small samples it moves for reasons unrelated to ranking quality (broader testing at deeper positions lowers it).",
         "Transcribed by hand from the Search Console UI — a transcription error is possible and is the main data-quality risk in this source."
       ],
       "data": {
         "property": "sc-domain:vibeops.ca",
         "account_verified": "team@vibeops.ca",
-        "latest_date_available": "2026-08-15",
+        "latest_date_available": "2026-08-17",
         "totals": {
-          "impressions": 644,
-          "clicks": 19,
-          "ctr": 0.03,
-          "position": 9.8
+          "impressions": 518,
+          "clicks": 17,
+          "ctr": 0.033,
+          "position": 9.3
         },
         "by_day": [
-          {
-            "date": "2026-08-09",
-            "impressions": 100,
-            "clicks": 3
-          },
-          {
-            "date": "2026-08-10",
-            "impressions": 155,
-            "clicks": 4
-          },
           {
             "date": "2026-08-11",
             "impressions": 106,
@@ -1567,53 +1557,71 @@
             "date": "2026-08-15",
             "impressions": 51,
             "clicks": 2
+          },
+          {
+            "date": "2026-08-16",
+            "impressions": 45,
+            "clicks": 3
+          },
+          {
+            "date": "2026-08-17",
+            "impressions": 84,
+            "clicks": 2
           }
         ],
         "pages": [
           {
             "page": "/",
             "cluster": "sitewide",
-            "impressions": 206,
-            "clicks": 13,
-            "ctr": 0.06310679611650485,
+            "impressions": 178,
+            "clicks": 8,
+            "ctr": 0.0449438202247191,
             "position": null
           },
           {
             "page": "/blog/best-ai-tools-for-civil-engineers-in-2026",
             "cluster": "sitewide",
-            "impressions": 248,
-            "clicks": 3,
-            "ctr": 0.012096774193548387,
+            "impressions": 179,
+            "clicks": 5,
+            "ctr": 0.027932960893854747,
             "position": null
           },
           {
             "page": "/blog/ai-reporting-software-civil-engineers",
             "cluster": "sitewide",
-            "impressions": 63,
+            "impressions": 61,
             "clicks": 1,
-            "ctr": 0.015873015873015872,
+            "ctr": 0.01639344262295082,
             "position": null
           },
           {
             "page": "/team",
             "cluster": "sitewide",
-            "impressions": 63,
+            "impressions": 49,
             "clicks": 1,
-            "ctr": 0.015873015873015872,
+            "ctr": 0.02040816326530612,
             "position": null
           },
           {
             "page": "/team?member=Zander Dent",
             "cluster": "sitewide",
-            "impressions": 21,
+            "impressions": 16,
             "clicks": 1,
-            "ctr": 0.047619047619047616,
+            "ctr": 0.0625,
+            "position": null
+          },
+          {
+            "page": "/contact?mode=email&contact=omair@vibeops.ca",
+            "cluster": "sitewide",
+            "impressions": 1,
+            "clicks": 1,
+            "ctr": 1,
             "position": null
           },
           {
             "page": "/reportly",
             "cluster": "sitewide",
-            "impressions": 41,
+            "impressions": 35,
             "clicks": 0,
             "ctr": 0,
             "position": null
@@ -1621,7 +1629,7 @@
           {
             "page": "/blog/civil-engineering-report-automation-vs-manual",
             "cluster": "sitewide",
-            "impressions": 29,
+            "impressions": 24,
             "clicks": 0,
             "ctr": 0,
             "position": null
@@ -1629,7 +1637,7 @@
           {
             "page": "/services",
             "cluster": "sitewide",
-            "impressions": 28,
+            "impressions": 22,
             "clicks": 0,
             "ctr": 0,
             "position": null
@@ -1637,15 +1645,7 @@
           {
             "page": "/blog",
             "cluster": "blog",
-            "impressions": 19,
-            "clicks": 0,
-            "ctr": 0,
-            "position": null
-          },
-          {
-            "page": "/blog/the-best-civil-engineering-reporting-software-in-2026",
-            "cluster": "sitewide",
-            "impressions": 13,
+            "impressions": 17,
             "clicks": 0,
             "ctr": 0,
             "position": null
@@ -1654,9 +1654,9 @@
         "queries": [
           {
             "query": "vibeops",
-            "impressions": 61,
-            "clicks": 9,
-            "ctr": 0.14754098360655737,
+            "impressions": 60,
+            "clicks": 6,
+            "ctr": 0.1,
             "position": null,
             "page": null,
             "topicality": "on_topic",
@@ -1664,9 +1664,9 @@
           },
           {
             "query": "vibe ops",
-            "impressions": 15,
-            "clicks": 3,
-            "ctr": 0.2,
+            "impressions": 19,
+            "clicks": 1,
+            "ctr": 0.05263157894736842,
             "position": null,
             "page": null,
             "topicality": "on_topic",
@@ -1674,9 +1674,9 @@
           },
           {
             "query": "\"vibeops\"",
-            "impressions": 2,
+            "impressions": 1,
             "clicks": 1,
-            "ctr": 0.5,
+            "ctr": 1,
             "position": null,
             "page": null,
             "topicality": "on_topic",
@@ -1693,8 +1693,18 @@
             "cluster": null
           },
           {
+            "query": "ai software for civil engineering",
+            "impressions": 1,
+            "clicks": 1,
+            "ctr": 1,
+            "position": null,
+            "page": null,
+            "topicality": "on_topic",
+            "cluster": null
+          },
+          {
             "query": "best ai tools for civil engineers",
-            "impressions": 26,
+            "impressions": 27,
             "clicks": 0,
             "ctr": 0,
             "position": null,
@@ -1704,7 +1714,7 @@
           },
           {
             "query": "best ai for civil engineering",
-            "impressions": 16,
+            "impressions": 20,
             "clicks": 0,
             "ctr": 0,
             "position": null,
@@ -1714,7 +1724,7 @@
           },
           {
             "query": "vipbops",
-            "impressions": 9,
+            "impressions": 11,
             "clicks": 0,
             "ctr": 0,
             "position": null,
@@ -1733,39 +1743,29 @@
             "cluster": null
           },
           {
-            "query": "civil engineering ai tools",
-            "impressions": 6,
-            "clicks": 0,
-            "ctr": 0,
-            "position": null,
-            "page": null,
-            "topicality": "on_topic",
-            "cluster": null
-          },
-          {
-            "query": "ai tools for civil engineers",
+            "query": "noboru yonemitsu",
             "impressions": 4,
             "clicks": 0,
             "ctr": 0,
             "position": null,
             "page": null,
-            "topicality": "on_topic",
+            "topicality": "irrelevant",
             "cluster": null
           }
         ],
         "disclosed_query_count": 10,
-        "disclosed_impressions": 147,
-        "undisclosed_impressions": 497,
+        "disclosed_impressions": 151,
+        "undisclosed_impressions": 367,
         "topicality_mix": {
-          "on_topic": 10,
+          "on_topic": 9,
           "adjacent": 0,
-          "irrelevant": 0
+          "irrelevant": 1
         },
         "devices": [],
         "countries": [],
         "country_count_reported": 0,
         "countries_captured": 0,
-        "indexed_pages": 32,
+        "indexed_pages": 36,
         "not_indexed_pages": 17,
         "indexing_reasons": [
           {
@@ -1781,7 +1781,7 @@
           {
             "reason": "Page with redirect",
             "source": "Website",
-            "pages": 3
+            "pages": 4
           },
           {
             "reason": "Soft 404",
@@ -1789,12 +1789,12 @@
             "pages": 1
           },
           {
-            "reason": "Crawled - currently not indexed",
+            "reason": "Discovered - currently not indexed",
             "source": "Google systems",
-            "pages": 2
+            "pages": 1
           },
           {
-            "reason": "Discovered - currently not indexed",
+            "reason": "Crawled - currently not indexed",
             "source": "Google systems",
             "pages": 1
           }
@@ -1805,24 +1805,707 @@
     },
     "serp_probe": {
       "source": "fixed-serp-probe",
-      "status": "pending",
-      "collected_at": "2026-08-17T20:48:08.829Z",
+      "status": "ok",
+      "collected_at": "2026-08-19T19:23:49.382Z",
       "represents": {
-        "start": null,
-        "end": null
+        "start": "2026-08-19",
+        "end": "2026-08-19"
       },
-      "lag_days": null,
+      "lag_days": 0,
       "limitations": [
-        "Requires an interactively authenticated browser session; not collectable by an unattended run."
+        "Results are personalised and geolocated; absolute positions are approximate.",
+        "This scripted read has disagreed with the rendered SERP by 6 places on the same query on the same day, because the rendered DOM mixes in People Also Ask and image-block links.",
+        "Search Console is authoritative for position, impressions and CTR. Where the two disagree, Search Console wins.",
+        "Position 0 means \"not found in the top 20\" — a censored value, not position 21. Do not average it in.",
+        "Trend signal only. Do not act on a single position."
       ],
       "data": {
-        "how_to_collect": "Run docs/seo/probe.js in the attached Chrome from a google.com tab, then scripts/seo/ingest-serp.mjs."
+        "summary": {
+          "measured": 48,
+          "errored": 0,
+          "in_top_20": 6,
+          "in_top_10": 6,
+          "in_top_3": 4,
+          "at_1": 3,
+          "by_cluster": {
+            "secure-ai": {
+              "measured": 7,
+              "in_top_20": 0,
+              "in_top_10": 0,
+              "in_top_3": 0
+            },
+            "document-production": {
+              "measured": 7,
+              "in_top_20": 1,
+              "in_top_10": 1,
+              "in_top_3": 0
+            },
+            "systems-integration": {
+              "measured": 6,
+              "in_top_20": 0,
+              "in_top_10": 0,
+              "in_top_3": 0
+            },
+            "internal-tools": {
+              "measured": 7,
+              "in_top_20": 0,
+              "in_top_10": 0,
+              "in_top_3": 0
+            },
+            "institutional-knowledge": {
+              "measured": 6,
+              "in_top_20": 0,
+              "in_top_10": 0,
+              "in_top_3": 0
+            },
+            "ai-governance": {
+              "measured": 6,
+              "in_top_20": 0,
+              "in_top_10": 0,
+              "in_top_3": 0
+            },
+            "sitewide": {
+              "measured": 9,
+              "in_top_20": 5,
+              "in_top_10": 5,
+              "in_top_3": 4
+            }
+          }
+        },
+        "results": [
+          {
+            "query": "vibeops",
+            "cluster": "sitewide",
+            "target_page": "/",
+            "head": true,
+            "strategic": false,
+            "position": 2,
+            "top_domains": "vibeops.tech, vibeops.ca, ca.linkedin.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "vibeops ca",
+            "cluster": "sitewide",
+            "target_page": "/",
+            "head": false,
+            "strategic": false,
+            "position": 1,
+            "top_domains": "vibeops.ca, ca.linkedin.com, m.yelp.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "vibeops technologies",
+            "cluster": "sitewide",
+            "target_page": "/",
+            "head": false,
+            "strategic": false,
+            "position": 1,
+            "top_domains": "vibeops.ca, ca.linkedin.com, itential.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "vibeops engineering",
+            "cluster": "sitewide",
+            "target_page": "/",
+            "head": false,
+            "strategic": false,
+            "position": 1,
+            "top_domains": "vibeops.ca, vibeops.tech, ca.linkedin.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai engineering team for ae firms",
+            "cluster": "sitewide",
+            "target_page": "/",
+            "head": true,
+            "strategic": true,
+            "position": 5,
+            "top_domains": "a.team, ninetwothree.co, ventionteams.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai consultant for engineering firms",
+            "cluster": "sitewide",
+            "target_page": "/",
+            "head": true,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "teamlogicit.com, toptal.com, certinia.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai consulting architecture engineering",
+            "cluster": "sitewide",
+            "target_page": "/what-we-solve",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "forward deployed engineer consulting",
+            "cluster": "sitewide",
+            "target_page": "/how-we-work",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai adoption for engineering firms",
+            "cluster": "sitewide",
+            "target_page": "/what-we-solve",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "private ai for engineering firms",
+            "cluster": "secure-ai",
+            "target_page": "/what-we-solve/secure-ai",
+            "head": true,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "secure ai confidential project data",
+            "cluster": "secure-ai",
+            "target_page": "/what-we-solve/secure-ai",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai on confidential client data",
+            "cluster": "secure-ai",
+            "target_page": "/what-we-solve/secure-ai",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "self hosted ai for engineering firm",
+            "cluster": "secure-ai",
+            "target_page": "/security",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai data residency engineering firm",
+            "cluster": "secure-ai",
+            "target_page": "/security",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "it approval for ai engineering firm",
+            "cluster": "secure-ai",
+            "target_page": "/security",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai without training on our data",
+            "cluster": "secure-ai",
+            "target_page": "/security",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "engineering report automation",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": true,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "jellyfish.co, neubird.ai, ibm.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "automated engineering reports",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": true,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "civil engineering report automation",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": false,
+            "strategic": true,
+            "position": 5,
+            "top_domains": "getdx.com, keyence.com, firma-ai.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai engineering report writing",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "engineering document automation software",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai report generation for engineering firms",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "specification automation engineering",
+            "cluster": "document-production",
+            "target_page": "/what-we-solve/document-production",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "engineering software integration",
+            "cluster": "systems-integration",
+            "target_page": "/what-we-solve/systems-integration",
+            "head": true,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "aec software integration services",
+            "cluster": "systems-integration",
+            "target_page": "/what-we-solve/systems-integration",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "connect engineering software systems",
+            "cluster": "systems-integration",
+            "target_page": "/what-we-solve/systems-integration",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "bim systems integration consultant",
+            "cluster": "systems-integration",
+            "target_page": "/what-we-solve/systems-integration",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "civil 3d custom integration",
+            "cluster": "systems-integration",
+            "target_page": "/what-we-solve/systems-integration",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "procore custom integration development",
+            "cluster": "systems-integration",
+            "target_page": "/what-we-solve/systems-integration",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "custom software for engineering firms",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": true,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "info.unosquare.com, ventionteams.com, eleks.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "custom internal tools engineering firm",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "software development for aec firms",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": true,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "bespoke software architecture engineering firm",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "custom dashboard for engineering firm",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "field data capture app engineering",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "replace spreadsheet with custom software engineering",
+            "cluster": "internal-tools",
+            "target_page": "/what-we-solve/internal-tools",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "engineering document search ai",
+            "cluster": "institutional-knowledge",
+            "target_page": "/what-we-solve/institutional-knowledge",
+            "head": true,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "search past engineering projects",
+            "cluster": "institutional-knowledge",
+            "target_page": "/what-we-solve/institutional-knowledge",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "institutional knowledge engineering firm",
+            "cluster": "institutional-knowledge",
+            "target_page": "/what-we-solve/institutional-knowledge",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai document intelligence construction",
+            "cluster": "institutional-knowledge",
+            "target_page": "/what-we-solve/institutional-knowledge",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "engineering drawing search software",
+            "cluster": "institutional-knowledge",
+            "target_page": "/what-we-solve/institutional-knowledge",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "knowledge management for aec firms",
+            "cluster": "institutional-knowledge",
+            "target_page": "/what-we-solve/institutional-knowledge",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai governance for engineering firms",
+            "cluster": "ai-governance",
+            "target_page": "/what-we-solve/ai-governance",
+            "head": true,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai oversight engineering deliverables",
+            "cluster": "ai-governance",
+            "target_page": "/what-we-solve/ai-governance",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai audit trail engineering",
+            "cluster": "ai-governance",
+            "target_page": "/what-we-solve/ai-governance",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai quality control engineering firm",
+            "cluster": "ai-governance",
+            "target_page": "/what-we-solve/ai-governance",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "ai policy for engineering firms",
+            "cluster": "ai-governance",
+            "target_page": "/what-we-solve/ai-governance",
+            "head": false,
+            "strategic": false,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          },
+          {
+            "query": "stamping ai generated engineering work",
+            "cluster": "ai-governance",
+            "target_page": "/what-we-solve/ai-governance",
+            "head": false,
+            "strategic": true,
+            "position": 0,
+            "top_domains": "",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "no_prior"
+          }
+        ],
+        "errored_queries": [],
+        "previous_probe_date": null
       }
     },
     "vercel_web_analytics": {
       "source": "vercel-web-analytics-ui",
       "status": "pending",
-      "collected_at": "2026-08-17T20:48:08.831Z",
+      "collected_at": "2026-08-19T19:18:07.853Z",
       "represents": {
         "start": null,
         "end": null
@@ -1834,189 +2517,326 @@
       "data": {
         "how_to_collect": "Read pageviews, top pages and referrers from the Vercel dashboard. Vercel publishes no REST endpoint for this; five shapes were probed on 2026-08-17 and all 404d."
       }
+    },
+    "serp_discovery": {
+      "source": "discovery-serp-probe",
+      "status": "ok",
+      "collected_at": "2026-08-19T19:24:34.811Z",
+      "represents": {
+        "start": "2026-08-19",
+        "end": "2026-08-19"
+      },
+      "lag_days": 0,
+      "limitations": [
+        "DISCOVERY SET, NOT THE BENCHMARK. Never compare these counts against serp_probe counts, and never present them as the same measurement.",
+        "The set EVOLVES. Set-level totals are not a trend series — \"3 of 27\" and \"3 of 31\" are not comparable when the queries differ. Only per-query history is valid.",
+        "Results are personalised and geolocated; this scripted read has disagreed with the rendered SERP by 6 places on the same query on the same day.",
+        "Position 0 means \"not found in the top 20\" — censored, not position 21.",
+        "Search Console remains authoritative for position, impressions and CTR.",
+        "A discovery query is never promoted into the frozen benchmark; doing so would manufacture an improvement from a query we already ranked for."
+      ],
+      "data": {
+        "set_version": 2,
+        "summary": {
+          "set_version": 2,
+          "measured": 6,
+          "errored": 0,
+          "in_top_20": 0,
+          "in_top_10": 0,
+          "in_top_3": 0,
+          "at_1": 0,
+          "by_cluster": {
+            "blog": {
+              "measured": 5,
+              "in_top_20": 0,
+              "in_top_10": 0
+            },
+            "sitewide": {
+              "measured": 1,
+              "in_top_20": 0,
+              "in_top_10": 0
+            }
+          },
+          "by_provenance": {
+            "Search Console disclosed, 2026-08-09 to 2026-08-15: 26 impressions, 0 clicks. The largest single non-brand query for the property.": {
+              "measured": 1,
+              "in_top_20": 0
+            },
+            "Search Console disclosed, 2026-08-09 to 2026-08-15: 16 impressions, 0 clicks.": {
+              "measured": 1,
+              "in_top_20": 0
+            },
+            "Search Console disclosed, 2026-08-09 to 2026-08-15: 6 impressions, 0 clicks.": {
+              "measured": 1,
+              "in_top_20": 0
+            },
+            "Search Console disclosed, 2026-08-09 to 2026-08-15: 4 impressions, 0 clicks.": {
+              "measured": 1,
+              "in_top_20": 0
+            },
+            "Search Console disclosed, 2026-08-09 to 2026-08-15: 1 impression, 1 click. The only non-brand query that converted an impression into a click.": {
+              "measured": 1,
+              "in_top_20": 0
+            },
+            "Search Console disclosed, 2026-08-09 to 2026-08-15: 7 impressions, 0 clicks. /reportly separately took 41 impressions in the same window despite being removed from the site and 301-redirected.": {
+              "measured": 1,
+              "in_top_20": 0
+            }
+          }
+        },
+        "results": [
+          {
+            "query": "best ai tools for civil engineers",
+            "cluster": "blog",
+            "target_page": null,
+            "provenance": "Search Console disclosed, 2026-08-09 to 2026-08-15: 26 impressions, 0 clicks. The largest single non-brand query for the property.",
+            "added": null,
+            "position": 0,
+            "top_domains": "pirros.com, atlassian.com, ibeam.ai",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "first_observation",
+            "observations": 1
+          },
+          {
+            "query": "best ai for civil engineering",
+            "cluster": "blog",
+            "target_page": null,
+            "provenance": "Search Console disclosed, 2026-08-09 to 2026-08-15: 16 impressions, 0 clicks.",
+            "added": null,
+            "position": 0,
+            "top_domains": "jamasoftware.com, claude.ai, firma-ai.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "first_observation",
+            "observations": 1
+          },
+          {
+            "query": "civil engineering ai tools",
+            "cluster": "blog",
+            "target_page": null,
+            "provenance": "Search Console disclosed, 2026-08-09 to 2026-08-15: 6 impressions, 0 clicks.",
+            "added": null,
+            "position": 0,
+            "top_domains": "buildertrend.com, jamasoftware.com, firma-ai.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "first_observation",
+            "observations": 1
+          },
+          {
+            "query": "ai tools for civil engineers",
+            "cluster": "blog",
+            "target_page": null,
+            "provenance": "Search Console disclosed, 2026-08-09 to 2026-08-15: 4 impressions, 0 clicks.",
+            "added": null,
+            "position": 0,
+            "top_domains": "civils.ai, blog.bentley.com, reddit.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "first_observation",
+            "observations": 1
+          },
+          {
+            "query": "ai tool for civil engineering",
+            "cluster": "blog",
+            "target_page": null,
+            "provenance": "Search Console disclosed, 2026-08-09 to 2026-08-15: 1 impression, 1 click. The only non-brand query that converted an impression into a click.",
+            "added": null,
+            "position": 0,
+            "top_domains": "civils.ai, blog.bentley.com, reddit.com",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "first_observation",
+            "observations": 1
+          },
+          {
+            "query": "reportly",
+            "cluster": "sitewide",
+            "target_page": null,
+            "provenance": "Search Console disclosed, 2026-08-09 to 2026-08-15: 7 impressions, 0 clicks. /reportly separately took 41 impressions in the same window despite being removed from the site and 301-redirected.",
+            "added": null,
+            "position": 0,
+            "top_domains": "reportlyapp.com, apps.apple.com, reportly.fr",
+            "previous_position": null,
+            "previous_date": null,
+            "movement": null,
+            "movement_label": "first_observation",
+            "observations": 1
+          }
+        ],
+        "errored_queries": []
+      }
     }
   },
   "collection_log": [
     {
-      "at": "2026-08-17T20:48:08.824Z",
+      "at": "2026-08-19T19:18:07.846Z",
       "source": "technical",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:48:08.825Z",
+      "at": "2026-08-19T19:18:07.847Z",
       "source": "internal_links",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:48:08.826Z",
+      "at": "2026-08-19T19:18:07.848Z",
       "source": "structured_data",
       "action": "added",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T20:48:08.827Z",
+      "at": "2026-08-19T19:18:07.849Z",
       "source": "page_speed",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:48:08.828Z",
+      "at": "2026-08-19T19:18:07.850Z",
       "source": "vercel",
       "action": "added",
-      "status": "ok"
+      "status": "error"
     },
     {
-      "at": "2026-08-17T20:48:08.829Z",
+      "at": "2026-08-19T19:18:07.851Z",
       "source": "search_console",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:48:08.830Z",
+      "at": "2026-08-19T19:18:07.852Z",
       "source": "serp_probe",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:48:08.831Z",
+      "at": "2026-08-19T19:18:07.854Z",
       "source": "vercel_web_analytics",
       "action": "added",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:48:37.911Z",
-      "source": "technical",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:48:37.912Z",
-      "source": "internal_links",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:48:37.913Z",
-      "source": "structured_data",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:48:37.914Z",
-      "source": "page_speed",
+      "at": "2026-08-19T19:18:37.877Z",
+      "source": "vercel",
       "action": "replaced",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T20:48:37.914Z",
-      "source": "vercel",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:51:39.535Z",
-      "source": "technical",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:51:39.537Z",
-      "source": "internal_links",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:51:39.538Z",
-      "source": "structured_data",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T20:51:39.539Z",
-      "source": "page_speed",
-      "action": "replaced",
-      "status": "pending"
-    },
-    {
-      "at": "2026-08-17T20:51:39.540Z",
-      "source": "vercel",
-      "action": "replaced",
-      "status": "ok"
-    },
-    {
-      "at": "2026-08-17T21:14:30.049Z",
+      "at": "2026-08-19T19:21:08.046Z",
       "source": "search_console",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:16:12.743Z",
-      "source": "search_console",
+      "at": "2026-08-19T19:23:49.383Z",
+      "source": "serp_probe",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:17:31.343Z",
+      "at": "2026-08-19T19:24:34.813Z",
+      "source": "serp_discovery",
+      "action": "added",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:34:23.146Z",
       "source": "technical",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:17:31.344Z",
+      "at": "2026-08-19T23:34:23.156Z",
       "source": "internal_links",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:17:31.346Z",
+      "at": "2026-08-19T23:34:23.180Z",
       "source": "structured_data",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:17:31.347Z",
+      "at": "2026-08-19T23:34:23.188Z",
       "source": "page_speed",
       "action": "replaced",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T21:17:31.348Z",
+      "at": "2026-08-19T23:34:23.191Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:42:40.734Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:45:54.857Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:46:31.425Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:49:35.791Z",
       "source": "vercel",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:27:10.071Z",
+      "at": "2026-08-19T23:50:10.902Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:50:35.847Z",
       "source": "technical",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:27:10.072Z",
+      "at": "2026-08-19T23:50:35.851Z",
       "source": "internal_links",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:27:10.073Z",
+      "at": "2026-08-19T23:50:35.853Z",
       "source": "structured_data",
       "action": "replaced",
       "status": "ok"
     },
     {
-      "at": "2026-08-17T21:27:10.075Z",
+      "at": "2026-08-19T23:50:35.854Z",
       "source": "page_speed",
       "action": "replaced",
       "status": "pending"
     },
     {
-      "at": "2026-08-17T21:27:10.076Z",
+      "at": "2026-08-19T23:50:35.859Z",
       "source": "vercel",
       "action": "replaced",
       "status": "ok"
     }
   ],
-  "updated_at": "2026-08-17T21:27:10.076Z"
+  "updated_at": "2026-08-19T23:50:35.859Z"
 }

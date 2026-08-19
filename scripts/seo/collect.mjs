@@ -576,14 +576,19 @@ async function psi() {
  */
 async function vercel() {
   const env = loadEnv();
-  let token = env.VERCEL_TOKEN ?? null;
+  // Accept either name. The Vercel docs say VERCEL_TOKEN; a human creating a
+  // token in the dashboard naturally writes VERCEL_API_KEY. Supporting both
+  // costs one line and removes a silent failure that looks identical to a
+  // missing credential.
+  let token = env.VERCEL_TOKEN ?? env.VERCEL_API_KEY ?? null;
+  let tokenSource = env.VERCEL_TOKEN ? 'VERCEL_TOKEN' : env.VERCEL_API_KEY ? 'VERCEL_API_KEY' : null;
   if (!token) {
     for (const p of [
       join(env.HOME ?? '', 'Library', 'Application Support', 'com.vercel.cli', 'auth.json'),
       join(env.HOME ?? '', '.vercel', 'auth.json'),
       join(env.HOME ?? '', '.config', 'com.vercel.cli', 'auth.json'),
     ]) {
-      try { token = JSON.parse(readFileSync(p, 'utf8')).token; if (token) break; } catch { /* next */ }
+      try { token = JSON.parse(readFileSync(p, 'utf8')).token; if (token) { tokenSource = 'vercel CLI login'; break; } } catch { /* next */ }
     }
   }
 
@@ -603,6 +608,86 @@ async function vercel() {
       `${api}/v6/deployments?projectId=${project_id}&teamId=${team_id}&limit=20&target=production&state=READY`,
       { headers: { Authorization: `Bearer ${token}` }, retry: false },
     );
+    // 401/403 is an expired or revoked CLI token, not a broken collector. That
+    // is an auth state and belongs in `pending` alongside Search Console: it
+    // tells the reader what to do, and it cannot later be misread as "we looked
+    // and there were no deployments". Anything else is a genuine error.
+    if (r.status === 401 || r.status === 403 || r.status === 404) {
+      // Distinguish the ways this fails, because the remedy differs and a wrong
+      // remedy costs more time than no remedy.
+      //
+      // CAREFUL: token TYPE changes what "valid" even looks like. Vercel issues
+      // at least three kinds and they answer these probes differently:
+      //
+      //   user token    (vck_)  /v2/user 200 · team endpoints per membership
+      //   project token (vcp_)  /v2/user 404 "User not found" · teams 403
+      //                         ...yet reads its own project and deployments fine
+      //
+      // So /v2/user is NOT a validity test. A project-scoped token fails it and
+      // is still exactly the credential we want — measured 2026-08-19, when the
+      // working token 404'd on /v2/user, 403'd on /v2/teams/{id}, and returned
+      // 200 with 20 deployments for the project. Treating /v2/user as the
+      // gate would have reported a healthy credential as "rejected".
+      //
+      // /v2/teams/{teamId} still earns its place for USER tokens: Vercel says
+      // not_found for a team id that does not exist and team_unauthorized for
+      // one that exists and refuses the caller, which separates a stale config
+      // id from a missing scope. For project tokens it is simply always 403 and
+      // carries no signal, so it is interpreted only alongside the token type.
+      //
+      // List endpoints are NOT diagnostic. /v9/projects?teamId=<a team we
+      // cannot see> returns 200 with an empty array, not 403. An empty list is
+      // not evidence of an empty team.
+      let whoami = null;
+      let teamVerdict = 'unknown';
+      // Infer the token kind from its prefix. Vercel documents these, and the
+      // alternative is inferring it from failure patterns, which is what made
+      // this hard to read in the first place.
+      const kind = /^vcp_/.test(token) ? 'project-scoped' : /^vck_/.test(token) ? 'user' : 'unknown';
+      try {
+        const w = await get(`${api}/v2/user`, { headers: { Authorization: `Bearer ${token}` }, retry: false });
+        if (w.ok) whoami = (await w.json())?.user?.username ?? 'unknown';
+      } catch { /* leave null */ }
+      try {
+        const t = await get(`${api}/v2/teams/${team_id}`, { headers: { Authorization: `Bearer ${token}` }, retry: false });
+        const body = await t.json().catch(() => ({}));
+        if (t.ok) teamVerdict = 'accessible';
+        else if (body?.error?.code === 'team_unauthorized') teamVerdict = 'exists_but_unauthorized';
+        else if (t.status === 404) teamVerdict = 'team_id_not_found';
+        else teamVerdict = `http_${t.status}`;
+      } catch { /* leave unknown */ }
+
+      const scoped = Boolean(whoami);
+      let how;
+      if (kind === 'project-scoped') {
+        // A project token that cannot read its project is pointed at the wrong
+        // one. /v2/user and the team endpoints say nothing useful about it.
+        how = `The token (${tokenSource}) is project-scoped (vcp_). Those legitimately fail /v2/user and the team endpoints, so the only `
+          + `meaningful signal is this HTTP ${r.status} against project ${CONFIG.vercel.project_id}. The token is almost certainly scoped to a `
+          + `DIFFERENT project. Recreate it from the ${CONFIG.vercel.project_name} project's own settings (Project > Settings > Tokens), or use a `
+          + `team-scoped token, then set it in .env as VERCEL_TOKEN.`;
+      } else if (teamVerdict === 'team_id_not_found') {
+        how = `config.vercel.team_id (${team_id}) does not resolve at all. The configured team id is stale or wrong; correct it in docs/seo/config.json.`;
+      } else if (teamVerdict === 'exists_but_unauthorized') {
+        how = `The token (${tokenSource}) is valid and authenticates as "${whoami}", and the configured team ${team_id} is REAL: Vercel answered `
+          + `team_unauthorized rather than not_found, which it only does for a team that exists and refuses the caller. So the team id is correct `
+          + `and this token simply has no access to that team, i.e. it was created with Scope = Personal Account. Fix: at `
+          + `https://vercel.com/account/settings/tokens create a token whose Scope is the team owning ${CONFIG.vercel.project_name}, then set it in `
+          + `.env as VERCEL_TOKEN or VERCEL_API_KEY. Nothing else needs to change.`;
+      } else if (scoped) {
+        how = `The token (${tokenSource}) authenticates as "${whoami}" but cannot reach ${CONFIG.vercel.project_name}. Team check: ${teamVerdict}.`;
+      } else {
+        how = `The stored token was rejected outright (HTTP ${r.status}). Run \`vercel login\`, or set a valid VERCEL_TOKEN in .env.`;
+      }
+
+      log(`  Vercel      pending — ${kind} token; ${scoped ? `auth ok as "${whoami}"; team ${teamVerdict}` : `no user identity`} (HTTP ${r.status})`);
+      return sourceBlock({
+        source: 'vercel-api',
+        status: 'pending',
+        limitations: ['Deploy history is unavailable until the credential can see this project, so metric changes cannot be correlated against deploys.'],
+        data: { how_to_collect: how, http_status: r.status, token_kind: kind, authenticates: scoped, authenticated_as: whoami, token_source: tokenSource, team_check: teamVerdict },
+      });
+    }
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const j = await r.json();
     const deployments = (j.deployments ?? []).map((d) => ({

@@ -41,11 +41,11 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
-    <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16/scripts/seo/run-daily.sh</string>
+    <string>/Users/zandipie/Work/VibeOps/Website/v16/scripts/seo/run-daily.sh</string>
   </array>
 
   <key>WorkingDirectory</key>
-  <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16</string>
+  <string>/Users/zandipie/Work/VibeOps/Website/v16</string>
 
   <key>StartCalendarInterval</key>
   <dict>
@@ -60,9 +60,9 @@
   <false/>
 
   <key>StandardOutPath</key>
-  <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16/docs/seo/data/.cron.log</string>
+  <string>/Users/zandipie/Work/VibeOps/Website/v16/docs/seo/data/.cron.log</string>
   <key>StandardErrorPath</key>
-  <string>/Users/zandipie/Desktop/Work/VibeOps/Website/v16/docs/seo/data/.cron.log</string>
+  <string>/Users/zandipie/Work/VibeOps/Website/v16/docs/seo/data/.cron.log</string>
 
   <key>ProcessType</key>
   <string>Background</string>

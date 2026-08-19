@@ -39,7 +39,12 @@
 
 // __DISCOVERY_QUERIES__ — generated; do not hand-edit.
 const DISCOVERY_QUERIES = [
-
+  "best ai tools for civil engineers",
+  "best ai for civil engineering",
+  "civil engineering ai tools",
+  "ai tools for civil engineers",
+  "ai tool for civil engineering",
+  "reportly",
 ];
 
 function domainsInOrder(html) {

@@ -139,6 +139,13 @@ const block = sourceBlock({
     country_count_reported: p.country_count ?? p.country_count_reported ?? (p.countries ?? []).length,
     countries_captured: (p.countries ?? []).length,
     indexed_pages: p.indexed_pages ?? null,
+    // The Page indexing report's stated reasons. Far more actionable than the
+    // count: "Excluded by 'noindex'" is our own directive and ours to fix,
+    // while "Discovered - currently not indexed" is Google declining to index
+    // and needs an entirely different response. Optional — a payload captured
+    // without opening that report simply omits them.
+    not_indexed_pages: p.not_indexed_pages ?? null,
+    indexing_reasons: p.indexing_reasons ?? null,
     coverage_notes: p.coverage_notes ?? null,
     notes: p.notes ?? null,
   },

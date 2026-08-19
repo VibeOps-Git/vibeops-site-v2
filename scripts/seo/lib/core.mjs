@@ -45,7 +45,7 @@ export function loadEnv() {
 /** Strip anything token-shaped out of text before it reaches stdout or a file. */
 export function redact(text, env = loadEnv()) {
   let out = String(text ?? '');
-  for (const key of ['VERCEL_TOKEN', 'PAGESPEED_API_KEY', 'GSC_CLIENT_SECRET']) {
+  for (const key of ['VERCEL_TOKEN', 'VERCEL_API_KEY', 'PAGESPEED_API_KEY', 'GSC_CLIENT_SECRET']) {
     const v = env[key];
     if (v && v.length > 6) out = out.split(v).join(`<${key}>`);
   }

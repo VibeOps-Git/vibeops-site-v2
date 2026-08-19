@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" width="720" height="260" font-family="system-ui, -apple-system, sans-serif" role="img" aria-label="Average position (lower is better)">
+  <title>Average position (lower is better)</title>
+  <text x="52" y="14" font-size="13" font-weight="600" fill="#888">Average position (lower is better)</text>
+  <text x="700" y="14" text-anchor="end" font-size="10" fill="#999">impression-weighted; noisy at small samples</text>
+  <line x1="52" y1="220.0" x2="700" y2="220.0" stroke="#8888" stroke-width="0.5"/><text x="44" y="224.0" text-anchor="end" font-size="11" fill="#888">0</text><line x1="52" y1="133.0" x2="700" y2="133.0" stroke="#8888" stroke-width="0.5"/><text x="44" y="137.0" text-anchor="end" font-size="11" fill="#888">5</text><line x1="52" y1="46.1" x2="700" y2="46.1" stroke="#8888" stroke-width="0.5"/><text x="44" y="50.1" text-anchor="end" font-size="11" fill="#888">10</text>
+  <line x1="52" y1="24" x2="52" y2="220" stroke="#8888" stroke-width="1"/>
+  <line x1="52" y1="220" x2="700" y2="220" stroke="#8888" stroke-width="1"/>
+  <polyline points="52.0,49.6 700.0,58.3" fill="none" stroke="#c96f6f" stroke-width="2" stroke-linejoin="round"/><circle cx="52.0" cy="49.6" r="2.5" fill="#c96f6f"/><circle cx="700.0" cy="58.3" r="2.5" fill="#c96f6f"/>
+  <text x="52.0" y="236" text-anchor="middle" font-size="10" fill="#888">08-17</text><text x="700.0" y="236" text-anchor="middle" font-size="10" fill="#888">08-19</text>
+  
+  <text x="10" y="122" font-size="10" fill="#888" transform="rotate(-90 10 122)" text-anchor="middle">position</text>
+</svg>

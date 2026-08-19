@@ -149,8 +149,10 @@
       "report automation", "engineering report", "document automation", "specification", "submittal",
       "custom software", "internal tool", "systems integration", "bim", "revit", "civil 3d", "procore",
       "knowledge management", "document intelligence", "ai governance", "audit trail", "qa/qc",
-      "confidential", "private ai", "secure ai", "data residency", "forward deployed", "vibeops"
+      "confidential", "private ai", "secure ai", "data residency", "forward deployed",
+      "vibeops", "vibe ops", "vipbops", "vibops", "vibeop", "reportly"
     ],
+    "_brand_variants_note": "Brand misspellings and the legacy product name are deliberately on_topic. Added 2026-08-17 after the first Search Console ingest classified 'vibe ops', 'vipbops' and 'reportly' as irrelevant, which is plainly wrong: every one of those searchers is looking for this company. Left uncorrected it would have understated the on-topic proportion, which is the exact signal this classification exists to measure. 'reportly' is the retired product name and still drew 7 impressions and 41 impressions to /reportly in the week of 2026-08-09.",
     "adjacent_terms": [
       "consultant", "consulting", "automation", "workflow", "software development", "machine learning",
       "artificial intelligence", "llm", "chatgpt", "copilot", "dashboard", "integration", "vancouver",
