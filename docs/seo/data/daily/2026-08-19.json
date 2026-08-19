@@ -3,12 +3,12 @@
   "date": "2026-08-19",
   "domain_age_days": 59,
   "first_collected_at": "2026-08-19T19:18:07.846Z",
-  "revision": 20,
+  "revision": 27,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-19T23:34:08.515Z",
+      "collected_at": "2026-08-19T23:50:22.586Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -670,7 +670,7 @@
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-19T23:34:17.170Z",
+      "collected_at": "2026-08-19T23:50:30.718Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1191,7 +1191,7 @@
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-19T23:34:22.203Z",
+      "collected_at": "2026-08-19T23:50:35.619Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1353,7 +1353,7 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-19T23:34:23.053Z",
+      "collected_at": "2026-08-19T23:50:35.737Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1368,23 +1368,142 @@
     },
     "vercel": {
       "source": "vercel-api",
-      "status": "pending",
-      "collected_at": "2026-08-19T23:46:31.423Z",
+      "status": "ok",
+      "collected_at": "2026-08-19T23:50:35.844Z",
       "represents": {
-        "start": null,
-        "end": null
+        "start": "2026-05-02",
+        "end": "2026-08-19"
       },
-      "lag_days": null,
+      "lag_days": 0,
       "limitations": [
-        "Deploy history is unavailable until the credential can see this project, so metric changes cannot be correlated against deploys."
+        "The last 20 READY production deployments only, so a long history is truncated.",
+        "Vercel Web Analytics is NOT included: it is enabled on the project but has no stable REST endpoint. It is collected as a separate browser-gated source."
       ],
       "data": {
-        "how_to_collect": "The token (VERCEL_API_KEY) is valid and authenticates as \"vibeops-team\", and the configured team team_WfOi17TqUdoAWPXrSvxSPK8U is REAL: Vercel answered team_unauthorized rather than not_found, which it only does for a team that exists and refuses the caller. So the team id is correct and this token simply has no access to that team, i.e. it was created with Scope = Personal Account. Fix: at https://vercel.com/account/settings/tokens create a token whose Scope is the team owning vibeops-site-v2, then set it in .env as VERCEL_TOKEN or VERCEL_API_KEY. Nothing else needs to change.",
-        "http_status": 403,
-        "authenticates": true,
-        "authenticated_as": "vibeops-team",
-        "token_source": "VERCEL_API_KEY",
-        "team_check": "exists_but_unauthorized"
+        "latest_production_deploy": "2026-08-17T20:52:17.646Z",
+        "days_since_deploy": 1,
+        "deployments": [
+          {
+            "created_at": "2026-08-17T20:52:17.646Z",
+            "state": "READY",
+            "commit_sha": "60970c5",
+            "commit_message": "Fix device sizing on large screens; widen cards instead of thinning them (#172)"
+          },
+          {
+            "created_at": "2026-08-17T20:28:05.798Z",
+            "state": "READY",
+            "commit_sha": "3caafc7",
+            "commit_message": "Use the full screen on large displays; keep prose readable (#171)"
+          },
+          {
+            "created_at": "2026-08-13T20:13:37.675Z",
+            "state": "READY",
+            "commit_sha": "c8ed253",
+            "commit_message": "Remove NDA-covered client engagement from /proof (#170)"
+          },
+          {
+            "created_at": "2026-08-13T19:58:21.561Z",
+            "state": "READY",
+            "commit_sha": "f1cced0",
+            "commit_message": "Reposition around jobs-to-be-done: the AI engineering team for AE firms (#169)"
+          },
+          {
+            "created_at": "2026-08-10T18:52:59.465Z",
+            "state": "READY",
+            "commit_sha": "9271dad",
+            "commit_message": "Reposition site as a pure consulting business (#168)"
+          },
+          {
+            "created_at": "2026-07-23T18:39:58.326Z",
+            "state": "READY",
+            "commit_sha": "a464d65",
+            "commit_message": "New team photo + rebalance team layouts for two-person core team (#167)"
+          },
+          {
+            "created_at": "2026-07-23T18:15:07.480Z",
+            "state": "READY",
+            "commit_sha": "8787038",
+            "commit_message": "Remove Omair from site + add 2 blog posts to sitemap (#166)"
+          },
+          {
+            "created_at": "2026-06-25T20:49:30.189Z",
+            "state": "READY",
+            "commit_sha": "f80dc45",
+            "commit_message": "Merge pull request #165 from VibeOps-Git/reportly-demo-polish-team-nishant"
+          },
+          {
+            "created_at": "2026-06-25T13:57:39.241Z",
+            "state": "READY",
+            "commit_sha": "58b2b28",
+            "commit_message": "Merge pull request #164 from VibeOps-Git/remove-portfolio-projects"
+          },
+          {
+            "created_at": "2026-06-24T00:12:06.134Z",
+            "state": "READY",
+            "commit_sha": "8ebf890",
+            "commit_message": "fix(team): subtle natural regrade of Sofia headshot (neutralize shirt, tame background, no oversaturation) (#163)"
+          },
+          {
+            "created_at": "2026-06-23T23:54:41.340Z",
+            "state": "READY",
+            "commit_sha": "6d5e765",
+            "commit_message": "Sofia headshot: brightness/contrast match + LinkedIn (#162)"
+          },
+          {
+            "created_at": "2026-06-23T23:42:14.500Z",
+            "state": "READY",
+            "commit_sha": "13445b1",
+            "commit_message": "Add Sofia Gibb as contributor + reorder contributors (#161)"
+          },
+          {
+            "created_at": "2026-06-23T01:43:40.131Z",
+            "state": "READY",
+            "commit_sha": "7bcb9d2",
+            "commit_message": "Mobile hero polish: demo video on laptop + proportionate cycling devices (#160)"
+          },
+          {
+            "created_at": "2026-06-23T00:57:46.440Z",
+            "state": "READY",
+            "commit_sha": "1c06b8f",
+            "commit_message": "Merge pull request #159: mobile responsive hero + Reportly polish"
+          },
+          {
+            "created_at": "2026-06-22T21:46:05.778Z",
+            "state": "READY",
+            "commit_sha": "5759d17",
+            "commit_message": "Merge pull request #158 from VibeOps-Git/feat/site-redesign-deslop-lightdark"
+          },
+          {
+            "created_at": "2026-05-02T02:12:48.791Z",
+            "state": "READY",
+            "commit_sha": "9c84394",
+            "commit_message": "blog: add 1-civil-tool (#108)"
+          },
+          {
+            "created_at": "2026-05-02T02:12:46.618Z",
+            "state": "READY",
+            "commit_sha": "9b272eb",
+            "commit_message": "blog: add why-reportly-by-vibeops-is-positioned-to-win-in-ai-powered-engineering-software (#113)"
+          },
+          {
+            "created_at": "2026-05-02T02:12:44.176Z",
+            "state": "READY",
+            "commit_sha": "1e70ab1",
+            "commit_message": "blog: add why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors (#115)"
+          },
+          {
+            "created_at": "2026-05-02T02:12:42.020Z",
+            "state": "READY",
+            "commit_sha": "be4c2b3",
+            "commit_message": "blog: add civil-engineering-workflow-automation-how-ai-is-changing-the-industry (#117)"
+          },
+          {
+            "created_at": "2026-05-02T02:12:39.755Z",
+            "state": "READY",
+            "commit_sha": "76918c1",
+            "commit_message": "blog: add best-ai-tools-for-civil-engineers-in-2026 (#119)"
+          }
+        ]
       }
     },
     "search_console": {
@@ -2675,7 +2794,49 @@
       "source": "vercel",
       "action": "replaced",
       "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:49:35.791Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:50:10.902Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:50:35.847Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:50:35.851Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:50:35.853Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-19T23:50:35.854Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:50:35.859Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
     }
   ],
-  "updated_at": "2026-08-19T23:46:31.425Z"
+  "updated_at": "2026-08-19T23:50:35.859Z"
 }

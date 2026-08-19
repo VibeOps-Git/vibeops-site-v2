@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T23:34:23.304Z",
+  "generated_at": "2026-08-19T23:50:35.905Z",
   "generated_by": "scripts/seo/history.mjs",
   "note": "Regenerated from docs/seo/data/daily/*.json. Do not hand-edit; edit the snapshots.",
   "by_day": [
@@ -1211,7 +1211,7 @@
       "bot_pageloads_cumulative": "",
       "feedback_genuine_cumulative": "",
       "technical_issues": 65,
-      "sources_ok": "technical internal_links structured_data search_console serp_probe serp_discovery"
+      "sources_ok": "technical internal_links structured_data vercel search_console serp_probe serp_discovery"
     }
   ]
 }

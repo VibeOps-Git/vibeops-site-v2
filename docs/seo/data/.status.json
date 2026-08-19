@@ -9,7 +9,6 @@
   "gsc_latest": "2026-08-17",
   "pending": [
     "page_speed",
-    "vercel",
     "vercel_web_analytics"
   ]
 }
