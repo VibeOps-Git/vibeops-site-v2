@@ -3,7 +3,7 @@
   "date": "2026-08-19",
   "domain_age_days": 59,
   "first_collected_at": "2026-08-19T19:18:07.846Z",
-  "revision": 18,
+  "revision": 20,
   "sources": {
     "technical": {
       "source": "http-technical-check",
@@ -1369,7 +1369,7 @@
     "vercel": {
       "source": "vercel-api",
       "status": "pending",
-      "collected_at": "2026-08-19T23:42:40.730Z",
+      "collected_at": "2026-08-19T23:46:31.423Z",
       "represents": {
         "start": null,
         "end": null
@@ -1379,11 +1379,12 @@
         "Deploy history is unavailable until the credential can see this project, so metric changes cannot be correlated against deploys."
       ],
       "data": {
-        "how_to_collect": "The token (VERCEL_API_KEY) is valid and authenticates as \"vibeops-team\", but cannot see project vibeops-site-v2 under team team_WfOi17TqUdoAWPXrSvxSPK8U. That is a SCOPE problem, not an auth one: the token was created against the personal account rather than the team that owns the project. Recreate it at https://vercel.com/account/settings/tokens with Scope set to the team, then put it in .env as VERCEL_TOKEN or VERCEL_API_KEY.",
+        "how_to_collect": "The token (VERCEL_API_KEY) is valid and authenticates as \"vibeops-team\", and the configured team team_WfOi17TqUdoAWPXrSvxSPK8U is REAL: Vercel answered team_unauthorized rather than not_found, which it only does for a team that exists and refuses the caller. So the team id is correct and this token simply has no access to that team, i.e. it was created with Scope = Personal Account. Fix: at https://vercel.com/account/settings/tokens create a token whose Scope is the team owning vibeops-site-v2, then set it in .env as VERCEL_TOKEN or VERCEL_API_KEY. Nothing else needs to change.",
         "http_status": 403,
         "authenticates": true,
         "authenticated_as": "vibeops-team",
-        "token_source": "VERCEL_API_KEY"
+        "token_source": "VERCEL_API_KEY",
+        "team_check": "exists_but_unauthorized"
       }
     },
     "search_console": {
@@ -2662,7 +2663,19 @@
       "source": "vercel",
       "action": "replaced",
       "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:45:54.857Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-19T23:46:31.425Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "pending"
     }
   ],
-  "updated_at": "2026-08-19T23:42:40.734Z"
+  "updated_at": "2026-08-19T23:46:31.425Z"
 }
