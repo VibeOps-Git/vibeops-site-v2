@@ -603,6 +603,19 @@ async function vercel() {
       `${api}/v6/deployments?projectId=${project_id}&teamId=${team_id}&limit=20&target=production&state=READY`,
       { headers: { Authorization: `Bearer ${token}` }, retry: false },
     );
+    // 401/403 is an expired or revoked CLI token, not a broken collector. That
+    // is an auth state and belongs in `pending` alongside Search Console: it
+    // tells the reader what to do, and it cannot later be misread as "we looked
+    // and there were no deployments". Anything else is a genuine error.
+    if (r.status === 401 || r.status === 403) {
+      log('  Vercel      pending — CLI token rejected (HTTP ' + r.status + '); run `vercel login`');
+      return sourceBlock({
+        source: 'vercel-api',
+        status: 'pending',
+        limitations: ['The stored Vercel CLI token was rejected, so deploy history is unavailable until it is refreshed.'],
+        data: { how_to_collect: 'Run `vercel login` in this repo. The collector reads the CLI token directly, so no other step is needed.', http_status: r.status },
+      });
+    }
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const j = await r.json();
     const deployments = (j.deployments ?? []).map((d) => ({
