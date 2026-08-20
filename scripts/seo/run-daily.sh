@@ -66,6 +66,10 @@ NODE="$(find_node)" || {
 
 export PATH="$(dirname "$NODE"):$PATH"
 
+# Stamp this run as scheduled. The pipeline records it only on a COMPLETED
+# run, so an interactive run can never masquerade as a healthy scheduler.
+export VO_RUN_SOURCE=launchd
+
 echo "[run-daily] $(date -u +%Y-%m-%dT%H:%M:%SZ) starting"
 echo "[run-daily] node $("$NODE" --version) at $NODE"
 

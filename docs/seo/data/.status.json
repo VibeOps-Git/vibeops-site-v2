@@ -7,6 +7,9 @@
   "headline": "2 opportunity(ies) ready for the weekly gate",
   "notify": false,
   "gsc_latest": "2026-08-17",
+  "run_source": "interactive",
+  "scheduler_healthy": true,
+  "scheduler_note": "Last scheduled run completed 0h ago.",
   "pending": [
     "page_speed",
     "vercel_web_analytics"

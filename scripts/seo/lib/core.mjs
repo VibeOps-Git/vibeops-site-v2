@@ -291,3 +291,78 @@ export function fmtPct(n, digits = 1) {
 export function log(...args) {
   console.log(...args.map((a) => (typeof a === 'string' ? redact(a) : a)));
 }
+
+/* ------------------------------------------------------ run provenance --- */
+
+/**
+ * Who ran the pipeline, and when did a SCHEDULED run last complete.
+ *
+ * The dataset cannot answer this on its own, and that gap is not theoretical:
+ * the launchd job here was dead from 2026-08-17 to 2026-08-19 while every
+ * snapshot looked perfectly healthy, because a human was running the pipeline
+ * by hand and nothing recorded the difference. Exit 0 from a manual kickstart
+ * proves the path works today; it says nothing about tomorrow morning.
+ *
+ * Two design points, both learned rather than guessed:
+ *
+ *   1. The state is written at the END of a completed run, so reaching that
+ *      line IS the success signal. A run that dies partway cannot claim it.
+ *   2. An interactive run is recorded AS NOT COUNTING, not merely omitted. A
+ *      gap is ambiguous — it reads identically to "nobody ran anything" —
+ *      whereas an explicit interactive stamp says a human was compensating for
+ *      a dead scheduler, which is the thing worth knowing.
+ */
+export const SCHEDULER_STATE = join(DATA_DIR, '.scheduler-state.json');
+
+/** How stale a scheduled run may be before it is reported as unhealthy. */
+export const SCHEDULED_RUN_MAX_AGE_HOURS = 30;
+
+export function runSource() {
+  return process.env.VO_RUN_SOURCE === 'launchd' ? 'launchd' : 'interactive';
+}
+
+export function readSchedulerState() {
+  return readJSON(SCHEDULER_STATE, null);
+}
+
+/**
+ * Health of the SCHEDULER, computed from a state read BEFORE the current run
+ * overwrites it. Reporting post-write health would make a broken scheduler
+ * invisible on the very run that fixed it, which is the one run where you most
+ * want to see it.
+ */
+export function schedulerHealth(prior = readSchedulerState(), now = new Date()) {
+  const last = prior?.last_scheduled_completed_at ?? null;
+  if (!last) {
+    return { healthy: false, last_scheduled: null, hours_since: null,
+      note: 'No scheduled run has ever completed. Every snapshot so far was produced by hand.' };
+  }
+  const hours = (now - new Date(last)) / 3600000;
+  return {
+    healthy: hours <= SCHEDULED_RUN_MAX_AGE_HOURS,
+    last_scheduled: last,
+    hours_since: Math.round(hours * 10) / 10,
+    note: hours <= SCHEDULED_RUN_MAX_AGE_HOURS
+      ? `Last scheduled run completed ${Math.round(hours)}h ago.`
+      : `NO SCHEDULED RUN HAS COMPLETED IN ${Math.round(hours)}h. Interactive runs do not count. The launchd job is probably broken; check docs/seo/data/.cron.log and \`launchctl list | grep vibeops\`.`,
+  };
+}
+
+/** Record a COMPLETED run. Called last, so arriving here is the success signal. */
+export function recordRunCompleted(date) {
+  const src = runSource();
+  const prior = readSchedulerState() ?? {};
+  const at = new Date().toISOString();
+  writeJSON(SCHEDULER_STATE, {
+    last_run_at: at,
+    last_run_source: src,
+    last_run_date: date,
+    // Only a scheduled run advances this. An interactive run leaves it alone
+    // on purpose: it is not evidence the scheduler works.
+    last_scheduled_completed_at: src === 'launchd' ? at : (prior.last_scheduled_completed_at ?? null),
+    last_scheduled_date: src === 'launchd' ? date : (prior.last_scheduled_date ?? null),
+    interactive_runs_since_scheduled: src === 'launchd' ? 0 : (prior.interactive_runs_since_scheduled ?? 0) + 1,
+  });
+  return src;
+}
+

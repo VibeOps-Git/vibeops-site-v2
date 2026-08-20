@@ -370,3 +370,42 @@ act, which is the only thing scores are for here.
 6. Opportunity ids are unique; every `recommended_action` is one of the five.
 7. No `.env` credential value appears in any committed file.
 8. `product_scope.new_pages_authorized` is `false`.
+
+## Precedence: which observation of the same day wins
+
+**Write the rule per source, next to the reason for it.** There is no correct
+global answer, and assuming one is how a source's behaviour quietly corrupts a
+series.
+
+| Source | Rule | Why |
+|---|---|---|
+| Search Console | **latest** observation wins | GSC revises figures *upward* as it finishes processing. A day read on D+2 is less complete than the same day read on D+5. |
+| Vercel deployments | latest wins | Immutable records; a later read only adds deployments. |
+| Technical / link crawl | latest wins | A point sample of the live origin. The newest read is the current truth by definition. |
+| PageSpeed / CrUX | latest wins | CrUX is a rolling 28-day window; later reads describe a later window. |
+| _(a source that downsamples with age)_ | **earliest** wins | Not hypothetical. The sibling roadway.tools system found Cloudflare RUM re-reporting the same day differently once it aged past ~8 days, losing a search arrival entirely. Where a source degrades history, the first observation is the truest one. |
+
+Neither behaviour is a quirk; both follow from how the source works. So the
+question to ask of any new source is **"does this rewrite its own history?"**
+before assuming latest-wins.
+
+This is also the strongest argument for immutable daily snapshots: they preserve
+a measurement the API can no longer produce.
+
+## Arithmetic invariants
+
+`verify.mjs` asserts, per snapshot:
+
+- `disclosed_impressions + undisclosed_impressions === totals.impressions` —
+  every impression is attributed to a named query or it is not; there is no
+  third category.
+- topicality buckets sum to `disclosed_query_count`.
+- clicks never exceed impressions, per day and in total.
+
+These are checks that **can fail**, and they are deliberately about the data
+model rather than about any one API. They catch a transcription slip, a bug in
+`ingest-gsc.mjs`, and a future source that silently samples, with equal
+indifference. Reading code is not a substitute for asserting the arithmetic:
+verified by injecting a 7-impression error into a snapshot, which the check
+caught and named.
+

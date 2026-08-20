@@ -20,6 +20,7 @@ import { join } from 'node:path';
 import {
   CONFIG, QUERY_SET, DAILY_REPORT_DIR, DATA_DIR, resolveDate, hasFlag, listSnapshotDates, loadSnapshot,
   writeText, writeJSON, domainAge, daysBetween, fmtPct, log, clusterForPath, inferCluster,
+  schedulerHealth, runSource,
 } from './lib/core.mjs';
 import { momentum, windowGrowth, positionChange, ctrOpportunity, detectCannibalisation } from './lib/trends.mjs';
 import { loadOpportunities, saveOpportunities, upsert, opportunityId } from './lib/opportunities.mjs';
@@ -688,6 +689,17 @@ if (criticalIssues.length) {
   verdictWhy = `${ready.length} opportunit${ready.length === 1 ? 'y has' : 'ies have'} reached READY. They do not authorise a change — they queue for the weekly decision gate.`;
 }
 
+/* --------------------------------------------------- scheduler health --- */
+
+// Read BEFORE daily.mjs records this run. Reporting post-write health would
+// make a broken scheduler invisible on the very run that fixed it.
+const sched = schedulerHealth();
+if (!sched.healthy) {
+  risks.push(`**SCHEDULER: ${sched.note}** A dataset built by hand looks identical to one built on schedule, which is exactly how a dead cron goes unnoticed for a week.`);
+} else {
+  facts.push(`Scheduler healthy: ${sched.note}`);
+}
+
 /* ------------------------------------------------------- status file --- */
 
 // A tiny machine-readable verdict for the scheduled runner to act on. The
@@ -702,13 +714,20 @@ writeJSON(join(DATA_DIR, '.status.json'), {
   critical_count: criticalIssues.length,
   ready_count: ready.length,
   // The single line worth putting in a notification, if any.
-  headline: criticalIssues.length
+  headline: !sched.healthy
+    ? `Scheduled run overdue: ${sched.note.slice(0, 110)}`
+    : criticalIssues.length
     ? criticalIssues[0].issue.split('.')[0].slice(0, 140)
     : ready.length
       ? `${ready.length} opportunity(ies) ready for the weekly gate`
       : null,
-  notify: criticalIssues.length > 0,
+  // A dead scheduler is worth interrupting someone for even when the site is
+  // perfectly healthy, because it means nothing will interrupt them later.
+  notify: criticalIssues.length > 0 || !sched.healthy,
   gsc_latest: latestCovered ?? null,
+  run_source: runSource(),
+  scheduler_healthy: sched.healthy,
+  scheduler_note: sched.note,
   pending: Object.entries(cur?.sources ?? {}).filter(([, b]) => b.status === 'pending').map(([k]) => k),
 });
 

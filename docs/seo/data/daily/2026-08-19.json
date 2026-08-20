@@ -3,12 +3,12 @@
   "date": "2026-08-19",
   "domain_age_days": 59,
   "first_collected_at": "2026-08-19T19:18:07.846Z",
-  "revision": 32,
+  "revision": 47,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-20T00:18:41.759Z",
+      "collected_at": "2026-08-20T00:27:02.947Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -34,8 +34,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 74,
-            "body_md5": "346d03d9bd6cb15b01e7252ecb5fe876",
-            "bytes": 116329
+            "body_md5": "98225154dea9996bcd8208f52d73a964",
+            "bytes": 116313
           },
           {
             "path": "/what-we-solve",
@@ -50,8 +50,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 36,
-            "body_md5": "584f4ed4d3c397281ba8e3956f985968",
-            "bytes": 64181
+            "body_md5": "0532609ef19df9d1e72a076b4c296ba9",
+            "bytes": 63869
           },
           {
             "path": "/what-we-solve/secure-ai",
@@ -66,8 +66,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 34,
-            "body_md5": "ec4930b2aee685c6617e8cca1f0a01d5",
-            "bytes": 64992
+            "body_md5": "45180592bafd79cb3fe498c930e68281",
+            "bytes": 64976
           },
           {
             "path": "/what-we-solve/document-production",
@@ -82,8 +82,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 35,
-            "body_md5": "fe28c8d637cb0ac9fc55144b844e9b45",
-            "bytes": 67149
+            "body_md5": "fe3705b9b1b593bfc4bd55203f2c8ab8",
+            "bytes": 67220
           },
           {
             "path": "/what-we-solve/systems-integration",
@@ -98,8 +98,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 34,
-            "body_md5": "dad1313c45b28e1e606e63a9eef9e7ee",
-            "bytes": 65451
+            "body_md5": "d346b6efb606f56c2a0f364eff8fde01",
+            "bytes": 64943
           },
           {
             "path": "/what-we-solve/internal-tools",
@@ -114,8 +114,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 34,
-            "body_md5": "441026f57f36568f4c3c371a84a6d432",
-            "bytes": 64863
+            "body_md5": "8abb9af194a8d2e956a0a5a4960a793a",
+            "bytes": 65127
           },
           {
             "path": "/what-we-solve/institutional-knowledge",
@@ -130,8 +130,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 35,
-            "body_md5": "84f9df8396f02fd6b53bbd60b608ee7c",
-            "bytes": 66999
+            "body_md5": "93922b8c82c391051feb954ccb1729fb",
+            "bytes": 67006
           },
           {
             "path": "/what-we-solve/ai-governance",
@@ -162,8 +162,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 31,
-            "body_md5": "6e3594e6695031b3c8f509101c223469",
-            "bytes": 74567
+            "body_md5": "ba1a252aa654f1cf8504184cc2e10349",
+            "bytes": 74431
           },
           {
             "path": "/proof",
@@ -178,8 +178,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 35,
-            "body_md5": "afa41dab4fecb13798476fad4377869b",
-            "bytes": 72229
+            "body_md5": "0b70b30c0d718317e14ed0de5f0f3cd0",
+            "bytes": 72620
           },
           {
             "path": "/security",
@@ -194,8 +194,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 32,
-            "body_md5": "4a4921133fc537738baea9cccc2d634d",
-            "bytes": 74962
+            "body_md5": "642e8780d3d6b64e3653f6738a27187f",
+            "bytes": 74957
           },
           {
             "path": "/team",
@@ -210,8 +210,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 55,
-            "body_md5": "a4f16b883231deafe44a52cac6d5676f",
-            "bytes": 84710
+            "body_md5": "26800f29f55914f4e4b9c738955a1671",
+            "bytes": 84711
           },
           {
             "path": "/contact",
@@ -226,8 +226,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 28,
-            "body_md5": "5217876b89745d48d119075060caffae",
-            "bytes": 53838
+            "body_md5": "ec0672290fecdc770706e1bc62339d95",
+            "bytes": 54106
           },
           {
             "path": "/blog",
@@ -242,7 +242,7 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 40,
-            "body_md5": "a13c7f83474366379ce5e0c192f65f18",
+            "body_md5": "bd8025baff07ac37d654ef10204cc9d4",
             "bytes": 61968
           },
           {
@@ -258,8 +258,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 30,
-            "body_md5": "39a2f34c32f561c7dcbc17bb8fe43c3a",
-            "bytes": 59972
+            "body_md5": "1a1d3c4d5fd2a9cceff3b2be330f2d6b",
+            "bytes": 60108
           },
           {
             "path": "/terms",
@@ -274,8 +274,8 @@
             "h1_count": 1,
             "og_image": true,
             "anchor_count": 30,
-            "body_md5": "1ca89fc0b00a1527cb8e703b58e7ec60",
-            "bytes": 64468
+            "body_md5": "639f46b27ee573179939db02764637d0",
+            "bytes": 64452
           }
         ],
         "robots": {
@@ -428,7 +428,7 @@
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-20T00:18:49.605Z",
+      "collected_at": "2026-08-20T00:27:11.337Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -462,11 +462,11 @@
           "/blog": 1,
           "/privacy": 1,
           "/terms": 1,
+          "/blog/civil-engineering-report-automation-vs-manual": 2,
           "/blog/ai-reporting-software-civil-engineers": 2,
           "/blog/ai-accountability-code-compliance-aec-allplan-take": 2,
           "/blog/automated-reports-civil-engineering": 2,
           "/blog/best-ai-tools-for-civil-engineers-in-2026": 2,
-          "/blog/civil-engineering-report-automation-vs-manual": 2,
           "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry": 2,
           "/blog/asce-construction-robots-data-collection-engineers-take": 2,
           "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows": 2,
@@ -598,8 +598,11 @@
             "Technologies",
             "Home"
           ],
+          "/blog/civil-engineering-report-automation-vs-manual": [
+            "Featured Civil Engineering Report Automation vs Manual Reporting | VibeOps Techn"
+          ],
           "/blog/ai-reporting-software-civil-engineers": [
-            "Featured AI Reporting Software for Civil Engineers | VibeOps Technologies Discov"
+            "AI Reporting Software for Civil Engineers | VibeOps Technologies Discover how ci"
           ],
           "/blog/ai-accountability-code-compliance-aec-allplan-take": [
             "AI Should Be Held Accountable Like a Team Member: A Take on Compliance in AEC | "
@@ -609,9 +612,6 @@
           ],
           "/blog/best-ai-tools-for-civil-engineers-in-2026": [
             "Best AI Tools for Civil Engineers in 2026 | VibeOps Technologies Discover the be"
-          ],
-          "/blog/civil-engineering-report-automation-vs-manual": [
-            "Civil Engineering Report Automation vs Manual Reporting | VibeOps Technologies C"
           ],
           "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry": [
             "Civil Engineering Workflow Automation: How AI is Changing the Industry | VibeOps"
@@ -643,7 +643,7 @@
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-20T00:18:53.931Z",
+      "collected_at": "2026-08-20T00:27:15.803Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -822,7 +822,7 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-20T00:18:54.180Z",
+      "collected_at": "2026-08-20T00:27:15.945Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -838,7 +838,7 @@
     "vercel": {
       "source": "vercel-api",
       "status": "ok",
-      "collected_at": "2026-08-20T00:18:54.289Z",
+      "collected_at": "2026-08-20T00:27:16.282Z",
       "represents": {
         "start": "2026-05-02",
         "end": "2026-08-19"
@@ -849,9 +849,15 @@
         "Vercel Web Analytics is NOT included: it is enabled on the project but has no stable REST endpoint. It is collected as a separate browser-gated source."
       ],
       "data": {
-        "latest_production_deploy": "2026-08-20T00:14:45.993Z",
+        "latest_production_deploy": "2026-08-20T00:19:52.087Z",
         "days_since_deploy": -1,
         "deployments": [
+          {
+            "created_at": "2026-08-20T00:19:52.087Z",
+            "state": "READY",
+            "commit_sha": "b18d6b8",
+            "commit_message": "Record prerendering as shipped and verified in production"
+          },
           {
             "created_at": "2026-08-20T00:14:45.993Z",
             "state": "READY",
@@ -965,12 +971,6 @@
             "state": "READY",
             "commit_sha": "9b272eb",
             "commit_message": "blog: add why-reportly-by-vibeops-is-positioned-to-win-in-ai-powered-engineering-software (#113)"
-          },
-          {
-            "created_at": "2026-05-02T02:12:44.176Z",
-            "state": "READY",
-            "commit_sha": "1e70ab1",
-            "commit_message": "blog: add why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors (#115)"
           }
         ]
       }
@@ -2335,7 +2335,97 @@
       "source": "vercel",
       "action": "replaced",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:16.716Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:16.722Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:16.728Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:16.734Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-20T00:26:16.741Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:52.178Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:52.187Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:52.194Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:26:52.197Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-20T00:26:52.202Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:27:16.283Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:27:16.285Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:27:16.287Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:27:16.288Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-20T00:27:16.289Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
     }
   ],
-  "updated_at": "2026-08-20T00:18:54.299Z"
+  "updated_at": "2026-08-20T00:27:16.289Z"
 }

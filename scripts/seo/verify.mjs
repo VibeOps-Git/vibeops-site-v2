@@ -195,6 +195,40 @@ log('\nDerived files');
       if (summed > total) fail(`${s.date}: by_day impressions sum to ${summed}, above the reported total ${total}`);
     }
     pass('per-day figures are consistent with reported totals');
+
+    // ARITHMETIC INVARIANTS. Deliberately written as checks that CAN fail,
+    // against figures whose decomposition is knowable independently of who did
+    // the aggregating. This is not distrust of one API: it catches a
+    // transcription slip, a bug in ingest-gsc.mjs, or a future source that
+    // silently samples, with equal indifference. Any decomposable figure is a
+    // checkable one, and reading code is not a substitute for asserting it.
+    for (const s2 of dates.map(loadSnapshot)) {
+      const g = s2.sources?.search_console;
+      if (g?.status !== 'ok') continue;
+      const d = g.data;
+
+      // Every impression is either attributed to a disclosed query or it is not.
+      // There is no third category, so the two must sum to the total exactly.
+      const parts = (d.disclosed_impressions ?? 0) + (d.undisclosed_impressions ?? 0);
+      const total = d.totals?.impressions ?? 0;
+      if (parts !== total) {
+        fail(`${s2.date}: disclosed (${d.disclosed_impressions}) + undisclosed (${d.undisclosed_impressions}) = ${parts}, but total impressions is ${total}. One of the three is wrong.`);
+      }
+
+      // Every disclosed query lands in exactly one topicality bucket.
+      const mix = d.topicality_mix ?? {};
+      const binned = (mix.on_topic ?? 0) + (mix.adjacent ?? 0) + (mix.irrelevant ?? 0);
+      if (binned !== (d.disclosed_query_count ?? 0)) {
+        fail(`${s2.date}: topicality buckets sum to ${binned} but ${d.disclosed_query_count} queries were disclosed. A query is in two buckets or none.`);
+      }
+
+      // Clicks cannot exceed impressions, per day or in total.
+      if ((d.totals?.clicks ?? 0) > total) fail(`${s2.date}: ${d.totals.clicks} clicks against ${total} impressions.`);
+      for (const r of d.by_day ?? []) {
+        if ((r.clicks ?? 0) > (r.impressions ?? 0)) fail(`${s2.date}: ${r.date} reports ${r.clicks} clicks against ${r.impressions} impressions.`);
+      }
+    }
+    pass('arithmetic invariants hold (impression decomposition, topicality buckets, clicks <= impressions)');
   }
 }
 

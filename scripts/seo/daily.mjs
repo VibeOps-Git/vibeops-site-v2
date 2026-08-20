@@ -21,7 +21,7 @@
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { resolveDate, loadSnapshot, log, CONFIG } from './lib/core.mjs';
+import { resolveDate, loadSnapshot, log, CONFIG, recordRunCompleted, runSource } from './lib/core.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const date = resolveDate();
@@ -105,3 +105,10 @@ if (pending.length) {
 }
 
 log(`\n  Production action: NONE unless the report names a verified technical defect.\n`);
+
+// LAST LINE OF THE RUN, deliberately. Reaching here is the success signal: a
+// run that died in verify, collect or analyse never records itself, so the
+// scheduler-health check cannot be fooled by a partial run.
+const recorded = recordRunCompleted(date);
+log(`  run recorded as: ${recorded}${recorded === 'interactive' ? ' (does NOT count as a healthy scheduled run)' : ''}\n`);
+
