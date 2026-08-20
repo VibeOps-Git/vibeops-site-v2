@@ -190,7 +190,11 @@
   line-height: 1.7;
 }
 
-.blog-article h1 {
+/* The MDX body's leading `# Title` is rendered as an <h2> carrying this class,
+   so the page has exactly one <h1> (the header above the article). Kept on the
+   same rule as h1 so the demotion is purely semantic and changes no pixels. */
+.blog-article h1,
+.blog-article .mdx-title {
   font-size: 1.75rem;
   font-weight: 600;
   margin-top: 0.5rem;

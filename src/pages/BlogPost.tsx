@@ -97,7 +97,15 @@ export default function BlogPost() {
               {/* Article */}
               <Card className="bg-card border border-border p-6 sm:p-10">
                 <article className="blog-article prose max-w-none text-sm sm:text-base leading-relaxed tracking-[0.01em]">
-                  <post.Content />
+                  {/* Every post's MDX body opens with `# Title`, which MDX
+                      renders as a second <h1> — the header above already has
+                      one. Two h1s per post reached production HTML the moment
+                      prerendering shipped (2026-08-20), having previously been
+                      invisible to a non-rendering crawler inside the empty SPA
+                      shell. Demoted here rather than by editing 12 MDX files,
+                      so a new post cannot reintroduce it. Purely semantic: the
+                      .mdx-title class carries the identical h1 styling. */}
+                  <post.Content components={{ h1: (props: Record<string, unknown>) => <h2 className="mdx-title" {...props} /> }} />
                 </article>
               </Card>
 

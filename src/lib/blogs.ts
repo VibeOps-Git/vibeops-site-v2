@@ -6,7 +6,14 @@ export type BlogPost = {
   title: string;
   metaDescription: string;
   excerpt: string;
-  Content: ComponentType;
+  /**
+   * The compiled MDX body. Typed to accept MDX's `components` override map so
+   * callers can remap intrinsic elements — BlogPost.tsx uses it to demote the
+   * body's leading `# Title` from <h1> to <h2>, keeping one <h1> per page.
+   * `ComponentType` alone rejects the prop, which vite does not catch because
+   * it does not typecheck, but `tsc` and CI do.
+   */
+  Content: ComponentType<{ components?: Record<string, ComponentType<Record<string, unknown>>> }>;
   ogImage?: string;
 };
 
