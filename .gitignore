@@ -51,6 +51,16 @@ test-results/
 
 # Ad-hoc dev screenshot / measurement / verification scripts (not part of the build)
 scripts/*.mjs
+# ...but these two ARE the build, and must ship.
+#
+# They matched the glob above and were silently never committed, so `npm run
+# build` passed locally (files on disk) and failed on Vercel with "Could not
+# resolve ./scripts/routes.mjs". git status stayed clean throughout, because an
+# ignored file is not an untracked one — nothing anywhere signalled it. If you
+# add another build-critical script under scripts/, un-ignore it here in the
+# same commit.
+!scripts/routes.mjs
+!scripts/prerender.mjs
 
 # Customer discovery data — contains personal contact information, never commit
 Meeting Tracker.xlsx
