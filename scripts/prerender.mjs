@@ -24,9 +24,9 @@
  *
  * WHY PLAYWRIGHT RATHER THAN A PRERENDER PLUGIN
  *
- * Playwright is already a devDependency here for the e2e tests, so this adds no
- * new dependency and no new browser download. react-snap and
- * vite-plugin-prerender would each pull in their own puppeteer.
+ * Playwright is already a devDependency here for the e2e tests, so the local
+ * path adds nothing. react-snap and vite-plugin-prerender would each pull in
+ * their own puppeteer and hit the same Amazon Linux problem described below.
  *
  * WHAT IS DELIBERATELY NOT DONE
  *
@@ -88,32 +88,47 @@ const { chromium } = await import('@playwright/test');
 await new Promise((r) => server.listen(PORT, r));
 
 /**
- * Launch chromium, installing it first if the binary is absent.
+ * Launch chromium, in two quite different environments.
  *
- * Vercel installs devDependencies, so @playwright/test is present on the
- * builder, but the BROWSER BINARIES are a separate download that only
- * `playwright install` fetches. Without this the build gets past bundling and
- * dies at the first launch() with "Executable doesn't exist".
+ * LOCALLY the browser Playwright already downloaded for the e2e suite is used
+ * as-is, which is fast and needs nothing extra.
  *
- * Done here rather than in the build script so a local run stays fast: the
- * install is attempted only when the launch actually fails, and locally the
- * browser is already there from the e2e suite. On Vercel it costs one download
- * on a cold cache.
+ * ON VERCEL neither of the obvious approaches works, and both were tried in
+ * production before this one:
+ *
+ *   1. Rely on the devDependency alone. Vercel does install devDependencies,
+ *      but Playwright's browser BINARIES are a separate download. launch()
+ *      failed with "Executable doesn't exist".
+ *   2. Run `playwright install chromium` during the build. The binary then
+ *      downloaded fine and still would not start:
+ *      "libnspr4.so: cannot open shared object file". Vercel's builder is
+ *      Amazon Linux and simply lacks the shared libraries desktop Chrome
+ *      expects. `playwright install --with-deps` cannot help, being apt-based.
+ *
+ * So on Vercel we use @sparticuz/chromium, which exists precisely for this: a
+ * chromium built for Amazon Linux with its libraries bundled, plus the argument
+ * set a sandboxed serverless builder needs. It is a devDependency, so it never
+ * reaches the client bundle.
+ *
+ * Environment is detected rather than inferred from an error, because
+ * error-sniffing across two different failure modes is how this stays fragile.
  *
  * Deliberately NOT wrapped in a fallback that skips prerendering. Shipping the
- * un-prerendered shell is the exact regression this whole script exists to
- * prevent, so if the browser cannot be obtained the build must fail.
+ * un-prerendered shell is the exact regression this script exists to prevent,
+ * so if no browser can be launched the build must fail.
  */
 async function launchChromium() {
-  try {
-    return await chromium.launch();
-  } catch (err) {
-    if (!/Executable doesn't exist|please run|browserType.launch/i.test(String(err.message))) throw err;
-    console.log('[prerender] chromium not present, installing it (expected on a cold CI builder)…');
-    const { execFileSync } = await import('node:child_process');
-    execFileSync('npx', ['--yes', 'playwright', 'install', 'chromium'], { stdio: 'inherit' });
-    return await chromium.launch();
-  }
+  const onVercel = process.env.VERCEL === '1' || Boolean(process.env.VERCEL_ENV);
+  if (!onVercel) return chromium.launch();
+
+  console.log('[prerender] Vercel builder detected, using @sparticuz/chromium');
+  const sparticuz = (await import('@sparticuz/chromium')).default;
+  const executablePath = await sparticuz.executablePath();
+  return chromium.launch({
+    executablePath,
+    args: [...sparticuz.args, '--no-sandbox', '--disable-dev-shm-usage'],
+    headless: true,
+  });
 }
 
 const browser = await launchChromium();
