@@ -1,11 +1,11 @@
 {
   "date": "2026-08-19",
-  "verdict": "TECHNICAL — investigate now",
-  "why": "1 technical issue(s) at high/critical severity. This is the one category that may justify same-day remediation.",
-  "critical_count": 1,
+  "verdict": "CANDIDATE FOR WEEKLY GATE",
+  "why": "2 opportunities have reached READY. They do not authorise a change — they queue for the weekly decision gate.",
+  "critical_count": 0,
   "ready_count": 2,
-  "headline": "16 tracked URLs return BYTE-IDENTICAL html (md5 6a64cf3f)",
-  "notify": true,
+  "headline": "2 opportunity(ies) ready for the weekly gate",
+  "notify": false,
   "gsc_latest": "2026-08-17",
   "pending": [
     "page_speed",

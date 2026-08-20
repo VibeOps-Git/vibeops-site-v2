@@ -3,12 +3,12 @@
   "date": "2026-08-19",
   "domain_age_days": 59,
   "first_collected_at": "2026-08-19T19:18:07.846Z",
-  "revision": 27,
+  "revision": 32,
   "sources": {
     "technical": {
       "source": "http-technical-check",
       "status": "ok",
-      "collected_at": "2026-08-19T23:50:22.586Z",
+      "collected_at": "2026-08-20T00:18:41.759Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -25,257 +25,257 @@
             "path": "/",
             "journey": "entry",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | The AI Engineering Team for Architecture &amp; Engineering Firms",
+            "title_length": 74,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 74,
+            "body_md5": "346d03d9bd6cb15b01e7252ecb5fe876",
+            "bytes": 116329
           },
           {
             "path": "/what-we-solve",
             "journey": "entry",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | What We Solve for Engineering Firms",
+            "title_length": 45,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 36,
+            "body_md5": "584f4ed4d3c397281ba8e3956f985968",
+            "bytes": 64181
           },
           {
             "path": "/what-we-solve/secure-ai",
             "journey": "problem",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve/secure-ai",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Private &amp; Secure AI for Engineering Firms",
+            "title_length": 55,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 34,
+            "body_md5": "ec4930b2aee685c6617e8cca1f0a01d5",
+            "bytes": 64992
           },
           {
             "path": "/what-we-solve/document-production",
             "journey": "problem",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve/document-production",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Engineering Document &amp; Report Production Systems",
+            "title_length": 62,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 35,
+            "body_md5": "fe28c8d637cb0ac9fc55144b844e9b45",
+            "bytes": 67149
           },
           {
             "path": "/what-we-solve/systems-integration",
             "journey": "problem",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve/systems-integration",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Engineering Software Integration &amp; Workflow Automation",
+            "title_length": 68,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 34,
+            "body_md5": "dad1313c45b28e1e606e63a9eef9e7ee",
+            "bytes": 65451
           },
           {
             "path": "/what-we-solve/internal-tools",
             "journey": "problem",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve/internal-tools",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Custom Internal Software for Engineering Firms",
+            "title_length": 56,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 34,
+            "body_md5": "441026f57f36568f4c3c371a84a6d432",
+            "bytes": 64863
           },
           {
             "path": "/what-we-solve/institutional-knowledge",
             "journey": "problem",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve/institutional-knowledge",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Institutional Knowledge &amp; Document Intelligence for AE Firms",
+            "title_length": 74,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 35,
+            "body_md5": "84f9df8396f02fd6b53bbd60b608ee7c",
+            "bytes": 66999
           },
           {
             "path": "/what-we-solve/ai-governance",
             "journey": "problem",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/what-we-solve/ai-governance",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | AI Governance &amp; Quality Oversight for Engineering Firms",
+            "title_length": 69,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 35,
+            "body_md5": "549dc911ea3e8770943949b6b209d9f3",
+            "bytes": 67193
           },
           {
             "path": "/how-we-work",
             "journey": "consideration",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/how-we-work",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | How We Work With Engineering Firms",
+            "title_length": 44,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 31,
+            "body_md5": "6e3594e6695031b3c8f509101c223469",
+            "bytes": 74567
           },
           {
             "path": "/proof",
             "journey": "consideration",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/proof",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Who We Work With",
+            "title_length": 26,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 35,
+            "body_md5": "afa41dab4fecb13798476fad4377869b",
+            "bytes": 72229
           },
           {
             "path": "/security",
             "journey": "gate",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/security",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Security &amp; Data Handling",
+            "title_length": 38,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 32,
+            "body_md5": "4a4921133fc537738baea9cccc2d634d",
+            "bytes": 74962
           },
           {
             "path": "/team",
             "journey": "consideration",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/team",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | The Engineers Behind Your AI Team",
+            "title_length": 43,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 55,
+            "body_md5": "a4f16b883231deafe44a52cac6d5676f",
+            "bytes": 84710
           },
           {
             "path": "/contact",
             "journey": "conversion",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/contact",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Talk to Your AI Engineering Team",
+            "title_length": 42,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 28,
+            "body_md5": "5217876b89745d48d119075060caffae",
+            "bytes": 53838
           },
           {
             "path": "/blog",
             "journey": "entry",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/blog",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Notes on AI in Engineering Practice",
+            "title_length": 45,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 40,
+            "body_md5": "a13c7f83474366379ce5e0c192f65f18",
+            "bytes": 61968
           },
           {
             "path": "/privacy",
             "journey": "utility",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/privacy",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Privacy Policy",
+            "title_length": 24,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 30,
+            "body_md5": "39a2f34c32f561c7dcbc17bb8fe43c3a",
+            "bytes": 59972
           },
           {
             "path": "/terms",
             "journey": "utility",
             "status": 200,
-            "canonical": null,
-            "canonical_self": false,
+            "canonical": "https://www.vibeops.ca/terms",
+            "canonical_self": true,
             "noindex": false,
-            "title": "VibeOps | The AI Engineering Team for Architecture & Engineering Firms",
-            "title_length": 70,
+            "title": "VibeOps | Terms of Service",
+            "title_length": 26,
             "description_length": 49,
-            "h1_count": 0,
+            "h1_count": 1,
             "og_image": true,
-            "anchor_count": 0,
-            "body_md5": "6a64cf3ff01e855254b74dd9274d1aae",
-            "bytes": 9063
+            "anchor_count": 30,
+            "body_md5": "1ca89fc0b00a1527cb8e703b58e7ec60",
+            "bytes": 64468
           }
         ],
         "robots": {
@@ -321,19 +321,9 @@
         },
         "issues": [
           {
-            "severity": "medium",
-            "path": "/",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
             "severity": "low",
             "path": "/",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/",
-            "issue": "title is 70 chars (aim 15-65)"
+            "issue": "title is 74 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -341,39 +331,9 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/what-we-solve",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/what-we-solve",
             "issue": "meta description is 49 chars (aim 70-165)"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/secure-ai",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/secure-ai",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/secure-ai",
-            "issue": "title is 70 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -381,39 +341,14 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/what-we-solve/document-production",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/document-production",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/document-production",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/what-we-solve/document-production",
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/what-we-solve/systems-integration",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
             "severity": "low",
             "path": "/what-we-solve/systems-integration",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/systems-integration",
-            "issue": "title is 70 chars (aim 15-65)"
+            "issue": "title is 68 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -421,39 +356,14 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/what-we-solve/internal-tools",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/internal-tools",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/internal-tools",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/what-we-solve/internal-tools",
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/what-we-solve/institutional-knowledge",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
             "severity": "low",
             "path": "/what-we-solve/institutional-knowledge",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/institutional-knowledge",
-            "issue": "title is 70 chars (aim 15-65)"
+            "issue": "title is 74 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -461,19 +371,9 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/what-we-solve/ai-governance",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
             "severity": "low",
             "path": "/what-we-solve/ai-governance",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/ai-governance",
-            "issue": "title is 70 chars (aim 15-65)"
+            "issue": "title is 69 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -481,39 +381,9 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/how-we-work",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/how-we-work",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/how-we-work",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/how-we-work",
             "issue": "meta description is 49 chars (aim 70-165)"
-          },
-          {
-            "severity": "medium",
-            "path": "/proof",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/proof",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/proof",
-            "issue": "title is 70 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -521,39 +391,9 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/security",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/security",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/security",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/security",
             "issue": "meta description is 49 chars (aim 70-165)"
-          },
-          {
-            "severity": "medium",
-            "path": "/team",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/team",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/team",
-            "issue": "title is 70 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -561,39 +401,9 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/contact",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/contact",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/contact",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/contact",
             "issue": "meta description is 49 chars (aim 70-165)"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/blog",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/blog",
-            "issue": "title is 70 chars (aim 15-65)"
           },
           {
             "severity": "low",
@@ -601,76 +411,24 @@
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/privacy",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/privacy",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/privacy",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/privacy",
             "issue": "meta description is 49 chars (aim 70-165)"
           },
           {
-            "severity": "medium",
-            "path": "/terms",
-            "issue": "no canonical link in the prerendered html"
-          },
-          {
-            "severity": "low",
-            "path": "/terms",
-            "issue": "0 h1 elements"
-          },
-          {
-            "severity": "low",
-            "path": "/terms",
-            "issue": "title is 70 chars (aim 15-65)"
-          },
-          {
             "severity": "low",
             "path": "/terms",
             "issue": "meta description is 49 chars (aim 70-165)"
-          },
-          {
-            "severity": "critical",
-            "path": "16 URLs",
-            "issue": "16 tracked URLs return BYTE-IDENTICAL html (md5 6a64cf3f). The site is serving an un-prerendered SPA shell, so on a crawler's first pass every one of these URLs has the same title, the same content and no links. Google does render JS, so this is not fatal, but it delays indexing, spends crawl budget on duplicates, and makes per-page metadata invisible until render. Fix is prerendering or SSR, not a metadata change."
           }
         ],
-        "prerendered": false,
-        "identical_shell_urls": [
-          "/",
-          "/what-we-solve",
-          "/what-we-solve/secure-ai",
-          "/what-we-solve/document-production",
-          "/what-we-solve/systems-integration",
-          "/what-we-solve/internal-tools",
-          "/what-we-solve/institutional-knowledge",
-          "/what-we-solve/ai-governance",
-          "/how-we-work",
-          "/proof",
-          "/security",
-          "/team",
-          "/contact",
-          "/blog",
-          "/privacy",
-          "/terms"
-        ]
+        "prerendered": true,
+        "identical_shell_urls": []
       }
     },
     "internal_links": {
       "source": "internal-link-crawl",
       "status": "ok",
-      "collected_at": "2026-08-19T23:50:30.718Z",
+      "collected_at": "2026-08-20T00:18:49.605Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -684,514 +442,208 @@
       "data": {
         "crawled": 28,
         "sitemap_urls": 28,
-        "orphans": [
-          "/what-we-solve",
-          "/what-we-solve/secure-ai",
-          "/what-we-solve/document-production",
-          "/what-we-solve/systems-integration",
-          "/what-we-solve/internal-tools",
-          "/what-we-solve/institutional-knowledge",
-          "/what-we-solve/ai-governance",
-          "/how-we-work",
-          "/security",
-          "/proof",
-          "/contact",
-          "/team",
-          "/blog",
-          "/privacy",
-          "/terms",
-          "/blog/ai-accountability-code-compliance-aec-allplan-take",
-          "/blog/ai-civil-engineering-reporting",
-          "/blog/ai-reporting-software-civil-engineers",
-          "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
-          "/blog/asce-construction-robots-data-collection-engineers-take",
-          "/blog/automated-reports-civil-engineering",
-          "/blog/best-ai-tools-for-civil-engineers-in-2026",
-          "/blog/civil-engineering-report-automation-vs-manual",
-          "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
-          "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
-          "/blog/the-best-civil-engineering-reporting-software-in-2026",
-          "/blog/the-best-reporting-solution-for-civil-engineers-in-2026"
-        ],
-        "unreachable": [
-          "/what-we-solve",
-          "/what-we-solve/secure-ai",
-          "/what-we-solve/document-production",
-          "/what-we-solve/systems-integration",
-          "/what-we-solve/internal-tools",
-          "/what-we-solve/institutional-knowledge",
-          "/what-we-solve/ai-governance",
-          "/how-we-work",
-          "/security",
-          "/proof",
-          "/contact",
-          "/team",
-          "/blog",
-          "/privacy",
-          "/terms",
-          "/blog/ai-accountability-code-compliance-aec-allplan-take",
-          "/blog/ai-civil-engineering-reporting",
-          "/blog/ai-reporting-software-civil-engineers",
-          "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
-          "/blog/asce-construction-robots-data-collection-engineers-take",
-          "/blog/automated-reports-civil-engineering",
-          "/blog/best-ai-tools-for-civil-engineers-in-2026",
-          "/blog/civil-engineering-report-automation-vs-manual",
-          "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
-          "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
-          "/blog/the-best-civil-engineering-reporting-software-in-2026",
-          "/blog/the-best-reporting-solution-for-civil-engineers-in-2026"
-        ],
-        "max_depth": 0,
+        "orphans": [],
+        "unreachable": [],
+        "max_depth": 2,
         "depth": {
-          "/": 0
+          "/": 0,
+          "/how-we-work": 1,
+          "/proof": 1,
+          "/contact": 1,
+          "/what-we-solve": 1,
+          "/what-we-solve/secure-ai": 1,
+          "/what-we-solve/internal-tools": 1,
+          "/what-we-solve/ai-governance": 1,
+          "/what-we-solve/document-production": 1,
+          "/what-we-solve/systems-integration": 1,
+          "/what-we-solve/institutional-knowledge": 1,
+          "/security": 1,
+          "/team": 1,
+          "/blog": 1,
+          "/privacy": 1,
+          "/terms": 1,
+          "/blog/ai-reporting-software-civil-engineers": 2,
+          "/blog/ai-accountability-code-compliance-aec-allplan-take": 2,
+          "/blog/automated-reports-civil-engineering": 2,
+          "/blog/best-ai-tools-for-civil-engineers-in-2026": 2,
+          "/blog/civil-engineering-report-automation-vs-manual": 2,
+          "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry": 2,
+          "/blog/asce-construction-robots-data-collection-engineers-take": 2,
+          "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows": 2,
+          "/blog/ai-civil-engineering-reporting": 2,
+          "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms": 2,
+          "/blog/the-best-civil-engineering-reporting-software-in-2026": 2,
+          "/blog/the-best-reporting-solution-for-civil-engineers-in-2026": 2
         },
         "inbound": {
-          "/": 0,
-          "/what-we-solve": 0,
-          "/what-we-solve/secure-ai": 0,
-          "/what-we-solve/document-production": 0,
-          "/what-we-solve/systems-integration": 0,
-          "/what-we-solve/internal-tools": 0,
-          "/what-we-solve/institutional-knowledge": 0,
-          "/what-we-solve/ai-governance": 0,
-          "/how-we-work": 0,
-          "/security": 0,
-          "/proof": 0,
-          "/contact": 0,
-          "/team": 0,
-          "/blog": 0,
-          "/privacy": 0,
-          "/terms": 0,
-          "/blog/ai-accountability-code-compliance-aec-allplan-take": 0,
-          "/blog/ai-civil-engineering-reporting": 0,
-          "/blog/ai-reporting-software-civil-engineers": 0,
-          "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms": 0,
-          "/blog/asce-construction-robots-data-collection-engineers-take": 0,
-          "/blog/automated-reports-civil-engineering": 0,
-          "/blog/best-ai-tools-for-civil-engineers-in-2026": 0,
-          "/blog/civil-engineering-report-automation-vs-manual": 0,
-          "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry": 0,
-          "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows": 0,
-          "/blog/the-best-civil-engineering-reporting-software-in-2026": 0,
-          "/blog/the-best-reporting-solution-for-civil-engineers-in-2026": 0
+          "/": 27,
+          "/what-we-solve": 20,
+          "/what-we-solve/secure-ai": 27,
+          "/what-we-solve/document-production": 27,
+          "/what-we-solve/systems-integration": 27,
+          "/what-we-solve/internal-tools": 27,
+          "/what-we-solve/institutional-knowledge": 27,
+          "/what-we-solve/ai-governance": 27,
+          "/how-we-work": 27,
+          "/security": 27,
+          "/proof": 27,
+          "/contact": 27,
+          "/team": 27,
+          "/blog": 27,
+          "/privacy": 27,
+          "/terms": 27,
+          "/blog/ai-accountability-code-compliance-aec-allplan-take": 1,
+          "/blog/ai-civil-engineering-reporting": 1,
+          "/blog/ai-reporting-software-civil-engineers": 1,
+          "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms": 1,
+          "/blog/asce-construction-robots-data-collection-engineers-take": 1,
+          "/blog/automated-reports-civil-engineering": 1,
+          "/blog/best-ai-tools-for-civil-engineers-in-2026": 1,
+          "/blog/civil-engineering-report-automation-vs-manual": 1,
+          "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry": 1,
+          "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows": 1,
+          "/blog/the-best-civil-engineering-reporting-software-in-2026": 1,
+          "/blog/the-best-reporting-solution-for-civil-engineers-in-2026": 1
         },
-        "anchors": {},
+        "anchors": {
+          "/how-we-work": [
+            "How We Work",
+            "How we work",
+            "See the full engagement",
+            "See how we work",
+            "How an engagement runs"
+          ],
+          "/proof": [
+            "Our Work",
+            "See what we have built",
+            "See our work",
+            "What we have built",
+            "Built in-house Jurisdictional building code intelligence A code lookup we built "
+          ],
+          "/contact": [
+            "Contact",
+            "Book a Call",
+            "Book a call",
+            "Talk to the team",
+            "Ask us directly",
+            "Get in touch",
+            "Work with us",
+            "Talk about advising"
+          ],
+          "/what-we-solve": [
+            "See what we solve",
+            "All six problems",
+            "← What we solve",
+            "Start with the six problems"
+          ],
+          "/what-we-solve/secure-ai": [
+            "AI on confidential data",
+            "“We can’t put client data into AI.” Your project data is contractually confident",
+            "“We can’t put client data into AI.” Read more"
+          ],
+          "/what-we-solve/internal-tools": [
+            "Tools that don’t exist",
+            "“The tool we need doesn’t exist, and we can’t staff to build it.” Some of what y",
+            "“The tool we need doesn’t exist, and we can’t staff to build it.” Read more"
+          ],
+          "/what-we-solve/ai-governance": [
+            "Oversight",
+            "“We need oversight before this gets away from us.” More output means more to rev",
+            "Oversight &amp; governance",
+            "“We need oversight before this gets away from us.” Read more",
+            "oversight and governance",
+            "the reporting systems we deliver"
+          ],
+          "/what-we-solve/document-production": [
+            "“We produce the same documents over and over, and our standard is slipping.” The",
+            "Document production",
+            "“We produce the same documents over and over, and our standard is slipping.” Rea",
+            "we build systems to handle",
+            "we build software to close"
+          ],
+          "/what-we-solve/systems-integration": [
+            "“Our software doesn’t talk to each other.” You have already bought the tools. Th",
+            "Systems that don’t talk",
+            "“Our software doesn’t talk to each other.” Read more"
+          ],
+          "/what-we-solve/institutional-knowledge": [
+            "“Everything we know is locked inside past projects.” Decades of solved problems ",
+            "Knowledge locked in past work",
+            "“Everything we know is locked inside past projects.” Read more"
+          ],
+          "/security": [
+            "Read our data handling",
+            "Security &amp; Data Handling"
+          ],
+          "/team": [
+            "Full team",
+            "Zander CEO",
+            "Félix Co-Founder &amp; Co-Owner",
+            "Team",
+            "Meet the team"
+          ],
+          "/blog": [
+            "Blog",
+            "← Back to all posts"
+          ],
+          "/privacy": [
+            "Privacy",
+            "Privacy Policy"
+          ],
+          "/terms": [
+            "Terms",
+            "VibeOps Services Agreement / Terms and Conditions"
+          ],
+          "/": [
+            "Technologies",
+            "Home"
+          ],
+          "/blog/ai-reporting-software-civil-engineers": [
+            "Featured AI Reporting Software for Civil Engineers | VibeOps Technologies Discov"
+          ],
+          "/blog/ai-accountability-code-compliance-aec-allplan-take": [
+            "AI Should Be Held Accountable Like a Team Member: A Take on Compliance in AEC | "
+          ],
+          "/blog/automated-reports-civil-engineering": [
+            "Automated Reports for Civil Engineering | VibeOps Technologies Learn how AI-powe"
+          ],
+          "/blog/best-ai-tools-for-civil-engineers-in-2026": [
+            "Best AI Tools for Civil Engineers in 2026 | VibeOps Technologies Discover the be"
+          ],
+          "/blog/civil-engineering-report-automation-vs-manual": [
+            "Civil Engineering Report Automation vs Manual Reporting | VibeOps Technologies C"
+          ],
+          "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry": [
+            "Civil Engineering Workflow Automation: How AI is Changing the Industry | VibeOps"
+          ],
+          "/blog/asce-construction-robots-data-collection-engineers-take": [
+            "Construction Robots Are Mostly Note-Takers Right Now, and That's Useful | VibeOp"
+          ],
+          "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows": [
+            "Engineering Report Automation: The Future of Civil Engineering Workflows | VibeO"
+          ],
+          "/blog/ai-civil-engineering-reporting": [
+            "How AI is Transforming Civil Engineering Reporting (and Saving Engineers 30+ Hou"
+          ],
+          "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms": [
+            "The AI 'Tipping Point' in Construction: What It Means for Engineering Firms | Vi"
+          ],
+          "/blog/the-best-civil-engineering-reporting-software-in-2026": [
+            "The Best Civil Engineering Reporting Software in 2026 | VibeOps Technologies Dis"
+          ],
+          "/blog/the-best-reporting-solution-for-civil-engineers-in-2026": [
+            "The Best Reporting Solution for Civil Engineers in 2026 | VibeOps Technologies D"
+          ]
+        },
         "off_sitemap_links": [],
         "fetch_failed": [],
-        "issues": [
-          {
-            "severity": "medium",
-            "path": "/what-we-solve",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/secure-ai",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/document-production",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/systems-integration",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/internal-tools",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/institutional-knowledge",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/ai-governance",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/how-we-work",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/security",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/proof",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/contact",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/team",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/privacy",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/terms",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-accountability-code-compliance-aec-allplan-take",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-civil-engineering-reporting",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-reporting-software-civil-engineers",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/asce-construction-robots-data-collection-engineers-take",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/automated-reports-civil-engineering",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/best-ai-tools-for-civil-engineers-in-2026",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/civil-engineering-report-automation-vs-manual",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/the-best-civil-engineering-reporting-software-in-2026",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026",
-            "issue": "orphan — no internal page links to it"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/secure-ai",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/document-production",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/systems-integration",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/internal-tools",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/institutional-knowledge",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/what-we-solve/ai-governance",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/how-we-work",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/security",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/proof",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/contact",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/team",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/privacy",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/terms",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-accountability-code-compliance-aec-allplan-take",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-civil-engineering-reporting",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-reporting-software-civil-engineers",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/asce-construction-robots-data-collection-engineers-take",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/automated-reports-civil-engineering",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/best-ai-tools-for-civil-engineers-in-2026",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/civil-engineering-report-automation-vs-manual",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/the-best-civil-engineering-reporting-software-in-2026",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "medium",
-            "path": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026",
-            "issue": "not reachable from the homepage by any internal link path"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/secure-ai",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/document-production",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/systems-integration",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/internal-tools",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/institutional-knowledge",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/what-we-solve/ai-governance",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/how-we-work",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/security",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/proof",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/contact",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/team",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/privacy",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/terms",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/ai-accountability-code-compliance-aec-allplan-take",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/ai-civil-engineering-reporting",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/ai-reporting-software-civil-engineers",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/ai-tipping-point-construction-what-it-means-for-engineering-firms",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/asce-construction-robots-data-collection-engineers-take",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/automated-reports-civil-engineering",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/best-ai-tools-for-civil-engineers-in-2026",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/civil-engineering-report-automation-vs-manual",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/civil-engineering-workflow-automation-how-ai-is-changing-the-industry",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/engineering-report-automation-the-future-of-civil-engineering-workflows",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/the-best-civil-engineering-reporting-software-in-2026",
-            "issue": "click depth undefined from the homepage"
-          },
-          {
-            "severity": "low",
-            "path": "/blog/the-best-reporting-solution-for-civil-engineers-in-2026",
-            "issue": "click depth undefined from the homepage"
-          }
-        ]
+        "issues": []
       }
     },
     "structured_data": {
       "source": "structured-data-parse",
       "status": "ok",
-      "collected_at": "2026-08-19T23:50:35.619Z",
+      "collected_at": "2026-08-20T00:18:53.931Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1212,92 +664,109 @@
             "invalid": 0
           },
           "/what-we-solve": {
-            "blocks": 3,
+            "blocks": 4,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/what-we-solve/secure-ai": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "Service",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/what-we-solve/document-production": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "Service",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/what-we-solve/systems-integration": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "Service",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/what-we-solve/internal-tools": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "Service",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/what-we-solve/institutional-knowledge": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "Service",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/what-we-solve/ai-governance": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "Service",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/how-we-work": {
-            "blocks": 3,
+            "blocks": 4,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/proof": {
-            "blocks": 3,
+            "blocks": 4,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
           "/security": {
-            "blocks": 3,
+            "blocks": 5,
             "types": [
               "Organization",
               "ProfessionalService",
-              "WebSite"
+              "WebSite",
+              "FAQPage",
+              "BreadcrumbList"
             ],
             "invalid": 0
           },
@@ -1353,7 +822,7 @@
     "page_speed": {
       "source": "pagespeed-insights",
       "status": "pending",
-      "collected_at": "2026-08-19T23:50:35.737Z",
+      "collected_at": "2026-08-20T00:18:54.180Z",
       "represents": {
         "start": "2026-08-19",
         "end": "2026-08-19"
@@ -1369,7 +838,7 @@
     "vercel": {
       "source": "vercel-api",
       "status": "ok",
-      "collected_at": "2026-08-19T23:50:35.844Z",
+      "collected_at": "2026-08-20T00:18:54.289Z",
       "represents": {
         "start": "2026-05-02",
         "end": "2026-08-19"
@@ -1380,9 +849,21 @@
         "Vercel Web Analytics is NOT included: it is enabled on the project but has no stable REST endpoint. It is collected as a separate browser-gated source."
       ],
       "data": {
-        "latest_production_deploy": "2026-08-17T20:52:17.646Z",
-        "days_since_deploy": 1,
+        "latest_production_deploy": "2026-08-20T00:14:45.993Z",
+        "days_since_deploy": -1,
         "deployments": [
+          {
+            "created_at": "2026-08-20T00:14:45.993Z",
+            "state": "READY",
+            "commit_sha": "15f0fb0",
+            "commit_message": "One <h1> per blog post: demote the MDX body's leading heading"
+          },
+          {
+            "created_at": "2026-08-20T00:05:40.316Z",
+            "state": "READY",
+            "commit_sha": "7122098",
+            "commit_message": "Use @sparticuz/chromium on Vercel; the builder cannot run a stock chromium"
+          },
           {
             "created_at": "2026-08-17T20:52:17.646Z",
             "state": "READY",
@@ -1490,18 +971,6 @@
             "state": "READY",
             "commit_sha": "1e70ab1",
             "commit_message": "blog: add why-ai-reporting-in-civil-engineering-is-a-high-growth-opportunity-for-investors (#115)"
-          },
-          {
-            "created_at": "2026-05-02T02:12:42.020Z",
-            "state": "READY",
-            "commit_sha": "be4c2b3",
-            "commit_message": "blog: add civil-engineering-workflow-automation-how-ai-is-changing-the-industry (#117)"
-          },
-          {
-            "created_at": "2026-05-02T02:12:39.755Z",
-            "state": "READY",
-            "commit_sha": "76918c1",
-            "commit_message": "blog: add best-ai-tools-for-civil-engineers-in-2026 (#119)"
           }
         ]
       }
@@ -2836,7 +2305,37 @@
       "source": "vercel",
       "action": "replaced",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:18:54.292Z",
+      "source": "technical",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:18:54.294Z",
+      "source": "internal_links",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:18:54.296Z",
+      "source": "structured_data",
+      "action": "replaced",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-20T00:18:54.298Z",
+      "source": "page_speed",
+      "action": "replaced",
+      "status": "pending"
+    },
+    {
+      "at": "2026-08-20T00:18:54.299Z",
+      "source": "vercel",
+      "action": "replaced",
+      "status": "ok"
     }
   ],
-  "updated_at": "2026-08-19T23:50:35.859Z"
+  "updated_at": "2026-08-20T00:18:54.299Z"
 }

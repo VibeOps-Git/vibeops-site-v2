@@ -60,7 +60,7 @@ at low impression counts CTR is arithmetic noise, and optimising against it mean
 optimising against randomness.
 
 1. **Technical health.** Can Google crawl, render and index what we published?
-   Today the answer is partly no — see below.
+   Since 2026-08-20, yes — see below.
 2. **Query breadth.** Is Google testing us against increasingly relevant
    searches? The most informative early signal by a distance.
 3. **Impression trajectory.** 5/day → 15/day → 50/day matters far more right now
@@ -70,7 +70,7 @@ optimising against randomness.
    Not the average, which is meaningless on small samples.
 6. **Clicks and CTR** — only once impressions make CTR meaningful (100+ in 7d).
 
-## The finding that dominated everything, and its fix
+## The finding that dominated everything, and its fix (SHIPPED 2026-08-20)
 
 Measured 2026-08-17, on the first run:
 
@@ -112,13 +112,41 @@ scroll position during render, so mismatches are close to certain. `createRoot`
 clears and re-renders: it costs a frame and buys total safety, and the SEO
 benefit is identical either way because it lives entirely in the bytes we serve.
 
-**The daily run guards this permanently.** `collect.mjs` hashes every tracked
-page and raises a critical finding if several URLs return identical HTML again.
-If someone changes the build and prerendering stops, the next morning's run says
-so. `prerender.mjs` also fails the build outright if every output page ends up
-with the same `<title>`, so a silent regression cannot ship in the first place.
+**Live in production since 2026-08-20**, deployment
+`dpl_6SmQPMQusEwahFRL5nCQoLSnRF8Q` (commit `15f0fb0`), verified by fetching all
+28 URLs from www.vibeops.ca rather than by trusting the build:
 
-## Opportunity scoring
+| Measured on production | Before | After |
+|---|---|---|
+| distinct page HTML (md5) | 1 | **28** |
+| distinct `<title>` | 1 | **28** |
+| pages with exactly one `<h1>` | 0 | **28/28** |
+| self-referential canonicals | 0 | **28/28** |
+| pages with >=10 internal links | 0 | **28/28** |
+| orphan pages in the link graph | 27 | **0** |
+| max click depth from the homepage | 0 (unreachable) | **2** |
+| critical technical findings | 1 | **0** |
+| total technical findings | 65 | 20, all low |
+
+Getting there took three production deploys, and both failures are worth
+knowing about because neither reproduced locally:
+
+1. `.gitignore` carried `scripts/*.mjs` to ignore ad-hoc screenshot scripts.
+   `routes.mjs` and `prerender.mjs` matched it and were never committed, so the
+   build passed locally and died on Vercel with "Could not resolve
+   ./scripts/routes.mjs". `git status` stayed clean throughout: an ignored file
+   is not an untracked one, and nothing anywhere signalled it.
+2. Vercel's builder is Amazon Linux and cannot run a stock chromium
+   (`libnspr4.so: cannot open shared object file`). `playwright install
+   --with-deps` cannot help, being apt-based. The build now uses
+   `@sparticuz/chromium` when `VERCEL` is set, and the local browser otherwise.
+
+Production verification also surfaced a defect prerendering did not cause but
+did reveal: 12 blog posts carried two `<h1>` elements, because the template
+renders the title and each MDX body opens with `# Title`. Invisible while the
+served HTML was an empty shell. Fixed by remapping MDX `h1` at the render site.
+
+**The daily run guards this permanently.**## Opportunity scoring
 
 `analyze.mjs` maintains a register in `data/opportunities.json`. Each record
 accumulates evidence day over day and must persist
