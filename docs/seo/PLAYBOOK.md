@@ -146,7 +146,41 @@ did reveal: 12 blog posts carried two `<h1>` elements, because the template
 renders the title and each MDX body opens with `# Title`. Invisible while the
 served HTML was an empty shell. Fixed by remapping MDX `h1` at the render site.
 
-**The daily run guards this permanently.**## Opportunity scoring
+**The daily run guards this permanently.**## Releasing: verify the artifact, distrust the diagnosis
+
+Two rules, both bought with real failures rather than reasoned into.
+
+**Verify the artifact when it succeeds.** A green deployment asserts that a
+build exited 0. It asserts nothing about what the origin serves. The
+prerender release on 2026-08-20 went out READY while still serving 12 pages
+with two `<h1>` elements, which the build was perfectly happy with and which
+only fetching production revealed.
+
+```
+npm run verify:prod          # fetches every route from www.vibeops.ca
+VERIFY_ORIGIN=https://... npm run verify:prod   # or a preview deployment
+```
+
+It checks the things a broken release actually breaks: distinct HTML and
+`<title>` per route, exactly one `<h1>`, self-referential canonicals, real
+internal links, meta descriptions. It exits non-zero, so it can gate a release.
+The distinct-HTML check is the important one — identical HTML across routes
+means the SPA shell is being served again and prerendering has silently stopped.
+
+**Distrust the diagnosis when it fails.** A build error names a symptom, and the
+symptom often has several causes that look identical. Today's Vercel token
+returned "Project not found" on every project endpoint, which reads as a wrong
+project id and was in fact a scope problem; only `/v2/teams/{id}` answering
+`team_unauthorized` rather than `not_found` separated them. The sibling
+roadway.tools system lost three retries to the mirror image: an error naming a
+missing token permission, where the real cause was a product not enabled on the
+account, producing an identical message.
+
+So before acting on a build error, find the probe that distinguishes its
+plausible causes. `collect.mjs` does this for the Vercel credential rather than
+leaving it to whoever reads the log next.
+
+## Opportunity scoring
 
 `analyze.mjs` maintains a register in `data/opportunities.json`. Each record
 accumulates evidence day over day and must persist

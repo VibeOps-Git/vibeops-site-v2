@@ -61,6 +61,7 @@ scripts/*.mjs
 # same commit.
 !scripts/routes.mjs
 !scripts/prerender.mjs
+!scripts/verify-production.mjs
 
 # Customer discovery data — contains personal contact information, never commit
 Meeting Tracker.xlsx

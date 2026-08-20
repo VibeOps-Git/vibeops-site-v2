@@ -27,7 +27,8 @@
     "seo:discovery-build": "node scripts/seo/discovery-probe-build.mjs",
     "seo:freeze": "node scripts/seo/freeze.mjs",
     "build:nopre": "vite build",
-    "prerender": "node scripts/prerender.mjs"
+    "prerender": "node scripts/prerender.mjs",
+    "verify:prod": "node scripts/verify-production.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
